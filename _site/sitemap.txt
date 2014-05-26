@@ -5,4 +5,5 @@ http://snorlaxzxz.com/index.html
 http://snorlaxzxz.com/rss.xml
 http://snorlaxzxz.com/sitemap.txt
 
-http://snorlaxzxz.com/2014/05/26/first-post
+http://snorlaxzxz.com/2014/05/26/test
+http://snorlaxzxz.com/2012/03/13/hello-wordpress

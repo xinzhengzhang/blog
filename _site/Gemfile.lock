@@ -30,6 +30,7 @@ GEM
       rdiscount (= 2.1.7)
       redcarpet (= 2.3.0)
     highline (1.6.21)
+    hpricot (0.8.6)
     html-pipeline (1.5.0)
       activesupport (>= 2)
       nokogiri (~> 1.4)
@@ -82,6 +83,7 @@ GEM
     rdiscount (2.1.7)
     redcarpet (2.3.0)
     safe_yaml (1.0.3)
+    sequel (4.10.0)
     thread_safe (0.3.3)
     toml (0.1.1)
       parslet (~> 1.5.0)
@@ -94,3 +96,5 @@ PLATFORMS
 
 DEPENDENCIES
   github-pages
+  hpricot
+  sequel

@@ -5,18 +5,27 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-05-26T20:00:29+08:00</lastBuildDate>
-        <pubDate>2014-05-26T20:00:29+08:00</pubDate>
+        <lastBuildDate>2014-05-26T22:20:52+08:00</lastBuildDate>
+        <pubDate>2014-05-26T22:20:52+08:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
-                <title>first post</title>
+                <title>test</title>
                 <description>
 </description>
-                <link>http://snorlaxzxz.com/2014/05/26/first-post</link>
-                <guid>http://snorlaxzxz.com/2014/05/26/first-post</guid>
+                <link>http://snorlaxzxz.com/2014/05/26/test</link>
+                <guid>http://snorlaxzxz.com/2014/05/26/test</guid>
                 <pubDate>2014-05-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>hello wordpress</title>
+                <description>&lt;p&gt;&lt;code&gt;hello wordpress!&lt;/code&gt;&lt;/p&gt;
+</description>
+                <link>http://snorlaxzxz.com/2012/03/13/hello-wordpress</link>
+                <guid>http://snorlaxzxz.com/2012/03/13/hello-wordpress</guid>
+                <pubDate>2012-03-13T00:00:00+08:00</pubDate>
         </item>
 
 

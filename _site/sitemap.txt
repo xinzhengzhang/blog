@@ -1,11 +1,8 @@
 
+http://snorlaxzxz.com/about.html
 http://snorlaxzxz.com/archive.html
-http://snorlaxzxz.com/atom.xml
-http://snorlaxzxz.com/categories.html
 http://snorlaxzxz.com/index.html
-http://snorlaxzxz.com/pages.html
 http://snorlaxzxz.com/rss.xml
 http://snorlaxzxz.com/sitemap.txt
-http://snorlaxzxz.com/tags.html
 
-http://snorlaxzxz.com/lessons/2011/12/29/jekyll-introduction
+http://snorlaxzxz.com/2014/05/26/first-post

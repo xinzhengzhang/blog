@@ -1,0 +1,45 @@
+---
+layout: post
+title: 睡眠排序shell实现
+categories:
+- 未分类
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  views: '5'
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _sinaweibo_sync: 'true'
+  _sinaweibo_sync_id: '3561141853049900'
+  _social_notify: '1'
+  _social_broadcast_content: 'a:1:{s:7:"twitter";a:1:{i:334092962;s:129:"睡眠排序shell实现:
+    又是无意看到群里在讨论东西看到个睡眠排序……觉得好��... http://t.cn/zTz2FBx";}}'
+  _social_broadcast_meta: a:1:{s:7:"twitter";a:1:{i:334092962;a:0:{}}}
+  _social_broadcast_accounts: a:1:{s:7:"twitter";a:1:{i:334092962;O:8:"stdClass":2:{s:2:"id";s:9:"334092962";s:9:"universal";s:1:"1";}}}
+  _social_aggregation_log: a:10:{i:1364528018;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364530652;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364534024;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364538633;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364546594;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364563129;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364592937;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364636493;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364724830;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1364899597;O:8:"stdClass":1:{s:6:"manual";s:0:"";}}
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>又是无意看到群里在讨论东西看到个睡眠排序……觉得好玩的就分享分享<br />
+代码如下（简单的过分 想说的话都写注释里了)</p>
+<pre lang='shell'>
+#!/bin/bash
+function f() {
+    sleep "$1"
+    echo "$1"  
+}
+while [ -n "$1" ]
+do
+    f "$1" & 
+    shift   #对所有参数 依次循环让所有的参数分别sleep进行次根据sleep长短利用数字自身大小的特性进行排序
+done
+wait  #主进程等到全部子进程结束后返回结束
+#这个排序有个致命伤 如果os调度高于了数字最小的差值比如就必定会出错 或者随便来个来自系统的别的竞争也肯定悲剧了
+#还有就是……万一这个数字很大你等到明年去么混蛋= =
+</pre>

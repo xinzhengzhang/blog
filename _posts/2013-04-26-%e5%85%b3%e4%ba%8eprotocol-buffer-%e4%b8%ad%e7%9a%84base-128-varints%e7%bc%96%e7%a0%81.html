@@ -1,0 +1,72 @@
+---
+layout: post
+title: 关于protocol buffer 中的Base 128 Varints编码
+categories:
+- program
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _oembed_03f1da5425b80f5e959204731ff6f8c8: '{{unknown}}'
+  _edit_last: '1'
+  _oembed_99b0669149e2eeeb856b93601d272d6e: '{{unknown}}'
+  _sinaweibo_sync: 'true'
+  _sinaweibo_sync_id: '3571384653582514'
+  _social_notify: '1'
+  _social_broadcast_content: 'a:1:{s:7:"twitter";a:1:{i:334092962;s:127:"关于protocol
+    buffer 中的Base 128 Varints编码: 首先大致讲下protocol buffer 是大google用�... http://t.cn/zTobWx5";}}'
+  _social_broadcast_meta: a:1:{s:7:"twitter";a:1:{i:334092962;a:0:{}}}
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _social_aggregation_log: a:34:{i:1366969131;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366970994;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366972266;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366972516;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366974479;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366978171;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366978260;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366983153;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366983225;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1366991542;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367007633;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367008587;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367008911;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367010508;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367012540;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367014127;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367014824;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367015807;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367017451;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367029482;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367030414;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367032555;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367062981;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367063866;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367068523;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367070671;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367071526;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367072636;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367075063;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367119448;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367119554;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367206536;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367206652;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367383082;O:8:"stdClass":1:{s:6:"manual";s:0:"";}}
+  _social_broadcasted_ids: a:1:{s:7:"twitter";a:1:{i:334092962;a:1:{i:327713339264360448;a:3:{s:7:"message";s:3140:"eyJjb29yZGluYXRlcyI6bnVsbCwiaW5fcmVwbHlfdG9fc3RhdHVzX2lkIjpudWxsLCJwb3NzaWJseV9zZW5zaXRpdmUiOmZhbHNlLCJpZF9zdHIiOiIzMjc3MTMzMzkyNjQzNjA0NDgiLCJjb250cmlidXRvcnMiOm51bGwsInVzZXIiOnsibmFtZSI6InNub3JsYXh6eHoiLCJwcm9maWxlX2JhY2tncm91bmRfdGlsZSI6ZmFsc2UsInByb2ZpbGVfaW1hZ2VfdXJsIjoiaHR0cDpcL1wvYTAudHdpbWcuY29tXC9wcm9maWxlX2ltYWdlc1wvMzM1MjM5MDY1OVwvOTczYmUxOTQ4OWRmYzMzOTdjYmU5ZTI1NjJhMDFjZTNfbm9ybWFsLmpwZWciLCJwcm9maWxlX3NpZGViYXJfZmlsbF9jb2xvciI6IkRERUVGNiIsImZvbGxvd19yZXF1ZXN0X3NlbnQiOmZhbHNlLCJlbnRpdGllcyI6eyJ1cmwiOnsidXJscyI6W3sidXJsIjoiaHR0cDpcL1wvdC5jb1wvSGxOWDlKZ1RmTiIsImluZGljZXMiOlswLDIyXSwiZGlzcGxheV91cmwiOiJzbm9ybGF4LnNpbmFhcHAuY29tIiwiZXhwYW5kZWRfdXJsIjoiaHR0cDpcL1wvc25vcmxheC5zaW5hYXBwLmNvbSJ9XX0sImRlc2NyaXB0aW9uIjp7InVybHMiOltdfX0sInZlcmlmaWVkIjpmYWxzZSwiaWQiOiIzMzQwOTI5NjIiLCJkZWZhdWx0X3Byb2ZpbGVfaW1hZ2UiOmZhbHNlLCJwcm9maWxlX2JhY2tncm91bmRfY29sb3IiOiJDMERFRUQiLCJmYXZvdXJpdGVzX2NvdW50IjowLCJjcmVhdGVkX2F0IjoiVHVlIEp1bCAxMiAxNToyODo0MCArMDAwMCAyMDExIiwibGFuZyI6InpoLWNuIiwiaXNfdHJhbnNsYXRvciI6ZmFsc2UsInV0Y19vZmZzZXQiOjI4ODAwLCJwcm9maWxlX2JhY2tncm91bmRfaW1hZ2VfdXJsIjoiaHR0cDpcL1wvYTAudHdpbWcuY29tXC9pbWFnZXNcL3RoZW1lc1wvdGhlbWUxXC9iZy5wbmciLCJjb250cmlidXRvcnNfZW5hYmxlZCI6ZmFsc2UsImZvbGxvd2Vyc19jb3VudCI6OSwicHJvZmlsZV9saW5rX2NvbG9yIjoiMDA4NEI0Iiwibm90aWZpY2F0aW9ucyI6ZmFsc2UsImZyaWVuZHNfY291bnQiOjExMywidGltZV96b25lIjoiQmVpamluZyIsInByb3RlY3RlZCI6ZmFsc2UsImRlZmF1bHRfcHJvZmlsZSI6dHJ1ZSwiZGVzY3JpcHRpb24iOiJhY2dcXHB5dGhvblxcaW9zIiwic2NyZWVuX25hbWUiOiJaaGFuZ1hpblpoZW5nIiwicHJvZmlsZV91c2VfYmFja2dyb3VuZF9pbWFnZSI6dHJ1ZSwiZm9sbG93aW5nIjpmYWxzZSwicHJvZmlsZV9iYWNrZ3JvdW5kX2ltYWdlX3VybF9odHRwcyI6Imh0dHBzOlwvXC9zaTAudHdpbWcuY29tXC9pbWFnZXNcL3RoZW1lc1wvdGhlbWUxXC9iZy5wbmciLCJ1cmwiOiJodHRwOlwvXC90LmNvXC9IbE5YOUpnVGZOIiwicHJvZmlsZV90ZXh0X2NvbG9yIjoiMzMzMzMzIiwiZ2VvX2VuYWJsZWQiOnRydWUsImxvY2F0aW9uIjpudWxsLCJpZF9zdHIiOiIzMzQwOTI5NjIiLCJsaXN0ZWRfY291bnQiOjEsInByb2ZpbGVfc2lkZWJhcl9ib3JkZXJfY29sb3IiOiJDMERFRUQiLCJzdGF0dXNlc19jb3VudCI6NDQsInByb2ZpbGVfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3NpMC50d2ltZy5jb21cL3Byb2ZpbGVfaW1hZ2VzXC8zMzUyMzkwNjU5XC85NzNiZTE5NDg5ZGZjMzM5N2NiZTllMjU2MmEwMWNlM19ub3JtYWwuanBlZyJ9LCJpbl9yZXBseV90b19zY3JlZW5fbmFtZSI6bnVsbCwidHJ1bmNhdGVkIjpmYWxzZSwiZW50aXRpZXMiOnsiaGFzaHRhZ3MiOltdLCJ1cmxzIjpbeyJ1cmwiOiJodHRwOlwvXC90LmNvXC9VRUxUdUt6eGZXIiwiaW5kaWNlcyI6Wzc2LDk4XSwiZGlzcGxheV91cmwiOiJ0LmNuXC96VG9iV3g1IiwiZXhwYW5kZWRfdXJsIjoiaHR0cDpcL1wvdC5jblwvelRvYld4NSJ9XSwidXNlcl9tZW50aW9ucyI6W119LCJmYXZvcml0ZWQiOmZhbHNlLCJzb3VyY2UiOiI8YSBocmVmPVwiaHR0cHM6XC9cL3NvcHJlc3RvLm1haWxjaGltcC5jb21cIiByZWw9XCJub2ZvbGxvd1wiPlNvY2lhbCBQcm94eSBieSBNYWlsY2hpbXA8XC9hPiIsImNyZWF0ZWRfYXQiOiJGcmkgQXByIDI2IDA5OjE4OjQzICswMDAwIDIwMTMiLCJwbGFjZSI6bnVsbCwiaW5fcmVwbHlfdG9fc3RhdHVzX2lkX3N0ciI6bnVsbCwiaWQiOiIzMjc3MTMzMzkyNjQzNjA0NDgiLCJpbl9yZXBseV90b191c2VyX2lkIjpudWxsLCJpbl9yZXBseV90b191c2VyX2lkX3N0ciI6bnVsbCwicmV0d2VldF9jb3VudCI6MCwidGV4dCI6Ilx1NTE3M1x1NGU4ZXByb3RvY29sIGJ1ZmZlciBcdTRlMmRcdTc2ODRCYXNlIDEyOCBWYXJpbnRzXHU3ZjE2XHU3ODAxOiBcdTk5OTZcdTUxNDhcdTU5MjdcdTgxZjRcdThiYjJcdTRlMGJwcm90b2NvbCBidWZmZXIgXHU2NjJmXHU1OTI3Z29vZ2xlXHU3NTI4XHVmZmZkLi4uIGh0dHA6XC9cL3QuY29cL1VFTFR1S3p4ZlciLCJnZW8iOm51bGwsInJldHdlZXRlZCI6ZmFsc2V9";s:4:"urls";a:2:{i:0;s:33:"http://snorlax.sinaapp.com/?p=370";i:1;s:0:"";}s:7:"account";O:8:"stdClass":1:{s:4:"user";O:8:"stdClass":38:{s:2:"id";s:9:"334092962";s:6:"id_str";s:9:"334092962";s:4:"name";s:10:"snorlaxzxz";s:11:"screen_name";s:13:"ZhangXinZheng";s:8:"location";s:0:"";s:3:"url";s:26:"http://snorlax.sinaapp.com";s:11:"description";s:12:"acgpythonios";s:9:"protected";s:1:"0";s:15:"followers_count";s:2:"10";s:13:"friends_count";s:3:"100";s:12:"listed_count";s:1:"1";s:10:"created_at";s:30:"Tue
+    Jul 12 15:28:40 +0000 2011";s:16:"favourites_count";s:1:"0";s:10:"utc_offset";s:5:"28800";s:9:"time_zone";s:7:"Beijing";s:11:"geo_enabled";s:1:"1";s:8:"verified";s:1:"0";s:14:"statuses_count";s:2:"14";s:4:"lang";s:5:"zh-cn";s:6:"status";a:11:{s:10:"created_at";s:30:"Fri
+    Mar 08 07:59:58 +0000 2013";s:2:"id";s:18:"309936517424484352";s:6:"id_str";s:18:"309936517424484352";s:4:"text";s:88:"关于编写高性能服务器的资料汇总(Linux)
+    | Ace's Blog http://t.co/CIFIvJkrru";s:6:"source";s:12:"Tweet Button";s:9:"truncated";s:1:"0";s:13:"retweet_count";s:1:"0";s:9:"favorited";s:1:"0";s:9:"retweeted";s:1:"0";s:18:"possibly_sensitive";s:1:"0";s:4:"lang";s:2:"zh";}s:20:"contributors_enabled";s:1:"0";s:13:"is_translator";s:1:"0";s:24:"profile_background_color";s:6:"C0DEED";s:28:"profile_background_image_url";s:47:"http://a0.twimg.com/images/themes/theme1/bg.png";s:34:"profile_background_image_url_https";s:49:"https://si0.twimg.com/images/themes/theme1/bg.png";s:23:"profile_background_tile";s:1:"0";s:17:"profile_image_url";s:90:"http://a0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:23:"profile_image_url_https";s:92:"https://si0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:18:"profile_link_color";s:6:"0084B4";s:28:"profile_sidebar_border_color";s:6:"C0DEED";s:26:"profile_sidebar_fill_color";s:6:"DDEEF6";s:18:"profile_text_color";s:6:"333333";s:28:"profile_use_background_image";s:1:"1";s:15:"default_profile";s:1:"1";s:21:"default_profile_image";s:1:"0";s:9:"following";s:1:"0";s:19:"follow_request_sent";s:1:"0";s:13:"notifications";s:1:"0";}}}}}}
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>首先大致讲下protocol buffer 是大google用来改变世界的……（不过要干掉xml json什么的我感觉再过二十年吧……好像解析的速度也没有那么的重要<br />
+其实具体的google的文档讲了很清楚了<br />
+https://developers.google.com/protocol-buffers/docs/encoding#simple<br />
+然后就是这个奇怪的新的编码、大致的好处我看下来感觉就是类似utf8那样可长可短根据数的大小来决定编码长度这样的<br />
+然后拿他官方例子来讲<br />
+比如300 来对他encode<br />
+首先先把他转成二进制、然后进行补0 补整字节的倍数也就8的倍数<br />
+然后进行逆序 最后对每个字节的8位进行填充、也就是每个字节的最高byte如果为1就是把后面那个字节的8位拿过来一起算、反正就是自己算<br />
+然后是decode 也就是一个反序 先根据每个字节的最高位拆开成独立的小块 然后以字节为单位进行反序 再然后去0把他十进制读出思想就是这样但是有点疑惑这个倒序的意义我是一直没有明白= =<br />
+好吧最后把代码贴出</p>
+<pre lang='python'>
+def encodebase128(ori):
+	t=str(bin(int(ori))[2:])
+	tmp=7
+	while len(t)>tmp:
+		tmp*=2
+	t='0'*(tmp-len(t))+t
+	ll=t[-7:]
+	for i in xrange(1,tmp/7):
+		ll+=t[-(i+1)*7:-i*7]
+	ans=""
+	for i in xrange(0,tmp/7):
+		ans+='0'
+		ans+=ll[i*7:(i+1)*7]
+	if tmp/7>1:
+		ans='1'+ans[1:]
+	return ans
+def decodebase128(dealed):
+	if len(dealed)%8!=0:
+		print 'illegal'
+	tt=dealed[-7:]
+	for i in xrange(len(dealed)/8-1,0,-1):
+		tt+=dealed[(i-1)*8+1:(i)*8]
+	return int('0b'+tt,2) 
+import sys
+t= encodebase128(sys.argv[1])
+print t
+print dealstring(t)
+
+</pre>

@@ -1,0 +1,102 @@
+---
+layout: post
+title: Boyer-Moore算法 python实现
+categories:
+- program
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  _social_broadcast_content: 'a:1:{s:7:"twitter";a:1:{i:334092962;s:129:"Boyer-Moore算法
+    python实现: 看了字符串匹配的Boyer-Moore算法后觉得很有用就写一��... http://t.cn/zTTq8i0";}}'
+  _sinaweibo_sync: 'true'
+  _sinaweibo_sync_id: '3575045580487296'
+  _social_notify: '1'
+  _social_broadcast_meta: a:1:{s:7:"twitter";a:1:{i:334092962;a:0:{}}}
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _social_aggregation_log: a:33:{i:1367844869;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367844993;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367847867;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367847952;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367850954;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367856878;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367858162;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367858521;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367858612;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367866398;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367867167;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367867239;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367882872;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367883649;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367884479;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367885218;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367885284;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367915441;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367917442;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367918302;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367921412;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367965733;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367966917;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367974856;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367976611;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367977686;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367977835;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367995729;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1367995737;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1368064327;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1368065983;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1368067387;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1368242883;O:8:"stdClass":1:{s:6:"manual";s:0:"";}}
+  _social_broadcasted_ids: a:1:{s:7:"twitter";a:1:{i:334092962;a:1:{i:331374312286208002;a:3:{s:7:"message";s:3180:"eyJpbl9yZXBseV90b191c2VyX2lkX3N0ciI6bnVsbCwidXNlciI6eyJzdGF0dXNlc19jb3VudCI6NTcsImNyZWF0ZWRfYXQiOiJUdWUgSnVsIDEyIDE1OjI4OjQwICswMDAwIDIwMTEiLCJuYW1lIjoic25vcmxheHp4eiIsInByb2ZpbGVfaW1hZ2VfdXJsIjoiaHR0cDpcL1wvYTAudHdpbWcuY29tXC9wcm9maWxlX2ltYWdlc1wvMzM1MjM5MDY1OVwvOTczYmUxOTQ4OWRmYzMzOTdjYmU5ZTI1NjJhMDFjZTNfbm9ybWFsLmpwZWciLCJwcm9maWxlX2JhY2tncm91bmRfY29sb3IiOiJDMERFRUQiLCJjb250cmlidXRvcnNfZW5hYmxlZCI6ZmFsc2UsImVudGl0aWVzIjp7InVybCI6eyJ1cmxzIjpbeyJ1cmwiOiJodHRwOlwvXC90LmNvXC9IbE5YOUpnVGZOIiwiaW5kaWNlcyI6WzAsMjJdLCJkaXNwbGF5X3VybCI6InNub3JsYXguc2luYWFwcC5jb20iLCJleHBhbmRlZF91cmwiOiJodHRwOlwvXC9zbm9ybGF4LnNpbmFhcHAuY29tIn1dfSwiZGVzY3JpcHRpb24iOnsidXJscyI6W119fSwiZnJpZW5kc19jb3VudCI6MTE1LCJub3RpZmljYXRpb25zIjpmYWxzZSwidGltZV96b25lIjoiQmVpamluZyIsImlkIjoiMzM0MDkyOTYyIiwicHJvZmlsZV9iYWNrZ3JvdW5kX2ltYWdlX3VybCI6Imh0dHA6XC9cL2EwLnR3aW1nLmNvbVwvaW1hZ2VzXC90aGVtZXNcL3RoZW1lMVwvYmcucG5nIiwiZGVmYXVsdF9wcm9maWxlIjp0cnVlLCJzY3JlZW5fbmFtZSI6IlpoYW5nWGluWmhlbmciLCJwcm9maWxlX2xpbmtfY29sb3IiOiIwMDg0QjQiLCJwcm9maWxlX2JhY2tncm91bmRfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3NpMC50d2ltZy5jb21cL2ltYWdlc1wvdGhlbWVzXC90aGVtZTFcL2JnLnBuZyIsInVybCI6Imh0dHA6XC9cL3QuY29cL0hsTlg5SmdUZk4iLCJsYW5nIjoiemgtY24iLCJ1dGNfb2Zmc2V0IjoyODgwMCwiZ2VvX2VuYWJsZWQiOnRydWUsImxvY2F0aW9uIjpudWxsLCJwcm9maWxlX3VzZV9iYWNrZ3JvdW5kX2ltYWdlIjp0cnVlLCJsaXN0ZWRfY291bnQiOjEsImZvbGxvd2Vyc19jb3VudCI6OSwicHJvZmlsZV90ZXh0X2NvbG9yIjoiMzMzMzMzIiwicHJvdGVjdGVkIjpmYWxzZSwiaWRfc3RyIjoiMzM0MDkyOTYyIiwiZGVzY3JpcHRpb24iOiJhY2dcXHB5dGhvblxcaW9zIiwicHJvZmlsZV9zaWRlYmFyX2JvcmRlcl9jb2xvciI6IkMwREVFRCIsInByb2ZpbGVfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3NpMC50d2ltZy5jb21cL3Byb2ZpbGVfaW1hZ2VzXC8zMzUyMzkwNjU5XC85NzNiZTE5NDg5ZGZjMzM5N2NiZTllMjU2MmEwMWNlM19ub3JtYWwuanBlZyIsImZvbGxvd2luZyI6ZmFsc2UsImZvbGxvd19yZXF1ZXN0X3NlbnQiOmZhbHNlLCJwcm9maWxlX2JhY2tncm91bmRfdGlsZSI6ZmFsc2UsInZlcmlmaWVkIjpmYWxzZSwiZGVmYXVsdF9wcm9maWxlX2ltYWdlIjpmYWxzZSwicHJvZmlsZV9zaWRlYmFyX2ZpbGxfY29sb3IiOiJEREVFRjYiLCJpc190cmFuc2xhdG9yIjpmYWxzZSwiZmF2b3VyaXRlc19jb3VudCI6MH0sImluX3JlcGx5X3RvX3N0YXR1c19pZCI6bnVsbCwiaW5fcmVwbHlfdG9fc2NyZWVuX25hbWUiOm51bGwsImNyZWF0ZWRfYXQiOiJNb24gTWF5IDA2IDExOjQ2OjA3ICswMDAwIDIwMTMiLCJlbnRpdGllcyI6eyJoYXNodGFncyI6W10sInVybHMiOlt7InVybCI6Imh0dHA6XC9cL3QuY29cL1dXMnBmOUdrR2IiLCJpbmRpY2VzIjpbNjAsODJdLCJkaXNwbGF5X3VybCI6InQuY25cL3pUVHE4aTAiLCJleHBhbmRlZF91cmwiOiJodHRwOlwvXC90LmNuXC96VFRxOGkwIn1dLCJ1c2VyX21lbnRpb25zIjpbXX0sImNvbnRyaWJ1dG9ycyI6bnVsbCwic291cmNlIjoiPGEgaHJlZj1cImh0dHBzOlwvXC9zb3ByZXN0by5tYWlsY2hpbXAuY29tXCIgcmVsPVwibm9mb2xsb3dcIj5Tb2NpYWwgUHJveHkgYnkgTWFpbGNoaW1wPFwvYT4iLCJwbGFjZSI6bnVsbCwiZmF2b3JpdGVkIjpmYWxzZSwiaWQiOiIzMzEzNzQzMTIyODYyMDgwMDIiLCJpbl9yZXBseV90b191c2VyX2lkIjpudWxsLCJnZW8iOm51bGwsInJldHdlZXRfY291bnQiOjAsInRleHQiOiJCb3llci1Nb29yZVx1N2I5N1x1NmNkNSBweXRob25cdTViOWVcdTczYjA6IFx1NzcwYlx1NGU4Nlx1NWI1N1x1N2IyNlx1NGUzMlx1NTMzOVx1OTE0ZFx1NzY4NEJveWVyLU1vb3JlXHU3Yjk3XHU2Y2Q1XHU1NDBlXHU4OWM5XHU1Zjk3XHU1Zjg4XHU2NzA5XHU3NTI4XHU1YzMxXHU1MTk5XHU0ZTAwXHVmZmZkXHVmZmZkLi4uIGh0dHA6XC9cL3QuY29cL1dXMnBmOUdrR2IiLCJpbl9yZXBseV90b19zdGF0dXNfaWRfc3RyIjpudWxsLCJ0cnVuY2F0ZWQiOmZhbHNlLCJwb3NzaWJseV9zZW5zaXRpdmUiOmZhbHNlLCJpZF9zdHIiOiIzMzEzNzQzMTIyODYyMDgwMDIiLCJjb29yZGluYXRlcyI6bnVsbCwicmV0d2VldGVkIjpmYWxzZX0=";s:4:"urls";a:2:{i:0;s:33:"http://snorlax.sinaapp.com/?p=375";i:1;s:0:"";}s:7:"account";O:8:"stdClass":1:{s:4:"user";O:8:"stdClass":38:{s:2:"id";s:9:"334092962";s:6:"id_str";s:9:"334092962";s:4:"name";s:10:"snorlaxzxz";s:11:"screen_name";s:13:"ZhangXinZheng";s:8:"location";s:0:"";s:3:"url";s:26:"http://snorlax.sinaapp.com";s:11:"description";s:12:"acgpythonios";s:9:"protected";s:1:"0";s:15:"followers_count";s:2:"10";s:13:"friends_count";s:3:"100";s:12:"listed_count";s:1:"1";s:10:"created_at";s:30:"Tue
+    Jul 12 15:28:40 +0000 2011";s:16:"favourites_count";s:1:"0";s:10:"utc_offset";s:5:"28800";s:9:"time_zone";s:7:"Beijing";s:11:"geo_enabled";s:1:"1";s:8:"verified";s:1:"0";s:14:"statuses_count";s:2:"14";s:4:"lang";s:5:"zh-cn";s:6:"status";a:11:{s:10:"created_at";s:30:"Fri
+    Mar 08 07:59:58 +0000 2013";s:2:"id";s:18:"309936517424484352";s:6:"id_str";s:18:"309936517424484352";s:4:"text";s:88:"关于编写高性能服务器的资料汇总(Linux)
+    | Ace's Blog http://t.co/CIFIvJkrru";s:6:"source";s:12:"Tweet Button";s:9:"truncated";s:1:"0";s:13:"retweet_count";s:1:"0";s:9:"favorited";s:1:"0";s:9:"retweeted";s:1:"0";s:18:"possibly_sensitive";s:1:"0";s:4:"lang";s:2:"zh";}s:20:"contributors_enabled";s:1:"0";s:13:"is_translator";s:1:"0";s:24:"profile_background_color";s:6:"C0DEED";s:28:"profile_background_image_url";s:47:"http://a0.twimg.com/images/themes/theme1/bg.png";s:34:"profile_background_image_url_https";s:49:"https://si0.twimg.com/images/themes/theme1/bg.png";s:23:"profile_background_tile";s:1:"0";s:17:"profile_image_url";s:90:"http://a0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:23:"profile_image_url_https";s:92:"https://si0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:18:"profile_link_color";s:6:"0084B4";s:28:"profile_sidebar_border_color";s:6:"C0DEED";s:26:"profile_sidebar_fill_color";s:6:"DDEEF6";s:18:"profile_text_color";s:6:"333333";s:28:"profile_use_background_image";s:1:"1";s:15:"default_profile";s:1:"1";s:21:"default_profile_image";s:1:"0";s:9:"following";s:1:"0";s:19:"follow_request_sent";s:1:"0";s:13:"notifications";s:1:"0";}}}}}}
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>看了<a href="http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html?utm_source=feedly">字符串匹配的Boyer-Moore算法</a>后觉得很有用就写一个实现了一下</p>
+<pre lang="python">
+def badcharrule(ori,sear):
+	if len(ori)!=len(sear):
+		print "error"
+	else:
+		le=len(ori)
+		badindex=-1
+		lastindex=-1
+		for i in xrange(le-1,0,-1):
+			if ori[i]==sear[i]:
+				pass
+			else:
+				badindex=i
+				break
+		if badindex==-1:
+			pass
+		else:
+			for i in xrange(0,le):
+				if sear[i]==ori[badindex]:
+					lastindex=i
+					break
+				else:
+					pass
+		return badindex-lastindex
+def goodpostfixrule(ori,sear):
+	if len(ori)!=len(sear):
+		print "error"
+	else:
+		le=len(ori)
+		postfix=0
+		for i in xrange(le-1,0,-1):
+			if ori[i]==sear[i]:
+				postfix+=1
+			else:
+				break
+		if postfix==0:
+			return -1
+		else:
+			postfixstring=sear[-postfix:]
+			restori=sear[:-postfix]
+			if restori.find(postfixstring)==-1:
+				restori=postfixstring[:-1]+restori
+				if restori.find(postfixstring)==-1:
+					return -1
+				else:
+					return len(sear)-restori.find(postfixstring)-1
+			else:
+				return len(sear)-restori.find(postfixstring)-len(postfixstring)
+
+
+def movestep(ori,sear):
+	gu=badcharrule(ori,sear)
+	if gu==0:
+		return 0
+	else:
+		return max(gu,goodpostfixrule(ori,sear))
+
+
+oristring="here is a simple example"
+searchstring="example"
+
+index=0
+while index+len(searchstring)<=len(oristring):
+	move=movestep(oristring[index:index+len(searchstring)],searchstring)
+	if move==0:
+		print "find it index=%s" %index
+		index+=len(searchstring)
+	else:
+		index+=move
+print "search over"
+</pre>

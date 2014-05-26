@@ -1,0 +1,368 @@
+---
+layout: post
+title: RegexKit笔记
+categories:
+- program
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '1'
+  views: '22'
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>由于ios 的sdk并不原生支持正则、所有用到了第三方库、对比了下文档等、我最终决定使用regexKit</p>
+<p>文档 http://regexkit.sourceforge.net/RegexKitLite/</p>
+<p>使用简单说明</p>
+<p>这个库的基础是在 ICU(INTERNATIONAL COMPONENTS FOR UNICODE)之上的、在使用过程中需要将 RegexKitLite.h /RegexKitLite.m 导入工程之外还需要动态链接库 libicucore.dylib 然后在需要编译的文件上加上 -licucore 即可</p>
+<p>1. 寻找匹配的范围</p>
+<p>匹配范围的有多个函数举个最长的做例子</p>
+<p>&nbsp;</p>
+<pre lang="objective-c">- (NSRange)RKL_METHOD_PREPEND(rangeOfRegex):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)range capture:(NSInteger)capture error:(NSError **)error;</pre>
+<p>&nbsp;</p>
+<p>别的根据名字也都可判断了、其中要注意点的就是 capture 这个参数是返回的匹配成功的第几个、他的匹配的模式是贪心的模式</p>
+<p>与之类似的判断匹配的返回的是匹配出的串</p>
+<pre lang="objective-c">- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex capture:(NSInteger)capture
+
+- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)</pre>
+<p>2.寻找和替换</p>
+<pre lang="objective-c">NSString *searchString = @"This is neat.";
+
+NSString *regexString = @"\b(\w+)\b";
+
+NSString *replaceWithString = @"{$1}";
+
+NSString *replacedString = NULL;
+
+replacedString = [searchString stringByReplacingOccurrencesOfRegex:regexString withString:replaceWithString];</pre>
+<p>注意这里的替换的replaceWithString如果有$符、他会理解成对之前匹配出的串的附加如以上例子匹配完之后就是 {This} {is} {neat}.</p>
+<p>如果需要更复杂的运算可以使用block</p>
+<pre lang="objective-c">replacedString =[searchString stringByReplacingOccurrencesOfRegex:regexString usingBlock:^NSString *(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop){return ([NSString stringWithFormat:@"{%@}",[capturedStrings[1] capitalizedString]]);}];</pre>
+<p>3.对每个匹配模式的形成array、切割成array</p>
+<pre lang="objective-c">- (NSArray *)RKL_METHOD_PREPEND(componentsMatchedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range capture:(NSInteger)capture error:(NSError **)error
+
+- (NSArray *)RKL_METHOD_PREPEND(componentsSeparatedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range error:(NSError **)error</pre>
+<p>基本的操作就如上、每块分别还有不同的接口、基本命名规范都大同小异、复杂的就使用block</p>
+<p>其中的 RKLRegexIptions 是一个如下的结构</p>
+<pre lang="objective-c">enum {
+
+RKLNoOptions             = 0,   //无特殊意义
+
+RKLCaseless              = 2,    //不敏感大小写模式
+
+RKLComments              = 4,//允许在模式中使用空格
+
+RKLDotAll                = 32, //使用行读取模式
+
+RKLMultiline             = 8, //^和$也会匹配每行
+
+RKLUnicodeWordBoundaries = 256 //Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in <a href="http://www.unicode.org/reports/tr29/">Unicode UAX 29 - Text Boundaries</a>. By default, word boundaries are identified by means of a simple classification of characters as either word or non-word, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spacesand other non-word characters.
+
+};</pre>
+<p>然后附上ICU的正则标准</p>
+<div>
+<div>
+<div>
+<table summary="Regular Expression Metacharacters">
+<caption>Metacharacters</caption>
+<tbody>
+<tr>
+<th>Character</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>\a</td>
+<td>Match a BELL, \u0007</td>
+</tr>
+<tr>
+<td>\A</td>
+<td>Match at the beginning of the input. Differs from ^ in that \A will not match after a new-line within the input.</td>
+</tr>
+<tr>
+<td>\b, outside of a [<em>Set</em>]</td>
+<td>Match if the current position is a word boundary. Boundaries occur at the transitions between word \w and non-word \W characters, with combining marks ignored.</p>
+<div><strong>See also:</strong> <a href="http://regexkit.sourceforge.net/RegexKitLite/#RKLRegexOptions_RKLUnicodeWordBoundaries">RKLUnicodeWordBoundaries</a></div>
+</td>
+</tr>
+<tr>
+<td>\b, within a [<em>Set</em>]</td>
+<td>Match a BACKSPACE, \u0008.</td>
+</tr>
+<tr>
+<td>\B</td>
+<td>Match if the current position is not a word boundary.</td>
+</tr>
+<tr>
+<td>\c<em>x</em></td>
+<td>Match a <em title="Control Character x, i.e. ^C">Control-x</em> character.</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>Match any character with the <em>Unicode General Category</em> of Nd(<em>Number</em>, <em>Decimal Digit</em>).</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>Match any character that is not a decimal digit.</td>
+</tr>
+<tr>
+<td>\e</td>
+<td>Match an ESCAPE, \u001B.</td>
+</tr>
+<tr>
+<td>\E</td>
+<td>Terminates a \Q…\E quoted sequence.</td>
+</tr>
+<tr>
+<td>\f</td>
+<td>Match a FORM FEED, \u000C.</td>
+</tr>
+<tr>
+<td>\G</td>
+<td>Match if the current position is at the end of the previous match.</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>Match a LINE FEED, \u000A.</td>
+</tr>
+<tr>
+<td>\N{<em>Unicode Character Name</em>}</td>
+<td>Match the named <em>Unicode Character</em>.</td>
+</tr>
+<tr>
+<td>\p{<em>Unicode Property Name</em>}</td>
+<td>Match any character with the specified <em>Unicode Property</em>.</td>
+</tr>
+<tr>
+<td>\P{<em>Unicode Property Name</em>}</td>
+<td>Match any character not having the specified <em>Unicode Property</em>.</td>
+</tr>
+<tr>
+<td>\Q</td>
+<td>Quotes all following characters until \E.</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>Match a CARRIAGE RETURN, \u000D.</td>
+</tr>
+<tr>
+<td id="ICUSyntax_ICURegularExpressionSyntax_white_space">\s</td>
+<td>Match a white space character. White space is defined as[\t\n\f\r\p{Z}].</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>Match a non-white space character.</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>Match a HORIZONTAL TABULATION, \u0009.</td>
+</tr>
+<tr>
+<td>\u<em>hhhh</em></td>
+<td>Match the character with the hex value <em title="Hexidecimal Number">hhhh</em>.</td>
+</tr>
+<tr>
+<td>\U<em title="Hexidecimal Number">hhhhhhhh</em></td>
+<td>Match the character with the hex value <em title="Hexidecimal Number">hhhhhhhh</em>. Exactly eight hex digits must be provided, even though the largest Unicode code point is \U0010ffff.</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>Match a word character. Word characters are[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}].</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>Match a non-word character.</td>
+</tr>
+<tr>
+<td>\x{<em title="Hexidecimal Number">h</em>…}</td>
+<td>Match the character with hex value <em title="Hexidecimal Number">hhhh</em>. From one to six hex digits may be supplied.</td>
+</tr>
+<tr>
+<td>\x<em title="Hexidecimal Number">hh</em></td>
+<td>Match the character with two digit hex value <em title="Hexidecimal Number">hh</em>.</td>
+</tr>
+<tr>
+<td>\X</td>
+<td>Match a <a href="http://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries">Grapheme Cluster</a>.</td>
+</tr>
+<tr>
+<td>\Z</td>
+<td>Match if the current position is at the end of input, but before the final line terminator, if one exists.</td>
+</tr>
+<tr>
+<td>\z</td>
+<td>Match if the current position is at the end of input.</td>
+</tr>
+<tr>
+<td>\<em title="Decimal Number">n</em></td>
+<td>
+<div>Back Reference. Match whatever the <em title="Decimal Number">n</em>th capturing group matched. <em title="Decimal Number">n</em>must be a number ≥ 1 and ≤ total number of capture groups in the pattern.</div>
+<div>
+<div>
+<div>
+<div>Note:</div>
+<div>Octal escapes, such as \012, are not supported.</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr>
+<td>[<em>pattern</em>]</td>
+<td>Match any one character from the set. See <a href="http://regexkit.sourceforge.net/RegexKitLite/#ICUSyntax_ICURegularExpressionCharacterClasses">ICU Regular Expression Character Classes</a> for a full description of what may appear in the pattern.</td>
+</tr>
+<tr>
+<td>.</td>
+<td>Match any character.</td>
+</tr>
+<tr>
+<td>^</td>
+<td>Match at the beginning of a line.</td>
+</tr>
+<tr>
+<td>$</td>
+<td>Match at the end of a line.</td>
+</tr>
+<tr>
+<td>\</td>
+<td>Quotes the following character. Characters that must be quoted to be treated as literals are * ? + [ ( ) { } ^ $ | \ . /</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table id="ICUSyntax_Operators" summary="Regular Expression Operators">
+<caption>Operators</caption>
+<tbody>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>|</td>
+<td>Alternation. A|B matches either A or B.</td>
+</tr>
+<tr>
+<td>*</td>
+<td>Match zero or more times. Match as many times as possible.</td>
+</tr>
+<tr>
+<td>+</td>
+<td>Match one or more times. Match as many times as possible.</td>
+</tr>
+<tr>
+<td>?</td>
+<td>Match zero or one times. Prefer one.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>}</td>
+<td>Match exactly <em title="Decimal Number">n</em> times.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,}</td>
+<td>Match at least <em title="Decimal Number">n</em> times. Match as many times as possible.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,<em title="Decimal Number">m</em>}</td>
+<td>Match between <em title="Decimal Number">n</em> and <em title="Decimal Number">m</em> times. Match as many times as possible, but not more than <em title="Decimal Number">m</em>.</td>
+</tr>
+<tr>
+<td>*?</td>
+<td>Match zero or more times. Match as few times as possible.</td>
+</tr>
+<tr>
+<td>+?</td>
+<td>Match one or more times. Match as few times as possible.</td>
+</tr>
+<tr>
+<td>??</td>
+<td>Match zero or one times. Prefer zero.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>}?</td>
+<td>Match exactly <em title="Decimal Number">n</em> times.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,}?</td>
+<td>Match at least <em title="Decimal Number">n</em> times, but no more than required for an overall pattern match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,<em title="Decimal Number">m</em>}?</td>
+<td>Match between <em title="Decimal Number">n</em> and <em title="Decimal Number">m</em> times. Match as few times as possible, but not less than <em title="Decimal Number">n</em>.</td>
+</tr>
+<tr>
+<td>*+</td>
+<td>Match zero or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails. Possessive match.</td>
+</tr>
+<tr>
+<td>++</td>
+<td>Match one or more times. Possessive match.</td>
+</tr>
+<tr>
+<td>?+</td>
+<td>Match zero or one times. Possessive match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>}+</td>
+<td>Match exactly <em title="Decimal Number">n</em> times. Possessive match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,}+</td>
+<td>Match at least <em title="Decimal Number">n</em> times. Possessive match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,<em title="Decimal Number">m</em>}+</td>
+<td>Match between <em title="Decimal Number">n</em> and <em title="Decimal Number">m</em> times. Possessive match.</td>
+</tr>
+<tr>
+<td>(…)</td>
+<td>Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.</td>
+</tr>
+<tr>
+<td>(?:…)</td>
+<td>Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.</td>
+</tr>
+<tr>
+<td>(?&gt;…)</td>
+<td>Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the (?&gt; .</td>
+</tr>
+<tr>
+<td>(?#…)</td>
+<td>Free-format comment (?#<em>comment</em>).</td>
+</tr>
+<tr>
+<td>(?=…)</td>
+<td>Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.</td>
+</tr>
+<tr>
+<td>(?!…)</td>
+<td>Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.</td>
+</tr>
+<tr>
+<td>(?&lt;=…)</td>
+<td>Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).</td>
+</tr>
+<tr>
+<td>(?&lt;!…)</td>
+<td>Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).</td>
+</tr>
+<tr>
+<td>(?ismwx-ismwx:…)</td>
+<td>Flag settings. Evaluate the parenthesized expression with the specified flags<em>enabled</em> or -<em>disabled</em>.</td>
+</tr>
+<tr>
+<td>(?ismwx-ismwx)</td>
+<td>Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, (?i) changes to a case insensitive match.</p>
+<div><strong>See also:</strong> <a href="http://regexkit.sourceforge.net/RegexKitLite/#RegularExpressionOptions">Regular Expression Options</a></div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>

@@ -1,0 +1,79 @@
+---
+layout: post
+title: beauty of programming 练习赛第三题
+categories:
+- program
+tags: []
+status: publish
+type: post
+published: true
+meta:
+  _social_broadcast_meta: a:1:{s:7:"twitter";a:1:{i:334092962;a:0:{}}}
+  _social_aggregated_ids: a:2:{s:7:"twitter";a:0:{}s:8:"facebook";a:0:{}}
+  _social_aggregation_log: a:10:{i:1365082976;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365090205;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365096709;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365101494;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365112430;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365127663;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365157951;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365208783;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365302641;O:8:"stdClass":1:{s:6:"manual";s:0:"";}i:1365476216;O:8:"stdClass":1:{s:6:"manual";s:0:"";}}
+  _social_broadcasted_ids: a:1:{s:7:"twitter";a:1:{i:334092962;a:1:{i:319802100739612672;a:3:{s:7:"message";s:3168:"eyJpZF9zdHIiOiIzMTk4MDIxMDA3Mzk2MTI2NzIiLCJ1c2VyIjp7ImlkIjoiMzM0MDkyOTYyIiwicHJvZmlsZV9iYWNrZ3JvdW5kX2NvbG9yIjoiQzBERUVEIiwibGFuZyI6InpoLWNuIiwiaXNfdHJhbnNsYXRvciI6ZmFsc2UsImxpc3RlZF9jb3VudCI6MSwic2NyZWVuX25hbWUiOiJaaGFuZ1hpblpoZW5nIiwicHJvZmlsZV9iYWNrZ3JvdW5kX2ltYWdlX3VybCI6Imh0dHA6XC9cL2EwLnR3aW1nLmNvbVwvaW1hZ2VzXC90aGVtZXNcL3RoZW1lMVwvYmcucG5nIiwidXRjX29mZnNldCI6Mjg4MDAsInByb2ZpbGVfbGlua19jb2xvciI6IjAwODRCNCIsImNyZWF0ZWRfYXQiOiJUdWUgSnVsIDEyIDE1OjI4OjQwICswMDAwIDIwMTEiLCJ2ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJzbm9ybGF4enh6IiwicHJvdGVjdGVkIjpmYWxzZSwidXJsIjoiaHR0cDpcL1wvdC5jb1wvSGxOWDlKZ1RmTiIsImNvbnRyaWJ1dG9yc19lbmFibGVkIjpmYWxzZSwicHJvZmlsZV91c2VfYmFja2dyb3VuZF9pbWFnZSI6dHJ1ZSwiZm9sbG93ZXJzX2NvdW50Ijo5LCJmb2xsb3dpbmciOmZhbHNlLCJ0aW1lX3pvbmUiOiJCZWlqaW5nIiwicHJvZmlsZV90ZXh0X2NvbG9yIjoiMzMzMzMzIiwiaWRfc3RyIjoiMzM0MDkyOTYyIiwiZGVmYXVsdF9wcm9maWxlX2ltYWdlIjpmYWxzZSwicHJvZmlsZV9iYWNrZ3JvdW5kX2ltYWdlX3VybF9odHRwcyI6Imh0dHBzOlwvXC9zaTAudHdpbWcuY29tXC9pbWFnZXNcL3RoZW1lc1wvdGhlbWUxXC9iZy5wbmciLCJub3RpZmljYXRpb25zIjpmYWxzZSwiZ2VvX2VuYWJsZWQiOnRydWUsImZhdm91cml0ZXNfY291bnQiOjAsInByb2ZpbGVfc2lkZWJhcl9ib3JkZXJfY29sb3IiOiJDMERFRUQiLCJsb2NhdGlvbiI6bnVsbCwiZm9sbG93X3JlcXVlc3Rfc2VudCI6ZmFsc2UsInByb2ZpbGVfaW1hZ2VfdXJsX2h0dHBzIjoiaHR0cHM6XC9cL3NpMC50d2ltZy5jb21cL3Byb2ZpbGVfaW1hZ2VzXC8zMzUyMzkwNjU5XC85NzNiZTE5NDg5ZGZjMzM5N2NiZTllMjU2MmEwMWNlM19ub3JtYWwuanBlZyIsInByb2ZpbGVfYmFja2dyb3VuZF90aWxlIjpmYWxzZSwiZnJpZW5kc19jb3VudCI6MTExLCJwcm9maWxlX2ltYWdlX3VybCI6Imh0dHA6XC9cL2EwLnR3aW1nLmNvbVwvcHJvZmlsZV9pbWFnZXNcLzMzNTIzOTA2NTlcLzk3M2JlMTk0ODlkZmMzMzk3Y2JlOWUyNTYyYTAxY2UzX25vcm1hbC5qcGVnIiwicHJvZmlsZV9zaWRlYmFyX2ZpbGxfY29sb3IiOiJEREVFRjYiLCJlbnRpdGllcyI6eyJkZXNjcmlwdGlvbiI6eyJ1cmxzIjpbXX0sInVybCI6eyJ1cmxzIjpbeyJkaXNwbGF5X3VybCI6InNub3JsYXguc2luYWFwcC5jb20iLCJpbmRpY2VzIjpbMCwyMl0sImV4cGFuZGVkX3VybCI6Imh0dHA6XC9cL3Nub3JsYXguc2luYWFwcC5jb20iLCJ1cmwiOiJodHRwOlwvXC90LmNvXC9IbE5YOUpnVGZOIn1dfX0sInN0YXR1c2VzX2NvdW50Ijo0MiwiZGVmYXVsdF9wcm9maWxlIjp0cnVlLCJkZXNjcmlwdGlvbiI6ImFjZ1xccHl0aG9uXFxpb3MifSwiZmF2b3JpdGVkIjpmYWxzZSwiY29vcmRpbmF0ZXMiOm51bGwsImNvbnRyaWJ1dG9ycyI6bnVsbCwiZW50aXRpZXMiOnsiaGFzaHRhZ3MiOltdLCJ1c2VyX21lbnRpb25zIjpbXSwidXJscyI6W3siZGlzcGxheV91cmwiOiJ0LmNuXC96VHl3RmFXIiwiaW5kaWNlcyI6WzY3LDg5XSwiZXhwYW5kZWRfdXJsIjoiaHR0cDpcL1wvdC5jblwvelR5d0ZhVyIsInVybCI6Imh0dHA6XC9cL3QuY29cLzFnMXIyU1gxSGsifV19LCJpbl9yZXBseV90b19zdGF0dXNfaWRfc3RyIjpudWxsLCJwbGFjZSI6bnVsbCwidHJ1bmNhdGVkIjpmYWxzZSwiaW5fcmVwbHlfdG9fdXNlcl9pZF9zdHIiOm51bGwsInJldHdlZXRlZCI6ZmFsc2UsInJldHdlZXRfY291bnQiOjAsInRleHQiOiJiZWF1dHkgb2YgcHJvZ3JhbW1pbmcgXHU3ZWMzXHU0ZTYwXHU4ZDViXHU3YjJjXHU0ZTA5XHU5ODk4OiBcdTUxNDhcdTc3MGJcdTk4OTggXHU5ODk4XHU3NmVlXHU1MjE3XHU4ODY4ICZndDsgXHU4ZTI5XHU2NWI5XHU2ODNjIFx1NjVmNlx1OTVmNFx1OTY1MFx1NTIzNjogMTAwMG1zIFx1NTE4NVx1ZmZmZC4uLiBodHRwOlwvXC90LmNvXC8xZzFyMlNYMUhrIiwiY3JlYXRlZF9hdCI6IlRodSBBcHIgMDQgMTM6MjI6MTcgKzAwMDAgMjAxMyIsInBvc3NpYmx5X3NlbnNpdGl2ZSI6ZmFsc2UsImluX3JlcGx5X3RvX3N0YXR1c19pZCI6bnVsbCwic291cmNlIjoiPGEgaHJlZj1cImh0dHBzOlwvXC9zb3ByZXN0by5tYWlsY2hpbXAuY29tXCIgcmVsPVwibm9mb2xsb3dcIj5Tb2NpYWwgUHJveHkgYnkgTWFpbGNoaW1wPFwvYT4iLCJpZCI6IjMxOTgwMjEwMDczOTYxMjY3MiIsImdlbyI6bnVsbCwiaW5fcmVwbHlfdG9fc2NyZWVuX25hbWUiOm51bGwsImluX3JlcGx5X3RvX3VzZXJfaWQiOm51bGx9";s:4:"urls";a:2:{i:0;s:33:"http://snorlax.sinaapp.com/?p=339";i:1;s:0:"";}s:7:"account";O:8:"stdClass":1:{s:4:"user";O:8:"stdClass":38:{s:2:"id";s:9:"334092962";s:6:"id_str";s:9:"334092962";s:4:"name";s:10:"snorlaxzxz";s:11:"screen_name";s:13:"ZhangXinZheng";s:8:"location";s:0:"";s:3:"url";s:26:"http://snorlax.sinaapp.com";s:11:"description";s:12:"acgpythonios";s:9:"protected";s:1:"0";s:15:"followers_count";s:2:"10";s:13:"friends_count";s:3:"100";s:12:"listed_count";s:1:"1";s:10:"created_at";s:30:"Tue
+    Jul 12 15:28:40 +0000 2011";s:16:"favourites_count";s:1:"0";s:10:"utc_offset";s:5:"28800";s:9:"time_zone";s:7:"Beijing";s:11:"geo_enabled";s:1:"1";s:8:"verified";s:1:"0";s:14:"statuses_count";s:2:"14";s:4:"lang";s:5:"zh-cn";s:6:"status";a:11:{s:10:"created_at";s:30:"Fri
+    Mar 08 07:59:58 +0000 2013";s:2:"id";s:18:"309936517424484352";s:6:"id_str";s:18:"309936517424484352";s:4:"text";s:88:"关于编写高性能服务器的资料汇总(Linux)
+    | Ace's Blog http://t.co/CIFIvJkrru";s:6:"source";s:12:"Tweet Button";s:9:"truncated";s:1:"0";s:13:"retweet_count";s:1:"0";s:9:"favorited";s:1:"0";s:9:"retweeted";s:1:"0";s:18:"possibly_sensitive";s:1:"0";s:4:"lang";s:2:"zh";}s:20:"contributors_enabled";s:1:"0";s:13:"is_translator";s:1:"0";s:24:"profile_background_color";s:6:"C0DEED";s:28:"profile_background_image_url";s:47:"http://a0.twimg.com/images/themes/theme1/bg.png";s:34:"profile_background_image_url_https";s:49:"https://si0.twimg.com/images/themes/theme1/bg.png";s:23:"profile_background_tile";s:1:"0";s:17:"profile_image_url";s:90:"http://a0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:23:"profile_image_url_https";s:92:"https://si0.twimg.com/profile_images/3352390659/973be19489dfc3397cbe9e2562a01ce3_normal.jpeg";s:18:"profile_link_color";s:6:"0084B4";s:28:"profile_sidebar_border_color";s:6:"C0DEED";s:26:"profile_sidebar_fill_color";s:6:"DDEEF6";s:18:"profile_text_color";s:6:"333333";s:28:"profile_use_background_image";s:1:"1";s:15:"default_profile";s:1:"1";s:21:"default_profile_image";s:1:"0";s:9:"following";s:1:"0";s:19:"follow_request_sent";s:1:"0";s:13:"notifications";s:1:"0";}}}}}}
+  _social_broadcast_content: 'a:1:{s:7:"twitter";a:1:{i:334092962;s:127:"beauty of
+    programming 练习赛第三题: 先看题 题目列表 > 踩方格 时间限制: 1000ms 内�... http://t.cn/zTywFaW";}}'
+  _sinaweibo_sync: 'true'
+  _sinaweibo_sync_id: '3563473403556600'
+  _social_notify: '1'
+  _edit_last: '1'
+  views: '19'
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>先看题</p>
+<h4>题目列表 > 踩方格</h4>
+</div>
+<div class="coding-problem">
+<p>时间限制: 1000ms    内存限制: 1024MB</p>
+<p>
+<h3>描述</h3>
+<p>有一个方格矩阵，矩阵边界在无穷远处。我们做如下假设：<br />a.    每走一步时，只能从当前方格移动一格，走到某个相邻的方格上；<br />b.    走过的格子立即塌陷无法再走第二次；<br />c.    只能向北、东、西三个方向走；<br />请问：如果允许在方格矩阵上走n步，共有多少种不同的方案。2种走法只要有一步不一样，即被认为是不同的方案。</p>
+<h3>输入</h3>
+<p>允许在方格上行走的步数n</p>
+<h3>输出</h3>
+<p>计算出的方案数量</p>
+<p></p>
+<p>对于小数据1 &lt;= n &lt;= 20; 对于大数据1 &lt;= n &lt;= 100.
+<p></p></p>
+<dl class="content">
+<dt>样例输入</dt>
+<dd>
+<pre>2</pre>
+</dd>
+<dt>样例输出</dt>
+<dd>
+<pre>7</pre>
+</dd>
+</dl>
+<p>这个题目我觉得最大的阴谋就是对于小数据1 <= n <= 20; 对于大数据1 <= n <= 100.<br />
+我了个fuck了给了个那么小规模的数据还给那么高的分值正常人理所当然的就肯定认为这是个指数级的运算了啊！然后我就想到了三叉树去暴力啊、可是再怎么暴力这个指数摆在那就算是100也很恐怖了、各种挂……纠结了好久好久写了好几种都挂<br />
+最后静下心来把他当数学做……然后草稿纸写写……尼玛5分钟就算出来了……<br />
+其实思想非常非常简单 往北的节点就是能叉出3条路、其中分别是继续叉2的2条以及继续叉3的一条、往两侧的每次只能叉出两条路、分别是2 和3 具体路径的结构问你了么？去暴力做等于就是浪费这些路径的信息啊小时候怎么做数学题的……要那么多条件吃屎啊……数学规律就是这么简单……然后还不会写么？……！你妹的别说100了来个平方这复杂度都闭着眼睛来的啊……</p>
+<pre lang='c'>
+#include <stdio.h>
+int main(){
+    int a=0;
+    int b=1;
+    int count＝0;
+    int i=0;
+    int temp;
+    scanf("%d",&count);
+    for (i=0; i<count-1; i++) {
+        temp=a;
+        a+=(2*b);
+        b+=temp;
+    }
+    printf("%d\n",2*a+3*b);
+    return 0;
+}
+</pre>
+<p>没了！没了！写完了！……………………突然有种回归最质朴的感觉真好……</p>

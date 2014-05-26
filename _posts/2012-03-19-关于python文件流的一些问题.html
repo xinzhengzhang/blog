@@ -1,0 +1,38 @@
+---
+layout: post
+title: 关于python文件流的一些问题
+categories:
+- program
+tags: []
+status: draft
+type: post
+published: false
+meta:
+  _edit_last: '1'
+author:
+  login: snorlax
+  email: zhangxzheng@hotmail.com
+  display_name: snorlax
+  first_name: ''
+  last_name: ''
+---
+<p>今天在用socket传输文件时碰到一个很莫名的问题代码如下</p>
+<pre language="Python">
+	fp=open('1.jpg','rb')
+	while 1:
+	    data=fp.read()
+	    fp.close()
+        s.sendall('test string')
+        #s为之前的socket
+</pre>
+<p>如果这样写就在文件读完关闭之后跳过了send，至少是在client recv时没有信息获得</p>
+<p>当用如下</p>
+<pre language="Python">
+	fp=open('1.jpg','rb')
+	try:
+	data=fp.read()
+	finally:
+	fp.close()
+	s.sendall(data)
+</pre>
+<p>就完全没有问题，实在想不通为何不用finally就会出现socket发出的问题</p>

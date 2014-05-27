@@ -48,7 +48,7 @@
     
       
       	
-      	<li><a href="/about.html">about me</a></li>
+      	<li><a href="/about.html">About me</a></li>
       	
       
     
@@ -56,8 +56,16 @@
     
       
       	
-      	<li><a href="/archive.html">archive</a></li>
+      	<li><a href="/archive.html">Archives</a></li>
       	
+      
+    
+  
+    
+      
+    
+  
+    
       
     
   
@@ -81,11 +89,10 @@
         </div>
       </div>
     </div>
-
-    <div class="container-narrow">
-
-      <div class="content">
-        
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          
 <div class="page-header">
   <h1>圆形布局的icon页面 loading动画效果 </h1>
 </div>
@@ -98,144 +105,117 @@
     <div class="content">
       <p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg" alt="" title="700BAD52-7C3F-4500-8B52-69C13291528D" width="314" height="470" class="alignnone size-full wp-image-397" /></a>
 大致效果就是3个元素根据不同时间间隔开始沿着圆进行无限追逐，每次一圈后进行一个小停顿然后继续、比较类似wp7的那种小的loading、主要用到的还是CAKeyframeAnimation其中为了让无限循环中加上停顿用了个小trick
-<pre lang="c">
-#import <QuartzCore/QuartzCore.h>
-#define PI 3.14159265358979323846</pre></p>
+</p>
+<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
+<span class="cp">#define PI 3.14159265358979323846</span>
+<span class="k">@interface</span> <span class="nc">canvas</span> <span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">UIButton</span> <span class="o">*</span><span class="n">red</span><span class="p">;</span>
+    <span class="n">UIButton</span> <span class="o">*</span><span class="n">green</span><span class="p">;</span>
+    <span class="n">UIButton</span> <span class="o">*</span><span class="n">yellow</span><span class="p">;</span>
+<span class="p">}</span>
 
-<p>@interface canvas ()<br />
-{
-    UIButton *red;<br />
-    UIButton *green;<br />
-    UIButton *yellow;<br />
-}</p>
+<span class="k">@end</span>
 
-<p>@end</p>
+<span class="k">@implementation</span> <span class="nc">canvas</span>
 
-<p>@implementation canvas</p>
+<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithFrame:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
+<span class="p">{</span>
+    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">initWithFrame</span><span class="o">:</span><span class="n">frame</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Initialization code</span>
+        <span class="n">red</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">117.55</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">38.1</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
+        <span class="n">green</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">141.42</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">58.57</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
+        <span class="n">yellow</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">173.2</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
+        <span class="p">[</span><span class="n">red</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">green</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">greenColor</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">yellow</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">yellowColor</span><span class="p">]];</span>
+        <span class="p">[</span><span class="n">red</span> <span class="n">addTarget</span><span class="o">:</span><span class="n">self</span> <span class="n">action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">end</span><span class="p">)</span> <span class="n">forControlEvents</span><span class="o">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">yellow</span> <span class="n">addTarget</span><span class="o">:</span><span class="n">self</span> <span class="n">action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="n">forControlEvents</span><span class="o">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
 
-<p>- (id)initWithFrame:(CGRect)frame<br />
-{
-    self = [super initWithFrame:frame];<br />
-    if (self) {<br />
-        // Initialization code<br />
-        red=[[UIButton alloc]initWithFrame:CGRectMake(117.55-10, 38.1-10, 10, 10)];<br />
-        green=[[UIButton alloc]initWithFrame:CGRectMake(141.42-10, 58.57-10, 10, 10)];<br />
-        yellow=[[UIButton alloc]initWithFrame:CGRectMake(173.2-10, 100-10, 10, 10)];<br />
-        <br />
-        [red setBackgroundColor:[UIColor redColor]];<br />
-        [green setBackgroundColor:[UIColor greenColor]];<br />
-        [yellow setBackgroundColor:[UIColor yellowColor]];<br />
-        <br />
-        [red addTarget:self action:@selector(end) forControlEvents:UIControlEventTouchUpInside];<br />
-        [yellow addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchUpInside];</p>
+        <span class="p">[</span><span class="n">self</span> <span class="n">start</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">red</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">green</span><span class="p">];</span>
+        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">yellow</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">end</span><span class="p">{</span>
+    <span class="p">[</span><span class="n">red</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">green</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">yellow</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">start</span><span class="p">{</span>
+    <span class="n">CGMutablePathRef</span> <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span><span class="c1">//用cgpath画出运动轨迹</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9424</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
+    <span class="n">CAKeyframeAnimation</span> <span class="o">*</span><span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
+<span class="c1">//    [animation setBeginTime:CACurrentMediaTime()+0.7];</span>
+<span class="c1">//    [animation setRepeatCount:HUGE_VALF];</span>
+    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="n">CAAnimationGroup</span> <span class="o">*</span><span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span><span class="c1">//利用动画组的间隔做到小动画的无限间隔之间的停顿</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animationGroup</span> <span class="n">setBeginTime</span><span class="o">:</span><span class="n">CACurrentMediaTime</span><span class="p">()</span><span class="o">+</span><span class="mf">0.5</span><span class="p">];</span><span class="c1">//让三个元素起始时间区分开</span>
+    <span class="p">[</span><span class="n">red</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.783</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
+    <span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
+<span class="c1">//    [animation setBeginTime:CACurrentMediaTime()+0.5];</span>
+<span class="c1">//    [animation setRepeatCount:HUGE_VALF];</span>
 
-<p>        <br />
-        [self start];<br />
-        [self addSubview:red];<br />
-        [self addSubview:green];<br />
-        [self addSubview:yellow];<br />
-    }<br />
-    return self;<br />
-}
--(void)end{<br />
-    [red.layer removeAllAnimations];<br />
-    [green.layer removeAllAnimations];<br />
-    [yellow.layer removeAllAnimations];</p>
+    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animationGroup</span> <span class="n">setBeginTime</span><span class="o">:</span><span class="n">CACurrentMediaTime</span><span class="p">()</span><span class="o">+</span><span class="mf">0.2</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">green</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.525</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+<span class="c1">//    [animation setRepeatCount:HUGE_VALF];&lt;/p&gt;</span>
 
-<p>    <br />
-}
--(void)start{<br />
-   <br />
-    CGMutablePathRef path=CGPathCreateMutable();<br />
-    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.8424, -0.8424+2*PI, NO);//用cgpath画出运动轨迹<br />
-    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.8424, -0.9424, YES);<br />
-    <br />
-    <br />
-    <br />
-        <br />
-    CAKeyframeAnimation *animation=[CAKeyframeAnimation animationWithKeyPath:@"position"];<br />
-    [animation setCalculationMode:kCAAnimationPaced];<br />
-    [animation setPath:path];<br />
-    [animation setDuration:2.0f];<br />
-    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];<br />
-//    [animation setBeginTime:CACurrentMediaTime()+0.7];<br />
-//    [animation setRepeatCount:HUGE_VALF];<br />
-    CFRelease(path);<br />
-    <br />
-    <br />
-    <br />
-    <br />
-    CAAnimationGroup *animationGroup = [CAAnimationGroup animation];//利用动画组的间隔做到小动画的无限间隔之间的停顿<br />
-    animationGroup.duration = 3;<br />
-    animationGroup.repeatCount = INFINITY;<br />
-    animationGroup.animations=@[animation];<br />
-    [animationGroup setBeginTime:CACurrentMediaTime()+0.5];//让三个元素起始时间区分开<br />
-    [red.layer addAnimation:animationGroup forKey:NULL];<br />
-    <br />
-    path=CGPathCreateMutable();<br />
-    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.683, -0.683+2*PI, NO);<br />
-    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.683, -0.783, YES);<br />
-    animation=[CAKeyframeAnimation animationWithKeyPath:@"position"];<br />
-    [animation setCalculationMode:kCAAnimationPaced];<br />
-    [animation setPath:path];<br />
-    [animation setDuration:2.0f];<br />
-    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];<br />
-//    [animation setBeginTime:CACurrentMediaTime()+0.5];<br />
-//    [animation setRepeatCount:HUGE_VALF];</p>
+    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
 
-<p>    CFRelease(path);<br />
-    <br />
-    <br />
-    animationGroup = [CAAnimationGroup animation];<br />
-    animationGroup.duration = 3;<br />
-    animationGroup.repeatCount = INFINITY;<br />
-    animationGroup.animations=@[animation];<br />
-    [animationGroup setBeginTime:CACurrentMediaTime()+0.2];<br />
-    [green.layer addAnimation:animationGroup forKey:NULL];<br />
-    <br />
-    path=CGPathCreateMutable();<br />
-    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.425, -0.425+2*PI, NO);<br />
-    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.425, -0.525, YES);<br />
-    animation=[CAKeyframeAnimation animationWithKeyPath:@"position"];<br />
-    [animation setCalculationMode:kCAAnimationPaced];<br />
-    [animation setPath:path];<br />
-    [animation setDuration:2.0f];<br />
-//    [animation setRepeatCount:HUGE_VALF];</p>
+    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
+    <span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span>
+    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">yellow</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span>
+<span class="p">}</span>
 
-<p>    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];</p>
+<span class="c1">// Only override drawRect: if you perform custom drawing.</span>
+<span class="c1">// An empty implementation adversely affects performance during animation.</span>
+<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span>
+<span class="p">{</span>
+    <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
+    <span class="n">CGContextSetStrokeColor</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">blueColor</span><span class="p">].</span><span class="n">CGColor</span><span class="p">);</span>
+    <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
 
-<p>    CFRelease(path);<br />
-        <br />
-    animationGroup = [CAAnimationGroup animation];<br />
-    animationGroup.duration = 3;<br />
-    animationGroup.repeatCount = INFINITY;<br />
-    animationGroup.animations=@[animation];<br />
-    <br />
-    [yellow.layer addAnimation:animationGroup forKey:NULL];<br />
-    </p>
+    <span class="p">[[</span><span class="n">UIColor</span> <span class="n">orangeColor</span><span class="p">]</span> <span class="n">setFill</span><span class="p">];</span>
+    <span class="p">[[</span><span class="n">UIColor</span> <span class="n">blueColor</span><span class="p">]</span> <span class="n">setStroke</span><span class="p">];</span>
+    <span class="n">CGContextDrawPath</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">kCGPathStroke</span><span class="p">);</span>
+<span class="p">}</span>
 
-<p>    <br />
-    <br />
-}</p>
-
-<p>// Only override drawRect: if you perform custom drawing.<br />
-// An empty implementation adversely affects performance during animation.<br />
-- (void)drawRect:(CGRect)rect<br />
-{
-    CGContextRef context = UIGraphicsGetCurrentContext();<br />
-    CGContextSetStrokeColor(context, [UIColor blueColor].CGColor);<br />
-    CGContextAddArc(context, 0.0, 200.0f, 200, 0, 2*PI, YES);</p>
-
-<p>    [[UIColor orangeColor] setFill];<br />
-    [[UIColor blueColor] setStroke];<br />
-    CGContextDrawPath (context, kCGPathStroke);</p>
-
-<p>}</p>
-
-<p>@end</p>
-
-<p></p>
-
+<span class="k">@end</span>
+</code></pre></div>
     </div>
 
   
@@ -246,12 +226,13 @@
 
 
   
-     
+    
     	<li><a href="#program-ref">
-    		program <span>38</span>
+    		program <span>39</span>
     	</a></li>
     
   
+
 
 
     </ul>
@@ -278,7 +259,7 @@
   <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_developer = 1;
-    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    var disqus_shortname = 'snorlaxzxz'; // required: replace example with your forum shortname
     
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
@@ -297,17 +278,15 @@
 </div>
 
 
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
       </div>
-      <hr>
-      <footer>
-        <p>&copy; 2014 Xinzheng Zhang
-          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
-          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
-        </p>
-      </footer>
-
     </div>
-
     
   </body>
 </html>

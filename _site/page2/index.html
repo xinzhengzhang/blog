@@ -1,0 +1,2523 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>snorlax's Homepage</title>
+    
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">About me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archives</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          <!-- <ul class="listing"> -->
+
+<div class="page-header">
+  <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8">关于处理掉urllib2中的错误提示异常 </a></h3>
+  <div class="date">
+    <span>21 January 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>在很多情况下如果server帮着redirect一下什么的、如果还使用urllib2的urlopen非常容易抛出异常、而且既然人家给你跳转了你照着搬不就完了么混蛋……<br />
+然后下面讲下怎么除掉掉这些异常其实很简单<br />
+再构建的时候对urllib2.HTTPCookieProcessor进行复写、把里面的异常的地方给复写掉<br />
+代码如下
+<pre lang="python">
+class NoExceptionCookieProcesser(urllib2.HTTPCookieProcessor):
+    def http_error_500(self, req, fp, code, msg, hdrs):
+        return fp
+</pre>
+以此类推想弄掉哪儿些复写掉即可<br />
+然后构造的时候
+<pre lang="python">
+cookie = cookielib.CookieJar()
+opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
+</pre>
+行了、这样讨厌的异常就搞定了</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#未分类-ref">
+    		未分类 <span>3</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/01/07/%E5%85%B3%E4%BA%8E%E5%B5%8C%E5%A5%97%E4%B8%8Euiscrollview%E4%B8%AD%E7%9A%84uitableview%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3">关于嵌套与UIScrollView中的UITableVIew的冲突解决 </a></h3>
+  <div class="date">
+    <span>07 January 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的<br />
+首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码
+<pre lang="objective-c">
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view, typically from a nib.
+    scr=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
+    scr.delegate=self;
+    [scr setContentSize:CGSizeMake(320, 800)];
+    [scr setDelaysContentTouches:YES];//记得这里要把延迟触摸设成yes
+    UIView *pand=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 800)];
+    [pand setBackgroundColor:[UIColor redColor]];
+    tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
+    tableView.dataSource=self;
+    tableView.delegate=self;
+    UILongPressGestureRecognizer *ge=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(cancelScroll:)];
+    [ge setDelegate:self];
+    [ge setMinimumPressDuration:0.1];//这里为了让他在tableview还是能够进行整个scroll的拖动所以用了0.1给用户一个快速拖动
+    [tableView addGestureRecognizer:ge];
+    [self.view addSubview:scr];
+    [scr addSubview:pand];
+    [scr addSubview:tableView];
+}
+</pre>
+然后是回调
+<pre lang="objective-c">
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    //切记这个代理必须要设置、因为scroll的拖动说白了也是一个gesture、为了流畅性必须要两个触碰事件同时触发
+    return YES;
+}
+-(void)cancelScroll:(UIGestureRecognizer*)gesture
+{
+    //这里就是让背景的拖动定死这样就不冲突了
+    if ([gesture state]==UIGestureRecognizerStateBegan) {
+        [scr setScrollEnabled:NO];
+    }</pre></p>
+
+<p>}<br />
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate<br />
+{
+    //拖动完再恢复<br />
+    [scr setScrollEnabled:YES];<br />
+}
+</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0">rc4 python实现 </a></h3>
+  <div class="date">
+    <span>01 January 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>复习密码无事写了个rc4、早上随便说点新年愿望其实也有个就写里面了……</p>
+
+<p>闲得蛋疼得就解了吧（不过tm简单过份了吧喂！</p>
+
+<p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/01/734420E9-D793-4822-9B07-01A783B74818.jpg"><img class="alignnone size-full wp-image-174" title="734420E9-D793-4822-9B07-01A783B74818" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/01/734420E9-D793-4822-9B07-01A783B74818.jpg" alt="" width="523" height="551" /></a></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#瞎写写-ref">
+    		瞎写写 <span>4</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/12/23/os-x-%E7%9A%84%E5%90%AF%E5%8A%A8%E9%A1%B9">os x 的启动项 </a></h3>
+  <div class="date">
+    <span>23 December 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>每次开机总要开几个脚本开烦了、然后研究了下自己机器的几个开机自启的程序的写法总结了下</p>
+
+<p>首先是这个目录 然后我分别展开了/Library/StartupItems 以及集中的mysql可以看到里面就是主要一个是StartupParameters.plist 以及一个sh</p>
+
+<p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/8460C8BA-D46E-4C02-B3B6-01AF84D6F28E.jpg"><img class="alignnone size-full wp-image-167" title="8460C8BA-D46E-4C02-B3B6-01AF84D6F28E" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/8460C8BA-D46E-4C02-B3B6-01AF84D6F28E.jpg" alt="" width="501" height="69" /></a></p>
+
+<p>然后解释下里面分别怎么写</p>
+
+<p>首先是 StartupParameters.plist这个xml里面的内容大致是
+<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+&lt;dict&gt;
+	&lt;key&gt;Description&lt;/key&gt;
+	&lt;string&gt;MySQL 5.5.20-community&lt;/string&gt;
+	&lt;key&gt;OrderPreference&lt;/key&gt;
+	&lt;string&gt;None&lt;/string&gt;
+	&lt;key&gt;Provides&lt;/key&gt;
+	&lt;array&gt;
+		&lt;string&gt;MySQL&lt;/string&gt;
+	&lt;/array&gt;
+	&lt;key&gt;Uses&lt;/key&gt;
+	&lt;array&gt;
+		&lt;string&gt;Network&lt;/string&gt;
+		&lt;string&gt;Resolver&lt;/string&gt;
+	&lt;/array&gt;
+	&lt;/dict&gt;
+&lt;/plist&gt;</pre>
+<pre>主要有几个key description OrderPreference Provides Uses</pre>
+<pre>具体是什么如下</pre>
+"Description" is a simple description of the service, which is only used to describe the file and not during the startup process.</p>
+
+<p>"Provides" specifies the services that this StartupItems provides. Provides can contain multiple services, but it is not recommended. Here Apache provides a "Web Server" service.</p>
+
+<p>"Requires" specifies the services that have to be started before this StartupItem is loaded. The values in this field are those of other StartupItems' "Provides" fields. Apache requires "DirectoryServices" to be loaded before it can be run; if DirectoryServices are not specified to run or fail to run properly Apache won't run.</p>
+
+<p>"Uses" specifics the services that should be started before this StartupItem is loaded. This is similar to the "Requires" attribute except this service will always be loaded, but only after it has tried to execute all the services in "Uses". Apache uses the "Disks", "NFS", and "Network Time" services. OS X will try to load these services, if it can't it will still load Apache, but only after trying these services first.</p>
+
+<p>"OrderPreference" specifies the general time period in which a StartupItem will be executed. This order is less significant than both "Requires" and "Uses" but is used to determine order after evaluating those attributes. The possible values for this attribute are: First, Early, None (default), Late, Last. Apache specifies no OrderPreference as to when it should be loaded.</p>
+
+<p>然后就是写的脚本了</p>
+
+<p>简单点的写法就这样
+<pre>#!/bin/sh
+. /etc/rc.common</pre></p>
+
+<p>StartService ()<br />
+{
+    ConsoleMessage "Running script."<br />
+    python /Users/zxz/work/xxxx.py<br />
+}</p>
+
+<p>StopService ()<br />
+{
+    return 0<br />
+}</p>
+
+<p>RestartService ()<br />
+{
+    return 0<br />
+}</p>
+
+<p>RunService "$1"
+里面的shell就随意怎么写了</p>
+
+<p>然后正常的 start stop restart也都可以正常用了</p>
+
+<p>ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/12/07/%E7%9B%B8%E4%BC%BC%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2python%E5%AE%9E%E7%8E%B0">相似图片搜索python实现 </a></h3>
+  <div class="date">
+    <span>07 December 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>先贴原文http://blog.csdn.net/luohong722/article/details/7100058<br />
+其实这篇文章已经写的非常详细了、不过也作为巩固自己再梳理一遍<br />
+首先这个算法的流程简直简单的令人发指、导致我做的时候完全不觉得这真的可能搜索出什么东西来……<br />
+几步流程分别如下<br />
+1.压缩成8*8的小图<br />
+2.灰化<br />
+3.算均值二值化<br />
+4.生成64位标示码<br />
+5.比较标示码 越接近越相似<br />
+貌似好像应该是sift算法的简便吧（也不能简便成这样啊……<br />
+---------------------------下面是程序主要逻辑一共就十几行--------------------------<br />
+主要用到了python的PIL库
+<pre lang="python">from PIL import Image
+def picHash(im):
+    if not isinstance(im, Image.Image):
+        im = Image.open(im)
+    #平滑的压成8*8 并灰化
+    im = im.resize((8, 8), Image.ANTIALIAS).convert('L')
+    avg = reduce(lambda x, y: x + y, im.getdata()) / 64.0
+    return map(lambda i: 0 if i &lt; avg else 1, im.getdata())</pre></p>
+
+<p>def diffCount(h1,h2):<br />
+    h=0<br />
+    for i in range(64):<br />
+       if h1[i]!=h2[i]:<br />
+           h+=1<br />
+    return h
+然后呢……然后没了……就是那么简单……最后发一下效果图<br />
+图片样本20张<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/74BFFDE7-DC44-4DB1-9764-8DA9A3F4A913.jpg"><img class="alignnone size-full wp-image-163" title="74BFFDE7-DC44-4DB1-9764-8DA9A3F4A913" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/74BFFDE7-DC44-4DB1-9764-8DA9A3F4A913.jpg" alt="" width="518" height="567" /></a>
+最后搜出的近似度前5的左上为搜索原图
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/屏幕快照-2012-12-07-下午9.15.12.png"><img class="alignnone size-full wp-image-164" title="屏幕快照 2012-12-07 下午9.15.12" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/屏幕快照-2012-12-07-下午9.15.12.png" alt="" width="1440" height="900" /></a>
+效果还是非常不错的、样本里只有一张未被选出</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/12/07/%E5%85%B3%E4%BA%8Epython%E5%9B%BE%E5%BD%A2%E5%BA%93pil%E5%9C%A8mac-os%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85">关于python图形库pil在mac os下的安装 </a></h3>
+  <div class="date">
+    <span>07 December 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先在mac os的环境下根据官方给出的release版本
+<a href="http://effbot.org/downloads/Imaging-1.1.7.tar.gz" title="Python Imaging Library 1.1.7 Source Kit ">Python Imaging Library 1.1.7 Source Kit</a> <br />
+如果在debian下可以非常简便的就<br />
+sudo apt-get install libjpeg62-dev<br />
+sudo apt-get install zlib1g-dev<br />
+sudo apt-get install libfreetype6-dev<br />
+sudo apt-get install liblcms1-dev<br />
+然后就 python setup.py install 轻松又愉快<br />
+可是mac的说明我有点蒙</p>
+
+<p>--------------------------------------------------------------------<br />
+Additional notes for Mac OS X<br />
+--------------------------------------------------------------------</p>
+
+<p>On Mac OS X you will usually install additional software such as<br />
+libjpeg or freetype with the "fink" tool, and then it ends up in<br />
+"/sw".  If you have installed the libraries elsewhere, you may have<br />
+to tweak the "setup.py" file before building.</p>
+
+<p>反正我一开始也就理所当然的当成usually install additional software的一份子了、当然结果肯定是残忍的<br />
+pil是可以用但是任何的解析基本都会报类似<br />
+raise IOError decoder s not available decoder_name IOError decoder jpeg not available的错</p>
+
+<p>google了无数各种做ln连来连去的……<br />
+注意一点就是 3一下的版本都在 /System/Library/Frameworks/Python.framework/Versions/下<br />
+3以上的版本都在 /Library/Frameworks/Python.framework/Versions<br />
+然后site-package<br />
+分别在<br />
+/Library/Python/2.7/site-packages<br />
+/Library/Python/2.3/site-packages<br />
+/usr/local/git/lib/python2.7/site-packages<br />
+/Library/Python/2.5/site-packages<br />
+/Library/Python/2.6/site-packages<br />
+/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages<br />
+/usr/local/lib/python3.2/site-packages<br />
+混乱了吧……记得你装的是哪儿个版本、然后在configure之前要都设置对路径……私认为这绝对是太残忍了……<br />
+-----------------------------------分割线--------------------------------------<br />
+下面是经过实践出的最简单的方法、就用python自带的easy_install里的pip这样默认都帮你configure完了也不用你纠结了<br />
+就这么几句就搞定了<br />
+sudo easy_install pip<br />
+sudo brew install jpeg<br />
+sudo brew install libjpeg<br />
+sudo pip uninstall pil<br />
+sudo pip install pil</p>
+
+<p>搞定记得顺序、先要装依赖</p>
+
+<p>附上PIL的文档:<br />
+http://www.pythonware.com/library/pil/handbook/index.htm</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/12/04/ios-safari5-webview%E5%AF%B9-contenteditable-%E7%9A%84%E4%BF%AE%E6%AD%A3">ios safari5 webview对 contenteditable 的修正 </a></h3>
+  <div class="date">
+    <span>04 December 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>自从上次发现了html5的神器标签contenteditable后一直忽视了一个问题、因为一直跑的机器都是ios6（六毫无问题）、当放到5时出一个很大的问题、每次进入编辑时焦点会被放到整个body的最上面、毫无疑问这个糟糕的体验是不可能让用户自己去解决的所以需要解决。</p>
+
+<p>首先先是native和js交互的问题、也许js太过庞大、webview完全没有做任何关于js callback的api、唯一只有一个<br />
+- (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script;<br />
+只能往里插js却获不得回调、这样没人性的行为绝对是无法容忍的、竟然phonegap什么的可以就一定有解决途径。<br />
+既然js无法获得回调、就从webview的回调入手、查了他的三个delegate后办法有了、就是更改document.location加一个?xx=xx相当于一个get请求、然后通过回调去拿到xx然后做native<br />
+可是这样我马上就发现了不适宜contenteditable的一个问题、就是一个点击事件同时触发了编辑以及跳转事件后、后者覆盖了前者、网上主流说的也是这个方法、找了半天终于找到了替代法<a href="http://blog.devtang.com/blog/2012/03/24/talk-about-uiwebview-and-phonegap/"></a>详见最后的这段js代码、最后需要做的就是给需要编辑的标签绑定上事件 通过鼠标的点击拿到pageY的偏移量 通过uiwebview.uiscrollview setContentOffset来调整偏移量即可修复safari5对contenteditable这极不友好的支持、代码如下</p>
+
+<p><pre lang="javascript">
+var edit = document.getElementById(\"editable\");edit.addEventListener(\"click\",function(e){var iFrame;iFrame = document.createElement(\"iframe\");iFrame.setAttribute(\"src\", \"noteOffset:\"+e.pageY);iFrame.setAttribute(\"style\", \"display:none;\");iFrame.setAttribute(\"height\", \"0px\");iFrame.setAttribute(\"width\", \"0px\");iFrame.setAttribute(\"frameborder\", \"0\");document.body.appendChild(iFrame);iFrame.parentNode.removeChild(iFrame);iFrame = null;}, false);
+</pre>
+然后在回调中写
+<pre lang="objective-c">
+#pragma UIWebViewDelegate
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSLog(@"------");
+    NSLog(@"%@",[[request URL]absoluteString]);
+    if ([[[request URL]absoluteString]judgeNoteBodyEditMode] && [[request URL]absoluteString].length>3) {
+        
+        NSLog(@"%d",[[[[request URL]absoluteString]substringFromIndex:[[request URL]absoluteString].length-3]integerValue]);
+        [showRichText.scrollView setContentOffset:CGPointMake(showRichText.scrollView.contentOffset.x,[[[[request URL]absoluteString]substringFromIndex:[[request URL]absoluteString].length-3]integerValue])];
+    }
+    return YES;
+}
+</pre></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/12/03/ios%E5%87%A0%E7%A7%8D%E5%9F%BA%E6%9C%AC%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%B0%8F%E7%BB%93">ios几种基本视图切换动画小结 </a></h3>
+  <div class="date">
+    <span>03 December 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>搞清楚试图首先先要搞清UIWindows UIView CALayer 这几者的关系<br />
+推荐两篇文章
+<a href="http://blog.csdn.net/holydancer/article/details/7422365">http://blog.csdn.net/holydancer/article/details/7422365</a>
+<a href="http://www.cnblogs.com/lovecode/articles/2249548.html">http://www.cnblogs.com/lovecode/articles/2249548.html</a>
+在理解的基础上上就是几个常用的切换了<br />
+首先如果整体用的是navigationcontroller 的话常用的就是这三组方法
+<pre lang="objective-c">
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated; // Uses a horizontal slide transition. Has no effect if the view controller is already in the stack.</pre></p>
+
+<p>- (UIViewController *)popViewControllerAnimated:(BOOL)animated; // Returns the popped controller.<br />
+- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated; // Pops view controllers until the one specified is on top. Returns the popped controllers.<br />
+- (NSArray *)popToRootViewControllerAnimated:(BOOL)animated; // Pops until there's only a single view controller left on the stack. Returns the popped controllers.</p>
+
+<p>
+这三种的切换效果基本都是左右推送那种感觉</p>
+
+<p>再然后是用这两组切换
+<pre lang="objective-c">
+- (void)presentViewController:(UIViewController *)viewControllerToPresent animated: (BOOL)flag completion:(void (^)(void))completion NS_AVAILABLE_IOS(5_0);
+// The completion handler, if provided, will be invoked after the dismissed controller's viewDidDisappear: callback is invoked.
+- (void)dismissViewControllerAnimated: (BOOL)flag completion: (void (^)(void))completion NS_AVAILABLE_IOS(5_0);</pre></p>
+
+<p>// Display another view controller as a modal child. Uses a vertical sheet transition if animated.This method has been replaced by presentViewController:animated:completion:<br />
+- (void)presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated NS_DEPRECATED_IOS(2_0, 6_0);</p>
+
+<p>// Dismiss the current modal child. Uses a vertical sheet transition if animated. This method has been replaced by dismissViewControllerAnimated:completion:<br />
+- (void)dismissModalViewControllerAnimated:(BOOL)animated NS_DEPRECATED_IOS(2_0, 6_0);</p>
+
+<p>
+这几种的默认的动画是上下卷（翻？）<br />
+最简单的更改动画方式就是在下一层需要切换的试图上使用 setModalTransitionStyle 方法可以设置为以下几种效果
+<pre lang="objective-c">
+UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIModalTransitionStyleFlipHorizontal, //翻页</pre></p>
+
+<p>    UIModalTransitionStyleCrossDissolve, //淡出</p>
+
+<p>#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_3_2</p>
+
+<p>    UIModalTransitionStylePartialCurl, //立体</p>
+
+<p></p>
+
+<p>再然后如果需要更加精细的定制动画那么就要动用上#import <QuartzCore/QuartzCore.h>了在framework中加入QuartzCore然后使用CATransition对layer进行设置、这段代码一半可以加在viewWillAppear viewWillDisapper这两个地方中使用、大致的用法如下
+<pre lang="objective-c">
+        CATransition *animation=[CATransition animation];
+        animation.delegate = self;
+        animation.duration = 0.1f;//动画运行时间
+        animation.timingFunction = UIViewAnimationCurveEaseInOut;//动画的时间分布（平均、两头快、快到慢等）
+        animation.fillMode =  kCAFillModeForwards;//(填充的方式)
+        animation.type = kCATransitionPush;//(动画覆盖过去的样子比如push movein等)
+        animation.subtype = kCATransitionFromLeft;//(动画的方向)
+        [self.view.layer addAnimation:animation forKey:@"animation"];//给这张view的layer层添加这个动画并给个key一会用来删除
+        [self.view.layer removeAnimationForKey:@"animation"];//用来删</pre></p>
+
+<p></p>
+
+<p>基本几种方法就是这样然后有一点小技巧<br />
+在正常的addsubView等方法使用动画CATransition的动画是安全没有问题的、可是如果你使用presentModalViewController等类似的会把之前的清掉的方法时就会出现一个问题、因为前面清掉了所以背景是黑色的、整个动画是做在黑色背景上的非常难看。在不破坏自己原来代码架构的情况下我就想到了一个方法在presentmodalviewController里的animated的参数置为YES然后设置为淡出效果、然后再继续用CATransition、这样相当于同时做两个动画但是那个淡出效果很淡看得很舒服完全是不会影响本来写得动画效果的</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/28/bmp%E3%80%81png%E5%88%9D%E7%90%86%E8%A7%A3">bmp、png初理解 </a></h3>
+  <div class="date">
+    <span>28 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>主要还是写下bmp图的操作(另外两个看的实在头大<br />
+首先bmp的头是由三部分组成的、分别是位图头、位图信息、调色板<br />
+下面就是位图数据了<br />
+详见<a href="http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF">http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF</a>
+我用了以下的三个结构体用来接bmp头 然后再一个来接像素数据
+<pre lang="c" colla="+">//
+//  BmpLab.h
+//  labfor12c
+//
+//  Created by zxz on 12-11-28.
+//  Copyright (c) 2012年 zxz. All rights reserved.
+//</pre></p>
+
+<p>#ifndef labfor12c___BmpLab_h<br />
+#define labfor12c___BmpLab_h</p>
+
+<p>typedef struct __BitMapHead{<br />
+//    __uint16_t fileType;  //default BM<br />
+    __uint32_t fileSize;<br />
+    __uint32_t unDefined; //undefined<br />
+    __uint32_t fileOffset;<br />
+}BitMapHead;</p>
+
+<p>typedef struct __BitMapInfo{<br />
+    __uint32_t infoHeadSize; //40<br />
+    __uint32_t bitMapWidth;<br />
+    __uint32_t bitMapHeight;<br />
+    __uint16_t bitMapColorPlanes; //彩色位面的个数（不懂<br />
+    __uint16_t bitMapPixelBit; //1 4 8 灰阶 24彩<br />
+    __uint32_t bitMapCompression; //0 - 没有压缩（也用BI_RGB表示）    1 - 行程长度编码 8位/像素（也用BI_RLE8表示）    2 - 行程长度编码4位/像素（也用BI_RLE4表示）    3 - Bit field（也用BI_BITFIELDS表示）    4 - JPEG图像（也用BI_JPEG表示）    5 - PNG图像（也用BI_PNG表示）<br />
+    __uint32_t bitMapBodySize;<br />
+    __uint32_t bitMapXPixel;  //水平分辨率<br />
+    __uint32_t bitMapYPixel;  //垂直分辨率<br />
+    __uint32_t bitMapColorUsed;<br />
+    __uint32_t bitMapImportantColorUsed;</p>
+
+<p>}BitMapInfo;</p>
+
+<p>typedef struct __RGBQUARD{<br />
+    __uint8_t rgbRed;<br />
+    __uint8_t rgbGreen;<br />
+    __uint8_t rgbBlue;<br />
+    __uint8_t rgbReserved;<br />
+}RGBQUARD;</p>
+
+<p>typedef struct __pixelData<br />
+{
+    __uint8_t blue;<br />
+    __uint8_t green;<br />
+    __uint8_t red;<br />
+}pixelData;<br />
+#endif</p>
+
+<p>再然后就是把文件rb打开分别用上面的结构体接就可以了<br />
+其中要注意的下因为type是2个字节的、结构体是会补齐的也就是如果直接一起读进去后面都会乱的<br />
+所以我把type从结构体里注释了、选择先读进2个字节、然后再一并读进去
+<pre lang="c" colla="-">
+//
+//  main.c
+//  labfor12c
+//
+//  Created by zxz on 12-11-26.
+//  Copyright (c) 2012年 zxz. All rights reserved.
+//</pre></p>
+
+<p>#include <stdio.h>
+#include <stdlib.h>
+#include "BmpLab.h"</stdlib.h></stdio.h></p>
+
+<p>BitMapHead head;<br />
+BitMapInfo info;<br />
+RGBQUARD color[256];<br />
+int main(int argc, const char * argv[])<br />
+{</p>
+
+<p>    FILE *fpr,*fpw;<br />
+    fpr=fopen("test_binaryImg.bmp", "rb");<br />
+    if (!fpr) {<br />
+        printf("open fail");<br />
+    }<br />
+    else<br />
+    {<br />
+        __uint16_t type;<br />
+        fread(&type, 1, sizeof(__uint16_t), fpr);<br />
+        if (type!=0x4d42) {<br />
+            printf("not a bmp file");<br />
+            return 1;<br />
+        }<br />
+        fread(&head, 1, sizeof(BitMapHead), fpr);<br />
+        fread(&info, 1, sizeof(BitMapInfo), fpr);<br />
+        unsigned int nCounti=0;<br />
+        for(nCounti=0;nCounti<info.bitMapColorUsed;nCounti++)<br />
+        {<br />
+            fread((char *)&(color[nCounti].rgbBlue),1,sizeof(__uint8_t),fpr);<br />
+            fread((char *)&(color[nCounti].rgbGreen),1,sizeof(__uint8_t),fpr);<br />
+            fread((char *)&(color[nCounti].rgbRed),1,sizeof(__uint8_t),fpr);<br />
+            fread((char *)&(color[nCounti].rgbReserved),1,sizeof(__uint8_t),fpr);<br />
+        }<br />
+    }<br />
+    __uint8_t *imgdata=(__uint8_t*)malloc(info.bitMapWidth*((sizeof(pixelData)+3)&~4)*info.bitMapHeight); //向4取整（早上学完装逼的方法马上来用……<br />
+    fread(imgdata, sizeof(pixelData)*info.bitMapWidth, info.bitMapHeight, fpr);<br />
+    //deal with the preix<br />
+    return 0;<br />
+}</p>
+
+<p>
+往回保存的时候修改下头里面的数据然后往回写即可</p>
+
+<p>接着是png和jpeg、开始我 以为的是他们和位图一样简单呢……我还是太年轻了……<br />
+还是先看下png的头吧<br />
+png的头首先是一个8个字节的标示<br />
+89 50 4E 47 0D 0A 1A 0A<br />
+接下去是4个标准数据块<br />
+分别是文件头数据块IHDR(header chunk)：包含有图像基本信息，作为第一个数据块出现并只出现一次。<br />
+调色板数据块PLTE(palette chunk)：必须放在图像数据块之前。<br />
+图像数据块IDAT(image data chunk)：存储实际图像数据。PNG数据允许包含多个连续的图像数据块。<br />
+图像结束数据IEND(image trailer chunk)：放在文件尾部，表示PNG数据流结束。</p>
+
+<p>其中的每个数据块的结构是<br />
+Length(长度)	4字节	 指定数据块中数据域的长度，其长度不超过(231－1)字节<br />
+Chunk Type Code(数据块类型码)	4字节	 数据块类型码由ASCII字母(A-Z和a-z)组成<br />
+Chunk Data(数据块数据)	可变长度	 存储按照Chunk Type Code指定的数据<br />
+CRC(循环冗余检测)	4字节	 存储用来检测是否有错误的循环冗余码</p>
+
+<p>每块数据块的具体详见<a href="http://dev.gameres.com/Program/Visual/Other/PNGFormat.htm">http://dev.gameres.com/Program/Visual/Other/PNGFormat.htm</a>
+又是CRC什么的一搞就没兴趣去写代码解析了……<br />
+原来png jpeg这种头格式上半毛钱都关系不上啊……
+</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/24/regexkit%E7%AC%94%E8%AE%B0">RegexKit笔记 </a></h3>
+  <div class="date">
+    <span>24 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>由于ios 的sdk并不原生支持正则、所有用到了第三方库、对比了下文档等、我最终决定使用regexKit</p>
+
+<p>文档 http://regexkit.sourceforge.net/RegexKitLite/</p>
+
+<p>使用简单说明</p>
+
+<p>这个库的基础是在 ICU(INTERNATIONAL COMPONENTS FOR UNICODE)之上的、在使用过程中需要将 RegexKitLite.h /RegexKitLite.m 导入工程之外还需要动态链接库 libicucore.dylib 然后在需要编译的文件上加上 -licucore 即可</p>
+
+<p>1. 寻找匹配的范围</p>
+
+<p>匹配范围的有多个函数举个最长的做例子</p>
+
+<p>&nbsp;
+<pre lang="objective-c">- (NSRange)RKL_METHOD_PREPEND(rangeOfRegex):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)range capture:(NSInteger)capture error:(NSError **)error;</pre>
+&nbsp;</p>
+
+<p>别的根据名字也都可判断了、其中要注意点的就是 capture 这个参数是返回的匹配成功的第几个、他的匹配的模式是贪心的模式</p>
+
+<p>与之类似的判断匹配的返回的是匹配出的串
+<pre lang="objective-c">- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex capture:(NSInteger)capture</pre></p>
+
+<p>- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)
+2.寻找和替换
+<pre lang="objective-c">NSString *searchString = @"This is neat.";</pre></p>
+
+<p>NSString *regexString = @"\\b(\\w+)\\b";</p>
+
+<p>NSString *replaceWithString = @"{$1}";</p>
+
+<p>NSString *replacedString = NULL;</p>
+
+<p>replacedString = [searchString stringByReplacingOccurrencesOfRegex:regexString withString:replaceWithString];
+注意这里的替换的replaceWithString如果有$符、他会理解成对之前匹配出的串的附加如以上例子匹配完之后就是 {This} {is} {neat}.</p>
+
+<p>如果需要更复杂的运算可以使用block
+<pre lang="objective-c">replacedString =[searchString stringByReplacingOccurrencesOfRegex:regexString usingBlock:^NSString *(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop){return ([NSString stringWithFormat:@"%@",[capturedStrings[1] capitalizedString]]);}];</pre>
+3.对每个匹配模式的形成array、切割成array
+<pre lang="objective-c">- (NSArray *)RKL_METHOD_PREPEND(componentsMatchedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range capture:(NSInteger)capture error:(NSError **)error</pre></p>
+
+<p>- (NSArray *)RKL_METHOD_PREPEND(componentsSeparatedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range error:(NSError **)error
+基本的操作就如上、每块分别还有不同的接口、基本命名规范都大同小异、复杂的就使用block</p>
+
+<p>其中的 RKLRegexIptions 是一个如下的结构
+<pre lang="objective-c">enum {</pre></p>
+
+<p>RKLNoOptions             = 0,   //无特殊意义</p>
+
+<p>RKLCaseless              = 2,    //不敏感大小写模式</p>
+
+<p>RKLComments              = 4,//允许在模式中使用空格</p>
+
+<p>RKLDotAll                = 32, //使用行读取模式</p>
+
+<p>RKLMultiline             = 8, //^和$也会匹配每行</p>
+
+<p>RKLUnicodeWordBoundaries = 256 //Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in <a href="http://www.unicode.org/reports/tr29/">Unicode UAX 29 - Text Boundaries</a>. By default, word boundaries are identified by means of a simple classification of characters as either word or non-word, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spacesand other non-word characters.</p>
+
+<p>};
+然后附上ICU的正则标准
+<div>
+<div>
+<div>
+<table summary="Regular Expression Metacharacters"><caption>Metacharacters</caption>
+<tbody>
+<tr>
+<th>Character</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>\a</td>
+<td>Match a BELL, \u0007</td>
+</tr>
+<tr>
+<td>\A</td>
+<td>Match at the beginning of the input. Differs from ^ in that \A will not match after a new-line within the input.</td>
+</tr>
+<tr>
+<td>\b, outside of a [<em>Set</em>]</td>
+<td>Match if the current position is a word boundary. Boundaries occur at the transitions between word \w and non-word \W characters, with combining marks ignored.
+<div><strong>See also:</strong> <a href="http://regexkit.sourceforge.net/RegexKitLite/#RKLRegexOptions_RKLUnicodeWordBoundaries">RKLUnicodeWordBoundaries</a></div></td>
+</tr>
+<tr>
+<td>\b, within a [<em>Set</em>]</td>
+<td>Match a BACKSPACE, \u0008.</td>
+</tr>
+<tr>
+<td>\B</td>
+<td>Match if the current position is not a word boundary.</td>
+</tr>
+<tr>
+<td>\c<em>x</em></td>
+<td>Match a <em title="Control Character x, i.e. ^C">Control-x</em> character.</td>
+</tr>
+<tr>
+<td>\d</td>
+<td>Match any character with the <em>Unicode General Category</em> of Nd(<em>Number</em>, <em>Decimal Digit</em>).</td>
+</tr>
+<tr>
+<td>\D</td>
+<td>Match any character that is not a decimal digit.</td>
+</tr>
+<tr>
+<td>\e</td>
+<td>Match an ESCAPE, \u001B.</td>
+</tr>
+<tr>
+<td>\E</td>
+<td>Terminates a \Q…\E quoted sequence.</td>
+</tr>
+<tr>
+<td>\f</td>
+<td>Match a FORM FEED, \u000C.</td>
+</tr>
+<tr>
+<td>\G</td>
+<td>Match if the current position is at the end of the previous match.</td>
+</tr>
+<tr>
+<td>\n</td>
+<td>Match a LINE FEED, \u000A.</td>
+</tr>
+<tr>
+<td>\N{<em>Unicode Character Name</em>}</td>
+<td>Match the named <em>Unicode Character</em>.</td>
+</tr>
+<tr>
+<td>\p{<em>Unicode Property Name</em>}</td>
+<td>Match any character with the specified <em>Unicode Property</em>.</td>
+</tr>
+<tr>
+<td>\P{<em>Unicode Property Name</em>}</td>
+<td>Match any character not having the specified <em>Unicode Property</em>.</td>
+</tr>
+<tr>
+<td>\Q</td>
+<td>Quotes all following characters until \E.</td>
+</tr>
+<tr>
+<td>\r</td>
+<td>Match a CARRIAGE RETURN, \u000D.</td>
+</tr>
+<tr>
+<td id="ICUSyntax_ICURegularExpressionSyntax_white_space">\s</td>
+<td>Match a white space character. White space is defined as[\t\n\f\r\p{Z}].</td>
+</tr>
+<tr>
+<td>\S</td>
+<td>Match a non-white space character.</td>
+</tr>
+<tr>
+<td>\t</td>
+<td>Match a HORIZONTAL TABULATION, \u0009.</td>
+</tr>
+<tr>
+<td>\u<em>hhhh</em></td>
+<td>Match the character with the hex value <em title="Hexidecimal Number">hhhh</em>.</td>
+</tr>
+<tr>
+<td>\U<em title="Hexidecimal Number">hhhhhhhh</em></td>
+<td>Match the character with the hex value <em title="Hexidecimal Number">hhhhhhhh</em>. Exactly eight hex digits must be provided, even though the largest Unicode code point is \U0010ffff.</td>
+</tr>
+<tr>
+<td>\w</td>
+<td>Match a word character. Word characters are[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}].</td>
+</tr>
+<tr>
+<td>\W</td>
+<td>Match a non-word character.</td>
+</tr>
+<tr>
+<td>\x{<em title="Hexidecimal Number">h</em>…}</td>
+<td>Match the character with hex value <em title="Hexidecimal Number">hhhh</em>. From one to six hex digits may be supplied.</td>
+</tr>
+<tr>
+<td>\x<em title="Hexidecimal Number">hh</em></td>
+<td>Match the character with two digit hex value <em title="Hexidecimal Number">hh</em>.</td>
+</tr>
+<tr>
+<td>\X</td>
+<td>Match a <a href="http://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries">Grapheme Cluster</a>.</td>
+</tr>
+<tr>
+<td>\Z</td>
+<td>Match if the current position is at the end of input, but before the final line terminator, if one exists.</td>
+</tr>
+<tr>
+<td>\z</td>
+<td>Match if the current position is at the end of input.</td>
+</tr>
+<tr>
+<td>\<em title="Decimal Number">n</em></td>
+<td>
+<div>Back Reference. Match whatever the <em title="Decimal Number">n</em>th capturing group matched. <em title="Decimal Number">n</em>must be a number ≥ 1 and ≤ total number of capture groups in the pattern.</div>
+<div>
+<div>
+<div>
+<div>Note:</div>
+<div>Octal escapes, such as \012, are not supported.</div>
+</div>
+</div>
+</div></td>
+</tr>
+<tr>
+<td>[<em>pattern</em>]</td>
+<td>Match any one character from the set. See <a href="http://regexkit.sourceforge.net/RegexKitLite/#ICUSyntax_ICURegularExpressionCharacterClasses">ICU Regular Expression Character Classes</a> for a full description of what may appear in the pattern.</td>
+</tr>
+<tr>
+<td>.</td>
+<td>Match any character.</td>
+</tr>
+<tr>
+<td>^</td>
+<td>Match at the beginning of a line.</td>
+</tr>
+<tr>
+<td>$</td>
+<td>Match at the end of a line.</td>
+</tr>
+<tr>
+<td>\</td>
+<td>Quotes the following character. Characters that must be quoted to be treated as literals are * ? + [ ( ) { } ^ $ | \ . /</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div>
+<table id="ICUSyntax_Operators" summary="Regular Expression Operators"><caption>Operators</caption>
+<tbody>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>|</td>
+<td>Alternation. A|B matches either A or B.</td>
+</tr>
+<tr>
+<td>*</td>
+<td>Match zero or more times. Match as many times as possible.</td>
+</tr>
+<tr>
+<td>+</td>
+<td>Match one or more times. Match as many times as possible.</td>
+</tr>
+<tr>
+<td>?</td>
+<td>Match zero or one times. Prefer one.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>}</td>
+<td>Match exactly <em title="Decimal Number">n</em> times.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,}</td>
+<td>Match at least <em title="Decimal Number">n</em> times. Match as many times as possible.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,<em title="Decimal Number">m</em>}</td>
+<td>Match between <em title="Decimal Number">n</em> and <em title="Decimal Number">m</em> times. Match as many times as possible, but not more than <em title="Decimal Number">m</em>.</td>
+</tr>
+<tr>
+<td>*?</td>
+<td>Match zero or more times. Match as few times as possible.</td>
+</tr>
+<tr>
+<td>+?</td>
+<td>Match one or more times. Match as few times as possible.</td>
+</tr>
+<tr>
+<td>??</td>
+<td>Match zero or one times. Prefer zero.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>}?</td>
+<td>Match exactly <em title="Decimal Number">n</em> times.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,}?</td>
+<td>Match at least <em title="Decimal Number">n</em> times, but no more than required for an overall pattern match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,<em title="Decimal Number">m</em>}?</td>
+<td>Match between <em title="Decimal Number">n</em> and <em title="Decimal Number">m</em> times. Match as few times as possible, but not less than <em title="Decimal Number">n</em>.</td>
+</tr>
+<tr>
+<td>*+</td>
+<td>Match zero or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails. Possessive match.</td>
+</tr>
+<tr>
+<td>++</td>
+<td>Match one or more times. Possessive match.</td>
+</tr>
+<tr>
+<td>?+</td>
+<td>Match zero or one times. Possessive match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>}+</td>
+<td>Match exactly <em title="Decimal Number">n</em> times. Possessive match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,}+</td>
+<td>Match at least <em title="Decimal Number">n</em> times. Possessive match.</td>
+</tr>
+<tr>
+<td>{<em title="Decimal Number">n</em>,<em title="Decimal Number">m</em>}+</td>
+<td>Match between <em title="Decimal Number">n</em> and <em title="Decimal Number">m</em> times. Possessive match.</td>
+</tr>
+<tr>
+<td>(…)</td>
+<td>Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.</td>
+</tr>
+<tr>
+<td>(?:…)</td>
+<td>Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.</td>
+</tr>
+<tr>
+<td>(?&gt;…)</td>
+<td>Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the (?&gt; .</td>
+</tr>
+<tr>
+<td>(?#…)</td>
+<td>Free-format comment (?#<em>comment</em>).</td>
+</tr>
+<tr>
+<td>(?=…)</td>
+<td>Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.</td>
+</tr>
+<tr>
+<td>(?!…)</td>
+<td>Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.</td>
+</tr>
+<tr>
+<td>(?&lt;=…)</td>
+<td>Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).</td>
+</tr>
+<tr>
+<td>(?&lt;!…)</td>
+<td>Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).</td>
+</tr>
+<tr>
+<td>(?ismwx-ismwx:…)</td>
+<td>Flag settings. Evaluate the parenthesized expression with the specified flags<em>enabled</em> or -<em>disabled</em>.</td>
+</tr>
+<tr>
+<td>(?ismwx-ismwx)</td>
+<td>Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, (?i) changes to a case insensitive match.
+<div><strong>See also:</strong> <a href="http://regexkit.sourceforge.net/RegexKitLite/#RegularExpressionOptions">Regular Expression Options</a></div></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F">被windows艹了一天的小感 </a></h3>
+  <div class="date">
+    <span>16 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>作为一个ms黑、都三年了也没正经的写过一点windows、今天算是头天吧……然后就被打击透顶了</p>
+
+<p>需求就是让台电脑崩了、这么个需求我就出了2个方案、</p>
+
+<p>1.想办法拿到个内核态的指针然后喀了然后蓝掉</p>
+
+<p>2.蔽了键盘和鼠标也同样效果实现了</p>
+
+<p>反正就是这两条路子坑了我走了一天……</p>
+
+<p>先是一、想尽办法奈何不了大windows封装的太深、册那每个函数那么多参数看来不是没道理的、怪不得野指针那么容易指死机、想从驱动入手、没办法完全没有驱动编程的基础、没办法第一条路就死了</p>
+
+<p>然后是二、这个还是挺容易下手的、网上也到处都是类似的代码但是我还是失败了……首先我想到的是全局钩子（就是把所有的按键事件捕获住然后直接吃掉</p>
+
+<p>零基础痛苦的开始看api的阶段就不说了……（虽然说搞懂了后还是非常简单的</p>
+
+<p>然后就全局吃掉键盘和鼠标嘛看着很愉快的、然后丢到同学机子上一测、傻逼了、大360直接监测出来了我拿了键鼠去提醒用户了（伪装性差透了、失败</p>
+
+<p>接着无限的搜索我又发现了系统API竟然可以直接蔽掉INPUT、好吧我真的激动了半天、你360总不能杀系统API吧、好了就3行代码……效果实现了、360也没杀出来、又高兴了一阵然后我又发现傻逼了……任务管理器还是能调出来的、而且这个系统API是在当前进程下的、也就是任务管理器一出一杀我就悲剧了……又失败了……失败了怎么就能倒下、我又开始做局部的钩子杀掉ctrl 杀掉alt 都没问题……可是单独的杀是没问题的组合起来又悲剧了……好吧既然杀不掉你的启动方式我就杀你这个服务、又找了在注册表禁了、可是这大概是几年前的文章吧、混蛋还是好好的跑起来……那我再想、直接拿文件流去写你的文件吧、两跟进程跑着看你怎么开、当然愿望肯定是美好的……没权限……崩溃了……然后我又只能放弃二了</p>
+
+<p>然后上面这点试试下来整整一天就没了Orz……</p>
+
+<p>没办法放弃了、看来报着的心态是坏的、也是做不大出来东西的……想去论坛问问都不晓得怎么开口……</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#瞎写写-ref">
+    		瞎写写 <span>4</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/life/2012/11/14/%E4%B8%80%E4%BA%BA%E6%9A%AE%E3%82%89%E3%81%97">一人暮らし </a></h3>
+  <div class="date">
+    <span>14 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>最近心情很差、很多很多方面</p>
+<p>今天也是如此、不知道为什么看到那些在比赛html5的心情很差、主要原因应该就是觉得我也应该是其中一员吧</p>
+<p>当然放弃也是我自己当时的抉择、也没有任何人好怪的、当时开始报名的时候我就怀着的心态就非常矛盾、大概也应该是心疼那三百块钱吧……再其实也不是因为那一点报名费、而是就只有我一个人的无助感吧、我总是就这么一个人、一个人……我也觉得我不是冷无缺也不是什么很难相处的人为什么我的朋友很少呢、不管任何方面</p>
+<p>有时候就是想这么去找个可以和自己一起去打的人都好难、算了纠结原因也就是我那个奇怪的性格吧、做项目也是如此、当我一个人打的时候我并没有感觉什么、当我有队友时当我们没法合拍时我也不知道怎么办、我也知道他们可以一起帮忙、可是为什么我有这份心却怎么样都合不起来、合不起来合不起来我只能一次次放弃、讽刺的到现在我应该一个像样的东西都没有做出来过吧、我很佩服那个做猛犸browser的孩子、或许他的心态就跟我一样、但是他却可以作出一件件像样的东西、而我这个渣也就这么只会去惆怅下去吧、其实这麻痹就还是归结于一个缩字</p>
+<p>其实我真的不想永远一个人从早上挖开眼睛就对着我的电脑老婆、不想永远一个人的走在校园的路上、不想一个人出去看电影、不想一个人出去吃饭、真的不想</p>
+<p>想想一个人在学校住了十二年、想想一个人了二十年、想想才有几个交心的朋友、或者这才是我上次哭的原因、或许这才是我的悲哀吧</p>
+<p>牢骚发完了、尽快从最近这状态出来吧、傻逼你二十年的人生不是早已经习惯了么？</p>
+</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#life-ref">
+    		life <span>5</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/13/aria2c-%E8%BF%85%E9%9B%B7%E7%A6%BB%E7%BA%BF%E7%9A%84%E4%B8%8B%E8%BD%BD%E6%B3%95">aria2c 迅雷离线的下载法 </a></h3>
+  <div class="date">
+    <span>13 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>随着loli.lu给封掉了、批量下迅雷离线真是烦的要死……</p>
+
+<p>不过网上看了半天总归是有解法的、然后试验了下方法如下</p>
+
+<p>首先先要上迅雷离线的页面然后随便开始抓cookie、<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/B16011E7-7388-48C4-B458-6A37CA799987.jpg"><img class="alignnone size-full wp-image-114" title="B16011E7-7388-48C4-B458-6A37CA799987" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/B16011E7-7388-48C4-B458-6A37CA799987.jpg" alt="" /></a>好吧那么多哪儿些有用的呢……</p>
+
+<p>wjysessid，download_uid，KCWEBUID 就这3个字段的足亦</p>
+
+<p>然后在这简单的介绍下神器aria2c吧（虽然我本来想就说句去查man手册吧……</p>
+
+<p>最基本的下载 aria2c URL</p>
+
+<p>重命名 -o aria2c NEWNAME URL</p>
+
+<p>多线程加批量加断点续传 aria2c -c -s THREAD_NUM -i URL_PATH</p>
+
+<p>下bt</p>
+
+<p>aria2c --select-file=FILE_LIST_NUMBER TORRENT_PATH ex. aria2c --select-file=2,4-6 temp.torrent</p>
+
+<p>设置bt端口</p>
+
+<p>aria2c --listen-port=PORT TORRENT_PATH</p>
+
+<p>设置dht端口</p>
+
+<p>aria2c --dht-listen-port=PORT TORRENT_PATH</p>
+
+<p>然后伪装头部！（就靠这玩意了……</p>
+
+<p>aria2c --header="Cookie:KEY1=VALUE1;KEY2=VALUE2;" URL</p>
+
+<p>&nbsp;</p>
+
+<p>那么最后一个完整的命令是什么样呢（这里不能加-c 具体我也不清楚……一加c就给403了)</p>
+
+<p>aria2c --header="Cookie:wjysessid=a091798dc37604777235ee4dc74c8078;download_uid=1008830576;KCWEBUID=4332894332477639924" -s 5 -i source.txt --dir=/home/zxz/henna/11_13 ……………………URL……………………</p>
+
+<p>具体的还是自己去看man手册吧、aria2c好像什么都能伪造的感觉……</p>
+
+<p>最后吐槽一下那个没gui的 Ubuntu Server……下点片子都那么费劲……</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/11/%E5%85%89%E6%A3%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E9%97%AF%E5%85%B3%E6%94%BB%E7%95%A51_9%E6%90%AD%E6%A2%AF4_6_8">光棍程序员闯关攻略1_9(搭梯4_6_8) </a></h3>
+  <div class="date">
+    <span>11 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>码农命就敲代码、如此好日子我就玩了那个闯关、说实话这个真的不错、好吧其中三关是想破头都没想出来的</p>
+
+<p>门如下http://segmentfault.com/game/</p>
+
+<p>第一关 看下源代码看到有个下一关（就是颜色个背景遮掉了……轻松过</p>
+
+<p>第二关 看源码里面直接把密码给你了……（easy</p>
+
+<p>第三关 这里源码就已经没有任何提示了……想想一个网页还是什么地方能提供给你信息？body没了那么就看http response吧、一看http报头 密码就在那了（也算easy</p>
+
+<p>第四关 坑爹的来了、他给你的提示是让你解密、根据上面的经验所有的信息也就只有cookie了……然后我开始了坑爹的解析cookie……尼玛浪费了老子将近一个小时那四五个值屁都得不出……我终于开始找我大google了、然后我终于发现前人栽的路了、仔细注意每次的url都是一个md5、所有这里就应该是 printf 5|md5 算一个5的md5就是下一关了……（坑爹、再坑一点</p>
+
+<p>第五关 第六关是一个二维码、凭着上面那个题的尿性也知道不可能直接扫一下就出答案的、虽然我还是试了下（还被嘲讽了……你可以解一下他上面是什么字）正确是怎么做呢、鉴于之前解了次那个东大的东西我有经验了、什么东西都用纯文本开开看看、好了轻松愉快的key就写在图片里呢（这关还好吧</p>
+
+<p>第六关 这tm才是大坑！！！！算了我告诉你答案吧、把他给你的那个md5贴到google上去、找某一个人的回复……他说的是建议google把这个md5给收入了……然后他的key值就是了……（这个我真的无语……</p>
+
+<p>第七关 他直接给了你个md5、和上关一样、你还傻逼的再去查么？你还太年轻……直接把这个md5贴到网址上就好了（做了这么多题还摸不透出题的德行么……</p>
+
+<p>第八题 刚才那个是大坑吧、这个是大大大大大大大大大大坑！！被上面几个都是解密什么的已经弄昏双眼了……我又开始无穷无尽的解md5、这次还是随机的出来数组、和第七关那个的是有联系的、于是我生成了10多组数据开始研究……一个小时过去了……我放弃了、我找梯子吧……公布答案（这回不用再去研究md5了、回过头来看源码、仔细看下一个表单他的方法是<strong>GET</strong>！见过表单是get的？开玩笑吧……果断firebug改成post……提交上去了……到第九关了……</p>
+
+<p>第九题 还是因为做过东大的那个解密、看到那串10逼着眼睛就开始准备转了、等等他出了1 0还有_ 这是什么东西、我仔细观察了下所有的_都是4个一组的、这以为着什么、应该就是填空吧、那填什么空？今天是光棍节啊不填1111可能么？好吧就是这样、填上1111  记得做个处理去空格去回车 sed 's/ //g' a.strings | tr -d '\n'</p>
+
+<p>再用我前篇blog写的程序大端转转完一看你就懂了（试试看1111填别的转转看就知道不对了、都是data）然后看到熟悉的＝了吧……base64啊亲、base64解码然后file一下是gzip……然后还要我教你干嘛么？其实gzip解压后还要用tar再解一次然后就出现了。最后就是一张仓老师的图片了……上面写着下一关的地址</p>
+
+<p>好了以上、这个光棍节还是蛮好玩的……</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F-2">第三范式&BC范式 </a></h3>
+  <div class="date">
+    <span>08 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>1.概念 BC范式是建在第三范式之上的 第三范式的成立条件是以下三者成立一个</p>
+
+<p>1.1 对所有的函数依赖 A-&gt; B 是一个平凡的函数依赖（平凡的还书依赖就是他们没有任何依赖关系</p>
+
+<p>1.2 A-&gt;B A是所有关系（R）的一个超码（就是能决定所有的元素</p>
+
+<p>1.3 B－A 中的每个属性都包含与R的一个候选码</p>
+
+<p>而BC范式就是只能满足1.1或者1.2中的一个</p>
+
+<p>&nbsp;</p>
+
+<p>注：即 满足 1.1 或者1.2的就是BC范式（同时他也是第三第二第一范式）</p>
+
+<p>有一个满足1.3的就是第三范式</p>
+
+<p>&nbsp;</p>
+
+<p>2. 实例说明(</p>
+
+<p>2.1 表：ID,name,age,department,department_num</p>
+
+<p>&nbsp;</p>
+
+<p>存在的函数依赖</p>
+
+<p>ID -&gt; name,age,department,department_num</p>
+
+<p>department -&gt; department_num</p>
+
+<p>根据 1.1 摆明ID和后面那么多关系肯定不是平凡的 不符合1.1</p>
+
+<p>根据 1.2  department -&gt; department_num department不是关系的超码 所以不符合1.2</p>
+
+<p>根据1.3 B-A={name,age,department,department_num}-{ID}= {name,age,department,department_num} (减法流程左边有就减去、没有就无视)</p>
+
+<p>明显几个属性都不属于 ID 所以不符合1.3</p>
+
+<p>即不是第三范式</p>
+
+<p>拆：</p>
+
+<p>由于ID -&gt; name,age,department,department_num 这条不满足1.3 所以在右边继续寻找函数依赖</p>
+
+<p>即department -&gt; department_num</p>
+
+<p>把依赖关系的左边并进原来的关系 即于ID,name,age+department</p>
+
+<p>再把依赖的和被依赖的单独拉进一张表</p>
+
+<p>ID,name,age,department 符合1.2</p>
+
+<p>department,department_num 符合1.2  即拆完的符合BC范式</p>
+
+<p>2.2 表 ID1,ID2,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1-&gt;age</p>
+
+<p>ID2-&gt;age</p>
+
+<p>根据 1.1 摆明不符合</p>
+
+<p>根据1.2 ID1不是关系的超码（因为ID1 无法确定ID2 也不符合1.2</p>
+
+<p>根据 1.3 age不属于ID1 所以也不符合 1.3</p>
+
+<p>即不是第三范式（更不是BC范式</p>
+
+<p>右边不存在依赖关系</p>
+
+<p>所以把 ID1 和 age放在一张表 单独剩下一个ID2 他和ID1的关系是平凡的</p>
+
+<p>即编程如下表</p>
+
+<p>ID1,age   符合1.2</p>
+
+<p>ID1,ID2  符合1.1(他们两个是平凡关系</p>
+
+<p>即拆成了BC范式</p>
+
+<p>2.3 表 ID1+ID2 ,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1,ID2-&gt;age 满足1.2</p>
+
+<p>即是BC范式</p>
+
+<p>2.3 表 仓库ID+ 存储物品ID, 管理员ID, 数量</p>
+
+<p>或仓库ID,存储物品ID+ 管理员ID, 数量</p>
+
+<p>存在函数依赖</p>
+
+<p>仓库ID－&gt;管理员ID  符合1.3</p>
+
+<p>管理员ID -&gt; 仓库ID 符合 1.3</p>
+
+<p>仓库ID,存储物品ID－&gt;管理员ID,数量 符合 1.2</p>
+
+<p>管理员ID,存储物品ID－&gt;仓库ID,数量 符合 1.2</p>
+
+<p>所以他是第三范式</p>
+
+<p>因为右边没有函数依赖关系</p>
+
+<p>把仓库ID和管理员ID放一张表</p>
+
+<p>仓库ID和存储物品和数量一张表</p>
+
+<p>即 仓库ID, 管理员ID 符合 1.2</p>
+
+<p>仓库ID+存储物品ID,数量 符合 1.2</p>
+
+<p>即拆成了BC范式</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F">第三范式&BC范式 </a></h3>
+  <div class="date">
+    <span>08 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>1.概念 BC范式是建在第三范式之上的 第三范式的成立条件是以下三者成立一个</p>
+
+<p>1.1 对所有的函数依赖 A-&gt; B 是一个平凡的函数依赖（平凡的还书依赖就是他们没有任何依赖关系</p>
+
+<p>1.2 A-&gt;B A是所有关系（R）的一个超码（就是能决定所有的元素</p>
+
+<p>1.3 B－A 中的每个属性都包含与R的一个候选码</p>
+
+<p>而BC范式就是只能满足1.1或者1.2中的一个</p>
+
+<p>&nbsp;</p>
+
+<p>注：即 满足 1.1 或者1.2的就是BC范式（同时他也是第三第二第一范式）</p>
+
+<p>有一个满足1.3的就是第三范式</p>
+
+<p>&nbsp;</p>
+
+<p>2. 实例说明(</p>
+
+<p>2.1 表：ID,name,age,department,department_num</p>
+
+<p>&nbsp;</p>
+
+<p>存在的函数依赖</p>
+
+<p>ID -&gt; name,age,department,department_num</p>
+
+<p>department -&gt; department_num</p>
+
+<p>根据 1.1 摆明ID和后面那么多关系肯定不是平凡的 不符合1.1</p>
+
+<p>根据 1.2  department -&gt; department_num department不是关系的超码 所以不符合1.2</p>
+
+<p>根据1.3 B-A={name,age,department,department_num}-{ID}= {name,age,department,department_num} (减法流程左边有就减去、没有就无视)</p>
+
+<p>明显几个属性都不属于 ID 所以不符合1.3</p>
+
+<p>即不是第三范式</p>
+
+<p>拆：</p>
+
+<p>由于ID -&gt; name,age,department,department_num 这条不满足1.3 所以在右边继续寻找函数依赖</p>
+
+<p>即department -&gt; department_num</p>
+
+<p>把依赖关系的左边并进原来的关系 即于ID,name,age+department</p>
+
+<p>再把依赖的和被依赖的单独拉进一张表</p>
+
+<p>ID,name,age,department 符合1.2</p>
+
+<p>department,department_num 符合1.2  即拆完的符合BC范式</p>
+
+<p>2.2 表 ID1,ID2,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1-&gt;age</p>
+
+<p>ID2-&gt;age</p>
+
+<p>根据 1.1 摆明不符合</p>
+
+<p>根据1.2 ID1不是关系的超码（因为ID1 无法确定ID2 也不符合1.2</p>
+
+<p>根据 1.3 age不属于ID1 所以也不符合 1.3</p>
+
+<p>即不是第三范式（更不是BC范式</p>
+
+<p>右边不存在依赖关系</p>
+
+<p>所以把 ID1 和 age放在一张表 单独剩下一个ID2 他和ID1的关系是平凡的</p>
+
+<p>即编程如下表</p>
+
+<p>ID1,age   符合1.2</p>
+
+<p>ID1,ID2  符合1.1(他们两个是平凡关系</p>
+
+<p>即拆成了BC范式</p>
+
+<p>2.3 表 ID1+ID2 ,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1,ID2-&gt;age 满足1.2</p>
+
+<p>即是BC范式</p>
+
+<p>2.3 表 仓库ID+ 存储物品ID, 管理员ID, 数量</p>
+
+<p>或仓库ID,存储物品ID+ 管理员ID, 数量</p>
+
+<p>存在函数依赖</p>
+
+<p>仓库ID－&gt;管理员ID  符合1.3</p>
+
+<p>管理员ID -&gt; 仓库ID 符合 1.3</p>
+
+<p>仓库ID,存储物品ID－&gt;管理员ID,数量 符合 1.2</p>
+
+<p>管理员ID,存储物品ID－&gt;仓库ID,数量 符合 1.2</p>
+
+<p>所以他是第三范式</p>
+
+<p>因为右边没有函数依赖关系</p>
+
+<p>把仓库ID和管理员ID放一张表</p>
+
+<p>仓库ID和存储物品和数量一张表</p>
+
+<p>即 仓库ID, 管理员ID 符合 1.2</p>
+
+<p>仓库ID+存储物品ID,数量 符合 1.2</p>
+
+<p>即拆成了BC范式</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/06/%E5%A4%8D%E4%B9%A0%E7%BD%91%E7%BB%9C%E6%97%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E5%BE%88%E4%B8%8D%E6%88%90%E7%86%9F%E7%9A%84%E6%83%B3%E6%B3%95">复习网络时的一个很不成熟的想法 </a></h3>
+  <div class="date">
+    <span>06 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>这两天校园网实在渣、搞的很不爽、正好又在复习网络时看到了web缓存。突然迸出了一个很不靠谱也很不成熟的一个想法。尼玛中国有那么多防火墙、都已经能有五层协议栈了、如果除了搞掉和谐物之外什么的之外都、加上一个类似web缓存的功能。<br />
+大致想法是这样的<br />
+首先所有的资源都先有个统一的校验、比如hash什么的<br />
+然后得改协议、在报文段先识别出是否有过缓存<br />
+然后中间服务器和自己的资源列表比对一遍、再发往目的地<br />
+然后目的地再通过协议里的字段处理</p>
+
+<p>好吧……我再来分析下这样的不可行性……<br />
+1.世界上所有资源的绝对统一的校验（我觉得这个还是可行的-_-#<br />
+2.要改tcp协议、尼玛你是啊说改就能改！？（光这个我就洗洗睡吧……<br />
+3.中间服务器这样需要多大的开销、每台机子相当于个小的镜像服务器了这样还是全世界的资源……<br />
+4.所有的网站要支持这个还需要自己去修改自己的代码……（还是可行……但我还是洗洗睡吧……<br />
+5.这样相当于一个小的局域网共享同一份资源、我大gfw真是笑哈哈了、直接部署在中间节点上管你违和物视频图片一网打尽啊（我一定是给方滨兴电过了……</p>
+
+<p>最后说说如果真能这样会有什么好处呢<br />
+1.首先用户体验提升无数倍、比如A站B站共享一个渣浪源、不同的人去请求同个源、那就不需要重复请求了、网络整体的负担我相信也能减一个指数级的感觉……（但每台服务器都用刀片么？要部署多少中间服务器啊？谁来出钱啊混蛋……<br />
+2.因为缓存对目的服务器的负担小很多了、把整体的负荷减小了很大一个量级而且从原来的最终端分布到各个节点上了</p>
+
+<p>综上也就是脑补而已Orz</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#瞎写写-ref">
+    		瞎写写 <span>4</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/04/%E5%85%B3%E4%BA%8E%E4%B8%9C%E5%A4%A7%E6%83%85%E6%8A%A5%E7%A0%94%E7%A9%B6%E7%94%9F%E6%B5%B7%E6%8A%A5%E7%9A%84%E5%BD%A9%E8%9B%8B">关于东大情报研究生海报的彩蛋 </a></h3>
+  <div class="date">
+    <span>04 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>今天在weibo上看到有人转发的关于东京大学情报科研究生海报里的彩蛋，务真精神我就来落实了一下<br />
+其中各种把1 0 串如何想到正确的转发的才是难点……我这彩笔是还得再战10年估计的……所以在这就把正确方法一步步落实下来<br />
+首先先看海报<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg"><img class="alignnone size-full wp-image-88" title="tokyo_daigaku_information_notice" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg" alt="" width="580" height="820" /></a></p>
+
+<p><strong>关键不在妹子！</strong></p>
+
+<p>好吧，我们先用orc软件把那个少女身前所有的一零串全部扫出来扫出来的东西如下</p>
+
+<p>00011111100010110000100000000000000000000000000000000000000000000000001000000011011011010101000011001011010011<br />
+10110000100100000000010100001111010101001100011110100001010101101010110101100000001110000000000011010100001101<br />
+10000101000100010011011010001110001000010110001100010011000110101100010011000011010010011010011000001101100010<br />
+11100000011010011010101001010111100001110100010011011001110101100000001011000011110111010010111101110010111000<br />
+11010110000001010010011000101110111111000000000011111111110000111000111101110000111000011110001100010110010011<br />
+01000011001000100110010011110011001001110010111001111101111001111010010011011110111110111001111101111111010111<br />
+11000111111000000001101100001000011110110010000001100001010100101011010010011010110011000010010010000010000010<br />
+10010100100001100011011000110010000110001101010110010001010101111001000101010010101100001100111100010011110111<br />
+10000101001010111110010000000001010000111010010001100010101101100001100110100010010011011110111111010010001000<br />
+01000110000111001011100001001100101110010000101010000101111100011100111101001111101110011011010110100000001011<br />
+10111101011101010110010010110000011011000010101111011010111010000111101101001110010110010110111001000111011011<br />
+11111110000100111110111110011110111100001100110111000001110100001001001001000001010100101100011010000101100011<br />
+00010011010110110000110011100110101001001100101001000111110000010110000000100010011011010101011100111000000100<br />
+11101011110110011001010101011001011010110111011111111010110000111010100100100110001111101011000010011100110110<br />
+10101001111011010101000111110000011110100011110110100001010101110111010101001110010001110101000101000101000001<br />
+01010010110001101011010110001100000111001001010000011000100110000110001000110010111111100101101010011110011101<br />
+10011110011000111100101110000101010101000110101101111010001000111001110100100001111110011111010101000110010101<br />
+00110010001111111011111000000100111001111001110101010001101110011000100100010110010111010011111000101100001011<br />
+11100010100010011000110110111010011001001001111011010010111000001111000011100100100100010011101011010001110010<br />
+01100101001101100001101100110000111111010010101000011010011000000111110100011000100001101010010110100110110110<br />
+01010001010000101001110011010110000101110001111010000101001011100100110100001001000001101000110101111110001010<br />
+01010000100100011000011000110110110111110100000010011110111001100000010011100100100101100010000010111111100101<br />
+10110110111000100000100010100000100001100001001110011101001000101000000110001110011000011101111100101000111101<br />
+01000011010010100100011000001000010001111011110001101010100110001111110100001101110100100001101101100010101101<br />
+11000010111011101011111111011110010000100010100101101101100100110101111000001101110010100000011100110101011000<br />
+01111011110010100000000010110111111110101010100011000010011100000110111110000000010000000000000000<br />
+记得去掉每行的\n啊</p>
+
+<p>昏头了吧……这玩意怎么搞……我看到反正也是蒙了，要不是有大哥来解释我还真就昏倒了，首先他先分析了这些数字一共的数量
+<strong>2848</strong>
+这个数字有什么特别的？<br />
+他是8的倍数啊！他会不会就是字节流啊……<br />
+那么他是大端的还是小端的呢……好吧大哥说他是大端，那就是大端吧那么就用大端的方式解析<br />
+首先我自己的电脑是小端机，就稍微做一点处理写了一个小程序代码如下(所有判错的部分全部都省略了
+<pre lang="c">
+#include <stdio.h>
+#include <arpa/inet.h>
+int current_bit = 0;
+unsigned char bit_buffer;
+//bit转byte
+void WriteBit (int bit,FILE *f)
+{
+    if (bit)
+        bit_buffer |= (1<<current_bit);
+    
+    current_bit++;
+    if (current_bit == 8)
+    {
+        fwrite (&bit_buffer, 1, 1, f);
+        printf("%d",bit_buffer);
+        printf("--");
+        current_bit = 0;
+        bit_buffer = 0;
+    }
+}
+int main()
+{
+    FILE *a=fopen("/Users/apple/work/codeforexpe/2012_9_28/labfor12/labfor12/testfile.strings", "r");
+    FILE *f=fopen("/Users/apple/work/codeforexpe/2012_9_28/labfor12/labfor12/testfile2.strings", "wb");
+    char tmp;
+    char tt[8];
+    int i=0;
+    int j=0;
+    while ((tmp=getc(a))!=EOF)
+    {
+        
+        tt[i]=tmp;
+        
+        if (i==7) {
+            //小端转大端
+            for (j=7; j>=0; j--) {
+                tt[j]-=48;
+                WriteBit(tt[j], f);
+            }
+            //大端机用这个
+//            for (j=0; j<8; j++) {
+//                tt[j]-=48;
+//                WriteBit(tt[j], f);
+//            }
+            i-=8;
+        }
+        i++;
+    }</stdio.h></pre></p>
+
+<p>    fclose(f);  <br />
+    fclose(a);<br />
+    return 0;<br />
+}
+
+代码很快就写好了，输出的文件是什么呢……
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/CBA5DB15-EE27-46D6-9374-454F06C4D48D.jpg"><img class="alignnone size-full wp-image-90" title="tokyo_daigaku_code" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/CBA5DB15-EE27-46D6-9374-454F06C4D48D.jpg" alt="" width="1238" height="352" /></a></p>
+
+<p>我擦，坑爹啊，这是什么shit啊……没关系，可以看他是什么的嘛……
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/74AF12DD-EA72-492B-9664-0CFDC2D82307.jpg"><img class="alignnone size-full wp-image-91" title="tokyo_daigaku_file_judge" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/74AF12DD-EA72-492B-9664-0CFDC2D82307.jpg" alt="" width="488" height="39" /></a></p>
+
+<p>是个gzip的压缩包啊，看来已经走进真相了！好把用tar给他解压了是个什么shit……
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/1C338445-1846-48DD-8961-6B2B2155ABE5.jpg"><img class="alignnone size-full wp-image-92" title="tokyo_daigaku_java" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/1C338445-1846-48DD-8961-6B2B2155ABE5.jpg" alt="" width="1374" height="175" /></a>
+奔溃了，有是这种非人类所读的东西……但是注意一下，就算是乱啊也有一个很关键的可依稀识别的java/lang/String!尼玛搞了半天原来你是个java啊，好的，那就把你后缀改成class 然后用java再跑一下！
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/AA21C5CC-5D06-4CE5-9E69-1F272796D158.jpg"><img class="alignnone size-full wp-image-93" title="tokyo_daigaku_se_java" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/AA21C5CC-5D06-4CE5-9E69-1F272796D158.jpg" alt="" width="535" height="164" /></a>
+有java的出错信息了，那么久了终于碰到一个程序员能看的东西了……泪流满面，那就把他反编译一下看看到底是什么问题，检查出最后是因为名字的问题，那么好吧，把class 改成 i.class<br />
+然后最后等待奇迹的时刻吧……= =
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/94C303B8-7B47-4858-B55B-0A30A7EF96DB.jpg"><img class="alignnone size-full wp-image-94" title="tokyo_daigaku_final" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/94C303B8-7B47-4858-B55B-0A30A7EF96DB.jpg" alt="" width="293" height="34" /></a></p>
+
+<p>他终于出了个网址了啊……泪流满面……</p>
+
+<p>少年你以为这样就拿到东大的offer了么？你还太年轻……做到这步你就有直接去面试的资格了，要直接拿到offer需要继续解码一段音频，好吧，我觉得那已经超出我能力范围了，这个彩蛋揭秘过程就到这吧</p>
+
+<p>最后：外国的牛逼大学真心大陆能比？就说这样的在一张小小的海报策划的功夫、呵呵呵</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/02/os-x-safari%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE">os x safari代理配置 </a></h3>
+  <div class="date">
+    <span>02 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先先问候一下方校长，自从google被封了一批ip后墙翻的我简直痛不欲生一会么证书伪造一会么500……<br />
+大chrome崩溃的频率也tm越来越高，想来想去既然是os x那就索性用safari装x到到底-_-#</p>
+
+<p>个么safari上默认的设代理就是全局翻（上weibo什么的怎么办啊不卡死啊……<br />
+那就也写个简单点的代理就好了么（其实如果用chrome的switchysharp直接导出他的配置文件就好了
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/6FC51D93-7ED1-46FA-A632-14B720CAE1EE.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/6FC51D93-7ED1-46FA-A632-14B720CAE1EE-300x163.jpg" alt="" title="6FC51D93-7ED1-46FA-A632-14B720CAE1EE" width="300" height="163" class="alignnone size-medium wp-image-82" /></a></p>
+
+<p>那么没有的怎么搞呢，自己写一个也很简单的<br />
+浏览器是会通过这个FindProxyForURL来选择具体是否选择实用代理<br />
+那么最简单的一个代理就是</p>
+
+<p><pre lang="javascript">
+function FindProxyForURL(url, host)
+{
+    if(dnsDomainIs(host, "twitter.com")
+    {
+        return 'PROXY 127.0.0.1:8087'
+    }
+    return 'DIRECT';
+}</pre></p>
+
+<p></p>
+
+<p>那么稍微再加个正则匹配的就变成这样了</p>
+
+<p><pre lang="javascript">
+function FindProxyForURL(url, host) 
+{
+    if (shExpMatch(url, "*://*.twitter*")) return 'PROXY 127.0.0.1:8087';
+    if (shExpMatch(url, "*://*.google*")) return 'PROXY 127.0.0.1:8087';
+    return 'DIRECT';
+}
+</pre></p>
+
+<p>个么最后写完这个脚本丢在哪儿呢<br />
+在 system perference->network->advanced->proxy->auto proxy  configuration把自己刚写的那pac(后缀什么的都无所谓的)给导进去就可以了</p>
+
+<p>enjoy</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/10/22/%E5%88%86%E4%BA%ABhtml5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable">分享html5新特性 contenteditable </a></h3>
+  <div class="date">
+    <span>22 October 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>最近做个项目碰到一个很纠结的问题，富文本编辑。什么脑筋都动了，抓js句柄，手动解析标签属性，然后转成ios的font等等，想都不用想这种愚蠢又耗时的行为是不可能解决问题的。直到大stackoverflow救了我<br />
+原帖如下<br />
+http://stackoverflow.com/questions/8012245/using-ios-5-rich-text-editor<br />
+用到的最重要的新特性 就是 contenteditable<br />
+具体demo 如下<br />
+http://html5demos.com/contenteditable</p>
+
+<p>简单来说就是加个section 设置个 contenteditable，就那么简单！<br />
+比如
+<pre lang="html" /></p>
+
+<p><section id="editable" contenteditable="true">
+<p> hi 我来作试验的 </p>
+ <p> 首先是段落 </p>
+ <p> &nbsp; &nbsp; 然后是缩进 </p> 
+<p> <br /> </p> 
+<p> 然后多换行 </p> 
+<p> 然后大段文字ahdjasd </p> 
+<span style="font-family:'Microsoft YaHei';color:#E53333;"></span>
+<span style="font-family:'Microsoft YaHei';color:#E53333;">jaieowajkncnxmbfhawija</span>
+<p> hiiii </p> <p> 
+<br /> </p> 
+<p> &nbsp; &nbsp; test over </p>
+ <p> <br /> </p>
+</section></p>
+
+<p></p>
+
+<p>----------------------------------我是分割线-------------------------
+<section id="editable" contenteditable="true">
+<p> hi 我来作试验的 </p>
+ <p> 首先是段落 </p>
+ <p> &nbsp; &nbsp; 然后是缩进 </p> 
+<p> <br /> </p> 
+<p> 然后多换行 </p> 
+<p> 然后大段文字ahdjasd </p> 
+<span style="font-family:'Microsoft YaHei';color:#E53333;"></span>
+<span style="font-family:'Microsoft YaHei';color:#E53333;">jaieowajkncnxmbfhawija</span>
+<p> hiiii </p> <p> 
+<br /> </p> 
+<p> &nbsp; &nbsp; test over </p>
+ <p> <br /> </p>
+</section>
+仅仅只要把需要编辑的部分加个section设置个 contenteditable＝true，所有的富文本编辑问题就这么搞定了……</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<!-- </ul> -->
+
+<div id="post-pagination" class="paginator">
+
+  
+    
+    <a href="/"><前页</a>
+    
+  
+
+      
+      <a href="/">1</a>
+      
+
+    
+      
+      <span class="current-page">2</span>
+      
+    
+      
+      <a href="/page3">3</a>
+      
+    
+
+  
+    <a class="next" href="/page3">后页</a>
+  
+  (共51篇)
+</div>
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
+    
+  </body>
+</html>
+

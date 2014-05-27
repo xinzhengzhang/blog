@@ -63,3 +63,7 @@
   background: #57A957;
   border: 1px solid #4c964d;
   color: #FFF; }
+.listing-item,.listing-seperator{list-style-type:none;}
+.listing-seperator{font-weight:bold;}
+.listing-item time{color:#999999;}
+body {background-color: rgba(255,255,239,213);}

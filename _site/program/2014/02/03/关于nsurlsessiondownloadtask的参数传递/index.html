@@ -48,7 +48,7 @@
     
       
       	
-      	<li><a href="/about.html">about me</a></li>
+      	<li><a href="/about.html">About me</a></li>
       	
       
     
@@ -56,8 +56,16 @@
     
       
       	
-      	<li><a href="/archive.html">archive</a></li>
+      	<li><a href="/archive.html">Archives</a></li>
       	
+      
+    
+  
+    
+      
+    
+  
+    
       
     
   
@@ -81,11 +89,10 @@
         </div>
       </div>
     </div>
-
-    <div class="container-narrow">
-
-      <div class="content">
-        
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          
 <div class="page-header">
   <h1>关于NSURLSessionDownloadTask的参数传递 </h1>
 </div>
@@ -100,15 +107,12 @@
 -------------------------------------------万恶的分割线-----------------------------------------------<br />
 然后就说下解决办法吧……其实想想是会吐血的，仔细看看他的.h里面终于发现了还有这个一个东西……至少他是不会变的……<br />
 所以我们既然找到了有不变的东西那么就终于可以有解决办法了……直接把要传的东西转成json靠这个东西传简直轻松又愉快……</p>
-
-<p><pre lang="c">
-/*
- * The taskDescription property is available for the developer to
- * provide a descriptive label for the task.
- */
-@property (copy) NSString *taskDescription;
-</pre></p>
-
+<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="cm">/*</span>
+<span class="cm"> * The taskDescription property is available for the developer to</span>
+<span class="cm"> * provide a descriptive label for the task.</span>
+<span class="cm"> */</span>
+<span class="k">@property</span> <span class="p">(</span><span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">taskDescription</span><span class="p">;</span>
+</code></pre></div>
     </div>
 
   
@@ -119,12 +123,13 @@
 
 
   
-     
+    
     	<li><a href="#program-ref">
-    		program <span>38</span>
+    		program <span>39</span>
     	</a></li>
     
   
+
 
 
     </ul>
@@ -140,7 +145,7 @@
       
         <li><a href="/archive.html">Archive</a></li>
       
-        <li class="next"><a href="/program/2014/02/03/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4" title="未引用图片删除">Next &rarr;</a></li>
+        <li class="next"><a href="/program/2014/03/05/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4" title="未引用图片删除">Next &rarr;</a></li>
       
       </ul>
     </div>
@@ -151,7 +156,7 @@
   <div id="disqus_thread"></div>
 <script type="text/javascript">
     var disqus_developer = 1;
-    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    var disqus_shortname = 'snorlaxzxz'; // required: replace example with your forum shortname
     
     /* * * DON'T EDIT BELOW THIS LINE * * */
     (function() {
@@ -170,17 +175,15 @@
 </div>
 
 
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
       </div>
-      <hr>
-      <footer>
-        <p>&copy; 2014 Xinzheng Zhang
-          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
-          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
-        </p>
-      </footer>
-
     </div>
-
     
   </body>
 </html>

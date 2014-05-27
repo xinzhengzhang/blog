@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -114,7 +126,9 @@
 浏览器是会通过这个FindProxyForURL来选择具体是否选择实用代理<br />
 那么最简单的一个代理就是</p>
 
-<p><pre lang="javascript">
+<p>
+```
+
 function FindProxyForURL(url, host)
 {
     if(dnsDomainIs(host, "twitter.com")
@@ -122,23 +136,23 @@ function FindProxyForURL(url, host)
         return 'PROXY 127.0.0.1:8087'
     }
     return 'DIRECT';
-}</pre></p>
+}
 
-<p></p>
 
-<p>那么稍微再加个正则匹配的就变成这样了</p>
 
-<p><pre lang="javascript">
+那么稍微再加个正则匹配的就变成这样了
+
+
 function FindProxyForURL(url, host) 
 {
     if (shExpMatch(url, "*://*.twitter*")) return 'PROXY 127.0.0.1:8087';
     if (shExpMatch(url, "*://*.google*")) return 'PROXY 127.0.0.1:8087';
     return 'DIRECT';
 }
-</pre></p>
 
-<p>个么最后写完这个脚本丢在哪儿呢<br />
-在 system perference->network->advanced->proxy->auto proxy  configuration把自己刚写的那pac(后缀什么的都无所谓的)给导进去就可以了</p>
+
+个么最后写完这个脚本丢在哪儿呢
+在 system perference->>network->advanced->proxy->auto proxy  configuration把自己刚写的那pac(后缀什么的都无所谓的)给导进去就可以了</p>
 
 <p>enjoy</p>
 
@@ -170,7 +184,7 @@ function FindProxyForURL(url, host)
     <div class="pagination">
       <ul>
       
-        <li class="prev"><a href="/program/2012/10/22/%E5%88%86%E4%BA%ABhtml5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable" title="分享html5新特性 contenteditable">&larr; Previous</a></li>
+        <li class="prev"><a href="/program/2012/10/22/%E5%88%86%E4%BA%ABmd5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable" title="分享html5新特性 contenteditable">&larr; Previous</a></li>
       
         <li><a href="/archive.html">Archive</a></li>
       

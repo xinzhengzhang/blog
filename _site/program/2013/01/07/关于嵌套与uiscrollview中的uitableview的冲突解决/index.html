@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -103,13 +115,12 @@
       <span>07 January 2013</span>
     </div>
     <div class="content">
-      <p>周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的<br />
-首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码
-<pre lang="objective-c">
-- (void)viewDidLoad
+      <p><p>周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的<br />
+首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">- (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view, typically from a nib.
     scr=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
     scr.delegate=self;
     [scr setContentSize:CGSizeMake(320, 800)];
@@ -127,9 +138,9 @@
     [scr addSubview:pand];
     [scr addSubview:tableView];
 }
-</pre>
+
 然后是回调
-<pre lang="objective-c">
+
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     //切记这个代理必须要设置、因为scroll的拖动说白了也是一个gesture、为了流畅性必须要两个触碰事件同时触发
@@ -140,16 +151,17 @@
     //这里就是让背景的拖动定死这样就不冲突了
     if ([gesture state]==UIGestureRecognizerStateBegan) {
         [scr setScrollEnabled:NO];
-    }</pre></p>
+    }
 
-<p>}<br />
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate<br />
-{
-    //拖动完再恢复<br />
-    [scr setScrollEnabled:YES];<br />
 }
-</p>
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    //拖动完再恢复
+    [scr setScrollEnabled:YES];
+}
 
+&gt;
+</code></pre></div>
     </div>
 
   

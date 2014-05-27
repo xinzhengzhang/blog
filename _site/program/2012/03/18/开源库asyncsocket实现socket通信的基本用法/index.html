@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -106,72 +118,72 @@
       <p><a href="https://snorlax.sinaapp.com/Document_Code/AsyncSocket.h">AsyncSocket.h</a>
 <a href="https://snorlax.sinaapp.com/Document_Code/AsyncSocket.m">AsyncSocket.m</a></p>
 
-<p><pre lang="objective-c">
-- (BOOL)connectToHost:(NSString*)hostname onPort:(UInt16)port error:(NSError **)errPtr //connect to the server</pre></p>
+<p><p>
+```</p>
 
-<p>- (void)writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag //send data</p>
+<ul>
+<li><p>(BOOL)connectToHost:(NSString*)hostname onPort:(UInt16)port error:(NSError **)errPtr //connect to the server</p></li>
+<li><p>(void)writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag //send data</p></li>
+<li><p>(void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag //be called when the data was received</p></li>
+<li><p>(void)onSocketDidDisconnect:(AsyncSocket *)sock //be called when the socket disconnect</p></li>
+<li><p>(void)onSocketDidSecure:(AsyncSocket *)sock // be called when TLS is unstable</p></li>
+</ul>
 
-<p>- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag //be called when the data was received</p>
+<p>Example client</p>
 
-<p>- (void)onSocketDidDisconnect:(AsyncSocket *)sock //be called when the socket disconnect</p>
-
-<p>- (void)onSocketDidSecure:(AsyncSocket *)sock // be called when TLS is unstable
-</p>
-
-<p><strong>Example client</strong>
-<pre lang="objective-c">
-AsyncSocket *client;
+<p>AsyncSocket *client;
 NSSError *err=nil;
-NSString *hel=@"hello AsyncSocket!"; 
+NSString *hel=@&quot;hello AsyncSocket!&quot;; 
 NSData *data = [hel dataUsingEncoding:NSISOLatin1StringEncoding];
-[client connectToHost:@"127.0.0.1" onPort:51423 error:&err];
+[client connectToHost:@&quot;127.0.0.1&quot; onPort:51423 error:&amp;err];
 [client writeData:data withTimeout:-1 tag:0];
-- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{  
-    
-    NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
-    NSLog(@"Hava received datas is :%@",aStr);  
-    [aStr release];  
-    [client readDataWithTimeout:-1 tag:0];  
-} 
-</pre>
-<strong>Example server</strong>
-<pre lang="python">
-import socket
-host=''
+- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
+NSLog(@&quot;Hava received datas is :%@&quot;,aStr);  
+[aStr release];  
+[client readDataWithTimeout:-1 tag:0];  
+</code></pre></div>
+<p>} </p>
+
+<p>Example server</p>
+
+<p>import socket
+host=&#39;&#39;
 port=51423
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
 s.bind((host,port))
-s.listen(1)</pre></p>
+s.listen(1)</p>
 
-<p>print "server is running on port %d;press ctrl-c to terminate"<br />
-while 1:<br />
-    try:<br />
-        clientsock, clientaddr = s.accept()<br />
-    except KeyboardInterrupt:<br />
-        raise<br />
-    except:<br />
-        traceback.print_exc()<br />
-        continue<br />
-    try:<br />
-        print "Got connection from", clientsock.getpeername()<br />
-        while 1:<br />
-            data = clientsock.recv(4096)<br />
-            if not len(data):<br />
-                break<br />
-            clientsock.sendall(data)<br />
-    except (KeyboardInterrupt, SystemExit):<br />
-        raise<br />
-    except:<br />
-        traceback.print_exc()<br />
-    try:<br />
-        clientsock.close()<br />
-    except KeyboardInterrupt:<br />
-        raise<br />
-    except:<br />
+<p>print &quot;server is running on port %d;press ctrl-c to terminate&quot;
+while 1:
+    try:
+        clientsock, clientaddr = s.accept()
+    except KeyboardInterrupt:
+        raise
+    except:
+        traceback.print_exc()
+        continue
+    try:
+        print &quot;Got connection from&quot;, clientsock.getpeername()
+        while 1:
+            data = clientsock.recv(4096)
+            if not len(data):
+                break
+            clientsock.sendall(data)
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        traceback.print_exc()
+    try:
+        clientsock.close()
+    except KeyboardInterrupt:
+        raise
+    except:
         traceback.print_exc()</p>
 
-<p></p>
+<blockquote>
+</blockquote>
 
     </div>
 

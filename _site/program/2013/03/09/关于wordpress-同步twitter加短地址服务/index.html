@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -113,20 +125,14 @@
 1.首先从wordpress的根目录开始寻址到/wp-content/plugins/social/views/wp-admin/post/broadcast/options.php （我们需要修改文件就在这<br />
 2.找到第70行 其实我们从这里就可以看出$account['content']里就是我们发出的文本段（鉴于本人太懒不高兴往上找了所以就直接在这段做处理<br />
 3.先用正则式剔出我们blog的url 然后对他进行shorten再替换回去
-<pre lang="php">
-<?php
-    preg_match("#http\://snorlax\.sinaapp\.com/\?p\=\d+#",$account['content'],$matches);
-    $apiKey='3818214747';
-    //调用sina的api 注:这个api在文档显示正在走向废弃的道路所以随时有可能挂也说不定= =
-    //具体调用方法参考http://open.weibo.com/wiki/Short_url/shorten
-    $apiUrl='http://api.t.sina.com.cn/short_url/shorten.json?source='.$apiKey.'&url_long='.$matches[0];
-    $response = file_get_contents($apiUrl);
-    $json = json_decode($response);
-    $tar=str_replace($matches[0],$json[0]->url_short,$account['content']);
+
+```
+
+url_short,$account['content']);
     echo esc_textarea($tar);
-	echo "<p class="\\"readonly\">; 
-	echo esc_textarea($tar); 
-?>
+    echo "; 
+    echo esc_textarea($tar); 
+?>>
 </p></pre></p>
 
 <p>然后跑起来就ok了<br />

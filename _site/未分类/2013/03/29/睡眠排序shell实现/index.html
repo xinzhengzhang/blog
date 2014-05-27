@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -103,24 +115,24 @@
       <span>29 March 2013</span>
     </div>
     <div class="content">
-      <p>又是无意看到群里在讨论东西看到个睡眠排序……觉得好玩的就分享分享<br />
-代码如下（简单的过分 想说的话都写注释里了)
-<pre lang="shell">
-#!/bin/bash
+      <p><p>又是无意看到群里在讨论东西看到个睡眠排序……觉得好玩的就分享分享<br />
+代码如下（简单的过分 想说的话都写注释里了)</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
 function f() {
-    sleep "$1"
-    echo "$1"  
+    sleep &quot;$1&quot;
+    echo &quot;$1&quot;  
 }
-while [ -n "$1" ]
+while [ -n &quot;$1&quot; ]
 do
-    f "$1" & 
+    f &quot;$1&quot; &amp; 
     shift   #对所有参数 依次循环让所有的参数分别sleep进行次根据sleep长短利用数字自身大小的特性进行排序
 done
 wait  #主进程等到全部子进程结束后返回结束
 #这个排序有个致命伤 如果os调度高于了数字最小的差值比如就必定会出错 或者随便来个来自系统的别的竞争也肯定悲剧了
 #还有就是……万一这个数字很大你等到明年去么混蛋= =
-</pre></p>
 
+&gt;
+</code></pre></div>
     </div>
 
   

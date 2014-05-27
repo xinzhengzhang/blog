@@ -81,6 +81,18 @@
       
     
   
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
 
 
 
@@ -106,53 +118,53 @@
       <p><a href="https://github.com/marcuswestin/WebViewJavascriptBridge">marcuswestin / WebViewJavascriptBridge</a>
 <strong>1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project</strong></p>
 
-<p><strong>2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge's delegate</strong>
-<pre lang="objective-c">
-   #import <UIKit/UIKit.h>
-#import "WebViewJavascriptBridge.h"</pre></p>
+<p><p><strong>2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&#39;s delegate</strong></p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">   #import 
+#import &quot;WebViewJavascriptBridge.h&quot;
 
-<p>@interface ExampleAppDelegate : UIResponder <UIApplicationDelegate, WebViewJavascriptBridgeDelegate></p>
+@interface ExampleAppDelegate : UIResponder 
 
-<p>@end</p>
+@end
 
-<p>@implementation ExampleAppDelegate</p>
+@implementation ExampleAppDelegate
 
-<p>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions<br />
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];</p>
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-<p>    self.webView = [[UIWebView alloc] initWithFrame:self.window.bounds];<br />
-    [self.window addSubview:webView];<br />
-    self.javascriptBridge = [WebViewJavascriptBridge javascriptBridgeWithDelegate:self];<br />
-    self.webView.delegate = javascriptBridge;</p>
+    self.webView = [[UIWebView alloc] initWithFrame:self.window.bounds];
+    [self.window addSubview:webView];
+    self.javascriptBridge = [WebViewJavascriptBridge javascriptBridgeWithDelegate:self];
+    self.webView.delegate = javascriptBridge;
 
-<p>    [self.window makeKeyAndVisible];<br />
-    return YES;<br />
-}</p>
+    [self.window makeKeyAndVisible];
+    return YES;
+}
 
-<p>- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView <br />
+- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView 
 {
-    NSLog(@"MyJavascriptBridgeDelegate received message: %@", message);<br />
-}</p>
+    NSLog(@&quot;MyJavascriptBridgeDelegate received message: %@&quot;, message);
+}
 
-<p>@end
+@end
 
-<strong>3) Go ahead and send some messages from Objc to javascript</strong></p>
+3) Go ahead and send some messages from Objc to javascript
 
-<p><pre lang="objective-c">
-[self.javascriptBridge sendMessage:@"Well hello there" toWebView:self.webView];
-</pre></p>
 
-<p><strong>4) Finally, set up the javascript side of things</strong>
-<pre lang="objective-c">
-document.addEventListener('WebViewJavascriptBridgeReady', function onBridgeReady() {
+[self.javascriptBridge sendMessage:@&quot;Well hello there&quot; toWebView:self.webView];
+
+
+4) Finally, set up the javascript side of things
+
+document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBridgeReady() {
     WebViewJavascriptBridge.setMessageHandler(function(message) {
-        alert('Received message: ' + message)
+        alert(&#39;Received message: &#39; + message)
     })
-    WebViewJavascriptBridge.sendMessage('Hello from the javascript')
+    WebViewJavascriptBridge.sendMessage(&#39;Hello from the javascript&#39;)
 }, false)
-</pre></p>
 
+&gt;
+</code></pre></div>
     </div>
 
   

@@ -1,0 +1,1218 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>snorlax's Homepage</title>
+    
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">About me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archives</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          <!-- <ul class="listing"> -->
+
+<div class="page-header">
+  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F">被windows艹了一天的小感 </a></h3>
+  <div class="date">
+    <span>16 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>作为一个ms黑、都三年了也没正经的写过一点windows、今天算是头天吧……然后就被打击透顶了</p>
+
+<p>需求就是让台电脑崩了、这么个需求我就出了2个方案、</p>
+
+<p>1.想办法拿到个内核态的指针然后喀了然后蓝掉</p>
+
+<p>2.蔽了键盘和鼠标也同样效果实现了</p>
+
+<p>反正就是这两条路子坑了我走了一天……</p>
+
+<p>先是一、想尽办法奈何不了大windows封装的太深、册那每个函数那么多参数看来不是没道理的、怪不得野指针那么容易指死机、想从驱动入手、没办法完全没有驱动编程的基础、没办法第一条路就死了</p>
+
+<p>然后是二、这个还是挺容易下手的、网上也到处都是类似的代码但是我还是失败了……首先我想到的是全局钩子（就是把所有的按键事件捕获住然后直接吃掉</p>
+
+<p>零基础痛苦的开始看api的阶段就不说了……（虽然说搞懂了后还是非常简单的</p>
+
+<p>然后就全局吃掉键盘和鼠标嘛看着很愉快的、然后丢到同学机子上一测、傻逼了、大360直接监测出来了我拿了键鼠去提醒用户了（伪装性差透了、失败</p>
+
+<p>接着无限的搜索我又发现了系统API竟然可以直接蔽掉INPUT、好吧我真的激动了半天、你360总不能杀系统API吧、好了就3行代码……效果实现了、360也没杀出来、又高兴了一阵然后我又发现傻逼了……任务管理器还是能调出来的、而且这个系统API是在当前进程下的、也就是任务管理器一出一杀我就悲剧了……又失败了……失败了怎么就能倒下、我又开始做局部的钩子杀掉ctrl 杀掉alt 都没问题……可是单独的杀是没问题的组合起来又悲剧了……好吧既然杀不掉你的启动方式我就杀你这个服务、又找了在注册表禁了、可是这大概是几年前的文章吧、混蛋还是好好的跑起来……那我再想、直接拿文件流去写你的文件吧、两跟进程跑着看你怎么开、当然愿望肯定是美好的……没权限……崩溃了……然后我又只能放弃二了</p>
+
+<p>然后上面这点试试下来整整一天就没了Orz……</p>
+
+<p>没办法放弃了、看来报着的心态是坏的、也是做不大出来东西的……想去论坛问问都不晓得怎么开口……</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#瞎写写-ref">
+    		瞎写写 <span>4</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/life/2012/11/14/%E4%B8%80%E4%BA%BA%E6%9A%AE%E3%82%89%E3%81%97">一人暮らし </a></h3>
+  <div class="date">
+    <span>14 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>最近心情很差、很多很多方面</p>
+
+<p>今天也是如此、不知道为什么看到那些在比赛html5的心情很差、主要原因应该就是觉得我也应该是其中一员吧</p>
+
+<p>当然放弃也是我自己当时的抉择、也没有任何人好怪的、当时开始报名的时候我就怀着的心态就非常矛盾、大概也应该是心疼那三百块钱吧……再其实也不是因为那一点报名费、而是就只有我一个人的无助感吧、我总是就这么一个人、一个人……我也觉得我不是冷无缺也不是什么很难相处的人为什么我的朋友很少呢、不管任何方面</p>
+
+<p>有时候就是想这么去找个可以和自己一起去打的人都好难、算了纠结原因也就是我那个奇怪的性格吧、做项目也是如此、当我一个人打的时候我并没有感觉什么、当我有队友时当我们没法合拍时我也不知道怎么办、我也知道他们可以一起帮忙、可是为什么我有这份心却怎么样都合不起来、合不起来合不起来我只能一次次放弃、讽刺的到现在我应该一个像样的东西都没有做出来过吧、我很佩服那个做猛犸browser的孩子、或许他的心态就跟我一样、但是他却可以作出一件件像样的东西、而我这个渣也就这么只会去惆怅下去吧、其实这麻痹就还是归结于一个缩字</p>
+
+<p>其实我真的不想永远一个人从早上挖开眼睛就对着我的电脑老婆、不想永远一个人的走在校园的路上、不想一个人出去看电影、不想一个人出去吃饭、真的不想</p>
+
+<p>想想一个人在学校住了十二年、想想一个人了二十年、想想才有几个交心的朋友、或者这才是我上次哭的原因、或许这才是我的悲哀吧</p>
+
+<p>牢骚发完了、尽快从最近这状态出来吧、傻逼你二十年的人生不是早已经习惯了么？</p>
+
+<p></p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#life-ref">
+    		life <span>5</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/13/aria2c-%E8%BF%85%E9%9B%B7%E7%A6%BB%E7%BA%BF%E7%9A%84%E4%B8%8B%E8%BD%BD%E6%B3%95">aria2c 迅雷离线的下载法 </a></h3>
+  <div class="date">
+    <span>13 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>随着loli.lu给封掉了、批量下迅雷离线真是烦的要死……</p>
+
+<p>不过网上看了半天总归是有解法的、然后试验了下方法如下</p>
+
+<p>首先先要上迅雷离线的页面然后随便开始抓cookie、<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/B16011E7-7388-48C4-B458-6A37CA799987.jpg"><img class="alignnone size-full wp-image-114" title="B16011E7-7388-48C4-B458-6A37CA799987" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/B16011E7-7388-48C4-B458-6A37CA799987.jpg" alt="" /></a>好吧那么多哪儿些有用的呢……</p>
+
+<p>wjysessid，download_uid，KCWEBUID 就这3个字段的足亦</p>
+
+<p>然后在这简单的介绍下神器aria2c吧（虽然我本来想就说句去查man手册吧……</p>
+
+<p>最基本的下载 aria2c URL</p>
+
+<p>重命名 -o aria2c NEWNAME URL</p>
+
+<p>多线程加批量加断点续传 aria2c -c -s THREAD_NUM -i URL_PATH</p>
+
+<p>下bt</p>
+
+<p>aria2c --select-file=FILE_LIST_NUMBER TORRENT_PATH ex. aria2c --select-file=2,4-6 temp.torrent</p>
+
+<p>设置bt端口</p>
+
+<p>aria2c --listen-port=PORT TORRENT_PATH</p>
+
+<p>设置dht端口</p>
+
+<p>aria2c --dht-listen-port=PORT TORRENT_PATH</p>
+
+<p>然后伪装头部！（就靠这玩意了……</p>
+
+<p>aria2c --header="Cookie:KEY1=VALUE1;KEY2=VALUE2;" URL</p>
+
+<p>&nbsp;</p>
+
+<p>那么最后一个完整的命令是什么样呢（这里不能加-c 具体我也不清楚……一加c就给403了)</p>
+
+<p>aria2c --header="Cookie:wjysessid=a091798dc37604777235ee4dc74c8078;download_uid=1008830576;KCWEBUID=4332894332477639924" -s 5 -i source.txt --dir=/home/zxz/henna/11_13 ……………………URL……………………</p>
+
+<p>具体的还是自己去看man手册吧、aria2c好像什么都能伪造的感觉……</p>
+
+<p>最后吐槽一下那个没gui的 Ubuntu Server……下点片子都那么费劲……</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/11/%E5%85%89%E6%A3%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E9%97%AF%E5%85%B3%E6%94%BB%E7%95%A51_9%E6%90%AD%E6%A2%AF4_6_8">光棍程序员闯关攻略1_9(搭梯4_6_8) </a></h3>
+  <div class="date">
+    <span>11 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>码农命就敲代码、如此好日子我就玩了那个闯关、说实话这个真的不错、好吧其中三关是想破头都没想出来的</p>
+
+<p>门如下http://segmentfault.com/game/</p>
+
+<p>第一关 看下源代码看到有个下一关（就是颜色个背景遮掉了……轻松过</p>
+
+<p>第二关 看源码里面直接把密码给你了……（easy</p>
+
+<p>第三关 这里源码就已经没有任何提示了……想想一个网页还是什么地方能提供给你信息？body没了那么就看http response吧、一看http报头 密码就在那了（也算easy</p>
+
+<p>第四关 坑爹的来了、他给你的提示是让你解密、根据上面的经验所有的信息也就只有cookie了……然后我开始了坑爹的解析cookie……尼玛浪费了老子将近一个小时那四五个值屁都得不出……我终于开始找我大google了、然后我终于发现前人栽的路了、仔细注意每次的url都是一个md5、所有这里就应该是 printf 5|md5 算一个5的md5就是下一关了……（坑爹、再坑一点</p>
+
+<p>第五关 第六关是一个二维码、凭着上面那个题的尿性也知道不可能直接扫一下就出答案的、虽然我还是试了下（还被嘲讽了……你可以解一下他上面是什么字）正确是怎么做呢、鉴于之前解了次那个东大的东西我有经验了、什么东西都用纯文本开开看看、好了轻松愉快的key就写在图片里呢（这关还好吧</p>
+
+<p>第六关 这tm才是大坑！！！！算了我告诉你答案吧、把他给你的那个md5贴到google上去、找某一个人的回复……他说的是建议google把这个md5给收入了……然后他的key值就是了……（这个我真的无语……</p>
+
+<p>第七关 他直接给了你个md5、和上关一样、你还傻逼的再去查么？你还太年轻……直接把这个md5贴到网址上就好了（做了这么多题还摸不透出题的德行么……</p>
+
+<p>第八题 刚才那个是大坑吧、这个是大大大大大大大大大大坑！！被上面几个都是解密什么的已经弄昏双眼了……我又开始无穷无尽的解md5、这次还是随机的出来数组、和第七关那个的是有联系的、于是我生成了10多组数据开始研究……一个小时过去了……我放弃了、我找梯子吧……公布答案（这回不用再去研究md5了、回过头来看源码、仔细看下一个表单他的方法是<strong>GET</strong>！见过表单是get的？开玩笑吧……果断firebug改成post……提交上去了……到第九关了……</p>
+
+<p>第九题 还是因为做过东大的那个解密、看到那串10逼着眼睛就开始准备转了、等等他出了1 0还有_ 这是什么东西、我仔细观察了下所有的_都是4个一组的、这以为着什么、应该就是填空吧、那填什么空？今天是光棍节啊不填1111可能么？好吧就是这样、填上1111  记得做个处理去空格去回车 sed 's/ //g' a.strings | tr -d '\n'</p>
+
+<p>再用我前篇blog写的程序大端转转完一看你就懂了（试试看1111填别的转转看就知道不对了、都是data）然后看到熟悉的＝了吧……base64啊亲、base64解码然后file一下是gzip……然后还要我教你干嘛么？其实gzip解压后还要用tar再解一次然后就出现了。最后就是一张仓老师的图片了……上面写着下一关的地址</p>
+
+<p>好了以上、这个光棍节还是蛮好玩的……</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F-2">第三范式&BC范式 </a></h3>
+  <div class="date">
+    <span>08 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>1.概念 BC范式是建在第三范式之上的 第三范式的成立条件是以下三者成立一个</p>
+
+<p>1.1 对所有的函数依赖 A-&gt; B 是一个平凡的函数依赖（平凡的还书依赖就是他们没有任何依赖关系</p>
+
+<p>1.2 A-&gt;B A是所有关系（R）的一个超码（就是能决定所有的元素</p>
+
+<p>1.3 B－A 中的每个属性都包含与R的一个候选码</p>
+
+<p>而BC范式就是只能满足1.1或者1.2中的一个</p>
+
+<p>&nbsp;</p>
+
+<p>注：即 满足 1.1 或者1.2的就是BC范式（同时他也是第三第二第一范式）</p>
+
+<p>有一个满足1.3的就是第三范式</p>
+
+<p>&nbsp;</p>
+
+<p>2. 实例说明(</p>
+
+<p>2.1 表：ID,name,age,department,department_num</p>
+
+<p>&nbsp;</p>
+
+<p>存在的函数依赖</p>
+
+<p>ID -&gt; name,age,department,department_num</p>
+
+<p>department -&gt; department_num</p>
+
+<p>根据 1.1 摆明ID和后面那么多关系肯定不是平凡的 不符合1.1</p>
+
+<p>根据 1.2  department -&gt; department_num department不是关系的超码 所以不符合1.2</p>
+
+<p>根据1.3 B-A={name,age,department,department_num}-{ID}= {name,age,department,department_num} (减法流程左边有就减去、没有就无视)</p>
+
+<p>明显几个属性都不属于 ID 所以不符合1.3</p>
+
+<p>即不是第三范式</p>
+
+<p>拆：</p>
+
+<p>由于ID -&gt; name,age,department,department_num 这条不满足1.3 所以在右边继续寻找函数依赖</p>
+
+<p>即department -&gt; department_num</p>
+
+<p>把依赖关系的左边并进原来的关系 即于ID,name,age+department</p>
+
+<p>再把依赖的和被依赖的单独拉进一张表</p>
+
+<p>ID,name,age,department 符合1.2</p>
+
+<p>department,department_num 符合1.2  即拆完的符合BC范式</p>
+
+<p>2.2 表 ID1,ID2,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1-&gt;age</p>
+
+<p>ID2-&gt;age</p>
+
+<p>根据 1.1 摆明不符合</p>
+
+<p>根据1.2 ID1不是关系的超码（因为ID1 无法确定ID2 也不符合1.2</p>
+
+<p>根据 1.3 age不属于ID1 所以也不符合 1.3</p>
+
+<p>即不是第三范式（更不是BC范式</p>
+
+<p>右边不存在依赖关系</p>
+
+<p>所以把 ID1 和 age放在一张表 单独剩下一个ID2 他和ID1的关系是平凡的</p>
+
+<p>即编程如下表</p>
+
+<p>ID1,age   符合1.2</p>
+
+<p>ID1,ID2  符合1.1(他们两个是平凡关系</p>
+
+<p>即拆成了BC范式</p>
+
+<p>2.3 表 ID1+ID2 ,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1,ID2-&gt;age 满足1.2</p>
+
+<p>即是BC范式</p>
+
+<p>2.3 表 仓库ID+ 存储物品ID, 管理员ID, 数量</p>
+
+<p>或仓库ID,存储物品ID+ 管理员ID, 数量</p>
+
+<p>存在函数依赖</p>
+
+<p>仓库ID－&gt;管理员ID  符合1.3</p>
+
+<p>管理员ID -&gt; 仓库ID 符合 1.3</p>
+
+<p>仓库ID,存储物品ID－&gt;管理员ID,数量 符合 1.2</p>
+
+<p>管理员ID,存储物品ID－&gt;仓库ID,数量 符合 1.2</p>
+
+<p>所以他是第三范式</p>
+
+<p>因为右边没有函数依赖关系</p>
+
+<p>把仓库ID和管理员ID放一张表</p>
+
+<p>仓库ID和存储物品和数量一张表</p>
+
+<p>即 仓库ID, 管理员ID 符合 1.2</p>
+
+<p>仓库ID+存储物品ID,数量 符合 1.2</p>
+
+<p>即拆成了BC范式</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F">第三范式&BC范式 </a></h3>
+  <div class="date">
+    <span>08 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>1.概念 BC范式是建在第三范式之上的 第三范式的成立条件是以下三者成立一个</p>
+
+<p>1.1 对所有的函数依赖 A-&gt; B 是一个平凡的函数依赖（平凡的还书依赖就是他们没有任何依赖关系</p>
+
+<p>1.2 A-&gt;B A是所有关系（R）的一个超码（就是能决定所有的元素</p>
+
+<p>1.3 B－A 中的每个属性都包含与R的一个候选码</p>
+
+<p>而BC范式就是只能满足1.1或者1.2中的一个</p>
+
+<p>&nbsp;</p>
+
+<p>注：即 满足 1.1 或者1.2的就是BC范式（同时他也是第三第二第一范式）</p>
+
+<p>有一个满足1.3的就是第三范式</p>
+
+<p>&nbsp;</p>
+
+<p>2. 实例说明(</p>
+
+<p>2.1 表：ID,name,age,department,department_num</p>
+
+<p>&nbsp;</p>
+
+<p>存在的函数依赖</p>
+
+<p>ID -&gt; name,age,department,department_num</p>
+
+<p>department -&gt; department_num</p>
+
+<p>根据 1.1 摆明ID和后面那么多关系肯定不是平凡的 不符合1.1</p>
+
+<p>根据 1.2  department -&gt; department_num department不是关系的超码 所以不符合1.2</p>
+
+<p>根据1.3 B-A={name,age,department,department_num}-{ID}= {name,age,department,department_num} (减法流程左边有就减去、没有就无视)</p>
+
+<p>明显几个属性都不属于 ID 所以不符合1.3</p>
+
+<p>即不是第三范式</p>
+
+<p>拆：</p>
+
+<p>由于ID -&gt; name,age,department,department_num 这条不满足1.3 所以在右边继续寻找函数依赖</p>
+
+<p>即department -&gt; department_num</p>
+
+<p>把依赖关系的左边并进原来的关系 即于ID,name,age+department</p>
+
+<p>再把依赖的和被依赖的单独拉进一张表</p>
+
+<p>ID,name,age,department 符合1.2</p>
+
+<p>department,department_num 符合1.2  即拆完的符合BC范式</p>
+
+<p>2.2 表 ID1,ID2,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1-&gt;age</p>
+
+<p>ID2-&gt;age</p>
+
+<p>根据 1.1 摆明不符合</p>
+
+<p>根据1.2 ID1不是关系的超码（因为ID1 无法确定ID2 也不符合1.2</p>
+
+<p>根据 1.3 age不属于ID1 所以也不符合 1.3</p>
+
+<p>即不是第三范式（更不是BC范式</p>
+
+<p>右边不存在依赖关系</p>
+
+<p>所以把 ID1 和 age放在一张表 单独剩下一个ID2 他和ID1的关系是平凡的</p>
+
+<p>即编程如下表</p>
+
+<p>ID1,age   符合1.2</p>
+
+<p>ID1,ID2  符合1.1(他们两个是平凡关系</p>
+
+<p>即拆成了BC范式</p>
+
+<p>2.3 表 ID1+ID2 ,age</p>
+
+<p>存在函数依赖</p>
+
+<p>ID1,ID2-&gt;age 满足1.2</p>
+
+<p>即是BC范式</p>
+
+<p>2.3 表 仓库ID+ 存储物品ID, 管理员ID, 数量</p>
+
+<p>或仓库ID,存储物品ID+ 管理员ID, 数量</p>
+
+<p>存在函数依赖</p>
+
+<p>仓库ID－&gt;管理员ID  符合1.3</p>
+
+<p>管理员ID -&gt; 仓库ID 符合 1.3</p>
+
+<p>仓库ID,存储物品ID－&gt;管理员ID,数量 符合 1.2</p>
+
+<p>管理员ID,存储物品ID－&gt;仓库ID,数量 符合 1.2</p>
+
+<p>所以他是第三范式</p>
+
+<p>因为右边没有函数依赖关系</p>
+
+<p>把仓库ID和管理员ID放一张表</p>
+
+<p>仓库ID和存储物品和数量一张表</p>
+
+<p>即 仓库ID, 管理员ID 符合 1.2</p>
+
+<p>仓库ID+存储物品ID,数量 符合 1.2</p>
+
+<p>即拆成了BC范式</p>
+
+<p>&nbsp;</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/06/%E5%A4%8D%E4%B9%A0%E7%BD%91%E7%BB%9C%E6%97%B6%E7%9A%84%E4%B8%80%E4%B8%AA%E5%BE%88%E4%B8%8D%E6%88%90%E7%86%9F%E7%9A%84%E6%83%B3%E6%B3%95">复习网络时的一个很不成熟的想法 </a></h3>
+  <div class="date">
+    <span>06 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>这两天校园网实在渣、搞的很不爽、正好又在复习网络时看到了web缓存。突然迸出了一个很不靠谱也很不成熟的一个想法。尼玛中国有那么多防火墙、都已经能有五层协议栈了、如果除了搞掉和谐物之外什么的之外都、加上一个类似web缓存的功能。<br />
+大致想法是这样的<br />
+首先所有的资源都先有个统一的校验、比如hash什么的<br />
+然后得改协议、在报文段先识别出是否有过缓存<br />
+然后中间服务器和自己的资源列表比对一遍、再发往目的地<br />
+然后目的地再通过协议里的字段处理</p>
+
+<p>好吧……我再来分析下这样的不可行性……<br />
+1.世界上所有资源的绝对统一的校验（我觉得这个还是可行的-_-#<br />
+2.要改tcp协议、尼玛你是啊说改就能改！？（光这个我就洗洗睡吧……<br />
+3.中间服务器这样需要多大的开销、每台机子相当于个小的镜像服务器了这样还是全世界的资源……<br />
+4.所有的网站要支持这个还需要自己去修改自己的代码……（还是可行……但我还是洗洗睡吧……<br />
+5.这样相当于一个小的局域网共享同一份资源、我大gfw真是笑哈哈了、直接部署在中间节点上管你违和物视频图片一网打尽啊（我一定是给方滨兴电过了……</p>
+
+<p>最后说说如果真能这样会有什么好处呢<br />
+1.首先用户体验提升无数倍、比如A站B站共享一个渣浪源、不同的人去请求同个源、那就不需要重复请求了、网络整体的负担我相信也能减一个指数级的感觉……（但每台服务器都用刀片么？要部署多少中间服务器啊？谁来出钱啊混蛋……<br />
+2.因为缓存对目的服务器的负担小很多了、把整体的负荷减小了很大一个量级而且从原来的最终端分布到各个节点上了</p>
+
+<p>综上也就是脑补而已Orz</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#瞎写写-ref">
+    		瞎写写 <span>4</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/04/%E5%85%B3%E4%BA%8E%E4%B8%9C%E5%A4%A7%E6%83%85%E6%8A%A5%E7%A0%94%E7%A9%B6%E7%94%9F%E6%B5%B7%E6%8A%A5%E7%9A%84%E5%BD%A9%E8%9B%8B">关于东大情报研究生海报的彩蛋 </a></h3>
+  <div class="date">
+    <span>04 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>今天在weibo上看到有人转发的关于东京大学情报科研究生海报里的彩蛋，务真精神我就来落实了一下<br />
+其中各种把1 0 串如何想到正确的转发的才是难点……我这彩笔是还得再战10年估计的……所以在这就把正确方法一步步落实下来<br />
+首先先看海报<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg"><img class="alignnone size-full wp-image-88" title="tokyo_daigaku_information_notice" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg" alt="" width="580" height="820" /></a></p>
+
+<p><strong>关键不在妹子！</strong></p>
+
+<p>好吧，我们先用orc软件把那个少女身前所有的一零串全部扫出来扫出来的东西如下</p>
+
+<p>00011111100010110000100000000000000000000000000000000000000000000000001000000011011011010101000011001011010011<br />
+10110000100100000000010100001111010101001100011110100001010101101010110101100000001110000000000011010100001101<br />
+10000101000100010011011010001110001000010110001100010011000110101100010011000011010010011010011000001101100010<br />
+11100000011010011010101001010111100001110100010011011001110101100000001011000011110111010010111101110010111000<br />
+11010110000001010010011000101110111111000000000011111111110000111000111101110000111000011110001100010110010011<br />
+01000011001000100110010011110011001001110010111001111101111001111010010011011110111110111001111101111111010111<br />
+11000111111000000001101100001000011110110010000001100001010100101011010010011010110011000010010010000010000010<br />
+10010100100001100011011000110010000110001101010110010001010101111001000101010010101100001100111100010011110111<br />
+10000101001010111110010000000001010000111010010001100010101101100001100110100010010011011110111111010010001000<br />
+01000110000111001011100001001100101110010000101010000101111100011100111101001111101110011011010110100000001011<br />
+10111101011101010110010010110000011011000010101111011010111010000111101101001110010110010110111001000111011011<br />
+11111110000100111110111110011110111100001100110111000001110100001001001001000001010100101100011010000101100011<br />
+00010011010110110000110011100110101001001100101001000111110000010110000000100010011011010101011100111000000100<br />
+11101011110110011001010101011001011010110111011111111010110000111010100100100110001111101011000010011100110110<br />
+10101001111011010101000111110000011110100011110110100001010101110111010101001110010001110101000101000101000001<br />
+01010010110001101011010110001100000111001001010000011000100110000110001000110010111111100101101010011110011101<br />
+10011110011000111100101110000101010101000110101101111010001000111001110100100001111110011111010101000110010101<br />
+00110010001111111011111000000100111001111001110101010001101110011000100100010110010111010011111000101100001011<br />
+11100010100010011000110110111010011001001001111011010010111000001111000011100100100100010011101011010001110010<br />
+01100101001101100001101100110000111111010010101000011010011000000111110100011000100001101010010110100110110110<br />
+01010001010000101001110011010110000101110001111010000101001011100100110100001001000001101000110101111110001010<br />
+01010000100100011000011000110110110111110100000010011110111001100000010011100100100101100010000010111111100101<br />
+10110110111000100000100010100000100001100001001110011101001000101000000110001110011000011101111100101000111101<br />
+01000011010010100100011000001000010001111011110001101010100110001111110100001101110100100001101101100010101101<br />
+11000010111011101011111111011110010000100010100101101101100100110101111000001101110010100000011100110101011000<br />
+01111011110010100000000010110111111110101010100011000010011100000110111110000000010000000000000000<br />
+记得去掉每行的\n啊</p>
+
+<p><p>昏头了吧……这玩意怎么搞……我看到反正也是蒙了，要不是有大哥来解释我还真就昏倒了，首先他先分析了这些数字一共的数量
+<strong>2848</strong>
+这个数字有什么特别的？<br />
+他是8的倍数啊！他会不会就是字节流啊……<br />
+那么他是大端的还是小端的呢……好吧大哥说他是大端，那就是大端吧那么就用大端的方式解析<br />
+首先我自己的电脑是小端机，就稍微做一点处理写了一个小程序代码如下(所有判错的部分全部都省略了</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#include 
+#include 
+int current_bit = 0;
+unsigned char bit_buffer;
+//bit转byte
+void WriteBit (int bit,FILE *f)
+{
+    if (bit)
+        bit_buffer |= (1=0; j--) {
+                tt[j]-=48;
+                WriteBit(tt[j], f);
+            }
+            //大端机用这个
+//            for (j=0; j
+
+    fclose(f);  
+    fclose(a);
+    return 0;
+}
+
+代码很快就写好了，输出的文件是什么呢……
+
+
+我擦，坑爹啊，这是什么shit啊……没关系，可以看他是什么的嘛……
+
+
+是个gzip的压缩包啊，看来已经走进真相了！好把用tar给他解压了是个什么shit……
+
+奔溃了，有是这种非人类所读的东西……但是注意一下，就算是乱啊也有一个很关键的可依稀识别的java/lang/String!尼玛搞了半天原来你是个java啊，好的，那就把你后缀改成class 然后用java再跑一下！
+
+有java的出错信息了，那么久了终于碰到一个程序员能看的东西了……泪流满面，那就把他反编译一下看看到底是什么问题，检查出最后是因为名字的问题，那么好吧，把class 改成 i.class
+然后最后等待奇迹的时刻吧……= =
+
+
+他终于出了个网址了啊……泪流满面……
+
+少年你以为这样就拿到东大的offer了么？你还太年轻……做到这步你就有直接去面试的资格了，要直接拿到offer需要继续解码一段音频，好吧，我觉得那已经超出我能力范围了，这个彩蛋揭秘过程就到这吧
+
+最后：外国的牛逼大学真心大陆能比？就说这样的在一张小小的海报策划的功夫、呵呵呵
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/11/02/os-x-safari%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE">os x safari代理配置 </a></h3>
+  <div class="date">
+    <span>02 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先先问候一下方校长，自从google被封了一批ip后墙翻的我简直痛不欲生一会么证书伪造一会么500……<br />
+大chrome崩溃的频率也tm越来越高，想来想去既然是os x那就索性用safari装x到到底-_-#</p>
+
+<p>个么safari上默认的设代理就是全局翻（上weibo什么的怎么办啊不卡死啊……<br />
+那就也写个简单点的代理就好了么（其实如果用chrome的switchysharp直接导出他的配置文件就好了
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/6FC51D93-7ED1-46FA-A632-14B720CAE1EE.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/6FC51D93-7ED1-46FA-A632-14B720CAE1EE-300x163.jpg" alt="" title="6FC51D93-7ED1-46FA-A632-14B720CAE1EE" width="300" height="163" class="alignnone size-medium wp-image-82" /></a></p>
+
+<p>那么没有的怎么搞呢，自己写一个也很简单的<br />
+浏览器是会通过这个FindProxyForURL来选择具体是否选择实用代理<br />
+那么最简单的一个代理就是</p>
+
+<p>
+```
+
+function FindProxyForURL(url, host)
+{
+    if(dnsDomainIs(host, "twitter.com")
+    {
+        return 'PROXY 127.0.0.1:8087'
+    }
+    return 'DIRECT';
+}
+
+
+
+那么稍微再加个正则匹配的就变成这样了
+
+
+function FindProxyForURL(url, host) 
+{
+    if (shExpMatch(url, "*://*.twitter*")) return 'PROXY 127.0.0.1:8087';
+    if (shExpMatch(url, "*://*.google*")) return 'PROXY 127.0.0.1:8087';
+    return 'DIRECT';
+}
+
+
+个么最后写完这个脚本丢在哪儿呢
+在 system perference->>network->advanced->proxy->auto proxy  configuration把自己刚写的那pac(后缀什么的都无所谓的)给导进去就可以了</p>
+
+<p>enjoy</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2012/10/22/%E5%88%86%E4%BA%ABmd5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable">分享html5新特性 contenteditable </a></h3>
+  <div class="date">
+    <span>22 October 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>最近做个项目碰到一个很纠结的问题，富文本编辑。什么脑筋都动了，抓js句柄，手动解析标签属性，然后转成ios的font等等，想都不用想这种愚蠢又耗时的行为是不可能解决问题的。直到大stackoverflow救了我<br />
+原帖如下<br />
+http://stackoverflow.com/questions/8012245/using-ios-5-rich-text-editor<br />
+用到的最重要的新特性 就是 contenteditable<br />
+具体demo 如下<br />
+http://html5demos.com/contenteditable</p>
+
+<p><p>简单来说就是加个section 设置个 contenteditable，就那么简单！<br />
+比如</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> hi 我来作试验的 
+  首先是段落 
+  &amp;nbsp; &amp;nbsp; 然后是缩进  
+
+ 然后多换行  
+ 然后大段文字ahdjasd  
+
+jaieowajkncnxmbfhawija
+ hiiii   
+
+ &amp;nbsp; &amp;nbsp; test over 
+
+
+
+
+
+----------------------------------我是分割线-------------------------
+
+ hi 我来作试验的 
+  首先是段落 
+  &amp;nbsp; &amp;nbsp; 然后是缩进  
+
+ 然后多换行  
+ 然后大段文字ahdjasd  
+
+jaieowajkncnxmbfhawija
+ hiiii   
+
+ &amp;nbsp; &amp;nbsp; test over 
+
+
+仅仅只要把需要编辑的部分加个section设置个 contenteditable＝true，所有的富文本编辑问题就这么搞定了……
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<!-- </ul> -->
+
+<div id="post-pagination" class="paginator">
+
+  
+    
+    <a href="/page3">前页</a>
+    
+  
+
+      
+      <a href="/">1</a>
+      
+
+    
+      
+      <a href="/page2">2</a>
+      
+    
+      
+      <a href="/page3">3</a>
+      
+    
+      
+      <span class="current-page">4</span>
+      
+    
+      
+      <a href="/page5">5</a>
+      
+    
+      
+      <a href="/page6">6</a>
+      
+    
+
+  
+    <a class="next" href="/page5">后页</a>
+  
+  (共51篇)
+</div>
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
+    
+  </body>
+</html>
+

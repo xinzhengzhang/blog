@@ -107,6 +107,77 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">关于windows里的python环境配置 </a></h3>
+  <div class="date">
+    <span>29 January 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先windows下面没有类似bpython、ipython等神器……<br />
+很小很小的东西当然可以用sublime text2但是稍微复杂点的没有一个好点的ide还是不行的<br />
+先是推荐一个不错的ide是jetbrains做的pycharm、根据这牌子名可想而知肯定是不错的啦、但可惜人家是收费的（当盗版狗是不好的行为……<br />
+然后选择了eclipse+pydev、试用了下效果还是非常不错的（应该是新电脑跑eclispe非常流畅的缘故了啦（¯﹃¯）<br />
+个么要装分别就是<br />
+1.Java http://www.java.com/zh_CN/download/index.jsp<br />
+2.Jdk http://www.oracle.com/technetwork/java/javase/downloads/index.html<br />
+3.eclipse http://www.eclipse.org/downloads/<br />
+4.pvDev http://pydev.org/manual_101_install.html (其中尤其要关注一下 Then, UNCHECK the 'Contact all update sites during install to find required software' and press<br />
+'Next' again to confirm your selection. 把那个钩子要去掉的因为这个失败了好多次<br />
+5.python http://python.org/download/<br />
+分别全装完之后还剩下最后就是要在eclipse里设置python解释器的路径了<br />
+6.windows->perferences->PyDev->Interpereter-Python 设置5中python的路径</p>
+
+<p>enjoy</p>
+
+<p>ps.切记1 2 3步的要么全是32位要么全是64 因为64位机能够很成功自然得装上32位的Java然后再eclipse里会加载jvm.dll是出错……详见http://stackoverflow.com/questions/7352493/failed-to-load-the-jni-shared-library-jdk</p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#未分类-ref">
+    		未分类 <span>3</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8">关于处理掉urllib2中的错误提示异常 </a></h3>
   <div class="date">
     <span>21 January 2013</span>
@@ -1012,413 +1083,6 @@ CRC(循环冗余检测) 4字节  存储用来检测是否有错误的循环冗�
 </div>
 
 
-<div class="page-header">
-  <h3><a href="/program/2012/11/24/regexkit%E7%AC%94%E8%AE%B0">RegexKit笔记 </a></h3>
-  <div class="date">
-    <span>24 November 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>由于ios 的sdk并不原生支持正则、所有用到了第三方库、对比了下文档等、我最终决定使用regexKit</p>
-
-<p>文档 http://regexkit.sourceforge.net/RegexKitLite/</p>
-
-<p>使用简单说明</p>
-
-<p>这个库的基础是在 ICU(INTERNATIONAL COMPONENTS FOR UNICODE)之上的、在使用过程中需要将 RegexKitLite.h /RegexKitLite.m 导入工程之外还需要动态链接库 libicucore.dylib 然后在需要编译的文件上加上 -licucore 即可</p>
-
-<p>1. 寻找匹配的范围</p>
-
-<p>匹配范围的有多个函数举个最长的做例子</p>
-
-<p><p>&nbsp;</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">- (NSRange)RKL_METHOD_PREPEND(rangeOfRegex):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)range capture:(NSInteger)capture error:(NSError **)error;
-&amp;nbsp;
-
-别的根据名字也都可判断了、其中要注意点的就是 capture 这个参数是返回的匹配成功的第几个、他的匹配的模式是贪心的模式
-
-与之类似的判断匹配的返回的是匹配出的串
-- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex capture:(NSInteger)capture
-
-- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)
-2.寻找和替换
-NSString *searchString = @&quot;This is neat.&quot;;
-
-NSString *regexString = @&quot;\\b(\\w+)\\b&quot;;
-
-NSString *replaceWithString = @&quot;{$1}&quot;;
-
-NSString *replacedString = NULL;
-
-replacedString = [searchString stringByReplacingOccurrencesOfRegex:regexString withString:replaceWithString];
-注意这里的替换的replaceWithString如果有$符、他会理解成对之前匹配出的串的附加如以上例子匹配完之后就是 {This} {is} {neat}.
-
-如果需要更复杂的运算可以使用block
-replacedString =[searchString stringByReplacingOccurrencesOfRegex:regexString usingBlock:^NSString *(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop){return ([NSString stringWithFormat:@&quot;%@&quot;,[capturedStrings[1] capitalizedString]]);}];
-3.对每个匹配模式的形成array、切割成array
-- (NSArray *)RKL_METHOD_PREPEND(componentsMatchedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range capture:(NSInteger)capture error:(NSError **)error
-
-- (NSArray *)RKL_METHOD_PREPEND(componentsSeparatedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range error:(NSError **)error
-基本的操作就如上、每块分别还有不同的接口、基本命名规范都大同小异、复杂的就使用block
-
-其中的 RKLRegexIptions 是一个如下的结构
-enum {
-
-RKLNoOptions             = 0,   //无特殊意义
-
-RKLCaseless              = 2,    //不敏感大小写模式
-
-RKLComments              = 4,//允许在模式中使用空格
-
-RKLDotAll                = 32, //使用行读取模式
-
-RKLMultiline             = 8, //^和$也会匹配每行
-
-RKLUnicodeWordBoundaries = 256 //Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in Unicode UAX 29 - Text Boundaries. By default, word boundaries are identified by means of a simple classification of characters as either word or non-word, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spacesand other non-word characters.
-
-};
-然后附上ICU的正则标准
-
-
-
-Metacharacters
-
-
-Character
-Description
-
-
-\a
-Match a BELL, \u0007
-
-
-\A
-Match at the beginning of the input. Differs from ^ in that \A will not match after a new-line within the input.
-
-
-\b, outside of a [Set]
-Match if the current position is a word boundary. Boundaries occur at the transitions between word \w and non-word \W characters, with combining marks ignored.
-See also: RKLUnicodeWordBoundaries
-
-
-\b, within a [Set]
-Match a BACKSPACE, \u0008.
-
-
-\B
-Match if the current position is not a word boundary.
-
-
-\cx
-Match a Control-x character.
-
-
-\d
-Match any character with the Unicode General Category of Nd(Number, Decimal Digit).
-
-
-\D
-Match any character that is not a decimal digit.
-
-
-\e
-Match an ESCAPE, \u001B.
-
-
-\E
-Terminates a \Q…\E quoted sequence.
-
-
-\f
-Match a FORM FEED, \u000C.
-
-
-\G
-Match if the current position is at the end of the previous match.
-
-
-\n
-Match a LINE FEED, \u000A.
-
-
-\N{Unicode Character Name}
-Match the named Unicode Character.
-
-
-\p{Unicode Property Name}
-Match any character with the specified Unicode Property.
-
-
-\P{Unicode Property Name}
-Match any character not having the specified Unicode Property.
-
-
-\Q
-Quotes all following characters until \E.
-
-
-\r
-Match a CARRIAGE RETURN, \u000D.
-
-
-\s
-Match a white space character. White space is defined as[\t\n\f\r\p{Z}].
-
-
-\S
-Match a non-white space character.
-
-
-\t
-Match a HORIZONTAL TABULATION, \u0009.
-
-
-\uhhhh
-Match the character with the hex value hhhh.
-
-
-\Uhhhhhhhh
-Match the character with the hex value hhhhhhhh. Exactly eight hex digits must be provided, even though the largest Unicode code point is \U0010ffff.
-
-
-\w
-Match a word character. Word characters are[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}].
-
-
-\W
-Match a non-word character.
-
-
-\x{h…}
-Match the character with hex value hhhh. From one to six hex digits may be supplied.
-
-
-\xhh
-Match the character with two digit hex value hh.
-
-
-\X
-Match a Grapheme Cluster.
-
-
-\Z
-Match if the current position is at the end of input, but before the final line terminator, if one exists.
-
-
-\z
-Match if the current position is at the end of input.
-
-
-\n
-
-Back Reference. Match whatever the nth capturing group matched. nmust be a number ≥ 1 and ≤ total number of capture groups in the pattern.
-
-
-
-Note:
-Octal escapes, such as \012, are not supported.
-
-
-
-
-
-[pattern]
-Match any one character from the set. See ICU Regular Expression Character Classes for a full description of what may appear in the pattern.
-
-
-.
-Match any character.
-
-
-^
-Match at the beginning of a line.
-
-
-$
-Match at the end of a line.
-
-
-\
-Quotes the following character. Characters that must be quoted to be treated as literals are * ? + [ ( ) { } ^ $ | \ . /
-
-
-
-
-
-Operators
-
-
-Operator
-Description
-
-
-|
-Alternation. A|B matches either A or B.
-
-
-*
-Match zero or more times. Match as many times as possible.
-
-
-+
-Match one or more times. Match as many times as possible.
-
-
-?
-Match zero or one times. Prefer one.
-
-
-{n}
-Match exactly n times.
-
-
-{n,}
-Match at least n times. Match as many times as possible.
-
-
-{n,m}
-Match between n and m times. Match as many times as possible, but not more than m.
-
-
-*?
-Match zero or more times. Match as few times as possible.
-
-
-+?
-Match one or more times. Match as few times as possible.
-
-
-??
-Match zero or one times. Prefer zero.
-
-
-{n}?
-Match exactly n times.
-
-
-{n,}?
-Match at least n times, but no more than required for an overall pattern match.
-
-
-{n,m}?
-Match between n and m times. Match as few times as possible, but not less than n.
-
-
-*+
-Match zero or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails. Possessive match.
-
-
-++
-Match one or more times. Possessive match.
-
-
-?+
-Match zero or one times. Possessive match.
-
-
-{n}+
-Match exactly n times. Possessive match.
-
-
-{n,}+
-Match at least n times. Possessive match.
-
-
-{n,m}+
-Match between n and m times. Possessive match.
-
-
-(…)
-Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.
-
-
-(?:…)
-Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.
-
-
-(?&amp;gt;…)
-Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the (?&amp;gt; .
-
-
-(?#…)
-Free-format comment (?#comment).
-
-
-(?=…)
-Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.
-
-
-(?!…)
-Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.
-
-
-(?&amp;lt;=…)
-Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).
-
-
-(?&amp;lt;!…)
-Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).
-
-
-(?ismwx-ismwx:…)
-Flag settings. Evaluate the parenthesized expression with the specified flagsenabled or -disabled.
-
-
-(?ismwx-ismwx)
-Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, (?i) changes to a case insensitive match.
-See also: Regular Expression Options
-
-
-
-
-
-
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>39</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
 <!-- </ul> -->
 
 <div id="post-pagination" class="paginator">
@@ -1458,7 +1122,7 @@ See also: Regular Expression Options
   
     <a class="next" href="/page4">后页</a>
   
-  (共51篇)
+  (共52篇)
 </div>
 
         </div>

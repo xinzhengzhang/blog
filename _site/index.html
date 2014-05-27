@@ -107,6 +107,222 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2014/05/27/migrate-blog-from-wp-to-gp">wordpress迁移github page </a></h3>
+  <div class="date">
+    <span>27 May 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h3>工作</h3>
+
+<ol>
+<li>host在github上</li>
+<li>安装jekyll bootstrap~~简称jb~~</li>
+<li>导出wordpress评论以及内容</li>
+<li>处理wordpress的内容转化为markdown</li>
+<li>注意事项</li>
+</ol>
+
+<h4><a href="https://pages.github.com/">host在github上</a></h4>
+
+<ol>
+<li>新建一个username.github.io的repo</li>
+<li><a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages">绑定域名</a></li>
+</ol>
+
+<h4><a href="http://jekyllbootstrap.com/">安装<del>jb</del></a></h4>
+
+<ol>
+<li>安装jekyll</li>
+<li>clone代码 并看一下sample的样例以及api</li>
+</ol>
+
+<hr>
+
+<h4>导出wordpress评论以及内容</h4>
+
+<ul>
+<li>导出评论
+
+<ul>
+<li>由于github page采用的是纯静态的、评论这种那么麻烦的东西索性还是交给第三方好啦= =在github上我使用的是<a href="http://disqus.com/">disqus</a>，他也同时提供从wordpress导出的功能</li>
+<li>创建 disqus账号 <disqus.com/admin/create></li>
+<li>添加自己的site并安装wp插件 <a href="http://wordpress.org/plugins/disqus-comment-system/">http://wordpress.org/plugins/disqus-comment-system/</a></li>
+<li>等待disques后台进程帮你抓完会通知你的</li>
+</ul></li>
+<li>导出内容
+
+<ul>
+<li>导出content 使用wordpress的导出工具导出xml即可</li>
+</ul></li>
+</ul>
+
+<h4>转换内容</h4>
+
+<ul>
+<li>导出mark down
+
+<ul>
+<li><del>jekyll 有一个jekyll-import 的工具、不过中文支持的巨差无比</del></li>
+<li>使用一个改进过对中文支持的版本 <a href="https://gist.github.com/chitsaou/1394128">https://gist.github.com/chitsaou/1394128</a></li>
+<li>导出的xml命名 (wordpress.xml) 如下命令会把为你生成一拖post 以及wordpress中的page
+<code>ruby
+ruby -r &quot;./wordpressdotcom.rb&quot; -e &quot;Jekyll::WordpressDotCom.process&quot;
+</code></li>
+<li>如果在wordpress中没有使用什么插件类似<strong>codebox</strong>这样的到这一步就导入成功了</li>
+<li>如果使用了一些奇怪的语法在html用插件解出来的格式就一塌糊涂了，比如我的所有的代码都是用codebox的……
+写了一段简单的脚本来处理html，基本思路都是文本解析到codebox的开始标签pre然后替换掉</li>
+</ul></li>
+</ul>
+<div class="highlight"><pre><code class="language-python" data-lang="python">    <span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;zhangxinzheng&#39;</span>
+    <span class="c"># -*- coding: utf-8 -*-</span>
+    <span class="kn">import</span> <span class="nn">sys</span>
+    <span class="kn">import</span> <span class="nn">re</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="n">targetName</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">,</span><span class="s">&quot;md&quot;</span><span class="p">)</span>
+        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r+&quot;</span><span class="p">)</span>
+        <span class="nb">str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
+        <span class="k">while</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="n">tempString</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">startIndex</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span>
+            <span class="n">endIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+            <span class="n">realEnd</span> <span class="o">=</span> <span class="n">startIndex</span>
+            <span class="n">leftCount</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">rightCount</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">startIndex</span><span class="p">,</span> <span class="n">endIndex</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
+                    <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">leftCount</span> <span class="o">+=</span><span class="mi">1</span>
+                <span class="k">if</span> <span class="n">isContent</span><span class="p">:</span>
+                    <span class="n">tempString</span><span class="o">+=</span><span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+                    <span class="n">isContent</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">rightCount</span> <span class="o">+=</span><span class="mi">1</span>
+                    <span class="n">realEnd</span> <span class="o">=</span> <span class="n">j</span>
+                <span class="k">if</span> <span class="n">leftCount</span> <span class="o">==</span> <span class="n">rightCount</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="nb">str</span><span class="o">+=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">[</span><span class="n">startIndex</span><span class="p">:</span><span class="n">realEnd</span><span class="p">],</span> <span class="n">tempString</span><span class="p">)</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetName</span><span class="p">,</span> <span class="s">&quot;w+&quot;</span><span class="p">)</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+<h4>注意事项</h4>
+
+<ol>
+<li>中文路径在github上跑起来没问题，但是本地调试时会报错</li>
+</ol>
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby">        <span class="sx">% LANG=&quot;en_US.UTF-8&quot; </span><span class="no">LC_ALL</span><span class="o">=</span><span class="s2">&quot;en_US.UTF-8&quot;</span> <span class="n">be</span> <span class="n">jekyll</span> <span class="n">build</span> <span class="o">--</span><span class="n">trace</span>
+      <span class="no">Configuration</span> <span class="ss">file</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_config</span><span class="o">.</span><span class="n">yml</span>
+                  <span class="ss">Source</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span>
+             <span class="ss">Destination</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_site</span>
+            <span class="no">Generating</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+      <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">121</span><span class="ss">:in</span> <span class="sb">`gsub!&#39;: invalid byte sequence in US-ASCII (ArgumentError)</span>
+<span class="sb">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `</span><span class="n">sanitized_path</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`block in new_files&#39;</span>
+<span class="sb">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `</span><span class="n">block</span> <span class="p">(</span><span class="mi">2</span> <span class="n">levels</span><span class="p">)</span> <span class="k">in</span> <span class="n">each_site_file</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">419</span><span class="ss">:in</span> <span class="sb">`block in each_site_file&#39;</span>
+<span class="sb">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `</span><span class="n">each</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`new_files&#39;</span>
+<span class="sb">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `</span><span class="n">obsolete_files</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">255</span><span class="ss">:in</span> <span class="sb">`cleanup&#39;</span>
+<span class="sb">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `</span><span class="n">process</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">46</span><span class="ss">:in</span> <span class="sb">`build&#39;</span>
+<span class="sb">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `</span><span class="n">process</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`call&#39;</span>
+<span class="sb">          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `</span><span class="n">block</span> <span class="k">in</span> <span class="n">execute</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`execute&#39;</span>
+<span class="sb">          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `</span><span class="n">go</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program&#39;</span>
+          <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">jekyll</span><span class="p">:</span><span class="mi">18</span><span class="ss">:in</span> <span class="sb">`&lt;top (required)&gt;&#39;</span>
+<span class="sb">          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `</span><span class="nb">load</span><span class="s1">&#39;</span>
+<span class="s1">          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `&lt;main&gt;&#39;</span>
+    <span class="sb">```</span>
+<span class="sb">  * 详见这个&lt;https://github.com/jekyll/jekyll/issues/2379&gt; 修改了报错那行为</span>
+<span class="sb">  ```</span><span class="n">ruby</span>
+    <span class="n">clean_path</span><span class="o">.</span><span class="n">force_encoding</span><span class="p">(</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub!</span><span class="p">(</span><span class="sr">/\A\w\:\//</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+</code></pre></div>
+<ol>
+<li>使用里面的代码高亮很不爽可以参见gfm使用他的语法并在config中调整配置
+<code>
+markdown: redcarpet
+redcarpet:
+  extensions: [&quot;no_intra_emphasis&quot;, &quot;fenced_code_blocks&quot;, &quot;autolink&quot;, &quot;strikethrough&quot;, &quot;superscript&quot;]
+</code></li>
+<li>代码高亮开启了pygments后的css也需要自己配置来写
+
+<ul>
+<li>可以参加<a href="https://github.com/richleland/pygments-css">https://github.com/richleland/pygments-css</a></li>
+</ul></li>
+</ol>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#wordpress-ref">wordpress <span>1</span></a></li>
+    
+    	<li><a href="#github-ref">github <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation%20bar%E7%9A%84%E9%81%AE%E7%BD%A9">tableview上滑动时的navigation bar的遮罩 </a></h3>
   <div class="date">
     <span>06 March 2014</span>
@@ -1190,96 +1406,6 @@ del(sk)
 </div>
 
 
-<div class="page-header">
-  <h3><a href="/program/2013/04/26/%E5%85%B3%E4%BA%8Eprotocol-buffer-%E4%B8%AD%E7%9A%84base-128-varints%E7%BC%96%E7%A0%81">关于protocol buffer 中的Base 128 Varints编码 </a></h3>
-  <div class="date">
-    <span>26 April 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>首先大致讲下protocol buffer 是大google用来改变世界的……（不过要干掉xml json什么的我感觉再过二十年吧……好像解析的速度也没有那么的重要<br />
-其实具体的google的文档讲了很清楚了
-<a href="https://developers.google.com/protocol-buffers/docs/encoding#simple">https://developers.google.com/protocol-buffers/docs/encoding#simple</a>
-然后就是这个奇怪的新的编码、大致的好处我看下来感觉就是类似utf8那样可长可短根据数的大小来决定编码长度这样的
-然后拿他官方例子来讲
-比如300 来对他encode
-首先先把他转成二进制、然后进行补0 补整字节的倍数也就8的倍数
-然后进行逆序 最后对每个字节的8位进行填充、也就是每个字节的最高byte如果为1就是把后面那个字节的8位拿过来一起算、反正就是自己算
-然后是decode 也就是一个反序 先根据每个字节的最高位拆开成独立的小块 然后以字节为单位进行反序 再然后去0把他十进制读出思想就是这样但是有点疑惑这个倒序的意义我是一直没有明白= =  </p>
-
-<p>好吧最后把代码贴出</p>
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">encodebase128</span><span class="p">(</span><span class="n">ori</span><span class="p">):</span>
-    <span class="n">t</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ori</span><span class="p">))[</span><span class="mi">2</span><span class="p">:])</span>
-    <span class="n">tmp</span><span class="o">=</span><span class="mi">7</span>
-    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">&gt;&gt;</span><span class="n">tmp</span><span class="p">:</span>
-        <span class="n">tmp</span><span class="o">*=</span><span class="mi">2</span>
-    <span class="n">t</span><span class="o">=</span><span class="s">&#39;0&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">tmp</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">+</span><span class="n">t</span>
-    <span class="n">ll</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">:]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">tmp</span><span class="o">/</span><span class="mi">7</span><span class="p">):</span>
-        <span class="n">ll</span><span class="o">+=</span><span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">7</span><span class="p">:</span><span class="o">-</span><span class="n">i</span><span class="o">*</span><span class="mi">7</span><span class="p">]</span>
-    <span class="n">ans</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">tmp</span><span class="o">/</span><span class="mi">7</span><span class="p">):</span>
-        <span class="n">ans</span><span class="o">+=</span><span class="s">&#39;0&#39;</span>
-        <span class="n">ans</span><span class="o">+=</span><span class="n">ll</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">7</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">7</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">tmp</span><span class="o">/</span><span class="mi">7</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">ans</span><span class="o">=</span><span class="s">&#39;1&#39;</span><span class="o">+</span><span class="n">ans</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-    <span class="k">return</span> <span class="n">ans</span>
-<span class="k">def</span> <span class="nf">decodebase128</span><span class="p">(</span><span class="n">dealed</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dealed</span><span class="p">)</span><span class="o">%</span><span class="mi">8</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
-        <span class="k">print</span> <span class="s">&#39;illegal&#39;</span>
-    <span class="n">tt</span><span class="o">=</span><span class="n">dealed</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">:]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dealed</span><span class="p">)</span><span class="o">/</span><span class="mi">8</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">tt</span><span class="o">+=</span><span class="n">dealed</span><span class="p">[(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span><span class="o">+</span><span class="mi">1</span><span class="p">:(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="mi">8</span><span class="p">]</span>
-    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;0b&#39;</span><span class="o">+</span><span class="n">tt</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> 
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">t</span><span class="o">=</span> <span class="n">encodebase128</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="k">print</span> <span class="n">t</span>
-<span class="k">print</span> <span class="n">dealstring</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>39</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
 <!-- </ul> -->
 
 <div id="post-pagination" class="paginator">
@@ -1317,7 +1443,7 @@ del(sk)
   
     <a class="next" href="/page2">后页</a>
   
-  (共51篇)
+  (共52篇)
 </div>
 
         </div>

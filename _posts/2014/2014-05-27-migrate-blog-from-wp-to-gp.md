@@ -44,7 +44,7 @@ tags: ["wordpress", "github"]
   * 如果在wordpress中没有使用什么插件类似**codebox**这样的到这一步就导入成功了
   * 如果使用了一些奇怪的语法在html用插件解出来的格式就一塌糊涂了，比如我的所有的代码都是用codebox的……
   写了一段简单的脚本来处理html，基本思路都是文本解析到codebox的开始标签pre然后替换掉
-  
+
   ```python
     __author__ = 'zhangxinzheng'
     # -*- coding: utf-8 -*-
@@ -93,6 +93,7 @@ tags: ["wordpress", "github"]
 
 #### 注意事项
 1. 中文路径在github上跑起来没问题，但是本地调试时会报错
+
   ```ruby
         % LANG="en_US.UTF-8" LC_ALL="en_US.UTF-8" be jekyll build --trace
       Configuration file: /Users/albertogg/Documents/beyondalbert.github.com/_config.yml

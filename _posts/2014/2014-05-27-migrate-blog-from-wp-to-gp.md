@@ -9,7 +9,7 @@ tags: ["wordpress", "github"]
 
 ### 工作
 1. host在github上
-2. 安装jekyll bootstrap~~简称jb~~
+2. 安装jekyll bootstrap ~~简称jb~~
 3. 导出wordpress评论以及内容
 4. 处理wordpress的内容转化为markdown
 5. 注意事项
@@ -19,7 +19,7 @@ tags: ["wordpress", "github"]
 2. 新建一个username.github.io的repo
 3. [绑定域名](https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages)
 
-#### 安装~~jb~~
+#### 安装 jb
 1. http://jekyllbootstrap.com/
 2. 安装jekyll
 3. clone代码 并看一下sample的样例以及api

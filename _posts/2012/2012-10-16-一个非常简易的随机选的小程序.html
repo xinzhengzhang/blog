@@ -1,0 +1,135 @@
+---
+layout: post
+title: 一个非常简易的随机选的小程序
+categories:
+- program
+tags: []
+published: true
+comments: true
+---
+<p>写了一段小程序，随机产生一个列表中的名字，可用于摇奖，或者什么的。</p>
+
+<p>需要安装python 的Tkinter图形库</p>
+
+<p>&nbsp;</p>
+
+<p>&lt;pre lang="python" file="rp.py" colla="+"&gt;
+<pre># -*- coding: utf-8 -*-
+from Tkinter import *
+import sys
+import time
+import codecs
+from time import sleep
+llist=['xxx','xxy','xyy','yyy','yxx','zzz','zxx']
+flag=0</pre></p>
+
+<p># position of buttons<br />
+row_button = 8<br />
+col_button = 5</p>
+
+<p># font size<br />
+size_title = 20<br />
+size_button = 12<br />
+size_text = 14</p>
+
+<p># the length of name_list<br />
+Len_List = 5</p>
+
+<p># delay time<br />
+Delay_Time = 10<br />
+delay_stop = 0<br />
+stop_times = 10</p>
+
+<p># Label width<br />
+label_width = 20<br />
+class rp( Frame ):<br />
+    def __init__(self):<br />
+        Frame.__init__(self)<br />
+        self.pack( expand = YES, fill = BOTH)<br />
+        self.master.title("RP")<br />
+        self.god = PhotoImage(file = "01.gif")<br />
+        self.label_1 = Label(self, image = self.god, font = ("新宋体", size_title))<br />
+        self.label_2 = Label(self, text = "", font = ("新宋体", size_title-4))<br />
+        self.label_1.grid(row = 0, column = 0)<br />
+        self.label_2.grid(row = 1, column = 0)</p>
+
+<p>        self.button_start = Button(self, text = "Start", font = ("Comic Sans MS", size_button), command = self.start)<br />
+        self.button_stop = Button(self, text = "Stop", font = ("Comic Sans MS", size_button), command = self.stop)<br />
+        self.button_quit = Button(self, text = "Exit", font = ("Comic Sans MS", size_button), command = self.quit)</p>
+
+<p>        self.button_start.grid(row = row_button, column = col_button)<br />
+        self.button_stop.grid(row = row_button, column = col_button+1)<br />
+        self.button_quit.grid(row = row_button,column = col_button+2)</p>
+
+<p>        self.name_list = [None] * Len_List<br />
+        self.label_list = [None] * Len_List</p>
+
+<p>        for i in range(Len_List):<br />
+            global flag<br />
+            self.name_list[i] = llist[i]<br />
+            flag=(flag+1)%llist.__len__()<br />
+        for i in range(Len_List):<br />
+            if i == 2:<br />
+                self.label_list[i] = Label(self, text = self.name_list[i], font = ("新宋体", 30), background = ("white"), foreground = ("blue"), width = label_width)<br />
+                self.label_list[i].grid(row = 2+i, column = 2)<br />
+            else:<br />
+                self.label_list[i] = Label(self, text = self.name_list[i], font = ("新宋体", 30), width = label_width)<br />
+                self.label_list[i].grid(row = 2+i, column = 2)<br />
+    def _scroll_text(self):</p>
+
+<p>        global Delay_Time<br />
+        global delay_stop<br />
+        global stop_times<br />
+        global flag<br />
+        global llist</p>
+
+<p>        if stop_times == 0:<br />
+            if self.after_id:<br />
+                self.master.after_cancel(self.after_id)<br />
+                self.after_id = None<br />
+                return 0<br />
+        flag=(flag+1)%llist.__len__()<br />
+        self.line = llist[flag]</p>
+
+<p>        self.name_list.pop(0)<br />
+        self.name_list.append(self.line)<br />
+        #sleep(0.2)<br />
+        for i in range(Len_List):<br />
+            #self.label_list[i].destroy()<br />
+            #print self.name_list[i]<br />
+            if i == 2:<br />
+                self.label_list[i]["text"]=self.name_list[i]<br />
+            else:<br />
+                self.label_list[i]["text"]=self.name_list[i]</p>
+
+<p>        if delay_stop:<br />
+            Delay_Time += 10<br />
+            stop_times -= 1<br />
+            self.after_id = self.master.after(Delay_Time, self._scroll_text)<br />
+            if stop_times==0:<br />
+#                print self.label_list[2]["text"]<br />
+#                for i in llist:<br />
+#                    print i.decode('UTF-8')<br />
+                llist.remove(self.label_list[2]["text"].encode('utf-8'))<br />
+        else:<br />
+            self.after_id = self.master.after(Delay_Time, self._scroll_text)</p>
+
+<p>    def start(self):<br />
+        global delay_stop<br />
+        global stop_times<br />
+        global Delay_Time<br />
+        delay_stop = 0<br />
+        stop_times = 10<br />
+        Delay_Time = 10<br />
+        self.after_id = self.master.after(Delay_Time, self._scroll_text)</p>
+
+<p>    def stop(self):<br />
+        global delay_stop<br />
+        delay_stop = 1</p>
+
+<p>    def quit(self):<br />
+        sys.exit(0)</p>
+
+<p>app = rp()<br />
+app.mainloop()
+&lt;/pre&gt;</p>

@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>关于windows里的python环境配置</title>
+    
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">about me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>关于windows里的python环境配置 </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>29 January 2013</span>
+    </div>
+    <div class="content">
+      <p>首先windows下面没有类似bpython、ipython等神器……<br />
+很小很小的东西当然可以用sublime text2但是稍微复杂点的没有一个好点的ide还是不行的<br />
+先是推荐一个不错的ide是jetbrains做的pycharm、根据这牌子名可想而知肯定是不错的啦、但可惜人家是收费的（当盗版狗是不好的行为……<br />
+然后选择了eclipse+pydev、试用了下效果还是非常不错的（应该是新电脑跑eclispe非常流畅的缘故了啦（¯﹃¯）<br />
+个么要装分别就是<br />
+1.Java http://www.java.com/zh_CN/download/index.jsp<br />
+2.Jdk http://www.oracle.com/technetwork/java/javase/downloads/index.html<br />
+3.eclipse http://www.eclipse.org/downloads/<br />
+4.pvDev http://pydev.org/manual_101_install.html (其中尤其要关注一下 Then, UNCHECK the 'Contact all update sites during install to find required software' and press<br />
+'Next' again to confirm your selection. 把那个钩子要去掉的因为这个失败了好多次<br />
+5.python http://python.org/download/<br />
+分别全装完之后还剩下最后就是要在eclipse里设置python解释器的路径了<br />
+6.windows->perferences->PyDev->Interpereter-Python 设置5中python的路径</p>
+
+<p>enjoy</p>
+
+<p>ps.切记1 2 3步的要么全是32位要么全是64 因为64位机能够很成功自然得装上32位的Java然后再eclipse里会加载jvm.dll是出错……详见http://stackoverflow.com/questions/7352493/failed-to-load-the-jni-shared-library-jdk</p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="#未分类-ref">
+    		未分类 <span>3</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+  
+
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8" title="关于处理掉urllib2中的错误提示异常">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/program/2013/03/07/%E5%85%B3%E4%BA%8Eios%E4%B8%8B%E7%9A%84goagent%E4%BD%BF%E7%94%A8" title="关于ios下的goagent使用">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 Xinzheng Zhang
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

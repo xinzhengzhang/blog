@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>复习网络时的一个很不成熟的想法</title>
+    
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">about me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>复习网络时的一个很不成熟的想法 </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>06 November 2012</span>
+    </div>
+    <div class="content">
+      <p>这两天校园网实在渣、搞的很不爽、正好又在复习网络时看到了web缓存。突然迸出了一个很不靠谱也很不成熟的一个想法。尼玛中国有那么多防火墙、都已经能有五层协议栈了、如果除了搞掉和谐物之外什么的之外都、加上一个类似web缓存的功能。<br />
+大致想法是这样的<br />
+首先所有的资源都先有个统一的校验、比如hash什么的<br />
+然后得改协议、在报文段先识别出是否有过缓存<br />
+然后中间服务器和自己的资源列表比对一遍、再发往目的地<br />
+然后目的地再通过协议里的字段处理</p>
+
+<p>好吧……我再来分析下这样的不可行性……<br />
+1.世界上所有资源的绝对统一的校验（我觉得这个还是可行的-_-#<br />
+2.要改tcp协议、尼玛你是啊说改就能改！？（光这个我就洗洗睡吧……<br />
+3.中间服务器这样需要多大的开销、每台机子相当于个小的镜像服务器了这样还是全世界的资源……<br />
+4.所有的网站要支持这个还需要自己去修改自己的代码……（还是可行……但我还是洗洗睡吧……<br />
+5.这样相当于一个小的局域网共享同一份资源、我大gfw真是笑哈哈了、直接部署在中间节点上管你违和物视频图片一网打尽啊（我一定是给方滨兴电过了……</p>
+
+<p>最后说说如果真能这样会有什么好处呢<br />
+1.首先用户体验提升无数倍、比如A站B站共享一个渣浪源、不同的人去请求同个源、那就不需要重复请求了、网络整体的负担我相信也能减一个指数级的感觉……（但每台服务器都用刀片么？要部署多少中间服务器啊？谁来出钱啊混蛋……<br />
+2.因为缓存对目的服务器的负担小很多了、把整体的负荷减小了很大一个量级而且从原来的最终端分布到各个节点上了</p>
+
+<p>综上也就是脑补而已Orz</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="#瞎写写-ref">
+    		瞎写写 <span>4</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+  
+
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/program/2012/11/04/%E5%85%B3%E4%BA%8E%E4%B8%9C%E5%A4%A7%E6%83%85%E6%8A%A5%E7%A0%94%E7%A9%B6%E7%94%9F%E6%B5%B7%E6%8A%A5%E7%9A%84%E5%BD%A9%E8%9B%8B" title="关于东大情报研究生海报的彩蛋">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F" title="第三范式&BC范式">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 Xinzheng Zhang
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

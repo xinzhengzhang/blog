@@ -1,0 +1,322 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>定制 UIPageControl</title>
+    
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">about me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>定制 UIPageControl </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>24 June 2013</span>
+    </div>
+    <div class="content">
+      <p>pagecontrol 就是iphone上面比如scrollview翻图片时候下面那个小点点<br />
+其实我个人觉得还是挺美观的……可是需求就是要自己的图片替掉……然后死人苹果又不给api、所以也就只能自己复写实现了<br />
+先说下ios7之前 那些点点的实现非常简单 就是UIPageControl.subviews 就是一个个点的UIImageView 所以只需简单的替换掉就好了代码如下
+<pre lang="c">
+@property(nonatomic,strong)UIImage *_activeImage;
+@property(nonatomic,strong)UIImage *_inactiveImage;
+//在init的时候把你自己定义的两张图片搞进去
+- (void)updateDots
+{
+    for (int i = 0; i< [self.subviews count]; i++) {
+        UIImageView* dot =[self.subviews objectAtIndex:i];</pre></p>
+
+<p>        if (i == self.currentPage) {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_activeImage;<br />
+            }</p>
+
+<p>        } else {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_inactiveImage;<br />
+            }<br />
+        }<br />
+    }<br />
+}
+//然后自己重载一下setNumber就好了</p>
+
+<p>- (void)setNumberOfPages:(NSInteger)numberOfPages<br />
+{
+    [super setNumberOfPages:numberOfPages];<br />
+    [self updateDots];<br />
+}
+
+但是呢万恶的ios7改掉了尼玛……连底层实现都改啊混蛋……可以对self.subviews 标红一下就明白了……整个pagecontrol的uivew乱七八糟……而且都是view根本就没了image属性、换句话说现在的那些小点点都是代码写出来的了、而不是简单图了<br />
+实现起来就要重写UIView的绘画函数了代码大致如下
+<pre lang="c">
+#import "ZDPageControll.h"
+#import <QuartzCore/QuartzCore.h></pre></p>
+
+<p>@interface ZDPageControll()<br />
+{
+    UIImage *_activeImage;<br />
+    UIImage *_inactiveImage;<br />
+    NSArray *_usedToRetainOriginalSubview;<br />
+}</p>
+
+<p>@end</p>
+
+<p>@implementation ZDPageControll<br />
+@synthesize kSpacing=_kSpacing;<br />
+- (id)initWithFrame:(CGRect)frame currentImageName:(NSString *)current commonImageName:(NSString *)common<br />
+{
+    self= [super initWithFrame:frame];<br />
+    if ([self respondsToSelector:@selector(setCurrentPageIndicatorTintColor:)] && [self respondsToSelector:@selector(setPageIndicatorTintColor:)]) {<br />
+        [self setCurrentPageIndicatorTintColor:[UIColor clearColor]];<br />
+        [self setPageIndicatorTintColor:[UIColor clearColor]];<br />
+    }<br />
+    <br />
+    [self setBackgroundColor:[UIColor clearColor]];<br />
+    _activeImage= [UIImage imageNamed:current];<br />
+    _inactiveImage= [UIImage imageNamed:common];<br />
+    _kSpacing=10.0f;<br />
+    //hold住原来pagecontroll的subview<br />
+    _usedToRetainOriginalSubview=[NSArray arrayWithArray:self.subviews];<br />
+    for (UIView *su in self.subviews) {<br />
+        [su removeFromSuperview];<br />
+    }<br />
+    self.contentMode=UIViewContentModeRedraw;<br />
+    return self;<br />
+}
+-(void)dealloc<br />
+{
+    //释放原来hold住的那些subview<br />
+    _usedToRetainOriginalSubview=nil;<br />
+    _activeImage=nil;<br />
+    _inactiveImage=nil;<br />
+}
+- (void)updateDots<br />
+{</p>
+
+<p>    for (int i = 0; i< [self.subviews count]; i++) {<br />
+        UIImageView* dot =[self.subviews objectAtIndex:i];</p>
+
+<p>        if (i == self.currentPage) {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_activeImage;<br />
+            }</p>
+
+<p>        } else {<br />
+            if ([dot respondsToSelector:@selector(setImage:)]) {<br />
+                dot.image=_inactiveImage;<br />
+            }<br />
+        }<br />
+    }</p>
+
+<p>}</p>
+
+<p>- (void)setCurrentPage:(NSInteger)currentPage<br />
+{
+    [super setCurrentPage:currentPage];<br />
+    if ([[[UIDevice currentDevice]systemVersion]floatValue] <=6.0) {<br />
+        [self updateDots];<br />
+    }<br />
+//    [self updateDots];<br />
+    [self setNeedsDisplay];<br />
+}
+- (void)setNumberOfPages:(NSInteger)numberOfPages<br />
+{
+    [super setNumberOfPages:numberOfPages];<br />
+    if ([[[UIDevice currentDevice]systemVersion]floatValue] <=6.0) {<br />
+        [self updateDots];<br />
+    }<br />
+//    [self updateDots];<br />
+    [self setNeedsDisplay];</p>
+
+<p>}<br />
+-(void)drawRect:(CGRect)iRect<br />
+{
+    int i;<br />
+    CGRect rect;<br />
+    <br />
+    UIImage *image;<br />
+    iRect = self.bounds;<br />
+    <br />
+    if ( self.opaque ) {<br />
+        [self.backgroundColor set];<br />
+        UIRectFill( iRect );<br />
+    }<br />
+    <br />
+    if ( self.hidesForSinglePage && self.numberOfPages == 1 ) return;<br />
+    <br />
+    rect.size.height = _activeImage.size.height;<br />
+    rect.size.width = self.numberOfPages * _activeImage.size.width + ( self.numberOfPages - 1 ) * _kSpacing;<br />
+    rect.origin.x = floorf( ( iRect.size.width - rect.size.width ) / 2.0 );<br />
+    rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );<br />
+    rect.size.width = _activeImage.size.width;<br />
+    <br />
+    for ( i = 0; i < self.numberOfPages; ++i ) {<br />
+        image = i == self.currentPage ? _activeImage : _inactiveImage;<br />
+        <br />
+        [image drawInRect: rect];<br />
+        <br />
+        rect.origin.x += _activeImage.size.width + _kSpacing;<br />
+    }<br />
+}
+@end</p>
+
+<p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="#program-ref">
+    		program <span>36</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+  
+
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/program/2013/05/08/%E6%9C%80%E5%A4%A7%E5%85%AC%E5%85%B1%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97lcs-python%E5%AE%9E%E7%8E%B0" title="最大公共上升子序列(lcs) python实现">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/program/2013/07/29/ios%E6%9B%BF%E6%8D%A2%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%B3%95" title="ios替换系统方法">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 Xinzheng Zhang
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

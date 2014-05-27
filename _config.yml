@@ -1,10 +1,13 @@
 # This is the default format.
 # For more see: http://jekyllrb.com/docs/permalinks/
 permalink: /:categories/:year/:month/:day/:title
-
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 highlighter: pygments
-markdown: kramdown
+# pygments: true
+# markdown: kramdown
+markdown: redcarpet
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "strikethrough", "superscript"]
 # Themes are encouraged to use these universal variables
 # so be sure to set them if your theme uses them.
 #
@@ -74,7 +77,7 @@ JB :
   # atom_path : /atom.xml
   rss_path : /rss.xml
   about_path: /about.html
-  
+
   # Settings for comments helper
   # Set 'provider' to the comment provider you want to use.
   # Set 'provider' to false to turn commenting off globally.

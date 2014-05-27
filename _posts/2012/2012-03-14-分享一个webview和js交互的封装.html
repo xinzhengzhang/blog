@@ -1,0 +1,58 @@
+---
+layout: post
+title: 分享一个webview和js交互的封装
+categories:
+- program
+tags: []
+published: true
+comments: true
+---
+<p><a href="https://github.com/marcuswestin/WebViewJavascriptBridge">marcuswestin / WebViewJavascriptBridge</a>
+<strong>1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project</strong></p>
+
+<p><strong>2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge's delegate</strong>
+<pre lang="objective-c">
+   #import <UIKit/UIKit.h>
+#import "WebViewJavascriptBridge.h"</pre></p>
+
+<p>@interface ExampleAppDelegate : UIResponder <UIApplicationDelegate, WebViewJavascriptBridgeDelegate></p>
+
+<p>@end</p>
+
+<p>@implementation ExampleAppDelegate</p>
+
+<p>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions<br />
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];</p>
+
+<p>    self.webView = [[UIWebView alloc] initWithFrame:self.window.bounds];<br />
+    [self.window addSubview:webView];<br />
+    self.javascriptBridge = [WebViewJavascriptBridge javascriptBridgeWithDelegate:self];<br />
+    self.webView.delegate = javascriptBridge;</p>
+
+<p>    [self.window makeKeyAndVisible];<br />
+    return YES;<br />
+}</p>
+
+<p>- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView <br />
+{
+    NSLog(@"MyJavascriptBridgeDelegate received message: %@", message);<br />
+}</p>
+
+<p>@end
+
+<strong>3) Go ahead and send some messages from Objc to javascript</strong></p>
+
+<p><pre lang="objective-c">
+[self.javascriptBridge sendMessage:@"Well hello there" toWebView:self.webView];
+</pre></p>
+
+<p><strong>4) Finally, set up the javascript side of things</strong>
+<pre lang="objective-c">
+document.addEventListener('WebViewJavascriptBridgeReady', function onBridgeReady() {
+    WebViewJavascriptBridge.setMessageHandler(function(message) {
+        alert('Received message: ' + message)
+    })
+    WebViewJavascriptBridge.sendMessage('Hello from the javascript')
+}, false)
+</pre></p>

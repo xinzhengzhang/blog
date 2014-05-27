@@ -1,0 +1,148 @@
+---
+layout: post
+title: 圆形布局的icon页面 loading动画效果
+categories:
+- program
+tags: []
+published: true
+comments: true
+---
+<p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg" alt="" title="700BAD52-7C3F-4500-8B52-69C13291528D" width="314" height="470" class="alignnone size-full wp-image-397" /></a>
+大致效果就是3个元素根据不同时间间隔开始沿着圆进行无限追逐，每次一圈后进行一个小停顿然后继续、比较类似wp7的那种小的loading、主要用到的还是CAKeyframeAnimation其中为了让无限循环中加上停顿用了个小trick
+<pre lang="c">
+#import <QuartzCore/QuartzCore.h>
+#define PI 3.14159265358979323846</pre></p>
+
+<p>@interface canvas ()<br />
+{
+    UIButton *red;<br />
+    UIButton *green;<br />
+    UIButton *yellow;<br />
+}</p>
+
+<p>@end</p>
+
+<p>@implementation canvas</p>
+
+<p>- (id)initWithFrame:(CGRect)frame<br />
+{
+    self = [super initWithFrame:frame];<br />
+    if (self) {<br />
+        // Initialization code<br />
+        red=[[UIButton alloc]initWithFrame:CGRectMake(117.55-10, 38.1-10, 10, 10)];<br />
+        green=[[UIButton alloc]initWithFrame:CGRectMake(141.42-10, 58.57-10, 10, 10)];<br />
+        yellow=[[UIButton alloc]initWithFrame:CGRectMake(173.2-10, 100-10, 10, 10)];<br />
+        <br />
+        [red setBackgroundColor:[UIColor redColor]];<br />
+        [green setBackgroundColor:[UIColor greenColor]];<br />
+        [yellow setBackgroundColor:[UIColor yellowColor]];<br />
+        <br />
+        [red addTarget:self action:@selector(end) forControlEvents:UIControlEventTouchUpInside];<br />
+        [yellow addTarget:self action:@selector(start) forControlEvents:UIControlEventTouchUpInside];</p>
+
+<p>        <br />
+        [self start];<br />
+        [self addSubview:red];<br />
+        [self addSubview:green];<br />
+        [self addSubview:yellow];<br />
+    }<br />
+    return self;<br />
+}
+-(void)end{<br />
+    [red.layer removeAllAnimations];<br />
+    [green.layer removeAllAnimations];<br />
+    [yellow.layer removeAllAnimations];</p>
+
+<p>    <br />
+}
+-(void)start{<br />
+   <br />
+    CGMutablePathRef path=CGPathCreateMutable();<br />
+    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.8424, -0.8424+2*PI, NO);//用cgpath画出运动轨迹<br />
+    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.8424, -0.9424, YES);<br />
+    <br />
+    <br />
+    <br />
+        <br />
+    CAKeyframeAnimation *animation=[CAKeyframeAnimation animationWithKeyPath:@"position"];<br />
+    [animation setCalculationMode:kCAAnimationPaced];<br />
+    [animation setPath:path];<br />
+    [animation setDuration:2.0f];<br />
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];<br />
+//    [animation setBeginTime:CACurrentMediaTime()+0.7];<br />
+//    [animation setRepeatCount:HUGE_VALF];<br />
+    CFRelease(path);<br />
+    <br />
+    <br />
+    <br />
+    <br />
+    CAAnimationGroup *animationGroup = [CAAnimationGroup animation];//利用动画组的间隔做到小动画的无限间隔之间的停顿<br />
+    animationGroup.duration = 3;<br />
+    animationGroup.repeatCount = INFINITY;<br />
+    animationGroup.animations=@[animation];<br />
+    [animationGroup setBeginTime:CACurrentMediaTime()+0.5];//让三个元素起始时间区分开<br />
+    [red.layer addAnimation:animationGroup forKey:NULL];<br />
+    <br />
+    path=CGPathCreateMutable();<br />
+    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.683, -0.683+2*PI, NO);<br />
+    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.683, -0.783, YES);<br />
+    animation=[CAKeyframeAnimation animationWithKeyPath:@"position"];<br />
+    [animation setCalculationMode:kCAAnimationPaced];<br />
+    [animation setPath:path];<br />
+    [animation setDuration:2.0f];<br />
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];<br />
+//    [animation setBeginTime:CACurrentMediaTime()+0.5];<br />
+//    [animation setRepeatCount:HUGE_VALF];</p>
+
+<p>    CFRelease(path);<br />
+    <br />
+    <br />
+    animationGroup = [CAAnimationGroup animation];<br />
+    animationGroup.duration = 3;<br />
+    animationGroup.repeatCount = INFINITY;<br />
+    animationGroup.animations=@[animation];<br />
+    [animationGroup setBeginTime:CACurrentMediaTime()+0.2];<br />
+    [green.layer addAnimation:animationGroup forKey:NULL];<br />
+    <br />
+    path=CGPathCreateMutable();<br />
+    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.425, -0.425+2*PI, NO);<br />
+    CGPathAddArc(path, NULL, 0.0f, 200.0f, 200, -0.425, -0.525, YES);<br />
+    animation=[CAKeyframeAnimation animationWithKeyPath:@"position"];<br />
+    [animation setCalculationMode:kCAAnimationPaced];<br />
+    [animation setPath:path];<br />
+    [animation setDuration:2.0f];<br />
+//    [animation setRepeatCount:HUGE_VALF];</p>
+
+<p>    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];</p>
+
+<p>    CFRelease(path);<br />
+        <br />
+    animationGroup = [CAAnimationGroup animation];<br />
+    animationGroup.duration = 3;<br />
+    animationGroup.repeatCount = INFINITY;<br />
+    animationGroup.animations=@[animation];<br />
+    <br />
+    [yellow.layer addAnimation:animationGroup forKey:NULL];<br />
+    </p>
+
+<p>    <br />
+    <br />
+}</p>
+
+<p>// Only override drawRect: if you perform custom drawing.<br />
+// An empty implementation adversely affects performance during animation.<br />
+- (void)drawRect:(CGRect)rect<br />
+{
+    CGContextRef context = UIGraphicsGetCurrentContext();<br />
+    CGContextSetStrokeColor(context, [UIColor blueColor].CGColor);<br />
+    CGContextAddArc(context, 0.0, 200.0f, 200, 0, 2*PI, YES);</p>
+
+<p>    [[UIColor orangeColor] setFill];<br />
+    [[UIColor blueColor] setStroke];<br />
+    CGContextDrawPath (context, kCGPathStroke);</p>
+
+<p>}</p>
+
+<p>@end</p>
+
+<p></p>

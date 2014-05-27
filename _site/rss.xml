@@ -5,8 +5,8 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-05-27T08:20:21+08:00</lastBuildDate>
-        <pubDate>2014-05-27T08:20:21+08:00</pubDate>
+        <lastBuildDate>2014-05-27T09:04:39+08:00</lastBuildDate>
+        <pubDate>2014-05-27T09:04:39+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -21,6 +21,33 @@
                 <link>http://snorlaxzxz.com/2014/05/26/test</link>
                 <guid>http://snorlaxzxz.com/2014/05/26/test</guid>
                 <pubDate>2014-05-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>未引用图片删除</title>
+                <description>&lt;p&gt;同理可以用来处理些别的资源文件&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;PROJ&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;find . -name &lt;span class=&quot;s1&quot;&gt;&amp;#39;*.xib&amp;#39;&lt;/span&gt; -o -name &lt;span class=&quot;s1&quot;&gt;&amp;#39;*.[mh]&amp;#39;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;png in &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;find . -name &lt;span class=&quot;s1&quot;&gt;&amp;#39;*.png&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep -v @2x&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#所要处理的资源文件类型&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;basename &lt;span class=&quot;nv&quot;&gt;$png&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -e &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/\.png//g&amp;#39;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;#在代码中的表现形势、如果有一些拼串的需要特殊处理&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; ! grep -qhs &lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$PROJ&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;        &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;tmp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$png&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep /Zhidao/Resources/Image &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep -v /Image/Professional/&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#排除一些不想处理的文件架比如引用外部封完的东西的&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$tmp&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$png&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;            &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$png is not referenced&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#           svn rm $png&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#           doubleName=`echo $png | sed -e &amp;#39;s/\.png/@2x\.png/g&amp;#39;`&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#           svn rm $doubleName@&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;    fi&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
+                <link>http://snorlaxzxz.com/program/2014/02/03/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4</link>
+                <guid>http://snorlaxzxz.com/program/2014/02/03/未引用图片删除</guid>
+                <pubDate>2014-02-03T00:00:00+08:00</pubDate>
         </item>
 
         <item>
@@ -1709,6 +1736,368 @@ CRC(循环冗余检测)	4字节	 存储用来检测是否有错误的循环冗�
                 <link>http://snorlaxzxz.com/program/2012/11/28/bmp%E3%80%81png%E5%88%9D%E7%90%86%E8%A7%A3</link>
                 <guid>http://snorlaxzxz.com/program/2012/11/28/bmp、png初理解</guid>
                 <pubDate>2012-11-28T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>RegexKit笔记</title>
+                <description>&lt;p&gt;由于ios 的sdk并不原生支持正则、所有用到了第三方库、对比了下文档等、我最终决定使用regexKit&lt;/p&gt;
+
+&lt;p&gt;文档 http://regexkit.sourceforge.net/RegexKitLite/&lt;/p&gt;
+
+&lt;p&gt;使用简单说明&lt;/p&gt;
+
+&lt;p&gt;这个库的基础是在 ICU(INTERNATIONAL COMPONENTS FOR UNICODE)之上的、在使用过程中需要将 RegexKitLite.h /RegexKitLite.m 导入工程之外还需要动态链接库 libicucore.dylib 然后在需要编译的文件上加上 -licucore 即可&lt;/p&gt;
+
+&lt;p&gt;1. 寻找匹配的范围&lt;/p&gt;
+
+&lt;p&gt;匹配范围的有多个函数举个最长的做例子&lt;/p&gt;
+
+&lt;p&gt;&amp;nbsp;
+&lt;pre lang=&quot;objective-c&quot;&gt;- (NSRange)RKL_METHOD_PREPEND(rangeOfRegex):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)range capture:(NSInteger)capture error:(NSError **)error;&lt;/pre&gt;
+&amp;nbsp;&lt;/p&gt;
+
+&lt;p&gt;别的根据名字也都可判断了、其中要注意点的就是 capture 这个参数是返回的匹配成功的第几个、他的匹配的模式是贪心的模式&lt;/p&gt;
+
+&lt;p&gt;与之类似的判断匹配的返回的是匹配出的串
+&lt;pre lang=&quot;objective-c&quot;&gt;- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex capture:(NSInteger)capture&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;- (NSString *)RKL_METHOD_PREPEND(stringByMatching):(NSString *)regex options:(RKLRegexOptions)options inRange:(NSRange)
+2.寻找和替换
+&lt;pre lang=&quot;objective-c&quot;&gt;NSString *searchString = @&quot;This is neat.&quot;;&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;NSString *regexString = @&quot;\\b(\\w+)\\b&quot;;&lt;/p&gt;
+
+&lt;p&gt;NSString *replaceWithString = @&quot;{$1}&quot;;&lt;/p&gt;
+
+&lt;p&gt;NSString *replacedString = NULL;&lt;/p&gt;
+
+&lt;p&gt;replacedString = [searchString stringByReplacingOccurrencesOfRegex:regexString withString:replaceWithString];
+注意这里的替换的replaceWithString如果有$符、他会理解成对之前匹配出的串的附加如以上例子匹配完之后就是 {This} {is} {neat}.&lt;/p&gt;
+
+&lt;p&gt;如果需要更复杂的运算可以使用block
+&lt;pre lang=&quot;objective-c&quot;&gt;replacedString =[searchString stringByReplacingOccurrencesOfRegex:regexString usingBlock:^NSString *(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop){return ([NSString stringWithFormat:@&quot;%@&quot;,[capturedStrings[1] capitalizedString]]);}];&lt;/pre&gt;
+3.对每个匹配模式的形成array、切割成array
+&lt;pre lang=&quot;objective-c&quot;&gt;- (NSArray *)RKL_METHOD_PREPEND(componentsMatchedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range capture:(NSInteger)capture error:(NSError **)error&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;- (NSArray *)RKL_METHOD_PREPEND(componentsSeparatedByRegex):(NSString *)regex options:(RKLRegexOptions)options range:(NSRange)range error:(NSError **)error
+基本的操作就如上、每块分别还有不同的接口、基本命名规范都大同小异、复杂的就使用block&lt;/p&gt;
+
+&lt;p&gt;其中的 RKLRegexIptions 是一个如下的结构
+&lt;pre lang=&quot;objective-c&quot;&gt;enum {&lt;/pre&gt;&lt;/p&gt;
+
+&lt;p&gt;RKLNoOptions             = 0,   //无特殊意义&lt;/p&gt;
+
+&lt;p&gt;RKLCaseless              = 2,    //不敏感大小写模式&lt;/p&gt;
+
+&lt;p&gt;RKLComments              = 4,//允许在模式中使用空格&lt;/p&gt;
+
+&lt;p&gt;RKLDotAll                = 32, //使用行读取模式&lt;/p&gt;
+
+&lt;p&gt;RKLMultiline             = 8, //^和$也会匹配每行&lt;/p&gt;
+
+&lt;p&gt;RKLUnicodeWordBoundaries = 256 //Controls the behavior of \b in a pattern. If set, word boundaries are found according to the definitions of word found in &lt;a href=&quot;http://www.unicode.org/reports/tr29/&quot;&gt;Unicode UAX 29 - Text Boundaries&lt;/a&gt;. By default, word boundaries are identified by means of a simple classification of characters as either word or non-word, which approximates traditional regular expression behavior. The results obtained with the two options can be quite different in runs of spacesand other non-word characters.&lt;/p&gt;
+
+&lt;p&gt;};
+然后附上ICU的正则标准
+&lt;div&gt;
+&lt;div&gt;
+&lt;div&gt;
+&lt;table summary=&quot;Regular Expression Metacharacters&quot;&gt;&lt;caption&gt;Metacharacters&lt;/caption&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;Character&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\a&lt;/td&gt;
+&lt;td&gt;Match a BELL, \u0007&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\A&lt;/td&gt;
+&lt;td&gt;Match at the beginning of the input. Differs from ^ in that \A will not match after a new-line within the input.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\b, outside of a [&lt;em&gt;Set&lt;/em&gt;]&lt;/td&gt;
+&lt;td&gt;Match if the current position is a word boundary. Boundaries occur at the transitions between word \w and non-word \W characters, with combining marks ignored.
+&lt;div&gt;&lt;strong&gt;See also:&lt;/strong&gt; &lt;a href=&quot;http://regexkit.sourceforge.net/RegexKitLite/#RKLRegexOptions_RKLUnicodeWordBoundaries&quot;&gt;RKLUnicodeWordBoundaries&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\b, within a [&lt;em&gt;Set&lt;/em&gt;]&lt;/td&gt;
+&lt;td&gt;Match a BACKSPACE, \u0008.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\B&lt;/td&gt;
+&lt;td&gt;Match if the current position is not a word boundary.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\c&lt;em&gt;x&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;Match a &lt;em title=&quot;Control Character x, i.e. ^C&quot;&gt;Control-x&lt;/em&gt; character.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\d&lt;/td&gt;
+&lt;td&gt;Match any character with the &lt;em&gt;Unicode General Category&lt;/em&gt; of Nd(&lt;em&gt;Number&lt;/em&gt;, &lt;em&gt;Decimal Digit&lt;/em&gt;).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\D&lt;/td&gt;
+&lt;td&gt;Match any character that is not a decimal digit.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\e&lt;/td&gt;
+&lt;td&gt;Match an ESCAPE, \u001B.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\E&lt;/td&gt;
+&lt;td&gt;Terminates a \Q…\E quoted sequence.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\f&lt;/td&gt;
+&lt;td&gt;Match a FORM FEED, \u000C.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\G&lt;/td&gt;
+&lt;td&gt;Match if the current position is at the end of the previous match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\n&lt;/td&gt;
+&lt;td&gt;Match a LINE FEED, \u000A.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\N{&lt;em&gt;Unicode Character Name&lt;/em&gt;}&lt;/td&gt;
+&lt;td&gt;Match the named &lt;em&gt;Unicode Character&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\p{&lt;em&gt;Unicode Property Name&lt;/em&gt;}&lt;/td&gt;
+&lt;td&gt;Match any character with the specified &lt;em&gt;Unicode Property&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\P{&lt;em&gt;Unicode Property Name&lt;/em&gt;}&lt;/td&gt;
+&lt;td&gt;Match any character not having the specified &lt;em&gt;Unicode Property&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\Q&lt;/td&gt;
+&lt;td&gt;Quotes all following characters until \E.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\r&lt;/td&gt;
+&lt;td&gt;Match a CARRIAGE RETURN, \u000D.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td id=&quot;ICUSyntax_ICURegularExpressionSyntax_white_space&quot;&gt;\s&lt;/td&gt;
+&lt;td&gt;Match a white space character. White space is defined as[\t\n\f\r\p{Z}].&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\S&lt;/td&gt;
+&lt;td&gt;Match a non-white space character.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\t&lt;/td&gt;
+&lt;td&gt;Match a HORIZONTAL TABULATION, \u0009.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\u&lt;em&gt;hhhh&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;Match the character with the hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhh&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\U&lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhhhhhh&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;Match the character with the hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhhhhhh&lt;/em&gt;. Exactly eight hex digits must be provided, even though the largest Unicode code point is \U0010ffff.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\w&lt;/td&gt;
+&lt;td&gt;Match a word character. Word characters are[\p{Ll}\p{Lu}\p{Lt}\p{Lo}\p{Nd}].&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\W&lt;/td&gt;
+&lt;td&gt;Match a non-word character.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\x{&lt;em title=&quot;Hexidecimal Number&quot;&gt;h&lt;/em&gt;…}&lt;/td&gt;
+&lt;td&gt;Match the character with hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hhhh&lt;/em&gt;. From one to six hex digits may be supplied.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\x&lt;em title=&quot;Hexidecimal Number&quot;&gt;hh&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;Match the character with two digit hex value &lt;em title=&quot;Hexidecimal Number&quot;&gt;hh&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\X&lt;/td&gt;
+&lt;td&gt;Match a &lt;a href=&quot;http://www.unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries&quot;&gt;Grapheme Cluster&lt;/a&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\Z&lt;/td&gt;
+&lt;td&gt;Match if the current position is at the end of input, but before the final line terminator, if one exists.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\z&lt;/td&gt;
+&lt;td&gt;Match if the current position is at the end of input.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;
+&lt;div&gt;Back Reference. Match whatever the &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;th capturing group matched. &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;must be a number ≥ 1 and ≤ total number of capture groups in the pattern.&lt;/div&gt;
+&lt;div&gt;
+&lt;div&gt;
+&lt;div&gt;
+&lt;div&gt;Note:&lt;/div&gt;
+&lt;div&gt;Octal escapes, such as \012, are not supported.&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[&lt;em&gt;pattern&lt;/em&gt;]&lt;/td&gt;
+&lt;td&gt;Match any one character from the set. See &lt;a href=&quot;http://regexkit.sourceforge.net/RegexKitLite/#ICUSyntax_ICURegularExpressionCharacterClasses&quot;&gt;ICU Regular Expression Character Classes&lt;/a&gt; for a full description of what may appear in the pattern.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;.&lt;/td&gt;
+&lt;td&gt;Match any character.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;^&lt;/td&gt;
+&lt;td&gt;Match at the beginning of a line.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$&lt;/td&gt;
+&lt;td&gt;Match at the end of a line.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;\&lt;/td&gt;
+&lt;td&gt;Quotes the following character. Characters that must be quoted to be treated as literals are * ? + [ ( ) { } ^ $ | \ . /&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;div&gt;
+&lt;table id=&quot;ICUSyntax_Operators&quot; summary=&quot;Regular Expression Operators&quot;&gt;&lt;caption&gt;Operators&lt;/caption&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th&gt;Operator&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;|&lt;/td&gt;
+&lt;td&gt;Alternation. A|B matches either A or B.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;*&lt;/td&gt;
+&lt;td&gt;Match zero or more times. Match as many times as possible.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;+&lt;/td&gt;
+&lt;td&gt;Match one or more times. Match as many times as possible.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;?&lt;/td&gt;
+&lt;td&gt;Match zero or one times. Prefer one.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;}&lt;/td&gt;
+&lt;td&gt;Match exactly &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,}&lt;/td&gt;
+&lt;td&gt;Match at least &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times. Match as many times as possible.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,&lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;}&lt;/td&gt;
+&lt;td&gt;Match between &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; and &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt; times. Match as many times as possible, but not more than &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;*?&lt;/td&gt;
+&lt;td&gt;Match zero or more times. Match as few times as possible.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;+?&lt;/td&gt;
+&lt;td&gt;Match one or more times. Match as few times as possible.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;??&lt;/td&gt;
+&lt;td&gt;Match zero or one times. Prefer zero.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;}?&lt;/td&gt;
+&lt;td&gt;Match exactly &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,}?&lt;/td&gt;
+&lt;td&gt;Match at least &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times, but no more than required for an overall pattern match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,&lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;}?&lt;/td&gt;
+&lt;td&gt;Match between &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; and &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt; times. Match as few times as possible, but not less than &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;*+&lt;/td&gt;
+&lt;td&gt;Match zero or more times. Match as many times as possible when first encountered, do not retry with fewer even if overall match fails. Possessive match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;++&lt;/td&gt;
+&lt;td&gt;Match one or more times. Possessive match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;?+&lt;/td&gt;
+&lt;td&gt;Match zero or one times. Possessive match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;}+&lt;/td&gt;
+&lt;td&gt;Match exactly &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times. Possessive match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,}+&lt;/td&gt;
+&lt;td&gt;Match at least &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; times. Possessive match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;{&lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt;,&lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt;}+&lt;/td&gt;
+&lt;td&gt;Match between &lt;em title=&quot;Decimal Number&quot;&gt;n&lt;/em&gt; and &lt;em title=&quot;Decimal Number&quot;&gt;m&lt;/em&gt; times. Possessive match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(…)&lt;/td&gt;
+&lt;td&gt;Capturing parentheses. Range of input that matched the parenthesized subexpression is available after the match.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?:…)&lt;/td&gt;
+&lt;td&gt;Non-capturing parentheses. Groups the included pattern, but does not provide capturing of matching text. Somewhat more efficient than capturing parentheses.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?&amp;gt;…)&lt;/td&gt;
+&lt;td&gt;Atomic-match parentheses. First match of the parenthesized subexpression is the only one tried; if it does not lead to an overall pattern match, back up the search for a match to a position before the (?&amp;gt; .&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?#…)&lt;/td&gt;
+&lt;td&gt;Free-format comment (?#&lt;em&gt;comment&lt;/em&gt;).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?=…)&lt;/td&gt;
+&lt;td&gt;Look-ahead assertion. True if the parenthesized pattern matches at the current input position, but does not advance the input position.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?!…)&lt;/td&gt;
+&lt;td&gt;Negative look-ahead assertion. True if the parenthesized pattern does not match at the current input position. Does not advance the input position.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?&amp;lt;=…)&lt;/td&gt;
+&lt;td&gt;Look-behind assertion. True if the parenthesized pattern matches text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?&amp;lt;!…)&lt;/td&gt;
+&lt;td&gt;Negative Look-behind assertion. True if the parenthesized pattern does not match text preceding the current input position, with the last character of the match being the input character just before the current position. Does not alter the input position. The length of possible strings matched by the look-behind pattern must not be unbounded (no * or + operators).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?ismwx-ismwx:…)&lt;/td&gt;
+&lt;td&gt;Flag settings. Evaluate the parenthesized expression with the specified flags&lt;em&gt;enabled&lt;/em&gt; or -&lt;em&gt;disabled&lt;/em&gt;.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;(?ismwx-ismwx)&lt;/td&gt;
+&lt;td&gt;Flag settings. Change the flag settings. Changes apply to the portion of the pattern following the setting. For example, (?i) changes to a case insensitive match.
+&lt;div&gt;&lt;strong&gt;See also:&lt;/strong&gt; &lt;a href=&quot;http://regexkit.sourceforge.net/RegexKitLite/#RegularExpressionOptions&quot;&gt;Regular Expression Options&lt;/a&gt;&lt;/div&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/p&gt;
+</description>
+                <link>http://snorlaxzxz.com/program/2012/11/24/regexkit%E7%AC%94%E8%AE%B0</link>
+                <guid>http://snorlaxzxz.com/program/2012/11/24/regexkit笔记</guid>
+                <pubDate>2012-11-24T00:00:00+08:00</pubDate>
         </item>
 
         <item>

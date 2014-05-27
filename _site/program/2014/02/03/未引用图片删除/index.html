@@ -3,8 +3,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>有趣的混乱代码</title>
-    
+    <title>未引用图片删除</title>
+    <meta name="description" content="">
     <meta name="author" content="Xinzheng Zhang">
 
     <!-- Enable responsive viewport -->
@@ -87,28 +87,35 @@
       <div class="content">
         
 <div class="page-header">
-  <h1>有趣的混乱代码 </h1>
+  <h1>未引用图片删除 </h1>
 </div>
 
 <div class="row-fluid post-full">
   <div class="span12">
     <div class="date">
-      <span>24 April 2012</span>
+      <span>03 February 2014</span>
     </div>
     <div class="content">
-      <p><pre>无意间看到一个第20届国际C语言混乱代码大赛（IOCCC）的最佳作品，同样作为死宅对他的作品也更加是喜欢了，于是乎我就来分享下这段代码。</pre></p>
+      <p>同理可以用来处理些别的资源文件</p>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nv">PROJ</span><span class="o">=</span><span class="sb">`</span>find . -name <span class="s1">&#39;*.xib&#39;</span> -o -name <span class="s1">&#39;*.[mh]&#39;</span><span class="sb">`</span>
 
-<p>这是一段典型的自功自受啊，把自己当成输入，成为输出后再继续当输入= =<br />
-源文件
-<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri1.png"><img class="alignnone size-full wp-image-42" title="akiri1" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri1.png" alt="" width="106" height="123" /></a>
-<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri2.png"><img class="alignnone size-medium wp-image-43" title="akiri2" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri2-288x300.png" alt="" width="288" height="300" /></a>
-<pre><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri4.png" /></pre><img class="alignnone size-medium wp-image-45" title="akiri4" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri4-294x300.png" alt="" width="294" height="300" />
-<pre><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri3.png" /></pre><img class="alignnone size-full wp-image-44" title="akiri3" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/04/akiri3.png" alt="" width="164" height="172" />
-<pre>再迭代下去就阿卡林就变型的完全看不出了。。</pre>
-<pre>akari源码地址：http://www.ioccc.org/2011/akari/akari.c</pre></p>
+<span class="k">for </span>png in <span class="sb">`</span>find . -name <span class="s1">&#39;*.png&#39;</span> <span class="p">|</span> grep -v @2x<span class="sb">`</span> <span class="c">#所要处理的资源文件类型</span>
+<span class="k">do</span>
+<span class="k">    </span><span class="nv">name</span><span class="o">=</span><span class="sb">`</span>basename <span class="nv">$png</span><span class="sb">`</span>
+    <span class="nv">name</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$name</span> <span class="p">|</span> sed -e <span class="s1">&#39;s/\.png//g&#39;</span><span class="sb">`</span>  <span class="c">#在代码中的表现形势、如果有一些拼串的需要特殊处理</span>
+    <span class="k">if</span> ! grep -qhs <span class="nv">$name</span> <span class="nv">$PROJ</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">        </span><span class="nv">tmp</span><span class="o">=</span><span class="sb">`</span><span class="nb">echo</span> <span class="nv">$png</span> <span class="p">|</span> grep /Zhidao/Resources/Image <span class="p">|</span> grep -v /Image/Professional/<span class="sb">`</span> <span class="c">#排除一些不想处理的文件架比如引用外部封完的东西的</span>
+        <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$tmp&quot;</span> <span class="o">=</span> <span class="s2">&quot;$png&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<span class="k">            </span><span class="nb">echo</span> <span class="s2">&quot;$png is not referenced&quot;</span>
+<span class="c">#           svn rm $png</span>
+<span class="c">#           doubleName=`echo $png | sed -e &#39;s/\.png/@2x\.png/g&#39;`</span>
+<span class="c">#           svn rm $doubleName@</span>
 
-<p>作者其它作品地址：http://uguu.org/sources.html</p>
-
+        <span class="k">fi</span>
+<span class="k">    fi</span>
+<span class="k">done</span>
+</code></pre></div>
     </div>
 
   
@@ -136,11 +143,11 @@
     <div class="pagination">
       <ul>
       
-        <li class="prev"><a href="/life/2012/03/31/38" title="">&larr; Previous</a></li>
+        <li class="prev"><a href="/program/2014/02/03/%E5%85%B3%E4%BA%8Ensurlsessiondownloadtask%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92" title="关于NSURLSessionDownloadTask的参数传递">&larr; Previous</a></li>
       
         <li><a href="/archive.html">Archive</a></li>
       
-        <li class="next"><a href="/program/2012/07/05/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AA%E5%BE%88%E5%A5%BD%E7%94%A8%E7%9A%84python%E7%9A%84web%E6%A1%86%E6%9E%B6" title="分享一个很好用的python的web框架">Next &rarr;</a></li>
+        <li class="next"><a href="/2014/05/26/test" title="test">Next &rarr;</a></li>
       
       </ul>
     </div>

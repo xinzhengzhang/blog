@@ -1,50 +1,83 @@
----
-layout: post
-title: 关于protocol buffer 中的Base 128 Varints编码
-categories:
-- program
-tags: []
-published: true
-comments: true
----
-首先大致讲下protocol buffer 是大google用来改变世界的……（不过要干掉xml json什么的我感觉再过二十年吧……好像解析的速度也没有那么的重要<br />
-其实具体的google的文档讲了很清楚了
-<https://developers.google.com/protocol-buffers/docs/encoding#simple>
-然后就是这个奇怪的新的编码、大致的好处我看下来感觉就是类似utf8那样可长可短根据数的大小来决定编码长度这样的
-然后拿他官方例子来讲
-比如300 来对他encode
-首先先把他转成二进制、然后进行补0 补整字节的倍数也就8的倍数
-然后进行逆序 最后对每个字节的8位进行填充、也就是每个字节的最高byte如果为1就是把后面那个字节的8位拿过来一起算、反正就是自己算
-然后是decode 也就是一个反序 先根据每个字节的最高位拆开成独立的小块 然后以字节为单位进行反序 再然后去0把他十进制读出思想就是这样但是有点疑惑这个倒序的意义我是一直没有明白= =  
 
-好吧最后把代码贴出
+### 工作
+1. host在github上
+2. 安装jekyll bootstrap~~简称jb~~
+3. 导出wordpress评论以及内容
+4. 处理wordpress的内容转化为markdown
+5. 注意事项
 
-```python
-def encodebase128(ori):
-	t=str(bin(int(ori))[2:])
-	tmp=7
-	while len(t)>>tmp:
-		tmp*=2
-	t='0'*(tmp-len(t))+t
-	ll=t[-7:]
-	for i in xrange(1,tmp/7):
-		ll+=t[-(i+1)*7:-i*7]
-	ans=""
-	for i in xrange(0,tmp/7):
-		ans+='0'
-		ans+=ll[i*7:(i+1)*7]
-	if tmp/7>1:
-		ans='1'+ans[1:]
-	return ans
-def decodebase128(dealed):
-	if len(dealed)%8!=0:
-		print 'illegal'
-	tt=dealed[-7:]
-	for i in xrange(len(dealed)/8-1,0,-1):
-		tt+=dealed[(i-1)*8+1:(i)*8]
-	return int('0b'+tt,2) 
+#### [host在github上](https://pages.github.com/)
+1. 新建一个username.github.io的repo
+2. [绑定域名](https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages)
+
+#### [安装~~jb~~](http://jekyllbootstrap.com/)
+1. 安装jekyll
+2. clone代码 并看一下sample的样例以及api
+
+***
+
+#### 导出wordpress评论以及内容
+* 导出评论
+  * 由于github page采用的是纯静态的、评论这种那么麻烦的东西索性还是交给第三方好啦= =在github上我使用的是[disqus](http://disqus.com/)，他也同时提供从wordpress导出的功能
+    * 创建 disqus账号 <disqus.com/admin/create>
+    * 添加自己的site并安装wp插件 <http://wordpress.org/plugins/disqus-comment-system/>
+    * 等待disques后台进程帮你抓完会通知你的
+* 导出内容
+  * 导出content 使用wordpress的导出工具导出xml即可
+
+#### 转换内容
+* 导出mark down
+  * ~~jekyll 有一个jekyll-import 的工具、不过中文支持的巨差无比~~
+  * 使用一个改进过对中文支持的版本 <https://gist.github.com/chitsaou/1394128>
+  * 导出的xml命名 (wordpress.xml) 如下命令会把为你生成一拖post 以及wordpress中的page
+  ```ruby
+  ruby -r "./wordpressdotcom.rb" -e "Jekyll::WordpressDotCom.process"
+  ```
+  * 如果在wordpress中没有使用什么插件类似**codebox**这样的到这一步就导入成功了
+  * 如果使用了一些奇怪的语法在html用插件解出来的格式就一塌糊涂了，比如我的所有的代码都是用codebox的……
+  写了一段简单的脚本来处理html，基本思路都是文本解析到codebox的开始标签pre然后替换掉
+  ```python
+  __author__ = 'zhangxinzheng'
+# -*- coding: utf-8 -*-
 import sys
-t= encodebase128(sys.argv[1])
-print t
-print dealstring(t)
-```
+import re
+import os
+def f(filename):
+    if filename.find("html") == -1:
+        return
+    targetName = filename.replace("html","md")
+    fd = open(filename, "r+")
+    str = ''.join(fd.readlines())
+    while str.find("<pre") != -1:
+        tempString="\n```\n"
+        isContent = False
+        startIndex = str.find("<pre")
+        endIndex = len(str)
+        realEnd = startIndex
+        leftCount = 1
+        rightCount = 0
+        for j in xrange(startIndex, endIndex):
+            if str[j] == '<':
+                isContent = False
+                leftCount +=1
+            if isContent:
+                tempString+=str[j]
+            if str[j] == '>':
+                isContent = True
+                rightCount +=1
+                realEnd = j
+            if leftCount == rightCount:
+                break
+        str+="\n```\n"
+        str=str.replace(str[startIndex:realEnd], tempString)
+    fd.close()
+
+    fd = open(targetName, "w+")
+    fd.write(str)
+    fd.close()
+    os.remove(filename)
+
+if __name__ == "__main__":
+    for i in sys.argv:
+        f(i)
+  ```

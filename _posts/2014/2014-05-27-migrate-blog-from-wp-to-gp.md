@@ -95,38 +95,38 @@ tags: ["wordpress", "github"]
 1. 中文路径在github上跑起来没问题，但是本地调试时会报错
 
   ```ruby
-        % LANG="en_US.UTF-8" LC_ALL="en_US.UTF-8" be jekyll build --trace
-      Configuration file: /Users/albertogg/Documents/beyondalbert.github.com/_config.yml
-                  Source: /Users/albertogg/Documents/beyondalbert.github.com
-             Destination: /Users/albertogg/Documents/beyondalbert.github.com/_site
-            Generating...
-      /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `sanitized_path'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:43:in `block in new_files'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `block (2 levels) in each_site_file'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `block in each_site_file'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:43:in `new_files'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `obsolete_files'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:255:in `cleanup'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `process'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:46:in `build'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `process'
-          from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `call'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `block in execute'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `execute'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `go'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program'
-          from /Users/albertogg/Documents/Github/jekyll/bin/jekyll:18:in `<top (required)>'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `load'
-          from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `<main>'
+    % LANG="en_US.UTF-8" LC_ALL="en_US.UTF-8" be jekyll build --trace
+    Configuration file: /Users/albertogg/Documents/beyondalbert.github.com/_config.yml
+                Source: /Users/albertogg/Documents/beyondalbert.github.com
+           Destination: /Users/albertogg/Documents/beyondalbert.github.com/_site
+          Generating...
+    /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `gsub!': invalid byte sequence in US-ASCII (ArgumentError)
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `sanitized_path'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:43:in `block in new_files'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `block (2 levels) in each_site_file'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `block in each_site_file'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:43:in `new_files'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `obsolete_files'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:255:in `cleanup'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `process'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:46:in `build'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `process'
+        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `call'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `block in execute'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `execute'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `go'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program'
+        from /Users/albertogg/Documents/Github/jekyll/bin/jekyll:18:in `<top (required)>'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `load'
+        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `<main>'
     ```
   * 详见这个<https://github.com/jekyll/jekyll/issues/2379> 修改了报错那行为
   ```ruby

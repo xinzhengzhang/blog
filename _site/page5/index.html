@@ -107,6 +107,98 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2012/11/02/os-x-safari%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE">os x safari代理配置 </a></h3>
+  <div class="date">
+    <span>02 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先先问候一下方校长，自从google被封了一批ip后墙翻的我简直痛不欲生一会么证书伪造一会么500……<br />
+大chrome崩溃的频率也tm越来越高，想来想去既然是os x那就索性用safari装x到到底-_-#</p>
+
+<p>个么safari上默认的设代理就是全局翻（上weibo什么的怎么办啊不卡死啊……<br />
+那就也写个简单点的代理就好了么（其实如果用chrome的switchysharp直接导出他的配置文件就好了
+<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/6FC51D93-7ED1-46FA-A632-14B720CAE1EE.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/6FC51D93-7ED1-46FA-A632-14B720CAE1EE-300x163.jpg" alt="" title="6FC51D93-7ED1-46FA-A632-14B720CAE1EE" width="300" height="163" class="alignnone size-medium wp-image-82" /></a></p>
+
+<p>那么没有的怎么搞呢，自己写一个也很简单的<br />
+浏览器是会通过这个FindProxyForURL来选择具体是否选择实用代理<br />
+那么最简单的一个代理就是</p>
+
+<p>
+```
+
+function FindProxyForURL(url, host)
+{
+    if(dnsDomainIs(host, "twitter.com")
+    {
+        return 'PROXY 127.0.0.1:8087'
+    }
+    return 'DIRECT';
+}
+
+
+
+那么稍微再加个正则匹配的就变成这样了
+
+
+function FindProxyForURL(url, host) 
+{
+    if (shExpMatch(url, "*://*.twitter*")) return 'PROXY 127.0.0.1:8087';
+    if (shExpMatch(url, "*://*.google*")) return 'PROXY 127.0.0.1:8087';
+    return 'DIRECT';
+}
+
+
+个么最后写完这个脚本丢在哪儿呢
+在 system perference->>network->advanced->proxy->auto proxy  configuration把自己刚写的那pac(后缀什么的都无所谓的)给导进去就可以了</p>
+
+<p>enjoy</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2012/10/22/%E5%88%86%E4%BA%ABmd5%E6%96%B0%E7%89%B9%E6%80%A7-contenteditable">分享html5新特性 contenteditable </a></h3>
   <div class="date">
     <span>22 October 2012</span>
@@ -889,59 +981,6 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
 </div>
 
 
-<div class="page-header">
-  <h3><a href="/life/2012/03/13/%E8%90%BD%E8%84%9A%E7%82%B9">落脚点 </a></h3>
-  <div class="date">
-    <span>13 March 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>记得谁讲过不自己搭个blog都不能算上是程序猿，好吧，心血来潮就突然来搭了，虽然用WordPress没什么技术含量是吧，不过也算是搭上了= =，好吧这里就成新的落脚点了</p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#life-ref">
-    		life <span>5</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
 <!-- </ul> -->
 
 <div id="post-pagination" class="paginator">
@@ -981,7 +1020,7 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
   
     <a class="next" href="/page6">后页</a>
   
-  (共52篇)
+  (共53篇)
 </div>
 
         </div>

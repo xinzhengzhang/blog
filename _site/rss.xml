@@ -5,10 +5,52 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-05-27T16:20:44+08:00</lastBuildDate>
-        <pubDate>2014-05-27T16:20:44+08:00</pubDate>
+        <lastBuildDate>2014-05-30T10:29:53+08:00</lastBuildDate>
+        <pubDate>2014-05-30T10:29:53+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>毕业贩卖</title>
+                <description>&lt;h3&gt;毕业甩卖&lt;/h3&gt;
+
+&lt;h4&gt;显示器&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;300&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;19寸&lt;/li&gt;
+&lt;li&gt;分辨率 1440*900&lt;/li&gt;
+&lt;li&gt;渠道 &lt;a href=&quot;http://item.jd.com/172532.html&quot;&gt;http://item.jd.com/172532.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;原价 699&lt;/li&gt;
+&lt;li&gt;图为高度和13寸本的对比&lt;/li&gt;
+&lt;li&gt;&lt;img src=&quot;/assets/static/2014-05-30-1.jpg&quot; alt=&quot;13寸笔记本的对比&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;EggPlus&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;60&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;附赠金龙鱼大豆油 900ml一瓶&lt;/li&gt;
+&lt;li&gt;附赠清洗工具&lt;/li&gt;
+&lt;li&gt;渠道 &lt;a href=&quot;http://www.mygeek.cn/product/Pro1721.Html&quot;&gt;http://www.mygeek.cn/product/Pro1721.Html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;原价 120&lt;/li&gt;
+&lt;li&gt;&lt;img src=&quot;/assets/static/2014-05-30-2.jpg&quot; alt=&quot;eggplus&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;电风扇&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;15&lt;/strong&gt;
+&lt;img src=&quot;/assets/static/2014-05-30-3.jpg&quot; alt=&quot;fan&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;ps. 造福学弟，最好支付宝交易&lt;/strong&gt;
+&lt;a href=&quot;mailto:zhangxzheng@gmail.com&quot;&gt;Email&lt;/a&gt;&lt;/p&gt;
+</description>
+                <link>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance</link>
+                <guid>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance</guid>
+                <pubDate>2014-05-30T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>wordpress迁移github page</title>
@@ -16,7 +58,7 @@
 
 &lt;ol&gt;
 &lt;li&gt;host在github上&lt;/li&gt;
-&lt;li&gt;安装jekyll bootstrap~~简称jb~~&lt;/li&gt;
+&lt;li&gt;安装jekyll bootstrap &lt;del&gt;简称jb&lt;/del&gt;&lt;/li&gt;
 &lt;li&gt;导出wordpress评论以及内容&lt;/li&gt;
 &lt;li&gt;处理wordpress的内容转化为markdown&lt;/li&gt;
 &lt;li&gt;注意事项&lt;/li&gt;
@@ -30,7 +72,7 @@
 &lt;li&gt;&lt;a href=&quot;https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages&quot;&gt;绑定域名&lt;/a&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;h4&gt;安装 &lt;del&gt;jb&lt;/del&gt;&lt;/h4&gt;
+&lt;h4&gt;安装 jb&lt;/h4&gt;
 
 &lt;ol&gt;
 &lt;li&gt;&lt;a href=&quot;http://jekyllbootstrap.com/&quot;&gt;http://jekyllbootstrap.com/&lt;/a&gt;&lt;/li&gt;

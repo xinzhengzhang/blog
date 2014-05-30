@@ -107,6 +107,92 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance">毕业贩卖 </a></h3>
+  <div class="date">
+    <span>30 May 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h3>毕业甩卖</h3>
+
+<h4>显示器</h4>
+
+<ul>
+<li><strong>300</strong></li>
+<li>19寸</li>
+<li>分辨率 1440*900</li>
+<li>渠道 <a href="http://item.jd.com/172532.html">http://item.jd.com/172532.html</a></li>
+<li>原价 699</li>
+<li>图为高度和13寸本的对比</li>
+<li><img src="/assets/static/2014-05-30-1.jpg" alt="13寸笔记本的对比"></li>
+</ul>
+
+<h4>EggPlus</h4>
+
+<ul>
+<li><strong>60</strong></li>
+<li>附赠金龙鱼大豆油 900ml一瓶</li>
+<li>附赠清洗工具</li>
+<li>渠道 <a href="http://www.mygeek.cn/product/Pro1721.Html">http://www.mygeek.cn/product/Pro1721.Html</a></li>
+<li>原价 120</li>
+<li><img src="/assets/static/2014-05-30-2.jpg" alt="eggplus"></li>
+</ul>
+
+<h4>电风扇</h4>
+
+<ul>
+<li><strong>15</strong>
+<img src="/assets/static/2014-05-30-3.jpg" alt="fan"></li>
+</ul>
+
+<p><strong>ps. 造福学弟，最好支付宝交易</strong>
+<a href="mailto:zhangxzheng@gmail.com">Email</a></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#瞎写写-ref">
+    		瞎写写 <span>5</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2014/05/27/migrate-blog-from-wp-to-gp">wordpress迁移github page </a></h3>
   <div class="date">
     <span>27 May 2014</span>
@@ -120,7 +206,7 @@
 
 <ol>
 <li>host在github上</li>
-<li>安装jekyll bootstrap~~简称jb~~</li>
+<li>安装jekyll bootstrap <del>简称jb</del></li>
 <li>导出wordpress评论以及内容</li>
 <li>处理wordpress的内容转化为markdown</li>
 <li>注意事项</li>
@@ -134,7 +220,7 @@
 <li><a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages">绑定域名</a></li>
 </ol>
 
-<h4>安装 <del>jb</del></h4>
+<h4>安装 jb</h4>
 
 <ol>
 <li><a href="http://jekyllbootstrap.com/">http://jekyllbootstrap.com/</a></li>
@@ -1207,207 +1293,6 @@ print &quot;search over&quot;
 </div>
 
 
-<div class="page-header">
-  <h3><a href="/program/2013/05/05/%E8%B7%B3%E8%A1%A8python%E5%AE%9E%E7%8E%B0">跳表python实现 </a></h3>
-  <div class="date">
-    <span>05 May 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>最近在看算法导论发现跳表好像一直没实现过……所以闲来无视就写了个python的实现<br />
-详细介绍可看网易公开课算法导论第12集跳跃表<br />
-http://v.163.com/special/opencourse/algorithms.html</p>
-
-<p><p>然后把代码贴上</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">import sys
-import random
-mineast=-sys.maxint
-class Node(object):
-    def __init__(self,value=mineast,rightp=None,leftp=None,upp=None,downp=None):
-        self.value=value
-        self.rightp=rightp
-        self.leftp=leftp
-        self.upp=upp
-        self.downp=downp
-    def __del__(self):
-        self.value=None
-        self.rightp=None
-        self.leftp=None
-        self.upp=None
-        self.downp=None
-class skipTable(object):
-    def __init__(self):
-        self.lefthead=Node()
-    def __del__(self):
-        t=self.lefthead
-        headlist=[]
-        while t:
-            headlist.append(t)
-            t=t.downp
-        for i in headlist:
-            while i:
-                dd=i
-                i=i.rightp
-                del(dd)
-
-    def findlowestLayer(self,newvalue):
-        tmphead=self.lefthead
-        tmpans=[]
-        while tmphead.downp:
-            while tmphead.rightp:
-                if tmphead.rightp.value&amp;gt;newvalue:
-                    break
-                else:
-                    tmphead=tmphead.rightp
-            tmpans.append(tmphead)
-            tmphead=tmphead.downp
-        tmpans.append(tmphead)
-        return tmpans
-    def getCurrentLayerInsertLoc(self,Head,newvalue):
-        tmphead=Head
-        while(tmphead.rightp):
-            if tmphead.rightp.value&amp;gt;newvalue:
-                return tmphead
-            else:
-                tmphead=tmphead.rightp
-        return tmphead
-    def randomup(self):
-        if random.randint(0,1)==0:
-            return False
-        else:
-            return True
-    def adjustnode(self,prefixNode,value):
-        newnode=Node(value,prefixNode.rightp,prefixNode,None,None)
-        if prefixNode.rightp:
-            prefixNode.rightp.leftp=newnode
-            prefixNode.rightp=newnode
-        else:
-            prefixNode.rightp=newnode
-        return newnode
-    def adjustnodepor(self,prefixNode,downNode,value):
-        newnode=Node(value,prefixNode.rightp,prefixNode,None,downNode)
-        downNode.upp=newnode
-        if prefixNode.rightp:
-            prefixNode.rightp.leftp=newnode
-            prefixNode.rightp=newnode
-        else:
-            prefixNode.rightp=newnode
-        return newnode
-    def insert(self,value):
-        lowestlayerNode=self.findlowestLayer(value)
-        loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)
-        downNode=self.adjustnode(loc,value)
-        while self.randomup():
-            #print &quot;up %s&quot; %value
-            if(len(lowestlayerNode)!=0):
-                downNode=self.adjustnodepor(lowestlayerNode.pop(),downNode,value)
-            else:
-                newnode=Node()
-                newnode.downp=self.lefthead
-                self.lefthead.upp=newnode
-                self.lefthead=newnode
-                downNode=self.adjustnodepor(newnode,downNode,value)
-    def delete(self,value):
-        lowestlayerNode=self.findlowestLayer(value)
-        loc=self.getCurrentLayerInsertLoc(lowestlayerNode.pop(),value)
-        lowestlayerNode.append(loc)
-        for i in lowestlayerNode:
-            if i.value==value:
-                if i.rightp:
-                    i.leftp.rightp=i.rightp
-                    i.rightp.leftp=i.leftp
-                    del(i)
-                else:
-                    i.leftp.rightp=None
-                    del(i)
-    def find(self,value):
-        tmphead=self.lefthead
-        while tmphead.downp:
-            while tmphead.rightp:
-                if tmphead.rightp.value&amp;gt;value:
-                    break
-                elif tmphead.rightp.value==value:
-                    print &quot;find&quot;
-                    return
-                else:
-                    tmphead=tmphead.rightp
-            tmphead=tmphead.downp
-        while tmphead.rightp:
-            if tmphead.rightp.value==value:
-                print &quot;find&quot;
-                return
-            tmphead=tmphead.rightp
-        if tmphead.value==value:
-            print &quot;find&quot;
-            return
-        else:
-            print &quot;not find&quot;
-            return
-
-sk=skipTable()
-for i in xrange(100):
-    sk.insert(random.randint(0,100))
-for i in xrange(20):
-    sk.delete(random.randint(0,100))
-
-t=sk.lefthead
-headlist=[]
-while t:
-    headlist.append(t)
-    t=t.downp
-for i in headlist:
-    while i:
-        print i.value,
-        i=i.rightp
-    print 
-sk.find(101)
-del(sk)
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>39</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
 <!-- </ul> -->
 
 <div id="post-pagination" class="paginator">
@@ -1445,7 +1330,7 @@ del(sk)
   
     <a class="next" href="/page2">后页</a>
   
-  (共52篇)
+  (共53篇)
 </div>
 
         </div>

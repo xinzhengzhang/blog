@@ -107,6 +107,85 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2013/03/07/%E5%85%B3%E4%BA%8Eios%E4%B8%8B%E7%9A%84goagent%E4%BD%BF%E7%94%A8">关于ios下的goagent使用 </a></h3>
+  <div class="date">
+    <span>07 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>国际惯例先问候下方滨兴你这狗娘养的<br />
+-----------------------------------------------------------------------------------<br />
+首先说下我的server的版本是2.1.3<br />
+ios下的goagent各种教程到处都是、可是只可惜共军太狡猾、gfw现在是越来越牛逼<br />
+反正我搜着的各种帖子要么是那种二到家的就装装装下去就成功了、要么就是中间某个步骤被干掉了<br /></p>
+
+<p>正常人都肯定会看官方的文档、可惜没那么简单……<del datetime="2013-03-07T06:08:41+00:00"><a href="https://code.google.com/p/goagent/wiki/GoAgent_IOS">https://code.google.com/p/goagent/wiki/GoAgent_IOS</a></del>
+这上面的版本由于过于古老让我吃尽苦头<br />
+好了废话到此位置<br />
+-----------------------------------------------------------------------------------<br />
+由于官方那个是把python包直接内嵌在里面的所以第一步装python<br />
+为了一下操作方便点可以安装下open ssh以及aptbackup(用了这个就可以直接用apt-get了<br />
+1.这个可以直接在178的源里搜索安装python2.7<br />
+2.在big boss源中安装adv-cmds（是下一步的依赖<br />
+3.接下去就是goagent了 <a href="https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&amp;can=2&amp;q=">https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&amp;can=2&amp;q=</a>(debian包安装可以采取dpkg -i 或者就索性丢到</var/root/Media/Cydia/AutoInstall> 重启下<br />
+4.安装方便的工具栏 有两种选择 第一是先装sbsetting依赖（有一串东西）然后装178源里的goagent-toggle 第二就是用之前的goagent-ios 在里面的/Applications/goagent-ios.app/goagent-local/proxy.py做一个映射到/var/mobile/goagent-local/proxy.py（前者是在sbsetting中进行开关、后者是在通知栏最下放有个按键进行开关）<br />
+5.配置goagent中的appid、以及更改为google_hk(若用google_cn请把hosts中的域名更改为响应的ip地址、isp不提供解析)配置当前网络下的pac 地址在<a href="file://localhost/stash/Applications/MobileSafari.app/8087.pac">file://localhost/stash/Applications/MobileSafari.app/8087.pac</a> 在当前wifi里的http proxy中填写<br />
+以上你已经在http情况下翻过去了<br />
+6.现在要安装ca、这个正常看起来简单暴的事情、由于你现在根本在没翻的前提下变的异常困难不过你可以发现goagent-local里其实已经有了很多ca了、把</var/mobile/goagent-local/certs/apis.google.com.crt> 拷贝出来（如果本机可以翻墙可以直接把<a href="https://goagent.googlecode.com/files/CA.crt">https://goagent.googlecode.com/files/CA.crt</a>下载下来用并跳到8） 然后如果自己有python环境就用传说中两行的web服务器把ca给共享出去</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">import SimpleHTTPServer
+SimpleHTTPServer.test()
+
+7.在safari访问这个然后下一步安装、到这就可以轻易的safari访问 &lt;https://goagent.googlecode.com/files/CA.crt&gt; 装他的ca了
+
+8.你自由了:-)
+
+ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包server
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>39</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">关于windows里的python环境配置 </a></h3>
   <div class="date">
     <span>29 January 2013</span>
@@ -371,7 +450,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#瞎写写-ref">
-    		瞎写写 <span>4</span>
+    		瞎写写 <span>5</span>
     	</a></li>
     
   
@@ -902,187 +981,6 @@ UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIMo
 </div>
 
 
-<div class="page-header">
-  <h3><a href="/program/2012/11/28/bmp%E3%80%81png%E5%88%9D%E7%90%86%E8%A7%A3">bmp、png初理解 </a></h3>
-  <div class="date">
-    <span>28 November 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><p>主要还是写下bmp图的操作(另外两个看的实在头大<br />
-首先bmp的头是由三部分组成的、分别是位图头、位图信息、调色板<br />
-下面就是位图数据了<br />
-详见<a href="http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF"><a href="http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF">http://zh.wikipedia.org/zh/BMP#.E8.B0.83.E8.89.B2.E6.9D.BF</a></a>
-我用了以下的三个结构体用来接bmp头 然后再一个来接像素数据</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">//
-//  BmpLab.h
-//  labfor12c
-//
-//  Created by zxz on 12-11-28.
-//  Copyright (c) 2012年 zxz. All rights reserved.
-//
-
-#ifndef labfor12c___BmpLab_h
-#define labfor12c___BmpLab_h
-
-typedef struct __BitMapHead{
-//    __uint16_t fileType;  //default BM
-    __uint32_t fileSize;
-    __uint32_t unDefined; //undefined
-    __uint32_t fileOffset;
-}BitMapHead;
-
-typedef struct __BitMapInfo{
-    __uint32_t infoHeadSize; //40
-    __uint32_t bitMapWidth;
-    __uint32_t bitMapHeight;
-    __uint16_t bitMapColorPlanes; //彩色位面的个数（不懂
-    __uint16_t bitMapPixelBit; //1 4 8 灰阶 24彩
-    __uint32_t bitMapCompression; //0 - 没有压缩（也用BI_RGB表示）    1 - 行程长度编码 8位/像素（也用BI_RLE8表示）    2 - 行程长度编码4位/像素（也用BI_RLE4表示）    3 - Bit field（也用BI_BITFIELDS表示）    4 - JPEG图像（也用BI_JPEG表示）    5 - PNG图像（也用BI_PNG表示）
-    __uint32_t bitMapBodySize;
-    __uint32_t bitMapXPixel;  //水平分辨率
-    __uint32_t bitMapYPixel;  //垂直分辨率
-    __uint32_t bitMapColorUsed;
-    __uint32_t bitMapImportantColorUsed;
-
-}BitMapInfo;
-
-typedef struct __RGBQUARD{
-    __uint8_t rgbRed;
-    __uint8_t rgbGreen;
-    __uint8_t rgbBlue;
-    __uint8_t rgbReserved;
-}RGBQUARD;
-
-typedef struct __pixelData
-{
-    __uint8_t blue;
-    __uint8_t green;
-    __uint8_t red;
-}pixelData;
-#endif
-
-再然后就是把文件rb打开分别用上面的结构体接就可以了
-其中要注意的下因为type是2个字节的、结构体是会补齐的也就是如果直接一起读进去后面都会乱的
-所以我把type从结构体里注释了、选择先读进2个字节、然后再一并读进去
-
-//
-//  main.c
-//  labfor12c
-//
-//  Created by zxz on 12-11-26.
-//  Copyright (c) 2012年 zxz. All rights reserved.
-//
-
-#include 
-#include 
-#include &quot;BmpLab.h&quot;
-
-BitMapHead head;
-BitMapInfo info;
-RGBQUARD color[256];
-int main(int argc, const char * argv[])
-{
-
-    FILE *fpr,*fpw;
-    fpr=fopen(&quot;test_binaryImg.bmp&quot;, &quot;rb&quot;);
-    if (!fpr) {
-        printf(&quot;open fail&quot;);
-    }
-    else
-    {
-        __uint16_t type;
-        fread(&amp;type, 1, sizeof(__uint16_t), fpr);
-        if (type!=0x4d42) {
-            printf(&quot;not a bmp file&quot;);
-            return 1;
-        }
-        fread(&amp;head, 1, sizeof(BitMapHead), fpr);
-        fread(&amp;info, 1, sizeof(BitMapInfo), fpr);
-        unsigned int nCounti=0;
-        for(nCounti=0;nCounti
-        {
-            fread((char *)&amp;(color[nCounti].rgbBlue),1,sizeof(__uint8_t),fpr);
-            fread((char *)&amp;(color[nCounti].rgbGreen),1,sizeof(__uint8_t),fpr);
-            fread((char *)&amp;(color[nCounti].rgbRed),1,sizeof(__uint8_t),fpr);
-            fread((char *)&amp;(color[nCounti].rgbReserved),1,sizeof(__uint8_t),fpr);
-        }
-    }
-    __uint8_t *imgdata=(__uint8_t*)malloc(info.bitMapWidth*((sizeof(pixelData)+3)&amp;~4)*info.bitMapHeight); //向4取整（早上学完装逼的方法马上来用……
-    fread(imgdata, sizeof(pixelData)*info.bitMapWidth, info.bitMapHeight, fpr);
-    //deal with the preix
-    return 0;
-}
-
-
-往回保存的时候修改下头里面的数据然后往回写即可
-
-接着是png和jpeg、开始我 以为的是他们和位图一样简单呢……我还是太年轻了……
-还是先看下png的头吧
-png的头首先是一个8个字节的标示
-89 50 4E 47 0D 0A 1A 0A
-接下去是4个标准数据块
-分别是文件头数据块IHDR(header chunk)：包含有图像基本信息，作为第一个数据块出现并只出现一次。
-调色板数据块PLTE(palette chunk)：必须放在图像数据块之前。
-图像数据块IDAT(image data chunk)：存储实际图像数据。PNG数据允许包含多个连续的图像数据块。
-图像结束数据IEND(image trailer chunk)：放在文件尾部，表示PNG数据流结束。
-
-其中的每个数据块的结构是
-Length(长度)  4字节  指定数据块中数据域的长度，其长度不超过(231－1)字节
-Chunk Type Code(数据块类型码) 4字节  数据块类型码由ASCII字母(A-Z和a-z)组成
-Chunk Data(数据块数据) 可变长度     存储按照Chunk Type Code指定的数据
-CRC(循环冗余检测) 4字节  存储用来检测是否有错误的循环冗余码
-
-每块数据块的具体详见http://dev.gameres.com/Program/Visual/Other/PNGFormat.htm
-又是CRC什么的一搞就没兴趣去写代码解析了……
-原来png jpeg这种头格式上半毛钱都关系不上啊……
-
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>39</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
 <!-- </ul> -->
 
 <div id="post-pagination" class="paginator">
@@ -1122,7 +1020,7 @@ CRC(循环冗余检测) 4字节  存储用来检测是否有错误的循环冗�
   
     <a class="next" href="/page4">后页</a>
   
-  (共52篇)
+  (共53篇)
 </div>
 
         </div>

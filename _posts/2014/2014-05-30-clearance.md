@@ -27,7 +27,7 @@ tags: []
 * ![eggplus]({{ site.url }}/assets/static/2014-05-30-2.jpg)
 
 #### 电风扇
-* **出售：15**
+* **出售：25**
 ![fan]({{ site.url }}/assets/static/2014-05-30-3.jpg)
 
 **ps. 造福学弟，最好支付宝交易**

@@ -59,27 +59,27 @@ tags: ["swift", "objective-c", ]
 * 闭包、oc的block折腾够了么……好吧这回终于有简单明了爽快的闭包了Orz
   * 一般定义
 
-    ```
-    {
-      (arg1: Type, arg2: Type) -> returnType in
-      closure content
-    }
-    ```
+      ```
+      {
+        (arg1: Type, arg2: Type) -> returnType in
+        closure content
+      }
+      ```
   * sort Array
 
-    ```
-    var l: Array = [3, 4, 6, 1, 2]
-    sort(l, {
-      (i1: Int, i2: Int) -> Bool in
-      return i1 > i2
-      })
-    //嫌烦里面的type可以被推断出来所以可以省略
-    sort(l, {i1, i2 in return i1 > i2})
-    //还可以更短= =
-    sort(l, { $0 > $1})
-    //还他妈可以更短！= =
-    sort(l, >)
-    ```
+      ```
+      var l: Array = [3, 4, 6, 1, 2]
+      sort(l, {
+        (i1: Int, i2: Int) -> Bool in
+        return i1 > i2
+        })
+      //嫌烦里面的type可以被推断出来所以可以省略
+      sort(l, {i1, i2 in return i1 > i2})
+      //还可以更短= =
+      sort(l, { $0 > $1})
+      //还他妈可以更短！= =
+      sort(l, >)
+      ```
 
   * 注意一些循环引用的这些东西
     * unowned 弱引用非空对象(不init 编译器还报错

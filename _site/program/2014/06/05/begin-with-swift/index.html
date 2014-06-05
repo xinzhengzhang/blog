@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Begin With Swift</title>
+    <meta name="description" content="">
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">About me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archives</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>Begin With Swift </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>05 June 2014</span>
+    </div>
+    <div class="content">
+      <h3>感想</h3>
+
+<ul>
+<li>2014wwdc苹果新发表的语言嘛、不知道为什么就是特别的热= =难道跟名字有关么(听说swift贴吧都被占领了23333</li>
+<li>实际体验了下完全不知道苹果用什么黑科技bridge oc 和 swift的，除了代码提示几乎没有之外几乎两个语言完全自然连接的</li>
+<li>粗粗把<a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4">The Swift Programming Language</a>、有种特别熟悉的感觉……互联网上讨论也特别多、有厨有黑、包括各种媒体什么的也插一脚很多人都说像python，我倒是不怎么觉得，倒是各种语言的影子都可以看到一些而且东西特别多……不过脑补都知道完全用起来的话肯定很爽</li>
+<li>xcode6的bug特别多……
+
+<ul>
+<li>background 他是边写代码就一边在跑的所以比如 <code>system(rm -rf ~/)</code>这种命令&gt; &lt;</li>
+<li>群里看到的一句话干崩xcode…… <code>var b = 1; println(&quot;a&quot;, b)</code></li>
+<li>小tips</li>
+<li>开始纯粹练语法的话比较那个background比较核心……还不如用cli模式进去打了试东西目录在</Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/>
+可以 <code>PATH=$PATH:/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/</code> 然后命令行swift进cli试验(这样就算挂了也不会xcode无限重启&gt; &lt;</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<h3>oc swift混编</h3>
+
+<ul>
+<li><a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html">大家好我是传送门= =</a></li>
+<li><p>其实官方文档里写的各种东西也非常清楚的、我就用简单的描述下</p></li>
+<li><p>swift</p>
+
+<ul>
+<li>如果需要引入同样的swift代码、只需要直接用就可以了！！！ (总之我也不知道工程索引文件什么的ide悄悄藏在什么地方了……</li>
+<li>如果需要引入oc代码、首先需要生成一个<code>ProductName-Bridging-Header.h</code>的头文件(倒入随便一个oc文件就自动生成了)
+然后只需要把所有需要用到的oc头文件在这个header import进去，你的swift代码就可以随意这些类了！！(黑科技就是auto complete的时候怎么把oc的头文件自动转成swift的头文件的！！完全不知道ide偷偷的去哪儿生成了这些中间代码Orz……</li>
+</ul></li>
+<li><p>objective-c</p>
+
+<ul>
+<li>如果需要引入oc代码= =原来怎么搞现在怎么搞= =怎么说都感觉是废话= =
+
+<ul>
+<li>如果需要引入swift代码、首先在setting中打开<code>Defines Module</code>为YES、然后在需要使用的那个oc的 .m文件中引入 <code>#import &quot;ProductModuleName-Swift.h&quot;</code> 文档里的用<code>&lt;&gt;</code>引的应该是别的framework的依次类推、其中ProductModuleName可以在setting中设置
+<strong>这个文件不需要自己新建</strong>ide在一个很奇怪的角落里建好了……</li>
+</ul></li>
+</ul></li>
+<li><p>混编完全无痛吧<em>(:з”∠)</em></p></li>
+</ul>
+
+<h3>swift 语法特点 (粗略)</h3>
+
+<ul>
+<li><a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4">The Swift Programming Language (以下略为书)</a></li>
+<li><p>类型推断、参数约束描述等等 见如下</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">func anyCommonElements &lt;T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element&gt; (lhs: T, rhs: U) -&gt; Bool {
+  for lhsItem in lhs {
+      for rhsItem in rhs {
+          if lhsItem == rhsItem {
+              return true
+          }
+      }
+  }
+  return false
+}
+anyCommonElements([1, 2, 3], [3])
+</code></pre></div></li>
+<li><p>optional</p>
+
+<ul>
+<li>在swift加入了两个语法糖一样性质的! 和 ? 分别是拆包 装包</li>
+<li>可以用在一些判空的地方例如
+<code>
+//任意一个为空就中止不会走下去了、类似oc中的对nil perferselector不会crash一样
+john.residence?.address?.buildingIdentifier() {}
+</code></li>
+<li>包的感觉类似这样的感觉 例如函数中定义的是String 而你的 var a: String? 传入String要保证非空就必须一次解包操作如果这个时候值为空就crash</li>
+</ul>
+<div class="highlight"><pre><code class="language-text" data-lang="text">  enum Optional&lt;T&gt; {
+    Some(T)
+    None
+  }
+</code></pre></div></li>
+<li><p>闭包、oc的block折腾够了么……好吧这回终于有简单明了爽快的闭包了Orz</p>
+
+<ul>
+<li>一般定义</li>
+</ul>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{
+  (arg1: Type, arg2: Type) -&gt; returnType in
+  closure content
+}
+</code></pre></div>
+<ul>
+<li>sort Array</li>
+</ul>
+<div class="highlight"><pre><code class="language-text" data-lang="text">var l: Array = [3, 4, 6, 1, 2]
+sort(l, {
+  (i1: Int, i2: Int) -&gt; Bool in
+  return i1 &gt; i2
+  })
+//嫌烦里面的type可以被推断出来所以可以省略
+sort(l, {i1, i2 in return i1 &gt; i2})
+//还可以更短= =
+sort(l, { $0 &gt; $1})
+//还他妈可以更短！= =
+sort(l, &gt;)
+</code></pre></div>
+<ul>
+<li>注意一些循环引用的这些东西</li>
+<li>unowned 弱引用非空对象(不init 编译器还报错</li>
+<li>weak 弱引用可空的wrap过的对象就是那些加?的</li>
+<li>详情可见书245页</li>
+</ul></li>
+<li><p>setter getter willSet didSet</p>
+
+<ul>
+<li>类似c#的大大简化工作量……java那种seter getter去死吧混蛋！</li>
+</ul></li>
+<li><p>碉堡的switch case……妈妈再也不用担心我一排if了= = 见书179页</p></li>
+<li><p>还有各种符号重载、特别是<code>[]</code>也是非常的方便！(不过有一大堆关键字Orz 见书619页</p></li>
+<li><p>更多</p>
+
+<ul>
+<li>还有各种各样的特性从脚本语言过来的话应该都是非常熟悉的比如返回个<code>tuple</code>什么的啦字典<code>keyvalue遍历</code>啦<code>for _ in 1..5</code>这种写法啦、oc的一些类似category那样的写法同样也由extension保留了下来</li>
+<li>一言以蔽之、swift的语法特性简直就是叼炸天、完全不觉得这个是apple出的toy language、嗯就是这样啦！</li>
+</ul></li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>40</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#swift-ref">swift <span>1</span></a></li>
+    
+    	<li><a href="#objective-c-ref">objective-c <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance" title="毕业贩卖">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next disabled"><a>Next &rarr;</a>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'snorlaxzxz'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
+    
+  </body>
+</html>
+

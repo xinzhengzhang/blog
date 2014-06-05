@@ -107,6 +107,128 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2013/05/06/boyer-moore%E7%AE%97%E6%B3%95-python%E5%AE%9E%E7%8E%B0">Boyer-Moore算法 python实现 </a></h3>
+  <div class="date">
+    <span>06 May 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>看了<a href="http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html?utm_source=feedly">字符串匹配的Boyer-Moore算法</a>后觉得很有用就写一个实现了一下</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">def badcharrule(ori,sear):
+    if len(ori)!=len(sear):
+        print &quot;error&quot;
+    else:
+        le=len(ori)
+        badindex=-1
+        lastindex=-1
+        for i in xrange(le-1,0,-1):
+            if ori[i]==sear[i]:
+                pass
+            else:
+                badindex=i
+                break
+        if badindex==-1:
+            pass
+        else:
+            for i in xrange(0,le):
+                if sear[i]==ori[badindex]:
+                    lastindex=i
+                    break
+                else:
+                    pass
+        return badindex-lastindex
+def goodpostfixrule(ori,sear):
+    if len(ori)!=len(sear):
+        print &quot;error&quot;
+    else:
+        le=len(ori)
+        postfix=0
+        for i in xrange(le-1,0,-1):
+            if ori[i]==sear[i]:
+                postfix+=1
+            else:
+                break
+        if postfix==0:
+            return -1
+        else:
+            postfixstring=sear[-postfix:]
+            restori=sear[:-postfix]
+            if restori.find(postfixstring)==-1:
+                restori=postfixstring[:-1]+restori
+                if restori.find(postfixstring)==-1:
+                    return -1
+                else:
+                    return len(sear)-restori.find(postfixstring)-1
+            else:
+                return len(sear)-restori.find(postfixstring)-len(postfixstring)
+
+def movestep(ori,sear):
+    gu=badcharrule(ori,sear)
+    if gu==0:
+        return 0
+    else:
+        return max(gu,goodpostfixrule(ori,sear))
+
+oristring=&quot;here is a simple example&quot;
+searchstring=&quot;example&quot;
+
+index=0
+while index+len(searchstring)
+    move=movestep(oristring[index:index+len(searchstring)],searchstring)
+    if move==0:
+        print &quot;find it index=%s&quot; %index
+        index+=len(searchstring)
+    else:
+        index+=move
+print &quot;search over&quot;
+
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>40</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2013/05/05/%E8%B7%B3%E8%A1%A8python%E5%AE%9E%E7%8E%B0">跳表python实现 </a></h3>
   <div class="date">
     <span>05 May 2013</span>
@@ -278,7 +400,7 @@ del(sk)
   
     
     	<li><a href="#program-ref">
-    		program <span>39</span>
+    		program <span>40</span>
     	</a></li>
     
   
@@ -515,7 +637,7 @@ for(int i=0;i
   
     
     	<li><a href="#program-ref">
-    		program <span>39</span>
+    		program <span>40</span>
     	</a></li>
     
   
@@ -599,7 +721,7 @@ int main(){
   
     
     	<li><a href="#program-ref">
-    		program <span>39</span>
+    		program <span>40</span>
     	</a></li>
     
   
@@ -786,7 +908,7 @@ g++ -o test -fno-elide-constructors test.cpp
   
     
     	<li><a href="#program-ref">
-    		program <span>39</span>
+    		program <span>40</span>
     	</a></li>
     
   
@@ -1016,7 +1138,7 @@ return 0;
   
     
     	<li><a href="#program-ref">
-    		program <span>39</span>
+    		program <span>40</span>
     	</a></li>
     
   
@@ -1102,81 +1224,7 @@ print l</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>39</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2013/03/09/%E5%85%B3%E4%BA%8Ewordpress-%E5%90%8C%E6%AD%A5twitter%E5%8A%A0%E7%9F%AD%E5%9C%B0%E5%9D%80%E6%9C%8D%E5%8A%A1">关于wordpress 同步twitter加短地址服务 </a></h3>
-  <div class="date">
-    <span>09 March 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>1.首先安装依赖http://wordpress.org/extend/plugins/social/<br />
-2.再安装上 https://wordpress.org/extend/plugins/twitter-tools/</p>
-
-<p>这样就其实已经可以在发布的时候同步到twitter上了、但是有一个问题那就是url是全长度输出的、在限制长度的twitter下这是个非常大的问题<br />
-所以我修改了下源码用了sina的短地址服务（大sina把google api给墙掉了残年……<br />
------------------------------------------------------------------------------------------------------------<br />
-具体操作如下<br />
-1.首先从wordpress的根目录开始寻址到/wp-content/plugins/social/views/wp-admin/post/broadcast/options.php （我们需要修改文件就在这<br />
-2.找到第70行 其实我们从这里就可以看出$account['content']里就是我们发出的文本段（鉴于本人太懒不高兴往上找了所以就直接在这段做处理<br />
-3.先用正则式剔出我们blog的url 然后对他进行shorten再替换回去
-
-```
-
-url_short,$account['content']);
-    echo esc_textarea($tar);
-    echo "; 
-    echo esc_textarea($tar); 
-?>>
-</p></pre></p>
-
-<p>然后跑起来就ok了<br />
-修改完后的文件附上:<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/options.php_.zip">options.php</a></p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>39</span>
+    		program <span>40</span>
     	</a></li>
     
   
@@ -1244,7 +1292,7 @@ url_short,$account['content']);
   
     <a class="next" href="/page3">后页</a>
   
-  (共53篇)
+  (共54篇)
 </div>
 
         </div>

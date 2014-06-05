@@ -5,10 +5,140 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-05-30T10:58:22+08:00</lastBuildDate>
-        <pubDate>2014-05-30T10:58:22+08:00</pubDate>
+        <lastBuildDate>2014-06-05T21:33:11+08:00</lastBuildDate>
+        <pubDate>2014-06-05T21:33:11+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>Begin With Swift</title>
+                <description>&lt;h3&gt;感想&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2014wwdc苹果新发表的语言嘛、不知道为什么就是特别的热= =难道跟名字有关么(听说swift贴吧都被占领了23333&lt;/li&gt;
+&lt;li&gt;实际体验了下完全不知道苹果用什么黑科技bridge oc 和 swift的，除了代码提示几乎没有之外几乎两个语言完全自然连接的&lt;/li&gt;
+&lt;li&gt;粗粗把&lt;a href=&quot;https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;amp;ign-mpt=uo%3D4&quot;&gt;The Swift Programming Language&lt;/a&gt;、有种特别熟悉的感觉……互联网上讨论也特别多、有厨有黑、包括各种媒体什么的也插一脚很多人都说像python，我倒是不怎么觉得，倒是各种语言的影子都可以看到一些而且东西特别多……不过脑补都知道完全用起来的话肯定很爽&lt;/li&gt;
+&lt;li&gt;xcode6的bug特别多……
+
+&lt;ul&gt;
+&lt;li&gt;background 他是边写代码就一边在跑的所以比如 &lt;code&gt;system(rm -rf ~/)&lt;/code&gt;这种命令&amp;gt; &amp;lt;&lt;/li&gt;
+&lt;li&gt;群里看到的一句话干崩xcode…… &lt;code&gt;var b = 1; println(&amp;quot;a&amp;quot;, b)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;小tips&lt;/li&gt;
+&lt;li&gt;开始纯粹练语法的话比较那个background比较核心……还不如用cli模式进去打了试东西目录在&lt;/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/&gt;
+可以 &lt;code&gt;PATH=$PATH:/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/&lt;/code&gt; 然后命令行swift进cli试验(这样就算挂了也不会xcode无限重启&amp;gt; &amp;lt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3&gt;oc swift混编&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html&quot;&gt;大家好我是传送门= =&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;其实官方文档里写的各种东西也非常清楚的、我就用简单的描述下&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;swift&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;如果需要引入同样的swift代码、只需要直接用就可以了！！！ (总之我也不知道工程索引文件什么的ide悄悄藏在什么地方了……&lt;/li&gt;
+&lt;li&gt;如果需要引入oc代码、首先需要生成一个&lt;code&gt;ProductName-Bridging-Header.h&lt;/code&gt;的头文件(倒入随便一个oc文件就自动生成了)
+然后只需要把所有需要用到的oc头文件在这个header import进去，你的swift代码就可以随意这些类了！！(黑科技就是auto complete的时候怎么把oc的头文件自动转成swift的头文件的！！完全不知道ide偷偷的去哪儿生成了这些中间代码Orz……&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;objective-c&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;如果需要引入oc代码= =原来怎么搞现在怎么搞= =怎么说都感觉是废话= =
+
+&lt;ul&gt;
+&lt;li&gt;如果需要引入swift代码、首先在setting中打开&lt;code&gt;Defines Module&lt;/code&gt;为YES、然后在需要使用的那个oc的 .m文件中引入 &lt;code&gt;#import &amp;quot;ProductModuleName-Swift.h&amp;quot;&lt;/code&gt; 文档里的用&lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;引的应该是别的framework的依次类推、其中ProductModuleName可以在setting中设置
+&lt;strong&gt;这个文件不需要自己新建&lt;/strong&gt;ide在一个很奇怪的角落里建好了……&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;混编完全无痛吧&lt;em&gt;(:з”∠)&lt;/em&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;swift 语法特点 (粗略)&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;amp;ign-mpt=uo%3D4&quot;&gt;The Swift Programming Language (以下略为书)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;类型推断、参数约束描述等等 见如下&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;func anyCommonElements &amp;lt;T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element&amp;gt; (lhs: T, rhs: U) -&amp;gt; Bool {
+  for lhsItem in lhs {
+      for rhsItem in rhs {
+          if lhsItem == rhsItem {
+              return true
+          }
+      }
+  }
+  return false
+}
+anyCommonElements([1, 2, 3], [3])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;optional&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在swift加入了两个语法糖一样性质的! 和 ? 分别是拆包 装包&lt;/li&gt;
+&lt;li&gt;可以用在一些判空的地方例如
+&lt;code&gt;
+//任意一个为空就中止不会走下去了、类似oc中的对nil perferselector不会crash一样
+john.residence?.address?.buildingIdentifier() {}
+&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;包的感觉类似这样的感觉 例如函数中定义的是String 而你的 var a: String? 传入String要保证非空就必须一次解包操作如果这个时候值为空就crash&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;  enum Optional&amp;lt;T&amp;gt; {
+    Some(T)
+    None
+  }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;闭包、oc的block折腾够了么……好吧这回终于有简单明了爽快的闭包了Orz&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一般定义&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{
+  (arg1: Type, arg2: Type) -&amp;gt; returnType in
+  closure content
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;sort Array&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;var l: Array = [3, 4, 6, 1, 2]
+sort(l, {
+  (i1: Int, i2: Int) -&amp;gt; Bool in
+  return i1 &amp;gt; i2
+  })
+//嫌烦里面的type可以被推断出来所以可以省略
+sort(l, {i1, i2 in return i1 &amp;gt; i2})
+//还可以更短= =
+sort(l, { $0 &amp;gt; $1})
+//还他妈可以更短！= =
+sort(l, &amp;gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;注意一些循环引用的这些东西&lt;/li&gt;
+&lt;li&gt;unowned 弱引用非空对象(不init 编译器还报错&lt;/li&gt;
+&lt;li&gt;weak 弱引用可空的wrap过的对象就是那些加?的&lt;/li&gt;
+&lt;li&gt;详情可见书245页&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;setter getter willSet didSet&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;类似c#的大大简化工作量……java那种seter getter去死吧混蛋！&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;碉堡的switch case……妈妈再也不用担心我一排if了= = 见书179页&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;还有各种符号重载、特别是&lt;code&gt;[]&lt;/code&gt;也是非常的方便！(不过有一大堆关键字Orz 见书619页&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;更多&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;还有各种各样的特性从脚本语言过来的话应该都是非常熟悉的比如返回个&lt;code&gt;tuple&lt;/code&gt;什么的啦字典&lt;code&gt;keyvalue遍历&lt;/code&gt;啦&lt;code&gt;for _ in 1..5&lt;/code&gt;这种写法啦、oc的一些类似category那样的写法同样也由extension保留了下来&lt;/li&gt;
+&lt;li&gt;一言以蔽之、swift的语法特性简直就是叼炸天、完全不觉得这个是apple出的toy language、嗯就是这样啦！&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://snorlaxzxz.com/program/2014/06/05/begin-with-swift</link>
+                <guid>http://snorlaxzxz.com/program/2014/06/05/begin-with-swift</guid>
+                <pubDate>2014-06-05T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>毕业贩卖</title>
@@ -35,7 +165,7 @@
 &lt;h4&gt;显示器&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;&lt;del&gt;出售：300&lt;/del&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;del&gt;出售：已售&lt;/del&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;19寸&lt;/li&gt;
 &lt;li&gt;分辨率 1440*900&lt;/li&gt;
 &lt;li&gt;渠道 &lt;a href=&quot;http://item.jd.com/172532.html&quot;&gt;http://item.jd.com/172532.html&lt;/a&gt;&lt;/li&gt;

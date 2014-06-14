@@ -44,7 +44,7 @@ comments: true
 实现起来就要重写UIView的绘画函数了代码大致如下
 
 #import "ZDPageControll.h"
-#import 
+#import
 
 @interface ZDPageControll()
 {
@@ -64,7 +64,7 @@ comments: true
         [self setCurrentPageIndicatorTintColor:[UIColor clearColor]];
         [self setPageIndicatorTintColor:[UIColor clearColor]];
     }
-    
+
     [self setBackgroundColor:[UIColor clearColor]];
     _activeImage= [UIImage imageNamed:current];
     _inactiveImage= [UIImage imageNamed:common];
@@ -107,7 +107,7 @@ comments: true
 - (void)setCurrentPage:(NSInteger)currentPage
 {
     [super setCurrentPage:currentPage];
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]
         [self updateDots];
     }
 //    [self updateDots];
@@ -116,7 +116,7 @@ comments: true
 - (void)setNumberOfPages:(NSInteger)numberOfPages
 {
     [super setNumberOfPages:numberOfPages];
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]
         [self updateDots];
     }
 //    [self updateDots];
@@ -127,28 +127,28 @@ comments: true
 {
     int i;
     CGRect rect;
-    
+
     UIImage *image;
     iRect = self.bounds;
-    
+
     if ( self.opaque ) {
         [self.backgroundColor set];
         UIRectFill( iRect );
     }
-    
+
     if ( self.hidesForSinglePage && self.numberOfPages == 1 ) return;
-    
+
     rect.size.height = _activeImage.size.height;
     rect.size.width = self.numberOfPages * _activeImage.size.width + ( self.numberOfPages - 1 ) * _kSpacing;
     rect.origin.x = floorf( ( iRect.size.width - rect.size.width ) / 2.0 );
     rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );
     rect.size.width = _activeImage.size.width;
-    
-    for ( i = 0; i 
+
+    for ( i = 0; i
         image = i == self.currentPage ? _activeImage : _inactiveImage;
-        
+
         [image drawInRect: rect];
-        
+
         rect.origin.x += _activeImage.size.width + _kSpacing;
     }
 }

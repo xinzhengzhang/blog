@@ -2,7 +2,7 @@
 layout: post
 title: hello wordpress
 categories:
-- 瞎写写
+- gossip 
 tags: []
 published: true
 comments: true

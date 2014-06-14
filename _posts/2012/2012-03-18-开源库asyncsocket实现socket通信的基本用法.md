@@ -28,17 +28,17 @@ Example client
 
 AsyncSocket *client;
 NSSError *err=nil;
-NSString *hel=@"hello AsyncSocket!"; 
+NSString *hel=@"hello AsyncSocket!";
 NSData *data = [hel dataUsingEncoding:NSISOLatin1StringEncoding];
 [client connectToHost:@"127.0.0.1" onPort:51423 error:&err];
 [client writeData:data withTimeout:-1 tag:0];
 - (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{  
-    
+
     NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
     NSLog(@"Hava received datas is :%@",aStr);  
     [aStr release];  
     [client readDataWithTimeout:-1 tag:0];  
-} 
+}
 
 Example server
 

@@ -12,7 +12,7 @@ comments: true
 首先说下我的server的版本是2.1.3<br />
 ios下的goagent各种教程到处都是、可是只可惜共军太狡猾、gfw现在是越来越牛逼<br />
 反正我搜着的各种帖子要么是那种二到家的就装装装下去就成功了、要么就是中间某个步骤被干掉了<br />
- 
+
 正常人都肯定会看官方的文档、可惜没那么简单……<del datetime="2013-03-07T06:08:41+00:00">https://code.google.com/p/goagent/wiki/GoAgent_IOS</del>
 这上面的版本由于过于古老让我吃尽苦头<br />
 好了废话到此位置<br />

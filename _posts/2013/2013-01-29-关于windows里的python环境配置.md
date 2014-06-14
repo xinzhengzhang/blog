@@ -2,7 +2,7 @@
 layout: post
 title: 关于windows里的python环境配置
 categories:
-- 未分类
+- program 
 tags: []
 published: true
 comments: true

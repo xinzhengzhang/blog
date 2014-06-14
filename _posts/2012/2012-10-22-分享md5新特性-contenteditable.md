@@ -21,36 +21,36 @@ http://html5demos.com/contenteditable</p>
 
 
 
- hi 我来作试验的 
-  首先是段落 
+ hi 我来作试验的
+  首先是段落
   &nbsp; &nbsp; 然后是缩进  
-   
+
  然后多换行  
  然后大段文字ahdjasd  
 
 jaieowajkncnxmbfhawija
- hiiii   
-  
- &nbsp; &nbsp; test over 
-   
+ hiiii
+
+ &nbsp; &nbsp; test over
+
 
 
 
 
 ----------------------------------我是分割线-------------------------
 
- hi 我来作试验的 
-  首先是段落 
+ hi 我来作试验的
+  首先是段落
   &nbsp; &nbsp; 然后是缩进  
-   
+
  然后多换行  
  然后大段文字ahdjasd  
 
 jaieowajkncnxmbfhawija
- hiiii   
-  
- &nbsp; &nbsp; test over 
-   
+ hiiii
+
+ &nbsp; &nbsp; test over
+
 
 仅仅只要把需要编辑的部分加个section设置个 contenteditable＝true，所有的富文本编辑问题就这么搞定了……
 >

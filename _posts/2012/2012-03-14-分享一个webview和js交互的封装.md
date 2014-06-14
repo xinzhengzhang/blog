@@ -14,10 +14,10 @@ comments: true
 
 ```
 
-   #import 
+   #import
 #import "WebViewJavascriptBridge.h"
 
-@interface ExampleAppDelegate : UIResponder 
+@interface ExampleAppDelegate : UIResponder
 
 @end
 
@@ -36,7 +36,7 @@ comments: true
     return YES;
 }
 
-- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView 
+- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView
 {
     NSLog(@"MyJavascriptBridgeDelegate received message: %@", message);
 }

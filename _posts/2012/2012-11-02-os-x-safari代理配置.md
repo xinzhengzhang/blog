@@ -35,7 +35,7 @@ function FindProxyForURL(url, host)
 那么稍微再加个正则匹配的就变成这样了
 
 
-function FindProxyForURL(url, host) 
+function FindProxyForURL(url, host)
 {
     if (shExpMatch(url, "*://*.twitter*")) return 'PROXY 127.0.0.1:8087';
     if (shExpMatch(url, "*://*.google*")) return 'PROXY 127.0.0.1:8087';

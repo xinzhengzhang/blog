@@ -2,7 +2,7 @@
 layout: post
 title: "毕业贩卖"
 description: ""
-category: "瞎写写"
+category: "gossip"
 tags: []
 ---
 {% include JB/setup %}

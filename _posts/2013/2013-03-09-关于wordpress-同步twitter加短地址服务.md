@@ -22,8 +22,8 @@ comments: true
 
 url_short,$account['content']);
     echo esc_textarea($tar);
-	echo "; 
-	echo esc_textarea($tar); 
+	echo ";
+	echo esc_textarea($tar);
 ?>>
 </p></pre></p>
 

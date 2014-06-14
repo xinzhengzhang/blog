@@ -107,6 +107,127 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2012/03/18/%E5%BC%80%E6%BA%90%E5%BA%93asyncsocket%E5%AE%9E%E7%8E%B0socket%E9%80%9A%E4%BF%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95">开源库AsyncSocket实现socket通信的基本用法 </a></h3>
+  <div class="date">
+    <span>18 March 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><a href="https://snorlax.sinaapp.com/Document_Code/AsyncSocket.h">AsyncSocket.h</a>
+<a href="https://snorlax.sinaapp.com/Document_Code/AsyncSocket.m">AsyncSocket.m</a></p>
+
+<p><p>
+```</p>
+
+<ul>
+<li><p>(BOOL)connectToHost:(NSString*)hostname onPort:(UInt16)port error:(NSError **)errPtr //connect to the server</p></li>
+<li><p>(void)writeData:(NSData *)data withTimeout:(NSTimeInterval)timeout tag:(long)tag //send data</p></li>
+<li><p>(void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag //be called when the data was received</p></li>
+<li><p>(void)onSocketDidDisconnect:(AsyncSocket *)sock //be called when the socket disconnect</p></li>
+<li><p>(void)onSocketDidSecure:(AsyncSocket *)sock // be called when TLS is unstable</p></li>
+</ul>
+
+<p>Example client</p>
+
+<p>AsyncSocket *client;
+NSSError *err=nil;
+NSString *hel=@&quot;hello AsyncSocket!&quot;;
+NSData *data = [hel dataUsingEncoding:NSISOLatin1StringEncoding];
+[client connectToHost:@&quot;127.0.0.1&quot; onPort:51423 error:&amp;err];
+[client writeData:data withTimeout:-1 tag:0];
+- (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{  </p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
+NSLog(@&quot;Hava received datas is :%@&quot;,aStr);  
+[aStr release];  
+[client readDataWithTimeout:-1 tag:0];  
+</code></pre></div>
+<p>}</p>
+
+<p>Example server</p>
+
+<p>import socket
+host=&#39;&#39;
+port=51423
+s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+s.bind((host,port))
+s.listen(1)</p>
+
+<p>print &quot;server is running on port %d;press ctrl-c to terminate&quot;
+while 1:
+    try:
+        clientsock, clientaddr = s.accept()
+    except KeyboardInterrupt:
+        raise
+    except:
+        traceback.print_exc()
+        continue
+    try:
+        print &quot;Got connection from&quot;, clientsock.getpeername()
+        while 1:
+            data = clientsock.recv(4096)
+            if not len(data):
+                break
+            clientsock.sendall(data)
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        traceback.print_exc()
+    try:
+        clientsock.close()
+    except KeyboardInterrupt:
+        raise
+    except:
+        traceback.print_exc()</p>
+
+<blockquote>
+</blockquote>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>43</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2012/03/14/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AAwebview%E5%92%8Cjs%E4%BA%A4%E4%BA%92%E7%9A%84%E5%B0%81%E8%A3%85">分享一个webview和js交互的封装 </a></h3>
   <div class="date">
     <span>14 March 2012</span>
@@ -120,10 +241,10 @@
 <strong>1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project</strong></p>
 
 <p><p><strong>2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&#39;s delegate</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   #import 
+<div class="highlight"><pre><code class="language-text" data-lang="text">   #import
 #import &quot;WebViewJavascriptBridge.h&quot;
 
-@interface ExampleAppDelegate : UIResponder 
+@interface ExampleAppDelegate : UIResponder
 
 @end
 
@@ -142,7 +263,7 @@
     return YES;
 }
 
-- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView 
+- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView
 {
     NSLog(@&quot;MyJavascriptBridgeDelegate received message: %@&quot;, message);
 }
@@ -178,7 +299,7 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -288,7 +409,7 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -318,7 +439,7 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
 
 
 <div class="page-header">
-  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2012/03/13/hello-wordpress">hello wordpress </a></h3>
+  <h3><a href="/gossip/2012/03/13/hello-wordpress">hello wordpress </a></h3>
   <div class="date">
     <span>13 March 2012</span>
   </div>
@@ -340,8 +461,8 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
 
   
     
-    	<li><a href="#瞎写写-ref">
-    		瞎写写 <span>5</span>
+    	<li><a href="#gossip-ref">
+    		gossip <span>5</span>
     	</a></li>
     
   
@@ -409,7 +530,7 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
   
     <span class="next disabled" >后页&gt;</span>
   
-  (共54篇)
+  (共55篇)
 </div>
 
         </div>

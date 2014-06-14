@@ -107,6 +107,92 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3">sae 普通开发者免推荐认证活动3.15 解 </a></h3>
+  <div class="date">
+    <span>15 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><a href="http://cloudbbs.org/forum.php?mod=viewthread&amp;tid=12876">大家好我是传送门</a></p>
+
+<p>活动如上<br />
+主要题干是<br />
+请将昨天的100位数字，使用你熟悉的编程语言，首先将其由字符串转换为长度为100的整数数组；其次，对数组进行排序，实现奇数在左边，偶数在右边，并且分别有序，希望最多只使用O(1)的空间复杂度（如能不借助额外空间实现排序，首位完成者将有惊喜~）。</p>
+
+<p>数字如下：31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823</p>
+
+<p>其实难度也不大、主要就是想出了一个非常巧妙的方法解决<br />
+首先没有时间复杂度要求 但对空间要求零空间 脑子第一反应就是快排 但是最大的问题就是如何再零空间下把奇偶分开然后分别快排即可<br />
+就是两个游标的交互替换、写出来就是感觉非常巧妙啦:)</p>
+
+<p>代码如下</p>
+
+<p><p>
+```</p>
+
+<p>i=-1
+j=0
+pi = &quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&quot;
+l = [int(tt) for tt in pi[:100]]
+while j</p>
+
+<p>print sorted(l[0:i+1])+sorted(l[i+1:100])</p>
+
+<p>经过评论大哥的指点python的实现</p>
+
+<p>pi = &quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&quot;
+l=[int(tt) for tt in pi[:100]]
+l.sort(lambda x,y:(x-y)if(x%2-y%2==0)else(y%2-x%2))
+print l</p>
+
+<blockquote>
+</blockquote>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>43</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2013/03/09/%E5%85%B3%E4%BA%8Ewordpress-%E5%90%8C%E6%AD%A5twitter%E5%8A%A0%E7%9F%AD%E5%9C%B0%E5%9D%80%E6%9C%8D%E5%8A%A1">关于wordpress 同步twitter加短地址服务 </a></h3>
   <div class="date">
     <span>09 March 2013</span>
@@ -131,8 +217,8 @@
 
 url_short,$account['content']);
     echo esc_textarea($tar);
-    echo "; 
-    echo esc_textarea($tar); 
+    echo ";
+    echo esc_textarea($tar);
 ?>>
 </p></pre></p>
 
@@ -151,7 +237,7 @@ url_short,$account['content']);
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -230,7 +316,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -260,7 +346,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
 
 
 <div class="page-header">
-  <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">关于windows里的python环境配置 </a></h3>
+  <h3><a href="/program/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">关于windows里的python环境配置 </a></h3>
   <div class="date">
     <span>29 January 2013</span>
   </div>
@@ -300,8 +386,8 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
 
   
     
-    	<li><a href="#未分类-ref">
-    		未分类 <span>3</span>
+    	<li><a href="#program-ref">
+    		program <span>43</span>
     	</a></li>
     
   
@@ -331,7 +417,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
 
 
 <div class="page-header">
-  <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8">关于处理掉urllib2中的错误提示异常 </a></h3>
+  <h3><a href="/program/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8">关于处理掉urllib2中的错误提示异常 </a></h3>
   <div class="date">
     <span>21 January 2013</span>
   </div>
@@ -368,8 +454,8 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 
   
     
-    	<li><a href="#未分类-ref">
-    		未分类 <span>3</span>
+    	<li><a href="#program-ref">
+    		program <span>43</span>
     	</a></li>
     
   
@@ -467,7 +553,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -497,7 +583,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 
 
 <div class="page-header">
-  <h3><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0">rc4 python实现 </a></h3>
+  <h3><a href="/gossip/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0">rc4 python实现 </a></h3>
   <div class="date">
     <span>01 January 2013</span>
   </div>
@@ -523,8 +609,8 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 
   
     
-    	<li><a href="#瞎写写-ref">
-    		瞎写写 <span>5</span>
+    	<li><a href="#gossip-ref">
+    		gossip <span>5</span>
     	</a></li>
     
   
@@ -645,7 +731,7 @@ ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -730,7 +816,7 @@ def diffCount(h1,h2):
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -831,87 +917,7 @@ http://www.pythonware.com/library/pil/handbook/index.htm</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/12/04/ios-safari5-webview%E5%AF%B9-contenteditable-%E7%9A%84%E4%BF%AE%E6%AD%A3">ios safari5 webview对 contenteditable 的修正 </a></h3>
-  <div class="date">
-    <span>04 December 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>自从上次发现了html5的神器标签contenteditable后一直忽视了一个问题、因为一直跑的机器都是ios6（六毫无问题）、当放到5时出一个很大的问题、每次进入编辑时焦点会被放到整个body的最上面、毫无疑问这个糟糕的体验是不可能让用户自己去解决的所以需要解决。</p>
-
-<p>首先先是native和js交互的问题、也许js太过庞大、webview完全没有做任何关于js callback的api、唯一只有一个<br />
-- (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)script;<br />
-只能往里插js却获不得回调、这样没人性的行为绝对是无法容忍的、竟然phonegap什么的可以就一定有解决途径。<br />
-既然js无法获得回调、就从webview的回调入手、查了他的三个delegate后办法有了、就是更改document.location加一个?xx=xx相当于一个get请求、然后通过回调去拿到xx然后做native<br />
-可是这样我马上就发现了不适宜contenteditable的一个问题、就是一个点击事件同时触发了编辑以及跳转事件后、后者覆盖了前者、网上主流说的也是这个方法、找了半天终于找到了替代法<a href="http://blog.devtang.com/blog/2012/03/24/talk-about-uiwebview-and-phonegap/"></a>详见最后的这段js代码、最后需要做的就是给需要编辑的标签绑定上事件 通过鼠标的点击拿到pageY的偏移量 通过uiwebview.uiscrollview setContentOffset来调整偏移量即可修复safari5对contenteditable这极不友好的支持、代码如下</p>
-
-<p>
-```
-
-var edit = document.getElementById(\"editable\");edit.addEventListener(\"click\",function(e){var iFrame;iFrame = document.createElement(\"iframe\");iFrame.setAttribute(\"src\", \"noteOffset:\"+e.pageY);iFrame.setAttribute(\"style\", \"display:none;\");iFrame.setAttribute(\"height\", \"0px\");iFrame.setAttribute(\"width\", \"0px\");iFrame.setAttribute(\"frameborder\", \"0\");document.body.appendChild(iFrame);iFrame.parentNode.removeChild(iFrame);iFrame = null;}, false);
-
-然后在回调中写
-
-#pragma UIWebViewDelegate
--(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSLog(@"------");
-    NSLog(@"%@",[[request URL]absoluteString]);
-    if ([[[request URL]absoluteString]judgeNoteBodyEditMode] && [[request URL]absoluteString].length>>3) {
-        
-        NSLog(@"%d",[[[[request URL]absoluteString]substringFromIndex:[[request URL]absoluteString].length-3]integerValue]);
-        [showRichText.scrollView setContentOffset:CGPointMake(showRichText.scrollView.contentOffset.x,[[[[request URL]absoluteString]substringFromIndex:[[request URL]absoluteString].length-3]integerValue])];
-    }
-    return YES;
-}
-</pre></p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -979,7 +985,7 @@ var edit = document.getElementById(\"editable\");edit.addEventListener(\"click\"
   
     <a class="next" href="/page4">后页</a>
   
-  (共54篇)
+  (共55篇)
 </div>
 
         </div>

@@ -5,33 +5,86 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-06-05T21:33:11+08:00</lastBuildDate>
-        <pubDate>2014-06-05T21:33:11+08:00</pubDate>
+        <lastBuildDate>2014-06-14T21:24:57+08:00</lastBuildDate>
+        <pubDate>2014-06-14T21:24:57+08:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
-                <title>Begin With Swift</title>
-                <description>&lt;h3&gt;感想&lt;/h3&gt;
+                <title>four years in dut</title>
+                <description>&lt;h4&gt;大一&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;2014wwdc苹果新发表的语言嘛、不知道为什么就是特别的热= =难道跟名字有关么(听说swift贴吧都被占领了23333&lt;/li&gt;
-&lt;li&gt;实际体验了下完全不知道苹果用什么黑科技bridge oc 和 swift的，除了代码提示几乎没有之外几乎两个语言完全自然连接的&lt;/li&gt;
-&lt;li&gt;粗粗把&lt;a href=&quot;https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;amp;ign-mpt=uo%3D4&quot;&gt;The Swift Programming Language&lt;/a&gt;、有种特别熟悉的感觉……互联网上讨论也特别多、有厨有黑、包括各种媒体什么的也插一脚很多人都说像python，我倒是不怎么觉得，倒是各种语言的影子都可以看到一些而且东西特别多……不过脑补都知道完全用起来的话肯定很爽&lt;/li&gt;
-&lt;li&gt;xcode6的bug特别多……
-
-&lt;ul&gt;
-&lt;li&gt;background 他是边写代码就一边在跑的所以比如 &lt;code&gt;system(rm -rf ~/)&lt;/code&gt;这种命令&amp;gt; &amp;lt;&lt;/li&gt;
-&lt;li&gt;群里看到的一句话干崩xcode…… &lt;code&gt;var b = 1; println(&amp;quot;a&amp;quot;, b)&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;小tips&lt;/li&gt;
-&lt;li&gt;开始纯粹练语法的话比较那个background比较核心……还不如用cli模式进去打了试东西目录在&lt;/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/&gt;
-可以 &lt;code&gt;PATH=$PATH:/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/&lt;/code&gt; 然后命令行swift进cli试验(这样就算挂了也不会xcode无限重启&amp;gt; &amp;lt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;当初考到dut的初衷或许就其实是一个错误、不过错中对的那一点就是我选择了一个我喜欢的专业、选择到了我的爱好。
+说实话这是一个学术氛围浓厚却相对轻技术的地方、但我至少值得庆幸了的是我知道了cippus、加入了软件组、从做的acm开始强化自己的编程能力、从周边了解技术是什么样、至少知道了这条路该怎么走。
+这里要感谢lw学长、带我入了门、让我知道这个程序的世界长的是什么样子。
+这一年我还跟高中一样、打游戏、写作业、其中一点比较影响的或许应该就是包括所有的作业我都强迫自己不在windows上而用*nix上去实现、也是这点为我打下会努力的去看各种开源的东西的基础吧。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;hr&gt;
+&lt;h4&gt;大二&lt;/h4&gt;
 
-&lt;h3&gt;oc swift混编&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;到了大二已经放弃了对大学的一切原有的曾经的憧憬、放弃了上课、开始往技术之路无限的深钻下去。整个大二一整年也应该是我彻底转变的一年。
+开始强迫自己看一些很厉害的书、从原理开始自己去写自己去尝试所有各种好玩的东西、学习了python、看到好玩的未知的算法会去实现、看到好玩的网络攻击会去尝试、从最基本最白痴的东西开始写。
+想想这些总是和爱好兴趣是密不可分的。&lt;/li&gt;
+&lt;li&gt;其中穿插着也就是软件组了。其实虽然从大一进入软件组、但是那个时候对这个组其实并没有什么很深的感觉、从现在的角度来回想也的确如此、因为大学就是一个
+提供给你资源提供给你自学资源(包括身边的同学)的地方！到了大二小学期、我也成为了软件组组长、我也就开始另一方面的开始锻炼自己梳理讲技术的能力了。开始把这一整年自学到的所有的东西进行了一次
+系统的梳理、周周的沙龙把自己的所理解都讲出来、虽然那个时候知道自己很菜、说话也很不流利、但是这或许就是锻炼。也是我又需要感谢cippus的地方。&lt;/li&gt;
+&lt;li&gt;其中一小段给老师打工的经历、现在想想也是帮助我认清这个世界的大部分人对编程的态度、对自己的编程能力从玩玩到真的写出来点什么的过度吧。当然也不想黑什么自己得没得到自己该得到的什么、毕竟当时
+的自己只是一个外包的员工罢了。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;大三上&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;大三或许就是大二的一个延续、开始把上层虚的东西从底层开始更加务实，结合给新招进来大一的组员的技术例会、同时巩固自己的基础水平。从一个组长的角度来说我觉得我挺失败的，个人认为还是挺失败的
+、虽然说我努力的准备着每次技术沙龙、试着从最底层也是最不抽象的东西去开始解释一切一切、但是也或许是过份的枯燥没有培养出大一新生对编程的爱、也导致后文会说到的结果吧……
+大三下然后为了开始实习，开始刷codeforces开始看算法导论，开始系统的完整填备这一个空缺。开始投简历、开始面试……&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;大三下(百度)&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;六月份开始去百度知道实习、当时的我应该还是比较迷茫的或许想什么都没有想好、反正就是想着baidu也算bat一家而且也是开发ios、也算对口就去实习玩玩吧。心态导致结果，所有人都说的百度苦我没感受到
+说到的baidu技术强我也没感受到、唯一真真切切感受到的或许就是一整套敏捷的软件工程的流程。这一点在质量保证上等等或许还是很有用的、但是总是感觉付出远大于结果。当然在大厂来说安全稳定性才是最重要的那也是毋庸置疑的。
+其实我一直不喜欢加班、更加讨厌baidu这种快到晚上才开始干活然后看起来是加班加的累死累活的这种状态。我也算是经过两次小黑屋封闭开发，也过了一整个月六天工作的过来，但就算在这种情况下我还是认为效率的极其低下的。
+然后到了10月份我离职了、我应该换一家去看看。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;火花&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;离职之后我在北京的国家图书馆泡了半个月，继续去看书、写程序去接触更多的东西、一点就是继续去投简历了。当时的想法就是要么去做游戏要么继续互联网公司。也的确我都拿到了盛大和火花的offer。
+去盛大转了一圈或许这个地方还是不适合我吧。也让我大概断了自己去做游戏的最后跟信念吧、然后就开始加入了火花。&lt;/li&gt;
+&lt;li&gt;小公司、真的很棒。说实话个人感觉百度的将近4个月可能真的还比不上在这的半个月学到的多，在这我知道了什么叫做不浪费时间、整天的满负荷工作，当除了开发工作包括各种其他在百度都需要向老大请示的所有细节
+你都可以自己去决定，从第一天开始我就需要根据当前架构独立写一个东西出来，从整个项目的估期到全部所有的决定权都在作为owner的你手上。这种环境下的成长是非常可怕的。记得第一个月吧每天都是电脑回家写到一两点、
+但是不会觉得什么因为能够真切感受到自己的水平在飞速的提升。小公司甚至后端工程师会帮你写几个data model，前端工程师会去commit几个接口。没有那一套代码权限有的就是每一个project的owner的存在。这种感觉我觉得是一个喜欢
+写代码的人应该经历过一次的至少我觉得。当然还有朋友、在一个比家人在一起都多的朋友的圈里、才可以开心的做自己喜欢去做的事情。毕业季最伤感的或许也有一点是离开的火花吧。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;软件组&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;从大一的在这里很不错、到大二的在这里是为了我可以自由做我想做的事情的地方、到大三这是一份责任、到现在有一丝愧疚。我觉得我还是一个失败的组长，摸着良心我努力尽力了、换言之我不是一个合格的育人者。但是我相信
+我自己的眼光、现在这几个大二的同学我更会相信你们是会变的很厉害的！看着基友组网络更觉得愧疚Orz。&lt;del&gt;没人想看着中心差下去的或许是不是该有点从能培养出强大的模式里去借鉴什么呢？&lt;/del&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;班级&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;有时候感觉对我来说、寝室只是个睡觉的地方。想想为什么造成的或许也应该主要是自己的原因。其实想想也挺对不起自己寝室的人的、大一的时候带他们去网吧去玩游戏、却从没考虑他们是否是能够自己收的了的问题。
+慢慢的一种恶性循环开始。我也要挺感谢dp的至少能够包容我。&lt;/li&gt;
+&lt;li&gt;从来我就不是个好人也多谢班级各种帮我擦屁股的同学，也是能够让我混到各种学分的关键。很多人、也许大概我不说话、但心里会说句谢谢！&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://snorlaxzxz.com/gossip/2014/06/14/four-years-in-dut</link>
+                <guid>http://snorlaxzxz.com/gossip/2014/06/14/four-years-in-dut</guid>
+                <pubDate>2014-06-14T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>Begin With Swift</title>
+                <description>&lt;h3&gt;OC Swift混编&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html&quot;&gt;大家好我是传送门= =&lt;/a&gt;&lt;/li&gt;
@@ -94,25 +147,25 @@ john.residence?.address?.buildingIdentifier() {}
 &lt;ul&gt;
 &lt;li&gt;一般定义&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{
-  (arg1: Type, arg2: Type) -&amp;gt; returnType in
-  closure content
-}
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;  {
+    (arg1: Type, arg2: Type) -&amp;gt; returnType in
+    closure content
+  }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
 &lt;li&gt;sort Array&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;var l: Array = [3, 4, 6, 1, 2]
-sort(l, {
-  (i1: Int, i2: Int) -&amp;gt; Bool in
-  return i1 &amp;gt; i2
-  })
-//嫌烦里面的type可以被推断出来所以可以省略
-sort(l, {i1, i2 in return i1 &amp;gt; i2})
-//还可以更短= =
-sort(l, { $0 &amp;gt; $1})
-//还他妈可以更短！= =
-sort(l, &amp;gt;)
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;  var l: Array = [3, 4, 6, 1, 2]
+  sort(l, {
+    (i1: Int, i2: Int) -&amp;gt; Bool in
+    return i1 &amp;gt; i2
+    })
+  //嫌烦里面的type可以被推断出来所以可以省略
+  sort(l, {i1, i2 in return i1 &amp;gt; i2})
+  //还可以更短= =
+  sort(l, { $0 &amp;gt; $1})
+  //还他妈可以更短！= =
+  sort(l, &amp;gt;)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
 &lt;li&gt;注意一些循环引用的这些东西&lt;/li&gt;
@@ -131,9 +184,29 @@ sort(l, &amp;gt;)
 
 &lt;ul&gt;
 &lt;li&gt;还有各种各样的特性从脚本语言过来的话应该都是非常熟悉的比如返回个&lt;code&gt;tuple&lt;/code&gt;什么的啦字典&lt;code&gt;keyvalue遍历&lt;/code&gt;啦&lt;code&gt;for _ in 1..5&lt;/code&gt;这种写法啦、oc的一些类似category那样的写法同样也由extension保留了下来&lt;/li&gt;
-&lt;li&gt;一言以蔽之、swift的语法特性简直就是叼炸天、完全不觉得这个是apple出的toy language、嗯就是这样啦！&lt;/li&gt;
+&lt;li&gt;一言以蔽之、swift的语法特性简直就是叼炸天、完全不觉得这个是Apple出的toy language、嗯就是这样啦！&lt;/li&gt;
+&lt;li&gt;redcarpet快支持swift吧……没语法高亮好不爽！&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;h3&gt;感想&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;2014wwdc苹果新发表的语言嘛、不知道为什么就是特别的热= =难道跟名字有关么(听说swift贴吧都被占领了23333&lt;/li&gt;
+&lt;li&gt;实际体验了下完全不知道苹果用什么黑科技bridge oc 和 swift的，除了代码提示几乎没有之外几乎两个语言完全自然连接的&lt;/li&gt;
+&lt;li&gt;粗粗把&lt;a href=&quot;https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;amp;ign-mpt=uo%3D4&quot;&gt;The Swift Programming Language&lt;/a&gt;、有种特别熟悉的感觉……互联网上讨论也特别多、有厨有黑、包括各种媒体什么的也插一脚很多人都说像python，我倒是不怎么觉得，倒是各种语言的影子都可以看到一些而且东西特别多……不过脑补都知道完全用起来的话肯定很爽&lt;/li&gt;
+&lt;li&gt;xcode6的bug特别多……
+
+&lt;ul&gt;
+&lt;li&gt;background 他是边写代码就一边在跑的所以比如 &lt;code&gt;system(rm -rf ~/)&lt;/code&gt;这种命令&amp;gt; &amp;lt;&lt;/li&gt;
+&lt;li&gt;群里看到的一句话干崩xcode…… &lt;code&gt;var b = 1; println(&amp;quot;a&amp;quot;, b)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;小tips&lt;/li&gt;
+&lt;li&gt;开始纯粹练语法的话比较那个background比较核心……还不如用cli模式进去打了试东西目录在&lt;/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/&gt;
+可以 &lt;code&gt;PATH=$PATH:/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/&lt;/code&gt; 然后命令行swift进cli试验(这样就算挂了也不会xcode无限重启&amp;gt; &amp;lt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
 </description>
                 <link>http://snorlaxzxz.com/program/2014/06/05/begin-with-swift</link>
                 <guid>http://snorlaxzxz.com/program/2014/06/05/begin-with-swift</guid>
@@ -177,8 +250,8 @@ sort(l, &amp;gt;)
 &lt;a href=&quot;mailto:zhangxzheng@gmail.com&quot;&gt;Email&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-                <link>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance</link>
-                <guid>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance</guid>
+                <link>http://snorlaxzxz.com/gossip/2014/05/30/clearance</link>
+                <guid>http://snorlaxzxz.com/gossip/2014/05/30/clearance</guid>
                 <pubDate>2014-05-30T00:00:00+08:00</pubDate>
         </item>
 
@@ -572,7 +645,7 @@ method_exchangeImplementations(method&lt;/em&gt;ObjectAtIndex, method_SafeObject
 - (id)safeObjectAtIndex:(NSUInteger)index
 {
     NSLog(@&amp;quot;wake %@--%@&amp;quot;,NSStringFromSelector(_cmd),self);
-    if (self.count 
+    if (self.count
     return [self safeObjectAtIndex:index];
 }
 @end&lt;/p&gt;
@@ -623,7 +696,7 @@ method_exchangeImplementations(method&lt;/em&gt;ObjectAtIndex, method_SafeObject
 实现起来就要重写UIView的绘画函数了代码大致如下
 
 #import &amp;quot;ZDPageControll.h&amp;quot;
-#import 
+#import
 
 @interface ZDPageControll()
 {
@@ -686,7 +759,7 @@ method_exchangeImplementations(method&lt;/em&gt;ObjectAtIndex, method_SafeObject
 - (void)setCurrentPage:(NSInteger)currentPage
 {
     [super setCurrentPage:currentPage];
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]
         [self updateDots];
     }
 //    [self updateDots];
@@ -695,7 +768,7 @@ method_exchangeImplementations(method&lt;/em&gt;ObjectAtIndex, method_SafeObject
 - (void)setNumberOfPages:(NSInteger)numberOfPages
 {
     [super setNumberOfPages:numberOfPages];
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]
         [self updateDots];
     }
 //    [self updateDots];
@@ -723,7 +796,7 @@ method_exchangeImplementations(method&lt;/em&gt;ObjectAtIndex, method_SafeObject
     rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );
     rect.size.width = _activeImage.size.width;
 
-    for ( i = 0; i 
+    for ( i = 0; i
         image = i == self.currentPage ? _activeImage : _inactiveImage;
 
         [image drawInRect: rect];
@@ -1030,7 +1103,7 @@ for i in headlist:
     while i:
         print i.value,
         i=i.rightp
-    print 
+    print
 sk.find(101)
 del(sk)
 &amp;gt;
@@ -1160,7 +1233,7 @@ os.remove(filename)&lt;/p&gt;&lt;/li&gt;
 --------------------------------------------------------------------------&lt;br /&gt;
 把这个感觉带回给我的恰恰就是这么一道题、这道题真的非常非常简单、可是给我带来了不小的顿悟。原题大致是先图里求个最短路径然后判断路径中是否有可以组成三角形的存在&lt;br /&gt;
 也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n&lt;sup&gt;3)的暴力&lt;/sup&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;for(int a=0; a 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;for(int a=0; a
 拿脚趾头想三次方肯定要TL、接着就是开始改进、首先想到了还是先对这些有意义的数组进行排序。然后使用自然而然的递增数组自己的优势那就是最小的两边之差一定是存在与相邻的数字里、注意这里就利用到了数字这个自身拥有美丽的属性的东西的属性。然后差不多代码是这样的
 
 for (int a = 0; a  (pval[j+1]-pval[j]))
@@ -1179,7 +1252,7 @@ for (int a = 0; a  (pval[j+1]-pval[j]))
 
 
 
-for(int i=0;i 
+for(int i=0;i
 {
     if(pval[i]+pval[i+1] &amp;gt; pv[i+2])
         break;
@@ -1211,12 +1284,12 @@ for(int i=0;i
         7
 
 
-这个题目我觉得最大的阴谋就是对于小数据1 
+这个题目我觉得最大的阴谋就是对于小数据1
 我了个fuck了给了个那么小规模的数据还给那么高的分值正常人理所当然的就肯定认为这是个指数级的运算了啊！然后我就想到了三叉树去暴力啊、可是再怎么暴力这个指数摆在那就算是100也很恐怖了、各种挂……纠结了好久好久写了好几种都挂
 最后静下心来把他当数学做……然后草稿纸写写……尼玛5分钟就算出来了……
 其实思想非常非常简单 往北的节点就是能叉出3条路、其中分别是继续叉2的2条以及继续叉3的一条、往两侧的每次只能叉出两条路、分别是2 和3 具体路径的结构问你了么？去暴力做等于就是浪费这些路径的信息啊小时候怎么做数学题的……要那么多条件吃屎啊……数学规律就是这么简单……然后还不会写么？……！你妹的别说100了来个平方这复杂度都闭着眼睛来的啊……
 
-#include 
+#include
 int main(){
     int a=0;
     int b=1;
@@ -1244,7 +1317,7 @@ function f() {
 }
 while [ -n &amp;quot;$1&amp;quot; ]
 do
-    f &amp;quot;$1&amp;quot; &amp;amp; 
+    f &amp;quot;$1&amp;quot; &amp;amp;
     shift   #对所有参数 依次循环让所有的参数分别sleep进行次根据sleep长短利用数字自身大小的特性进行排序
 done
 wait  #主进程等到全部子进程结束后返回结束
@@ -1253,8 +1326,8 @@ wait  #主进程等到全部子进程结束后返回结束
 
 &amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-                <link>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0</link>
-                <guid>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/睡眠排序shell实现</guid>
+                <link>http://snorlaxzxz.com/program/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0</link>
+                <guid>http://snorlaxzxz.com/program/2013/03/29/睡眠排序shell实现</guid>
                 <pubDate>2013-03-29T00:00:00+08:00</pubDate>
         </item>
 
@@ -1262,7 +1335,7 @@ wait  #主进程等到全部子进程结束后返回结束
                 <title>关于gcc优化拷贝构造</title>
                 <description>&lt;p&gt;&lt;p&gt;今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz&lt;br /&gt;
 代码如下&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#include 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#include
 using namespace std;
 class Student {
 
@@ -1277,7 +1350,7 @@ public:
     Student  operator + (const Student &amp;amp;) const
     {
         Student temp;
-        return temp; 
+        return temp;
     }
 };
 int main(int argc, const char * argv[])
@@ -1533,8 +1606,8 @@ print l&lt;/p&gt;
 
 url_short,$account[&#39;content&#39;]);
     echo esc_textarea($tar);
-    echo &quot;; 
-    echo esc_textarea($tar); 
+    echo &quot;;
+    echo esc_textarea($tar);
 ?&gt;&gt;
 &lt;/p&gt;&lt;/pre&gt;&lt;/p&gt;
 
@@ -1603,8 +1676,8 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
 
 &lt;p&gt;&lt;/p&gt;
 </description>
-                <link>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE</link>
-                <guid>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/关于windows里的python环境配置</guid>
+                <link>http://snorlaxzxz.com/program/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE</link>
+                <guid>http://snorlaxzxz.com/program/2013/01/29/关于windows里的python环境配置</guid>
                 <pubDate>2013-01-29T00:00:00+08:00</pubDate>
         </item>
 
@@ -1627,8 +1700,8 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 行了、这样讨厌的异常就搞定了
 &amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-                <link>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8</link>
-                <guid>http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/关于处理掉urllib2中的错误提示异常</guid>
+                <link>http://snorlaxzxz.com/program/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8</link>
+                <guid>http://snorlaxzxz.com/program/2013/01/21/关于处理掉urllib2中的错误提示异常</guid>
                 <pubDate>2013-01-21T00:00:00+08:00</pubDate>
         </item>
 
@@ -1694,8 +1767,8 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 
 &lt;p&gt;&lt;a href=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/01/734420E9-D793-4822-9B07-01A783B74818.jpg&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-174&quot; title=&quot;734420E9-D793-4822-9B07-01A783B74818&quot; src=&quot;http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/01/734420E9-D793-4822-9B07-01A783B74818.jpg&quot; alt=&quot;&quot; width=&quot;523&quot; height=&quot;551&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-                <link>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0</link>
-                <guid>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2013/01/01/rc4-python实现</guid>
+                <link>http://snorlaxzxz.com/gossip/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0</link>
+                <guid>http://snorlaxzxz.com/gossip/2013/01/01/rc4-python实现</guid>
                 <pubDate>2013-01-01T00:00:00+08:00</pubDate>
         </item>
 
@@ -2507,8 +2580,8 @@ See also: Regular Expression Options
 
 &lt;p&gt;没办法放弃了、看来报着的心态是坏的、也是做不大出来东西的……想去论坛问问都不晓得怎么开口……&lt;/p&gt;
 </description>
-                <link>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F</link>
-                <guid>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/16/被windows艹了一天的小感</guid>
+                <link>http://snorlaxzxz.com/gossip/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F</link>
+                <guid>http://snorlaxzxz.com/gossip/2012/11/16/被windows艹了一天的小感</guid>
                 <pubDate>2012-11-16T00:00:00+08:00</pubDate>
         </item>
 
@@ -2952,8 +3025,8 @@ See also: Regular Expression Options
 他是8的倍数啊！他会不会就是字节流啊……&lt;br /&gt;
 那么他是大端的还是小端的呢……好吧大哥说他是大端，那就是大端吧那么就用大端的方式解析&lt;br /&gt;
 首先我自己的电脑是小端机，就稍微做一点处理写了一个小程序代码如下(所有判错的部分全部都省略了&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#include 
-#include 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#include
+#include
 int current_bit = 0;
 unsigned char bit_buffer;
 //bit转byte
@@ -3028,7 +3101,7 @@ function FindProxyForURL(url, host)
 那么稍微再加个正则匹配的就变成这样了
 
 
-function FindProxyForURL(url, host) 
+function FindProxyForURL(url, host)
 {
     if (shExpMatch(url, &quot;*://*.twitter*&quot;)) return &#39;PROXY 127.0.0.1:8087&#39;;
     if (shExpMatch(url, &quot;*://*.google*&quot;)) return &#39;PROXY 127.0.0.1:8087&#39;;
@@ -3057,17 +3130,17 @@ http://html5demos.com/contenteditable&lt;/p&gt;
 
 &lt;p&gt;&lt;p&gt;简单来说就是加个section 设置个 contenteditable，就那么简单！&lt;br /&gt;
 比如&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; hi 我来作试验的 
-  首先是段落 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt; hi 我来作试验的
+  首先是段落
   &amp;amp;nbsp; &amp;amp;nbsp; 然后是缩进  
 
  然后多换行  
  然后大段文字ahdjasd  
 
 jaieowajkncnxmbfhawija
- hiiii   
+ hiiii
 
- &amp;amp;nbsp; &amp;amp;nbsp; test over 
+ &amp;amp;nbsp; &amp;amp;nbsp; test over
 
 
 
@@ -3075,17 +3148,17 @@ jaieowajkncnxmbfhawija
 
 ----------------------------------我是分割线-------------------------
 
- hi 我来作试验的 
-  首先是段落 
+ hi 我来作试验的
+  首先是段落
   &amp;amp;nbsp; &amp;amp;nbsp; 然后是缩进  
 
  然后多换行  
  然后大段文字ahdjasd  
 
 jaieowajkncnxmbfhawija
- hiiii   
+ hiiii
 
- &amp;amp;nbsp; &amp;amp;nbsp; test over 
+ &amp;amp;nbsp; &amp;amp;nbsp; test over
 
 
 仅仅只要把需要编辑的部分加个section设置个 contenteditable＝true，所有的富文本编辑问题就这么搞定了……
@@ -3319,7 +3392,7 @@ akari源码地址：&lt;a href=&quot;http://www.ioccc.org/2011/akari/akari.c&quo
 
 &lt;p&gt;AsyncSocket *client;
 NSSError *err=nil;
-NSString *hel=@&amp;quot;hello AsyncSocket!&amp;quot;; 
+NSString *hel=@&amp;quot;hello AsyncSocket!&amp;quot;;
 NSData *data = [hel dataUsingEncoding:NSISOLatin1StringEncoding];
 [client connectToHost:@&amp;quot;127.0.0.1&amp;quot; onPort:51423 error:&amp;amp;err];
 [client writeData:data withTimeout:-1 tag:0];
@@ -3329,7 +3402,7 @@ NSLog(@&amp;quot;Hava received datas is :%@&amp;quot;,aStr);
 [aStr release];  
 [client readDataWithTimeout:-1 tag:0];  
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;} &lt;/p&gt;
+&lt;p&gt;}&lt;/p&gt;
 
 &lt;p&gt;Example server&lt;/p&gt;
 
@@ -3382,10 +3455,10 @@ while 1:
 &lt;strong&gt;1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;p&gt;&lt;strong&gt;2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&amp;#39;s delegate&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;   #import 
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;   #import
 #import &amp;quot;WebViewJavascriptBridge.h&amp;quot;
 
-@interface ExampleAppDelegate : UIResponder 
+@interface ExampleAppDelegate : UIResponder
 
 @end
 
@@ -3404,7 +3477,7 @@ while 1:
     return YES;
 }
 
-- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView 
+- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView
 {
     NSLog(@&amp;quot;MyJavascriptBridgeDelegate received message: %@&amp;quot;, message);
 }
@@ -3459,8 +3532,8 @@ document.addEventListener(&amp;#39;WebViewJavascriptBridgeReady&amp;#39;, functi
                 <title>hello wordpress</title>
                 <description>&lt;p&gt;&lt;code&gt;hello wordpress!&lt;/code&gt;&lt;/p&gt;
 </description>
-                <link>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2012/03/13/hello-wordpress</link>
-                <guid>http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2012/03/13/hello-wordpress</guid>
+                <link>http://snorlaxzxz.com/gossip/2012/03/13/hello-wordpress</link>
+                <guid>http://snorlaxzxz.com/gossip/2012/03/13/hello-wordpress</guid>
                 <pubDate>2012-03-13T00:00:00+08:00</pubDate>
         </item>
 

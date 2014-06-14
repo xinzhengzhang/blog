@@ -107,6 +107,114 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2013/05/08/%E6%9C%80%E5%A4%A7%E5%85%AC%E5%85%B1%E4%B8%8A%E5%8D%87%E5%AD%90%E5%BA%8F%E5%88%97lcs-python%E5%AE%9E%E7%8E%B0">最大公共上升子序列(lcs) python实现 </a></h3>
+  <div class="date">
+    <span>08 May 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>mit 算法导论公开课 15集<br />
+http://v.163.com/movie/2010/12/L/4/M6UTT5U0I_M6V2U1HL4.html</p>
+
+<p>实现了求出所有的lcs</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">import copy
+import sys
+#stringa=&quot;abcbdab&quot;
+#stringb=&quot;bdcaba&quot;
+
+stringa=sys.argv[1]
+stringb=sys.argv[2]
+lena=len(stringa)
+lenb=len(stringb)
+
+mapl=[[0 for _ in xrange(lena+1)] for _ in xrange(lenb+1)]
+path=[]
+for i in xrange(1,lenb+1):
+    for j in xrange(1,lena+1):
+        if stringa[j-1]==stringb[i-1]:
+            mapl[i][j]=mapl[i-1][j-1]+1
+            path.append((i,j))
+        else:
+            mapl[i][j]=max(mapl[i-1][j],mapl[i][j-1])
+#for i in mapl:
+#   print i
+#print path
+if len(path)==0:
+    print &quot;no lcs&quot;
+else:
+    backdatestack=[[(lenb,lena),[]]]
+    while len(backdatestack)!=0:
+        top=backdatestack.pop()
+        ansstack=top[1]
+        lcs=mapl[top[0][0]][top[0][1]]
+        i=top[0][0]
+        j=top[0][1]
+        while lcs!=0:
+            try:
+                ind=path.index((i,j))
+                ansstack.append(stringb[i-1])
+                i-=1
+                j-=1
+                lcs-=1
+            except ValueError:
+                if mapl[i-1][j]&gt;&gt;mapl[i][j-1]:&lt;br /&gt;
+                    i-=1&lt;br /&gt;
+                elif mapl[i-1][j]&lt;mapl[i][j-1]:&lt;br /&gt;
+                    j-=1&lt;br /&gt;
+                else:&lt;br /&gt;
+                    backdatestack.append([(i-1,j),copy.copy(ansstack)])&lt;br /&gt;
+                    j-=1&lt;br /&gt;
+        while len(ansstack)!=0:&lt;br /&gt;
+            print ansstack.pop(),&lt;br /&gt;
+        print &lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>43</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2013/05/06/boyer-moore%E7%AE%97%E6%B3%95-python%E5%AE%9E%E7%8E%B0">Boyer-Moore算法 python实现 </a></h3>
   <div class="date">
     <span>06 May 2013</span>
@@ -199,7 +307,7 @@ print &quot;search over&quot;
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -383,7 +491,7 @@ for i in headlist:
     while i:
         print i.value,
         i=i.rightp
-    print 
+    print
 sk.find(101)
 del(sk)
 &gt;
@@ -400,7 +508,7 @@ del(sk)
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -597,7 +705,7 @@ os.remove(filename)</p></li>
 --------------------------------------------------------------------------<br />
 把这个感觉带回给我的恰恰就是这么一道题、这道题真的非常非常简单、可是给我带来了不小的顿悟。原题大致是先图里求个最短路径然后判断路径中是否有可以组成三角形的存在<br />
 也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n<sup>3)的暴力</sup></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">for(int a=0; a 
+<div class="highlight"><pre><code class="language-text" data-lang="text">for(int a=0; a
 拿脚趾头想三次方肯定要TL、接着就是开始改进、首先想到了还是先对这些有意义的数组进行排序。然后使用自然而然的递增数组自己的优势那就是最小的两边之差一定是存在与相邻的数字里、注意这里就利用到了数字这个自身拥有美丽的属性的东西的属性。然后差不多代码是这样的
 
 for (int a = 0; a  (pval[j+1]-pval[j]))
@@ -616,7 +724,7 @@ for (int a = 0; a  (pval[j+1]-pval[j]))
 
 
 
-for(int i=0;i 
+for(int i=0;i
 {
     if(pval[i]+pval[i+1] &gt; pv[i+2])
         break;
@@ -637,7 +745,7 @@ for(int i=0;i
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -692,12 +800,12 @@ for(int i=0;i
         7
 
 
-这个题目我觉得最大的阴谋就是对于小数据1 
+这个题目我觉得最大的阴谋就是对于小数据1
 我了个fuck了给了个那么小规模的数据还给那么高的分值正常人理所当然的就肯定认为这是个指数级的运算了啊！然后我就想到了三叉树去暴力啊、可是再怎么暴力这个指数摆在那就算是100也很恐怖了、各种挂……纠结了好久好久写了好几种都挂
 最后静下心来把他当数学做……然后草稿纸写写……尼玛5分钟就算出来了……
 其实思想非常非常简单 往北的节点就是能叉出3条路、其中分别是继续叉2的2条以及继续叉3的一条、往两侧的每次只能叉出两条路、分别是2 和3 具体路径的结构问你了么？去暴力做等于就是浪费这些路径的信息啊小时候怎么做数学题的……要那么多条件吃屎啊……数学规律就是这么简单……然后还不会写么？……！你妹的别说100了来个平方这复杂度都闭着眼睛来的啊……
 
-#include 
+#include
 int main(){
     int a=0;
     int b=1;
@@ -721,7 +829,7 @@ int main(){
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -751,7 +859,7 @@ int main(){
 
 
 <div class="page-header">
-  <h3><a href="/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0">睡眠排序shell实现 </a></h3>
+  <h3><a href="/program/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0">睡眠排序shell实现 </a></h3>
   <div class="date">
     <span>29 March 2013</span>
   </div>
@@ -769,7 +877,7 @@ function f() {
 }
 while [ -n &quot;$1&quot; ]
 do
-    f &quot;$1&quot; &amp; 
+    f &quot;$1&quot; &amp;
     shift   #对所有参数 依次循环让所有的参数分别sleep进行次根据sleep长短利用数字自身大小的特性进行排序
 done
 wait  #主进程等到全部子进程结束后返回结束
@@ -789,8 +897,8 @@ wait  #主进程等到全部子进程结束后返回结束
 
   
     
-    	<li><a href="#未分类-ref">
-    		未分类 <span>3</span>
+    	<li><a href="#program-ref">
+    		program <span>43</span>
     	</a></li>
     
   
@@ -831,7 +939,7 @@ wait  #主进程等到全部子进程结束后返回结束
     <div class="content">
       <p><p>今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz<br />
 代码如下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#include 
+<div class="highlight"><pre><code class="language-text" data-lang="text">#include
 using namespace std;
 class Student {
 
@@ -846,7 +954,7 @@ public:
     Student  operator + (const Student &amp;) const
     {
         Student temp;
-        return temp; 
+        return temp;
     }
 };
 int main(int argc, const char * argv[])
@@ -908,7 +1016,7 @@ g++ -o test -fno-elide-constructors test.cpp
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -1138,93 +1246,7 @@ return 0;
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3">sae 普通开发者免推荐认证活动3.15 解 </a></h3>
-  <div class="date">
-    <span>15 March 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><a href="http://cloudbbs.org/forum.php?mod=viewthread&amp;tid=12876">大家好我是传送门</a></p>
-
-<p>活动如上<br />
-主要题干是<br />
-请将昨天的100位数字，使用你熟悉的编程语言，首先将其由字符串转换为长度为100的整数数组；其次，对数组进行排序，实现奇数在左边，偶数在右边，并且分别有序，希望最多只使用O(1)的空间复杂度（如能不借助额外空间实现排序，首位完成者将有惊喜~）。</p>
-
-<p>数字如下：31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823</p>
-
-<p>其实难度也不大、主要就是想出了一个非常巧妙的方法解决<br />
-首先没有时间复杂度要求 但对空间要求零空间 脑子第一反应就是快排 但是最大的问题就是如何再零空间下把奇偶分开然后分别快排即可<br />
-就是两个游标的交互替换、写出来就是感觉非常巧妙啦:)</p>
-
-<p>代码如下</p>
-
-<p><p>
-```</p>
-
-<p>i=-1
-j=0
-pi = &quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&quot;
-l = [int(tt) for tt in pi[:100]]
-while j</p>
-
-<p>print sorted(l[0:i+1])+sorted(l[i+1:100])</p>
-
-<p>经过评论大哥的指点python的实现</p>
-
-<p>pi = &quot;31415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823&quot;
-l=[int(tt) for tt in pi[:100]]
-l.sort(lambda x,y:(x-y)if(x%2-y%2==0)else(y%2-x%2))
-print l</p>
-
-<blockquote>
-</blockquote>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -1292,7 +1314,7 @@ print l</p>
   
     <a class="next" href="/page3">后页</a>
   
-  (共54篇)
+  (共55篇)
 </div>
 
         </div>

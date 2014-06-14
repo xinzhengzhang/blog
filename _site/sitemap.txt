@@ -10,8 +10,9 @@ http://snorlaxzxz.com/page4/index.html
 http://snorlaxzxz.com/page5/index.html
 http://snorlaxzxz.com/page6/index.html
 
+http://snorlaxzxz.com/gossip/2014/06/14/four-years-in-dut
 http://snorlaxzxz.com/program/2014/06/05/begin-with-swift
-http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance
+http://snorlaxzxz.com/gossip/2014/05/30/clearance
 http://snorlaxzxz.com/program/2014/05/27/migrate-blog-from-wp-to-gp
 http://snorlaxzxz.com/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation%20bar%E7%9A%84%E9%81%AE%E7%BD%A9
 http://snorlaxzxz.com/program/2014/03/05/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4
@@ -25,17 +26,17 @@ http://snorlaxzxz.com/program/2013/05/05/%E8%B7%B3%E8%A1%A8python%E5%AE%9E%E7%8E
 http://snorlaxzxz.com/2013/04/26/%E5%85%B3%E4%BA%8Eprotocol-buffer-%E4%B8%AD%E7%9A%84base-128-varints%E7%BC%96%E7%A0%81
 http://snorlaxzxz.com/program/2013/04/09/list%E4%B8%AD%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E4%B8%89%E8%BE%B9
 http://snorlaxzxz.com/program/2013/04/04/beauty-of-programming-%E7%BB%83%E4%B9%A0%E8%B5%9B%E7%AC%AC%E4%B8%89%E9%A2%98
-http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0
+http://snorlaxzxz.com/program/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0
 http://snorlaxzxz.com/program/2013/03/28/%E5%85%B3%E4%BA%8Egcc%E4%BC%98%E5%8C%96%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0-5
 http://snorlaxzxz.com/life/2013/03/26/%E6%B3%A8%E5%86%8C%E4%BA%86-ask-fm
 http://snorlaxzxz.com/program/2013/03/20/arp%E6%AC%BA%E9%AA%97%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%81arp%E5%8C%85%E8%A7%A3%E6%9E%90
 http://snorlaxzxz.com/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3
 http://snorlaxzxz.com/program/2013/03/09/%E5%85%B3%E4%BA%8Ewordpress-%E5%90%8C%E6%AD%A5twitter%E5%8A%A0%E7%9F%AD%E5%9C%B0%E5%9D%80%E6%9C%8D%E5%8A%A1
 http://snorlaxzxz.com/program/2013/03/07/%E5%85%B3%E4%BA%8Eios%E4%B8%8B%E7%9A%84goagent%E4%BD%BF%E7%94%A8
-http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE
-http://snorlaxzxz.com/%E6%9C%AA%E5%88%86%E7%B1%BB/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8
+http://snorlaxzxz.com/program/2013/01/29/%E5%85%B3%E4%BA%8Ewindows%E9%87%8C%E7%9A%84python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE
+http://snorlaxzxz.com/program/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8
 http://snorlaxzxz.com/program/2013/01/07/%E5%85%B3%E4%BA%8E%E5%B5%8C%E5%A5%97%E4%B8%8Euiscrollview%E4%B8%AD%E7%9A%84uitableview%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3
-http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0
+http://snorlaxzxz.com/gossip/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0
 http://snorlaxzxz.com/program/2012/12/23/os-x-%E7%9A%84%E5%90%AF%E5%8A%A8%E9%A1%B9
 http://snorlaxzxz.com/program/2012/12/07/%E7%9B%B8%E4%BC%BC%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2python%E5%AE%9E%E7%8E%B0
 http://snorlaxzxz.com/program/2012/12/07/%E5%85%B3%E4%BA%8Epython%E5%9B%BE%E5%BD%A2%E5%BA%93pil%E5%9C%A8mac-os%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85
@@ -43,7 +44,7 @@ http://snorlaxzxz.com/program/2012/12/04/ios-safari5-webview%E5%AF%B9-contentedi
 http://snorlaxzxz.com/program/2012/12/03/ios%E5%87%A0%E7%A7%8D%E5%9F%BA%E6%9C%AC%E8%A7%86%E5%9B%BE%E5%88%87%E6%8D%A2%E5%8A%A8%E7%94%BB%E5%B0%8F%E7%BB%93
 http://snorlaxzxz.com/program/2012/11/28/bmp%E3%80%81png%E5%88%9D%E7%90%86%E8%A7%A3
 http://snorlaxzxz.com/program/2012/11/24/regexkit%E7%AC%94%E8%AE%B0
-http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F
+http://snorlaxzxz.com/gossip/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F
 http://snorlaxzxz.com/life/2012/11/14/%E4%B8%80%E4%BA%BA%E6%9A%AE%E3%82%89%E3%81%97
 http://snorlaxzxz.com/program/2012/11/13/aria2c-%E8%BF%85%E9%9B%B7%E7%A6%BB%E7%BA%BF%E7%9A%84%E4%B8%8B%E8%BD%BD%E6%B3%95
 http://snorlaxzxz.com/program/2012/11/11/%E5%85%89%E6%A3%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E9%97%AF%E5%85%B3%E6%94%BB%E7%95%A51_9%E6%90%AD%E6%A2%AF4_6_8
@@ -63,4 +64,4 @@ http://snorlaxzxz.com/program/2012/03/18/%E5%BC%80%E6%BA%90%E5%BA%93asyncsocket%
 http://snorlaxzxz.com/program/2012/03/14/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AAwebview%E5%92%8Cjs%E4%BA%A4%E4%BA%92%E7%9A%84%E5%B0%81%E8%A3%85
 http://snorlaxzxz.com/life/2012/03/13/%E8%90%BD%E8%84%9A%E7%82%B9
 http://snorlaxzxz.com/program/2012/03/13/test-codebox
-http://snorlaxzxz.com/%E7%9E%8E%E5%86%99%E5%86%99/2012/03/13/hello-wordpress
+http://snorlaxzxz.com/gossip/2012/03/13/hello-wordpress

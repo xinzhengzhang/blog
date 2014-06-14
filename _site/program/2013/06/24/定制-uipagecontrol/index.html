@@ -149,7 +149,7 @@
 实现起来就要重写UIView的绘画函数了代码大致如下
 
 #import &quot;ZDPageControll.h&quot;
-#import 
+#import
 
 @interface ZDPageControll()
 {
@@ -212,7 +212,7 @@
 - (void)setCurrentPage:(NSInteger)currentPage
 {
     [super setCurrentPage:currentPage];
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]
         [self updateDots];
     }
 //    [self updateDots];
@@ -221,7 +221,7 @@
 - (void)setNumberOfPages:(NSInteger)numberOfPages
 {
     [super setNumberOfPages:numberOfPages];
-    if ([[[UIDevice currentDevice]systemVersion]floatValue] 
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]
         [self updateDots];
     }
 //    [self updateDots];
@@ -249,7 +249,7 @@
     rect.origin.y = floorf( ( iRect.size.height - rect.size.height ) / 2.0 );
     rect.size.width = _activeImage.size.width;
 
-    for ( i = 0; i 
+    for ( i = 0; i
         image = i == self.currentPage ? _activeImage : _inactiveImage;
 
         [image drawInRect: rect];
@@ -274,7 +274,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   

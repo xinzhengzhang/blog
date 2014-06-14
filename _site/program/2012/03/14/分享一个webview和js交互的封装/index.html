@@ -119,10 +119,10 @@
 <strong>1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project</strong></p>
 
 <p><p><strong>2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&#39;s delegate</strong></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">   #import 
+<div class="highlight"><pre><code class="language-text" data-lang="text">   #import
 #import &quot;WebViewJavascriptBridge.h&quot;
 
-@interface ExampleAppDelegate : UIResponder 
+@interface ExampleAppDelegate : UIResponder
 
 @end
 
@@ -141,7 +141,7 @@
     return YES;
 }
 
-- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView 
+- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView
 {
     NSLog(@&quot;MyJavascriptBridgeDelegate received message: %@&quot;, message);
 }
@@ -177,7 +177,7 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   

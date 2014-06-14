@@ -115,26 +115,7 @@
       <span>05 June 2014</span>
     </div>
     <div class="content">
-      <h3>感想</h3>
-
-<ul>
-<li>2014wwdc苹果新发表的语言嘛、不知道为什么就是特别的热= =难道跟名字有关么(听说swift贴吧都被占领了23333</li>
-<li>实际体验了下完全不知道苹果用什么黑科技bridge oc 和 swift的，除了代码提示几乎没有之外几乎两个语言完全自然连接的</li>
-<li>粗粗把<a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4">The Swift Programming Language</a>、有种特别熟悉的感觉……互联网上讨论也特别多、有厨有黑、包括各种媒体什么的也插一脚很多人都说像python，我倒是不怎么觉得，倒是各种语言的影子都可以看到一些而且东西特别多……不过脑补都知道完全用起来的话肯定很爽</li>
-<li>xcode6的bug特别多……
-
-<ul>
-<li>background 他是边写代码就一边在跑的所以比如 <code>system(rm -rf ~/)</code>这种命令&gt; &lt;</li>
-<li>群里看到的一句话干崩xcode…… <code>var b = 1; println(&quot;a&quot;, b)</code></li>
-<li>小tips</li>
-<li>开始纯粹练语法的话比较那个background比较核心……还不如用cli模式进去打了试东西目录在</Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/>
-可以 <code>PATH=$PATH:/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/</code> 然后命令行swift进cli试验(这样就算挂了也不会xcode无限重启&gt; &lt;</li>
-</ul></li>
-</ul>
-
-<hr>
-
-<h3>oc swift混编</h3>
+      <h3>OC Swift混编</h3>
 
 <ul>
 <li><a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html">大家好我是传送门= =</a></li>
@@ -197,25 +178,25 @@ john.residence?.address?.buildingIdentifier() {}
 <ul>
 <li>一般定义</li>
 </ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">{
-  (arg1: Type, arg2: Type) -&gt; returnType in
-  closure content
-}
+<div class="highlight"><pre><code class="language-text" data-lang="text">  {
+    (arg1: Type, arg2: Type) -&gt; returnType in
+    closure content
+  }
 </code></pre></div>
 <ul>
 <li>sort Array</li>
 </ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">var l: Array = [3, 4, 6, 1, 2]
-sort(l, {
-  (i1: Int, i2: Int) -&gt; Bool in
-  return i1 &gt; i2
-  })
-//嫌烦里面的type可以被推断出来所以可以省略
-sort(l, {i1, i2 in return i1 &gt; i2})
-//还可以更短= =
-sort(l, { $0 &gt; $1})
-//还他妈可以更短！= =
-sort(l, &gt;)
+<div class="highlight"><pre><code class="language-text" data-lang="text">  var l: Array = [3, 4, 6, 1, 2]
+  sort(l, {
+    (i1: Int, i2: Int) -&gt; Bool in
+    return i1 &gt; i2
+    })
+  //嫌烦里面的type可以被推断出来所以可以省略
+  sort(l, {i1, i2 in return i1 &gt; i2})
+  //还可以更短= =
+  sort(l, { $0 &gt; $1})
+  //还他妈可以更短！= =
+  sort(l, &gt;)
 </code></pre></div>
 <ul>
 <li>注意一些循环引用的这些东西</li>
@@ -234,9 +215,29 @@ sort(l, &gt;)
 
 <ul>
 <li>还有各种各样的特性从脚本语言过来的话应该都是非常熟悉的比如返回个<code>tuple</code>什么的啦字典<code>keyvalue遍历</code>啦<code>for _ in 1..5</code>这种写法啦、oc的一些类似category那样的写法同样也由extension保留了下来</li>
-<li>一言以蔽之、swift的语法特性简直就是叼炸天、完全不觉得这个是apple出的toy language、嗯就是这样啦！</li>
+<li>一言以蔽之、swift的语法特性简直就是叼炸天、完全不觉得这个是Apple出的toy language、嗯就是这样啦！</li>
+<li>redcarpet快支持swift吧……没语法高亮好不爽！</li>
 </ul></li>
 </ul>
+
+<h3>感想</h3>
+
+<ul>
+<li>2014wwdc苹果新发表的语言嘛、不知道为什么就是特别的热= =难道跟名字有关么(听说swift贴吧都被占领了23333</li>
+<li>实际体验了下完全不知道苹果用什么黑科技bridge oc 和 swift的，除了代码提示几乎没有之外几乎两个语言完全自然连接的</li>
+<li>粗粗把<a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4">The Swift Programming Language</a>、有种特别熟悉的感觉……互联网上讨论也特别多、有厨有黑、包括各种媒体什么的也插一脚很多人都说像python，我倒是不怎么觉得，倒是各种语言的影子都可以看到一些而且东西特别多……不过脑补都知道完全用起来的话肯定很爽</li>
+<li>xcode6的bug特别多……
+
+<ul>
+<li>background 他是边写代码就一边在跑的所以比如 <code>system(rm -rf ~/)</code>这种命令&gt; &lt;</li>
+<li>群里看到的一句话干崩xcode…… <code>var b = 1; println(&quot;a&quot;, b)</code></li>
+<li>小tips</li>
+<li>开始纯粹练语法的话比较那个background比较核心……还不如用cli模式进去打了试东西目录在</Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/>
+可以 <code>PATH=$PATH:/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/</code> 然后命令行swift进cli试验(这样就算挂了也不会xcode无限重启&gt; &lt;</li>
+</ul></li>
+</ul>
+
+<hr>
 
     </div>
 
@@ -250,7 +251,7 @@ sort(l, &gt;)
   
     
     	<li><a href="#program-ref">
-    		program <span>40</span>
+    		program <span>43</span>
     	</a></li>
     
   
@@ -284,11 +285,11 @@ sort(l, &gt;)
     <div class="pagination">
       <ul>
       
-        <li class="prev"><a href="/%E7%9E%8E%E5%86%99%E5%86%99/2014/05/30/clearance" title="毕业贩卖">&larr; Previous</a></li>
+        <li class="prev"><a href="/gossip/2014/05/30/clearance" title="毕业贩卖">&larr; Previous</a></li>
       
         <li><a href="/archive.html">Archive</a></li>
       
-        <li class="next disabled"><a>Next &rarr;</a>
+        <li class="next"><a href="/gossip/2014/06/14/four-years-in-dut" title="four years in dut">Next &rarr;</a></li>
       
       </ul>
     </div>

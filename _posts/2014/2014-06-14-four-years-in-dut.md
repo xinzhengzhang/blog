@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Four years in DUT"
+title: "Four Years In DUT"
 description: ""
 category: gossip
 tags: ["dut", "cippus"]

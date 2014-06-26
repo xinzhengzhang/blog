@@ -107,6 +107,107 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2012/12/07/%E5%85%B3%E4%BA%8Epython%E5%9B%BE%E5%BD%A2%E5%BA%93pil%E5%9C%A8mac-os%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85">关于python图形库pil在mac os下的安装 </a></h3>
+  <div class="date">
+    <span>07 December 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先在mac os的环境下根据官方给出的release版本
+<a href="http://effbot.org/downloads/Imaging-1.1.7.tar.gz" title="Python Imaging Library 1.1.7 Source Kit ">Python Imaging Library 1.1.7 Source Kit</a> <br />
+如果在debian下可以非常简便的就<br />
+sudo apt-get install libjpeg62-dev<br />
+sudo apt-get install zlib1g-dev<br />
+sudo apt-get install libfreetype6-dev<br />
+sudo apt-get install liblcms1-dev<br />
+然后就 python setup.py install 轻松又愉快<br />
+可是mac的说明我有点蒙</p>
+
+<p>--------------------------------------------------------------------<br />
+Additional notes for Mac OS X<br />
+--------------------------------------------------------------------</p>
+
+<p>On Mac OS X you will usually install additional software such as<br />
+libjpeg or freetype with the "fink" tool, and then it ends up in<br />
+"/sw".  If you have installed the libraries elsewhere, you may have<br />
+to tweak the "setup.py" file before building.</p>
+
+<p>反正我一开始也就理所当然的当成usually install additional software的一份子了、当然结果肯定是残忍的<br />
+pil是可以用但是任何的解析基本都会报类似<br />
+raise IOError decoder s not available decoder_name IOError decoder jpeg not available的错</p>
+
+<p>google了无数各种做ln连来连去的……<br />
+注意一点就是 3一下的版本都在 /System/Library/Frameworks/Python.framework/Versions/下<br />
+3以上的版本都在 /Library/Frameworks/Python.framework/Versions<br />
+然后site-package<br />
+分别在<br />
+/Library/Python/2.7/site-packages<br />
+/Library/Python/2.3/site-packages<br />
+/usr/local/git/lib/python2.7/site-packages<br />
+/Library/Python/2.5/site-packages<br />
+/Library/Python/2.6/site-packages<br />
+/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages<br />
+/usr/local/lib/python3.2/site-packages<br />
+混乱了吧……记得你装的是哪儿个版本、然后在configure之前要都设置对路径……私认为这绝对是太残忍了……<br />
+-----------------------------------分割线--------------------------------------<br />
+下面是经过实践出的最简单的方法、就用python自带的easy_install里的pip这样默认都帮你configure完了也不用你纠结了<br />
+就这么几句就搞定了<br />
+sudo easy_install pip<br />
+sudo brew install jpeg<br />
+sudo brew install libjpeg<br />
+sudo pip uninstall pil<br />
+sudo pip install pil</p>
+
+<p>搞定记得顺序、先要装依赖</p>
+
+<p>附上PIL的文档:<br />
+http://www.pythonware.com/library/pil/handbook/index.htm</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>44</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2012/12/04/ios-safari5-webview%E5%AF%B9-contenteditable-%E7%9A%84%E4%BF%AE%E6%AD%A3">ios safari5 webview对 contenteditable 的修正 </a></h3>
   <div class="date">
     <span>04 December 2012</span>
@@ -157,7 +258,7 @@ var edit = document.getElementById(\"editable\");edit.addEventListener(\"click\"
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -272,7 +373,7 @@ UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIMo
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -453,7 +554,7 @@ CRC(循环冗余检测) 4字节  存储用来检测是否有错误的循环冗�
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -860,7 +961,7 @@ See also: Regular Expression Options
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -1103,7 +1204,7 @@ See also: Regular Expression Options
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -1182,7 +1283,7 @@ See also: Regular Expression Options
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -1353,178 +1454,7 @@ See also: Regular Expression Options
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/11/08/%E7%AC%AC%E4%B8%89%E8%8C%83%E5%BC%8Fbc%E8%8C%83%E5%BC%8F">第三范式&BC范式 </a></h3>
-  <div class="date">
-    <span>08 November 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>1.概念 BC范式是建在第三范式之上的 第三范式的成立条件是以下三者成立一个</p>
-
-<p>1.1 对所有的函数依赖 A-&gt; B 是一个平凡的函数依赖（平凡的还书依赖就是他们没有任何依赖关系</p>
-
-<p>1.2 A-&gt;B A是所有关系（R）的一个超码（就是能决定所有的元素</p>
-
-<p>1.3 B－A 中的每个属性都包含与R的一个候选码</p>
-
-<p>而BC范式就是只能满足1.1或者1.2中的一个</p>
-
-<p>&nbsp;</p>
-
-<p>注：即 满足 1.1 或者1.2的就是BC范式（同时他也是第三第二第一范式）</p>
-
-<p>有一个满足1.3的就是第三范式</p>
-
-<p>&nbsp;</p>
-
-<p>2. 实例说明(</p>
-
-<p>2.1 表：ID,name,age,department,department_num</p>
-
-<p>&nbsp;</p>
-
-<p>存在的函数依赖</p>
-
-<p>ID -&gt; name,age,department,department_num</p>
-
-<p>department -&gt; department_num</p>
-
-<p>根据 1.1 摆明ID和后面那么多关系肯定不是平凡的 不符合1.1</p>
-
-<p>根据 1.2  department -&gt; department_num department不是关系的超码 所以不符合1.2</p>
-
-<p>根据1.3 B-A={name,age,department,department_num}-{ID}= {name,age,department,department_num} (减法流程左边有就减去、没有就无视)</p>
-
-<p>明显几个属性都不属于 ID 所以不符合1.3</p>
-
-<p>即不是第三范式</p>
-
-<p>拆：</p>
-
-<p>由于ID -&gt; name,age,department,department_num 这条不满足1.3 所以在右边继续寻找函数依赖</p>
-
-<p>即department -&gt; department_num</p>
-
-<p>把依赖关系的左边并进原来的关系 即于ID,name,age+department</p>
-
-<p>再把依赖的和被依赖的单独拉进一张表</p>
-
-<p>ID,name,age,department 符合1.2</p>
-
-<p>department,department_num 符合1.2  即拆完的符合BC范式</p>
-
-<p>2.2 表 ID1,ID2,age</p>
-
-<p>存在函数依赖</p>
-
-<p>ID1-&gt;age</p>
-
-<p>ID2-&gt;age</p>
-
-<p>根据 1.1 摆明不符合</p>
-
-<p>根据1.2 ID1不是关系的超码（因为ID1 无法确定ID2 也不符合1.2</p>
-
-<p>根据 1.3 age不属于ID1 所以也不符合 1.3</p>
-
-<p>即不是第三范式（更不是BC范式</p>
-
-<p>右边不存在依赖关系</p>
-
-<p>所以把 ID1 和 age放在一张表 单独剩下一个ID2 他和ID1的关系是平凡的</p>
-
-<p>即编程如下表</p>
-
-<p>ID1,age   符合1.2</p>
-
-<p>ID1,ID2  符合1.1(他们两个是平凡关系</p>
-
-<p>即拆成了BC范式</p>
-
-<p>2.3 表 ID1+ID2 ,age</p>
-
-<p>存在函数依赖</p>
-
-<p>ID1,ID2-&gt;age 满足1.2</p>
-
-<p>即是BC范式</p>
-
-<p>2.3 表 仓库ID+ 存储物品ID, 管理员ID, 数量</p>
-
-<p>或仓库ID,存储物品ID+ 管理员ID, 数量</p>
-
-<p>存在函数依赖</p>
-
-<p>仓库ID－&gt;管理员ID  符合1.3</p>
-
-<p>管理员ID -&gt; 仓库ID 符合 1.3</p>
-
-<p>仓库ID,存储物品ID－&gt;管理员ID,数量 符合 1.2</p>
-
-<p>管理员ID,存储物品ID－&gt;仓库ID,数量 符合 1.2</p>
-
-<p>所以他是第三范式</p>
-
-<p>因为右边没有函数依赖关系</p>
-
-<p>把仓库ID和管理员ID放一张表</p>
-
-<p>仓库ID和存储物品和数量一张表</p>
-
-<p>即 仓库ID, 管理员ID 符合 1.2</p>
-
-<p>仓库ID+存储物品ID,数量 符合 1.2</p>
-
-<p>即拆成了BC范式</p>
-
-<p>&nbsp;</p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -1592,7 +1522,7 @@ See also: Regular Expression Options
   
     <a class="next" href="/page5">后页</a>
   
-  (共55篇)
+  (共56篇)
 </div>
 
         </div>

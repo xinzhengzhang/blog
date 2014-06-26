@@ -5,13 +5,118 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-06-14T21:24:57+08:00</lastBuildDate>
-        <pubDate>2014-06-14T21:24:57+08:00</pubDate>
+        <lastBuildDate>2014-06-27T00:07:44+08:00</lastBuildDate>
+        <pubDate>2014-06-27T00:07:44+08:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
-                <title>four years in dut</title>
+                <title>Software List</title>
+                <description>&lt;h4&gt;Application&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Xcode 5.1.1
+
+&lt;ul&gt;
+&lt;li&gt;XVim&lt;/li&gt;
+&lt;li&gt;ObsidianCode&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Xcode 6 beta&lt;/li&gt;
+&lt;li&gt;Mou&lt;/li&gt;
+&lt;li&gt;iTerm&lt;/li&gt;
+&lt;li&gt;Sublime text 2&lt;/li&gt;
+&lt;li&gt;Evernote&lt;/li&gt;
+&lt;li&gt;Parallels&lt;/li&gt;
+&lt;li&gt;vlc&lt;/li&gt;
+&lt;li&gt;MplayerX&lt;/li&gt;
+&lt;li&gt;QQ&lt;/li&gt;
+&lt;li&gt;iBooks&lt;/li&gt;
+&lt;li&gt;Photoshop cs6&lt;/li&gt;
+&lt;li&gt;Flash&lt;/li&gt;
+&lt;li&gt;Android stdio&lt;/li&gt;
+&lt;li&gt;Atom&lt;/li&gt;
+&lt;li&gt;Battle.net&lt;/li&gt;
+&lt;li&gt;BatterTouchTool&lt;/li&gt;
+&lt;li&gt;Charles&lt;/li&gt;
+&lt;li&gt;Crashlytics&lt;/li&gt;
+&lt;li&gt;DaisyDisk&lt;/li&gt;
+&lt;li&gt;Dash&lt;/li&gt;
+&lt;li&gt;Dropbox&lt;/li&gt;
+&lt;li&gt;Dictionary&lt;/li&gt;
+&lt;li&gt;FileZilla&lt;/li&gt;
+&lt;li&gt;Google Chrome&lt;/li&gt;
+&lt;li&gt;Goole Drive&lt;/li&gt;
+&lt;li&gt;iWork&lt;/li&gt;
+&lt;li&gt;Mark Man&lt;/li&gt;
+&lt;li&gt;OmniGraffle&lt;/li&gt;
+&lt;li&gt;PyCharm&lt;/li&gt;
+&lt;li&gt;Reveal&lt;/li&gt;
+&lt;li&gt;Time Sink&lt;/li&gt;
+&lt;li&gt;Thunder&lt;/li&gt;
+&lt;li&gt;WeChat&lt;/li&gt;
+&lt;li&gt;Xiami&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;Bin&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;brew&lt;/li&gt;
+&lt;li&gt;pip
+
+&lt;ul&gt;
+&lt;li&gt;BeautifulSoup&lt;/li&gt;
+&lt;li&gt;shadowsocks&lt;/li&gt;
+&lt;li&gt;bpython&lt;/li&gt;
+&lt;li&gt;pygments&lt;/li&gt;
+&lt;li&gt;pymongo&lt;/li&gt;
+&lt;li&gt;tornado&lt;/li&gt;
+&lt;li&gt;bson&lt;/li&gt;
+&lt;li&gt;pyquery&lt;/li&gt;
+&lt;li&gt;webpy&lt;/li&gt;
+&lt;li&gt;PIL&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;gem
+
+&lt;ul&gt;
+&lt;li&gt;jekyll&lt;/li&gt;
+&lt;li&gt;rails&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;npm&lt;/li&gt;
+&lt;li&gt;cocospods&lt;/li&gt;
+&lt;li&gt;zsh
+
+&lt;ul&gt;
+&lt;li&gt;oh my zsh&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ZSH_THEME=&amp;quot;kphoen&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;git&lt;/li&gt;
+&lt;li&gt;git-flow&lt;/li&gt;
+&lt;li&gt;imagemagick&lt;/li&gt;
+&lt;li&gt;wget&lt;/li&gt;
+&lt;li&gt;aria2c&lt;/li&gt;
+&lt;li&gt;libevent&lt;/li&gt;
+&lt;li&gt;unrar&lt;/li&gt;
+&lt;li&gt;redis&lt;/li&gt;
+&lt;li&gt;mongodb&lt;/li&gt;
+&lt;li&gt;bundle&lt;/li&gt;
+&lt;li&gt;vim 7.4.52
+
+&lt;ul&gt;
+&lt;li&gt;nerdtree&lt;/li&gt;
+&lt;li&gt;pythoncomplete&lt;/li&gt;
+&lt;li&gt;taglist&lt;/li&gt;
+&lt;li&gt;vim-rails&lt;/li&gt;
+&lt;li&gt;YouCompleteMe&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://snorlaxzxz.com/program/2014/06/26/software-list</link>
+                <guid>http://snorlaxzxz.com/program/2014/06/26/software-list</guid>
+                <pubDate>2014-06-26T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>Four Years In DUT</title>
                 <description>&lt;h4&gt;大一&lt;/h4&gt;
 
 &lt;ul&gt;
@@ -30,6 +135,7 @@
 &lt;li&gt;其中穿插着也就是软件组了。其实虽然从大一进入软件组、但是那个时候对这个组其实并没有什么很深的感觉、从现在的角度来回想也的确如此、因为大学就是一个
 提供给你资源提供给你自学资源(包括身边的同学)的地方！到了大二小学期、我也成为了软件组组长、我也就开始另一方面的开始锻炼自己梳理讲技术的能力了。开始把这一整年自学到的所有的东西进行了一次
 系统的梳理、周周的沙龙把自己的所理解都讲出来、虽然那个时候知道自己很菜、说话也很不流利、但是这或许就是锻炼。也是我又需要感谢cippus的地方。&lt;/li&gt;
+&lt;li&gt;加入了beannote团队、开始拿自己以前零碎的知识点结合起来、大家一起来合作完成一个东西！也是对我这么一个根本没什么存在感的交上朋友的一个重要所在的！团队的每个成员我都学到了很多很多。&lt;/li&gt;
 &lt;li&gt;其中一小段给老师打工的经历、现在想想也是帮助我认清这个世界的大部分人对编程的态度、对自己的编程能力从玩玩到真的写出来点什么的过度吧。当然也不想黑什么自己得没得到自己该得到的什么、毕竟当时
 的自己只是一个外包的员工罢了。&lt;/li&gt;
 &lt;/ul&gt;
@@ -42,13 +148,14 @@
 大三下然后为了开始实习，开始刷codeforces开始看算法导论，开始系统的完整填备这一个空缺。开始投简历、开始面试……&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4&gt;大三下(百度)&lt;/h4&gt;
+&lt;h4&gt;百度&lt;/h4&gt;
 
 &lt;ul&gt;
-&lt;li&gt;六月份开始去百度知道实习、当时的我应该还是比较迷茫的或许想什么都没有想好、反正就是想着baidu也算bat一家而且也是开发ios、也算对口就去实习玩玩吧。心态导致结果，所有人都说的百度苦我没感受到
+&lt;li&gt;六月份开始去百度知道实习、当时的我应该还是比较迷茫的或许想什么都没有想好、反正就是想着baidu也算bat一家而且也是开发ios、虽然我比较厌恶baidu但也算对口就去实习玩玩吧。心态导致结果，所有人都说的百度苦我没感受到
 说到的baidu技术强我也没感受到、唯一真真切切感受到的或许就是一整套敏捷的软件工程的流程。这一点在质量保证上等等或许还是很有用的、但是总是感觉付出远大于结果。当然在大厂来说安全稳定性才是最重要的那也是毋庸置疑的。
 其实我一直不喜欢加班、更加讨厌baidu这种快到晚上才开始干活然后看起来是加班加的累死累活的这种状态。我也算是经过两次小黑屋封闭开发，也过了一整个月六天工作的过来，但就算在这种情况下我还是认为效率的极其低下的。
 然后到了10月份我离职了、我应该换一家去看看。&lt;/li&gt;
+&lt;li&gt;去北京待了三四个月就除了中关村那一块都没出去过别的地方简直没救了……&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h4&gt;火花&lt;/h4&gt;
@@ -66,7 +173,8 @@
 
 &lt;ul&gt;
 &lt;li&gt;从大一的在这里很不错、到大二的在这里是为了我可以自由做我想做的事情的地方、到大三这是一份责任、到现在有一丝愧疚。我觉得我还是一个失败的组长，摸着良心我努力尽力了、换言之我不是一个合格的育人者。但是我相信
-我自己的眼光、现在这几个大二的同学我更会相信你们是会变的很厉害的！看着基友组网络更觉得愧疚Orz。&lt;del&gt;没人想看着中心差下去的或许是不是该有点从能培养出强大的模式里去借鉴什么呢？&lt;/del&gt;&lt;/li&gt;
+我自己的眼光、现在这几个大二的同学我更会相信你们是会变的很厉害的！看着基友组网络更觉得愧疚Orz。
+&lt;del&gt;没人想看着中心差下去的或许是不是该有点从能培养出强人的模式里去借鉴什么呢？&lt;/del&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h4&gt;班级&lt;/h4&gt;

@@ -13,7 +13,7 @@ tags: ["mac os"]
 	* ObsidianCode
 * Xcode 6 beta
 * Mou
-* iTerm
+* iTerm 2
 * Sublime text 2
 * Evernote
 * Parallels
@@ -44,7 +44,7 @@ tags: ["mac os"]
 * Time Sink
 * Thunder
 * WeChat
-* Xiami
+* XiaMi
 
 #### Bin
 * brew

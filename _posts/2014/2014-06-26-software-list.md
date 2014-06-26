@@ -17,7 +17,7 @@ tags: ["mac os"]
 * Sublime text 2
 * Evernote
 * Parallels
-* vlc
+* VLC
 * MplayerX
 * QQ
 * iBooks

@@ -76,7 +76,6 @@ tags: ["mac os"]
 * unrar
 * redis
 * mongodb
-* bundle
 * vim 7.4.52
 	* nerdtree
 	* pythoncomplete

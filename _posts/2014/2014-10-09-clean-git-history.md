@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Clean git history"
+title: "Clean Git History"
 description: ""
 category: program
 tags: ["git"]
@@ -15,7 +15,13 @@ tags: ["git"]
 ### 具体的操作三步
 * 从git历史里找出大文件
   * 对所有文件的sha进行输出 `git rev-list --objects --all | sort -k 2 | uniq > allsha.txt`
-  * 排序得到所有打文件列表 `git gc && git verify-pack -v .git/objects/pack/pack-*.idx | egrep "^\w+ blob\W+[0-9]+ [0-9]+ [0-9]+$" | sort -k 3 -n -r > bigobjects.txt`
+  * 排序得到所有打文件列表 
+
+  ```
+  git gc && git verify-pack -v .git/objects/pack/pack-*.idx | egrep "^\w+ blob\W+[0-9]+ [0-9]+ [0-9]+$" \
+  | sort -k 3 -n -r \
+  > bigobjects.txt
+  ```
   * 映射sha值得到所有大文件的path列表
 
   ```

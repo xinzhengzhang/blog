@@ -7,9 +7,10 @@ tags: ["git"]
 ---
 {% include JB/setup %}
 
-### 不当心在git里塞进了几个大的静态文件……导致整个git repo大的无法忍于是开始清理
-* 核心的东西是使用`filter-branch` (好像这玩意是用来的原始意图不是这个= = [我是传送门](https://help.github.com/articles/remove-sensitive-data/) 
-* 查找大文件部分主要参照[这篇blog](http://naleid.com/blog/2012/01/17/finding-and-purging-big-files-from-git-history)
+### 背景
+* 不当心在git里塞进了几个大的静态文件……导致整个git repo大的无法忍于是开始清理
+  * 核心的东西是使用`filter-branch` (好像这玩意是用来的原始意图不是这个= = [我是传送门](https://help.github.com/articles/remove-sensitive-data/) 
+  * 查找大文件部分主要参照[这篇blog](http://naleid.com/blog/2012/01/17/finding-and-purging-big-files-from-git-history)
 
 ### 具体的操作三步
 * 从git历史里找出大文件
@@ -19,7 +20,8 @@ tags: ["git"]
 
   ```
     for SHA in `cut -f 1 -d\  < bigobjects.txt`; do
-      echo $(grep $SHA bigobjects.txt) $(grep $SHA allsha.txt) | awk '{print $1,$3,$7}' >> bigtosmall.txt
+      echo $(grep $SHA bigobjects.txt) $(grep $SHA allsha.txt) | \
+      awk '{print $1,$3,$7}' >> bigtosmall.txt
     done;
   ```
 * 用filter-branch修改掉历史记录

@@ -16,14 +16,16 @@ tags: ["git"]
   * 对所有文件的sha进行输出 `git rev-list --objects --all | sort -k 2 | uniq > allsha.txt`
   * 排序得到所有打文件列表 `git gc && git verify-pack -v .git/objects/pack/pack-*.idx | egrep "^\w+ blob\W+[0-9]+ [0-9]+ [0-9]+$" | sort -k 3 -n -r > bigobjects.txt`
   * 映射sha值得到所有大文件的path列表
-  ```git
+  
+  ```
     for SHA in `cut -f 1 -d\  < bigobjects.txt`; do
       echo $(grep $SHA bigobjects.txt) $(grep $SHA allsha.txt) | awk '{print $1,$3,$7}' >> bigtosmall.txt
     done;
   ```
 * 用filter-branch修改掉历史记录
   * 其中的Rakefile 就是在上一步中找寻出来的大文件 这里支持通配符的:)
-  ```git
+
+  ```
   git filter-branch --force --index-filter \
   'git rm --cached --ignore-unmatch Rakefile' \
   --prune-empty --tag-name-filter cat -- --al

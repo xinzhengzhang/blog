@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "clean git history"
+title: "Clean git history"
 description: ""
 category: program
 tags: ["git"]
@@ -16,7 +16,7 @@ tags: ["git"]
   * 对所有文件的sha进行输出 `git rev-list --objects --all | sort -k 2 | uniq > allsha.txt`
   * 排序得到所有打文件列表 `git gc && git verify-pack -v .git/objects/pack/pack-*.idx | egrep "^\w+ blob\W+[0-9]+ [0-9]+ [0-9]+$" | sort -k 3 -n -r > bigobjects.txt`
   * 映射sha值得到所有大文件的path列表
-  
+
   ```
     for SHA in `cut -f 1 -d\  < bigobjects.txt`; do
       echo $(grep $SHA bigobjects.txt) $(grep $SHA allsha.txt) | awk '{print $1,$3,$7}' >> bigtosmall.txt

@@ -97,4 +97,5 @@ PLATFORMS
 DEPENDENCIES
   github-pages
   hpricot
+  jekyll
   sequel

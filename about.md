@@ -7,4 +7,4 @@ group: "navigation"
 
 ![akari]({{ site.url }}/assets/static/akari.jpg)
 
-[Weibo](http://weibo.com/u/1654293217), [Email](mailto:zhangxzheng@gmail.com), [Twitter](https://twitter.com/ZhangXinZheng)
+[Weibo](http://weibo.com/u/1654293217), [Email](mailto:zhangxzheng@gmail.com), [Twitter](https://twitter.com/snorlaxzxz)

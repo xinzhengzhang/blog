@@ -137,7 +137,7 @@
 <strong>这个文件不需要自己新建</strong>ide在一个很奇怪的角落里建好了……</li>
 </ul></li>
 </ul></li>
-<li><p>混编完全无痛吧<em>(:з”∠)</em></p></li>
+<li><p>混编完全无痛吧_(:з”∠)_</p></li>
 </ul>
 
 <h3>swift 语法特点 (粗略)</h3>
@@ -145,7 +145,7 @@
 <ul>
 <li><a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4">The Swift Programming Language (以下略为书)</a></li>
 <li><p>类型推断、参数约束描述等等 见如下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">func anyCommonElements &lt;T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element&gt; (lhs: T, rhs: U) -&gt; Bool {
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func anyCommonElements &lt;T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element&gt; (lhs: T, rhs: U) -&gt; Bool {
   for lhsItem in lhs {
       for rhsItem in rhs {
           if lhsItem == rhsItem {
@@ -166,43 +166,39 @@ anyCommonElements([1, 2, 3], [3])
 //任意一个为空就中止不会走下去了、类似oc中的对nil perferselector不会crash一样
 john.residence?.address?.buildingIdentifier() {}
 </code></li>
-<li>包的感觉类似这样的感觉 例如函数中定义的是String 而你的 var a: String? 传入String要保证非空就必须一次解包操作如果这个时候值为空就crash</li>
-</ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  enum Optional&lt;T&gt; {
-    Some(T)
-    None
-  }
+<li><p>包的感觉类似这样的感觉 例如函数中定义的是String 而你的 var a: String? 传入String要保证非空就必须一次解包操作如果这个时候值为空就crash</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">enum Optional&lt;T&gt; {
+Some(T)
+None
+}
 </code></pre></div></li>
+</ul></li>
 <li><p>闭包、oc的block折腾够了么……好吧这回终于有简单明了爽快的闭包了Orz</p>
 
 <ul>
-<li>一般定义</li>
-</ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  {
-    (arg1: Type, arg2: Type) -&gt; returnType in
-    closure content
-  }
-</code></pre></div>
-<ul>
-<li>sort Array</li>
-</ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  var l: Array = [3, 4, 6, 1, 2]
-  sort(l, {
-    (i1: Int, i2: Int) -&gt; Bool in
-    return i1 &gt; i2
-    })
-  //嫌烦里面的type可以被推断出来所以可以省略
-  sort(l, {i1, i2 in return i1 &gt; i2})
-  //还可以更短= =
-  sort(l, { $0 &gt; $1})
-  //还他妈可以更短！= =
-  sort(l, &gt;)
-</code></pre></div>
-<ul>
-<li>注意一些循环引用的这些东西</li>
-<li>unowned 弱引用非空对象(不init 编译器还报错</li>
-<li>weak 弱引用可空的wrap过的对象就是那些加?的</li>
-<li>详情可见书245页</li>
+<li><p>一般定义</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">{
+(arg1: Type, arg2: Type) -&gt; returnType in
+closure content
+}
+</code></pre></div></li>
+<li><p>sort Array</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">var l: Array = [3, 4, 6, 1, 2]
+sort(l, {
+(i1: Int, i2: Int) -&gt; Bool in
+return i1 &gt; i2
+})
+//嫌烦里面的type可以被推断出来所以可以省略
+sort(l, {i1, i2 in return i1 &gt; i2})
+//还可以更短= =
+sort(l, { $0 &gt; $1})
+//还他妈可以更短！= =
+sort(l, &gt;)
+</code></pre></div></li>
+<li><p>注意一些循环引用的这些东西</p></li>
+<li><p>unowned 弱引用非空对象(不init 编译器还报错</p></li>
+<li><p>weak 弱引用可空的wrap过的对象就是那些加?的</p></li>
+<li><p>详情可见书245页</p></li>
 </ul></li>
 <li><p>setter getter willSet didSet</p>
 
@@ -251,7 +247,7 @@ john.residence?.address?.buildingIdentifier() {}
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   

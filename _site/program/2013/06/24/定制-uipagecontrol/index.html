@@ -118,7 +118,7 @@
       <p><p>pagecontrol 就是iphone上面比如scrollview翻图片时候下面那个小点点<br />
 其实我个人觉得还是挺美观的……可是需求就是要自己的图片替掉……然后死人苹果又不给api、所以也就只能自己复写实现了<br />
 先说下ios7之前 那些点点的实现非常简单 就是UIPageControl.subviews 就是一个个点的UIImageView 所以只需简单的替换掉就好了代码如下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">@property(nonatomic,strong)UIImage *_activeImage;
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@property(nonatomic,strong)UIImage *_activeImage;
 @property(nonatomic,strong)UIImage *_inactiveImage;
 //在init的时候把你自己定义的两张图片搞进去
 - (void)updateDots
@@ -274,7 +274,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   

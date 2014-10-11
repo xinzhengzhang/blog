@@ -107,111 +107,158 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
-  <h3><a href="/program/2014/06/26/software-list">Software List </a></h3>
+  <h3><a href="/program/2014/10/11/design-pattern-0">Design Pattern (1) </a></h3>
   <div class="date">
-    <span>26 June 2014</span>
+    <span>11 October 2014</span>
   </div>
 </div>
 
 <div class="row-fluid post-full">
   <div class="span12">
     <div class="content">
-      <h4>Application</h4>
+      <h3>这系列文章为大话设计模式的读书笔记（一）</h3>
 
 <ul>
-<li>Xcode 5.1.1
+<li><p>简单工厂模式</p>
 
 <ul>
-<li>XVim</li>
-<li>ObsidianCode</li>
-</ul></li>
-<li>Xcode 6 beta</li>
-<li>Mou</li>
-<li>iTerm</li>
-<li>Sublime text 2</li>
-<li>Evernote</li>
-<li>Parallels</li>
-<li>vlc</li>
-<li>MplayerX</li>
-<li>QQ</li>
-<li>iBooks</li>
-<li>Photoshop cs6</li>
-<li>Flash</li>
-<li>Android stdio</li>
-<li>Atom</li>
-<li>Battle.net</li>
-<li>BatterTouchTool</li>
-<li>Charles</li>
-<li>Crashlytics</li>
-<li>DaisyDisk</li>
-<li>Dash</li>
-<li>Dropbox</li>
-<li>Dictionary</li>
-<li>FileZilla</li>
-<li>Google Chrome</li>
-<li>Goole Drive</li>
-<li>iWork</li>
-<li>Mark Man</li>
-<li>OmniGraffle</li>
-<li>PyCharm</li>
-<li>Reveal</li>
-<li>Time Sink</li>
-<li>Thunder</li>
-<li>WeChat</li>
-<li>Xiami</li>
+<li>其实工厂平常也用的非常多了、核心就是抽出公共外部接口、然后按照需求子类、然后由统一工厂返回。好处也很明显就是解耦、隔绝上层知道自己不需要知道的东西。</li>
+<li>用<code>python</code>实现了一端最简单的例子</li>
 </ul>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Operation</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="n">a</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="n">b</span>
+  <span class="c"># 抽象出公共的计算</span>
+  <span class="k">def</span> <span class="nf">getresult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="s">&quot;base method must be implement&quot;</span>
 
-<h4>Bin</h4>
+<span class="k">class</span> <span class="nc">Add</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">getresult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_b</span>
 
-<ul>
-<li>brew</li>
-<li>pip
+<span class="k">class</span> <span class="nc">Minus</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">getresult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_b</span>
 
-<ul>
-<li>BeautifulSoup</li>
-<li>shadowsocks</li>
-<li>bpython</li>
-<li>pygments</li>
-<li>pymongo</li>
-<li>tornado</li>
-<li>bson</li>
-<li>pyquery</li>
-<li>webpy</li>
-<li>PIL</li>
-</ul></li>
-<li>gem
+<span class="k">class</span> <span class="nc">Factory</span><span class="p">:</span>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span> <span class="nf">create_operation</span><span class="p">(</span><span class="n">operate</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">operate</span> <span class="o">==</span> <span class="s">&quot;+&quot;</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">Add</span><span class="p">()</span>
+      <span class="k">elif</span> <span class="n">operate</span> <span class="o">==</span> <span class="s">&quot;-&quot;</span><span class="p">:</span>
+          <span class="k">return</span> <span class="n">Minus</span><span class="p">()</span>
 
-<ul>
-<li>jekyll</li>
-<li>rails</li>
-</ul></li>
-<li>npm</li>
-<li>cocospods</li>
-<li>zsh
-
-<ul>
-<li>oh my zsh</li>
-<li><code>ZSH_THEME=&quot;kphoen&quot;</code></li>
-</ul></li>
-<li>git</li>
-<li>git-flow</li>
-<li>imagemagick</li>
-<li>wget</li>
-<li>aria2c</li>
-<li>libevent</li>
-<li>unrar</li>
-<li>redis</li>
-<li>mongodb</li>
-<li>bundle</li>
-<li>vim 7.4.52
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">op</span> <span class="o">=</span> <span class="n">Factory</span><span class="o">.</span><span class="n">create_operation</span><span class="p">(</span><span class="s">&quot;+&quot;</span><span class="p">)</span>
+  <span class="n">op</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="n">op</span><span class="o">.</span><span class="n">number_b</span> <span class="o">=</span> <span class="mi">5</span>
+  <span class="k">print</span> <span class="n">op</span><span class="o">.</span><span class="n">getresult</span><span class="p">()</span>
+</code></pre></div></li>
+<li><p>策略模式</p>
 
 <ul>
-<li>nerdtree</li>
-<li>pythoncomplete</li>
-<li>taglist</li>
-<li>vim-rails</li>
-<li>YouCompleteMe</li>
-</ul></li>
+<li>我理解的策略模式其实就是给操作对象多wrap了一层context的东西、由他来抽象一堆方法进行管理。核心也是解耦把这部分脏东西控制在自己手上避免影响到上层</li>
+<li>其实类似<code>NSManagedObjectContext</code>这就是封装了真实数据底层的一些方法、让用户避免开这样噁心的东西、具体不同的数据媒介的相关操作让他自己处理即可。</li>
+<li>同样一个简单的例子、抽象出cash这个类、他的具体打折策略去由context去维护、整个这个打折这个事件全托管给context、类似一个中间人的角色</li>
+</ul>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">CashSuper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+
+<span class="k">class</span> <span class="nc">CashNormal</span><span class="p">(</span><span class="n">CashSuper</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">*</span> <span class="mf">0.9</span>
+
+<span class="k">class</span> <span class="nc">CashRebate</span><span class="p">(</span><span class="n">CashSuper</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">-</span> <span class="mi">300</span>
+
+<span class="k">class</span> <span class="nc">CashContext</span><span class="p">:</span>
+  <span class="n">cash_super</span> <span class="o">=</span> <span class="bp">None</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_str</span><span class="p">,</span> <span class="n">money</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">type_str</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">cash_super</span> <span class="o">=</span> <span class="n">CashNormal</span><span class="p">()</span>
+      <span class="k">else</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">cash_super</span> <span class="o">=</span> <span class="n">CashRebate</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">cash_super</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">money</span>
+
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cash_super</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">cc</span> <span class="o">=</span> <span class="n">CashContext</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">900</span><span class="p">)</span>
+  <span class="k">print</span> <span class="n">cc</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span> 
+</code></pre></div></li>
+<li><p>装饰模式</p>
+
+<ul>
+<li>装饰模式核心就是装饰不要去污染原来的东西、遵循开放封闭原则。例如一个人穿衣服、隔离出穿衣服这个事情。</li>
+<li>先写一端照书上的装饰模式的结构图写的代码</li>
+</ul>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<span class="k">class</span> <span class="nc">Finery</span><span class="p">(</span><span class="n">Person</span><span class="p">):</span>
+  <span class="n">person</span> <span class="o">=</span> <span class="bp">None</span>
+
+  <span class="k">def</span> <span class="nf">decorate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">person</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">person</span> <span class="o">=</span> <span class="n">person</span>
+
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">person</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">TShirt</span><span class="p">(</span><span class="n">Finery</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;wear tshirt&quot;</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">TShirt</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Shoe</span><span class="p">(</span><span class="n">Finery</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;wear shoe&quot;</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">Shoe</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;zx&quot;</span><span class="p">)</span>
+  <span class="n">ts</span> <span class="o">=</span> <span class="n">TShirt</span><span class="p">()</span>
+  <span class="n">sh</span> <span class="o">=</span> <span class="n">Shoe</span><span class="p">()</span>
+
+  <span class="n">ts</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+  <span class="n">sh</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+  <span class="n">sh</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+<ul>
+<li>感觉这样装饰模式虽然结构清楚、但是写起来感觉很难受、继承来继承去也麻烦、用了另外种装饰方法感觉明了简介更多</li>
+</ul>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">def</span> <span class="nf">wear_shoe</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;wear shoe&quot;</span>
+      <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="k">def</span> <span class="nf">wear_tshirt</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;wear Tshirt&quot;</span>
+      <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;zx&quot;</span><span class="p">)</span>
+  <span class="n">f</span> <span class="o">=</span> <span class="n">wear_tshirt</span><span class="p">(</span><span class="n">wear_shoe</span><span class="p">(</span><span class="n">Person</span><span class="o">.</span><span class="n">show</span><span class="p">))</span>
+  <span class="n">f</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div></li>
 </ul>
 
     </div>
@@ -226,7 +273,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -245,7 +292,119 @@
 
   
     
-    	<li><a href="#mac os-ref">mac os <span>1</span></a></li>
+    	<li><a href="#design pattern-ref">design pattern <span>1</span></a></li>
+    
+    	<li><a href="#python-ref">python <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2014/10/09/clean-git-history">Clean Git History </a></h3>
+  <div class="date">
+    <span>09 October 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h3>背景</h3>
+
+<ul>
+<li>不当心在git里塞进了几个大的静态文件……导致整个git repo大的无法忍于是开始清理
+
+<ul>
+<li>核心的东西是使用<code>filter-branch</code> (好像这玩意是用来的原始意图不是这个= = <a href="https://help.github.com/articles/remove-sensitive-data/">我是传送门</a> </li>
+<li>查找大文件部分主要参照<a href="http://naleid.com/blog/2012/01/17/finding-and-purging-big-files-from-git-history">这篇blog</a></li>
+</ul></li>
+</ul>
+
+<h3>具体的操作三步</h3>
+
+<ul>
+<li><p>从git历史里找出大文件</p>
+
+<ul>
+<li>对所有文件的sha进行输出 <code>git rev-list --objects --all | sort -k 2 | uniq &gt; allsha.txt</code></li>
+<li>排序得到所有打文件列表 </li>
+</ul>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">git gc &amp;&amp; git verify-pack -v .git/objects/pack/pack-*.idx | egrep &quot;^\w+ blob\W+[0-9]+ [0-9]+ [0-9]+$&quot; \
+| sort -k 3 -n -r \
+&gt; bigobjects.txt
+</code></pre></div>
+<ul>
+<li>映射sha值得到所有大文件的path列表</li>
+</ul>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">for SHA in `cut -f 1 -d\  &lt; bigobjects.txt`; do
+  echo $(grep $SHA bigobjects.txt) $(grep $SHA allsha.txt) | \
+  awk &#39;{print $1,$3,$7}&#39; &gt;&gt; bigtosmall.txt
+done;
+</code></pre></div></li>
+<li><p>用filter-branch修改掉历史记录</p>
+
+<ul>
+<li>其中的Rakefile 就是在上一步中找寻出来的大文件 这里支持通配符的:)</li>
+</ul>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">git filter-branch --force --index-filter \
+&#39;git rm --cached --ignore-unmatch Rakefile&#39; \
+--prune-empty --tag-name-filter cat -- --al
+</code></pre></div>
+<ul>
+<li>push回主干
+<code>git push origin master --force</code></li>
+</ul></li>
+<li><p>用gc清理</p>
+
+<ul>
+<li><code>rm -rf .git/refs/original/</code></li>
+<li><code>git reflog expire --expire=now --all</code></li>
+<li><code>git gc --prune=now</code></li>
+<li><code>git gc --aggressive --prune=now</code></li>
+</ul></li>
+</ul>
+
+<h4>这次成果成功把.git 从130M成功清理成5M哦耶！</h4>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>45</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#git-ref">git <span>1</span></a></li>
     
   
 
@@ -412,7 +571,7 @@
 <strong>这个文件不需要自己新建</strong>ide在一个很奇怪的角落里建好了……</li>
 </ul></li>
 </ul></li>
-<li><p>混编完全无痛吧<em>(:з”∠)</em></p></li>
+<li><p>混编完全无痛吧_(:з”∠)_</p></li>
 </ul>
 
 <h3>swift 语法特点 (粗略)</h3>
@@ -420,7 +579,7 @@
 <ul>
 <li><a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4">The Swift Programming Language (以下略为书)</a></li>
 <li><p>类型推断、参数约束描述等等 见如下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">func anyCommonElements &lt;T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element&gt; (lhs: T, rhs: U) -&gt; Bool {
+<div class="highlight"><pre><code class="text language-text" data-lang="text">func anyCommonElements &lt;T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element&gt; (lhs: T, rhs: U) -&gt; Bool {
   for lhsItem in lhs {
       for rhsItem in rhs {
           if lhsItem == rhsItem {
@@ -441,43 +600,39 @@ anyCommonElements([1, 2, 3], [3])
 //任意一个为空就中止不会走下去了、类似oc中的对nil perferselector不会crash一样
 john.residence?.address?.buildingIdentifier() {}
 </code></li>
-<li>包的感觉类似这样的感觉 例如函数中定义的是String 而你的 var a: String? 传入String要保证非空就必须一次解包操作如果这个时候值为空就crash</li>
-</ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  enum Optional&lt;T&gt; {
-    Some(T)
-    None
-  }
+<li><p>包的感觉类似这样的感觉 例如函数中定义的是String 而你的 var a: String? 传入String要保证非空就必须一次解包操作如果这个时候值为空就crash</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">enum Optional&lt;T&gt; {
+Some(T)
+None
+}
 </code></pre></div></li>
+</ul></li>
 <li><p>闭包、oc的block折腾够了么……好吧这回终于有简单明了爽快的闭包了Orz</p>
 
 <ul>
-<li>一般定义</li>
-</ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  {
-    (arg1: Type, arg2: Type) -&gt; returnType in
-    closure content
-  }
-</code></pre></div>
-<ul>
-<li>sort Array</li>
-</ul>
-<div class="highlight"><pre><code class="language-text" data-lang="text">  var l: Array = [3, 4, 6, 1, 2]
-  sort(l, {
-    (i1: Int, i2: Int) -&gt; Bool in
-    return i1 &gt; i2
-    })
-  //嫌烦里面的type可以被推断出来所以可以省略
-  sort(l, {i1, i2 in return i1 &gt; i2})
-  //还可以更短= =
-  sort(l, { $0 &gt; $1})
-  //还他妈可以更短！= =
-  sort(l, &gt;)
-</code></pre></div>
-<ul>
-<li>注意一些循环引用的这些东西</li>
-<li>unowned 弱引用非空对象(不init 编译器还报错</li>
-<li>weak 弱引用可空的wrap过的对象就是那些加?的</li>
-<li>详情可见书245页</li>
+<li><p>一般定义</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">{
+(arg1: Type, arg2: Type) -&gt; returnType in
+closure content
+}
+</code></pre></div></li>
+<li><p>sort Array</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">var l: Array = [3, 4, 6, 1, 2]
+sort(l, {
+(i1: Int, i2: Int) -&gt; Bool in
+return i1 &gt; i2
+})
+//嫌烦里面的type可以被推断出来所以可以省略
+sort(l, {i1, i2 in return i1 &gt; i2})
+//还可以更短= =
+sort(l, { $0 &gt; $1})
+//还他妈可以更短！= =
+sort(l, &gt;)
+</code></pre></div></li>
+<li><p>注意一些循环引用的这些东西</p></li>
+<li><p>unowned 弱引用非空对象(不init 编译器还报错</p></li>
+<li><p>weak 弱引用可空的wrap过的对象就是那些加?的</p></li>
+<li><p>详情可见书245页</p></li>
 </ul></li>
 <li><p>setter getter willSet didSet</p>
 
@@ -526,7 +681,7 @@ john.residence?.address?.buildingIdentifier() {}
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -704,7 +859,7 @@ john.residence?.address?.buildingIdentifier() {}
 <h4>转换内容</h4>
 
 <ul>
-<li>导出mark down
+<li><p>导出mark down</p>
 
 <ul>
 <li><del>jekyll 有一个jekyll-import 的工具、不过中文支持的巨差无比</del></li>
@@ -713,105 +868,106 @@ john.residence?.address?.buildingIdentifier() {}
 <code>ruby
 ruby -r &quot;./wordpressdotcom.rb&quot; -e &quot;Jekyll::WordpressDotCom.process&quot;
 </code></li>
-<li>如果在wordpress中没有使用什么插件类似<strong>codebox</strong>这样的到这一步就导入成功了</li>
+<li>如果在wordpress中没有使用什么插件类似**codebox**这样的到这一步就导入成功了</li>
 <li>如果使用了一些奇怪的语法在html用插件解出来的格式就一塌糊涂了，比如我的所有的代码都是用codebox的……
 写了一段简单的脚本来处理html，基本思路都是文本解析到codebox的开始标签pre然后替换掉</li>
-</ul></li>
 </ul>
-<div class="highlight"><pre><code class="language-python" data-lang="python">    <span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;zhangxinzheng&#39;</span>
-    <span class="c"># -*- coding: utf-8 -*-</span>
-    <span class="kn">import</span> <span class="nn">sys</span>
-    <span class="kn">import</span> <span class="nn">re</span>
-    <span class="kn">import</span> <span class="nn">os</span>
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="n">targetName</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">,</span><span class="s">&quot;md&quot;</span><span class="p">)</span>
-        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r+&quot;</span><span class="p">)</span>
-        <span class="nb">str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
-        <span class="k">while</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">tempString</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
-            <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">startIndex</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span>
-            <span class="n">endIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-            <span class="n">realEnd</span> <span class="o">=</span> <span class="n">startIndex</span>
-            <span class="n">leftCount</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">rightCount</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">startIndex</span><span class="p">,</span> <span class="n">endIndex</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
-                    <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
-                    <span class="n">leftCount</span> <span class="o">+=</span><span class="mi">1</span>
-                <span class="k">if</span> <span class="n">isContent</span><span class="p">:</span>
-                    <span class="n">tempString</span><span class="o">+=</span><span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-                <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
-                    <span class="n">isContent</span> <span class="o">=</span> <span class="bp">True</span>
-                    <span class="n">rightCount</span> <span class="o">+=</span><span class="mi">1</span>
-                    <span class="n">realEnd</span> <span class="o">=</span> <span class="n">j</span>
-                <span class="k">if</span> <span class="n">leftCount</span> <span class="o">==</span> <span class="n">rightCount</span><span class="p">:</span>
-                    <span class="k">break</span>
-            <span class="nb">str</span><span class="o">+=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
-            <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">[</span><span class="n">startIndex</span><span class="p">:</span><span class="n">realEnd</span><span class="p">],</span> <span class="n">tempString</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;zhangxinzheng&#39;</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">targetName</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">,</span><span class="s">&quot;md&quot;</span><span class="p">)</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r+&quot;</span><span class="p">)</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
+    <span class="k">while</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">tempString</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">startIndex</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span>
+        <span class="n">endIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">realEnd</span> <span class="o">=</span> <span class="n">startIndex</span>
+        <span class="n">leftCount</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">rightCount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">startIndex</span><span class="p">,</span> <span class="n">endIndex</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
+                <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">leftCount</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="n">isContent</span><span class="p">:</span>
+                <span class="n">tempString</span><span class="o">+=</span><span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+                <span class="n">isContent</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">rightCount</span> <span class="o">+=</span><span class="mi">1</span>
+                <span class="n">realEnd</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">if</span> <span class="n">leftCount</span> <span class="o">==</span> <span class="n">rightCount</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="nb">str</span><span class="o">+=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">[</span><span class="n">startIndex</span><span class="p">:</span><span class="n">realEnd</span><span class="p">],</span> <span class="n">tempString</span><span class="p">)</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetName</span><span class="p">,</span> <span class="s">&quot;w+&quot;</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetName</span><span class="p">,</span> <span class="s">&quot;w+&quot;</span><span class="p">)</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
-            <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</code></pre></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
 <h4>注意事项</h4>
 
 <ol>
-<li>中文路径在github上跑起来没问题，但是本地调试时会报错</li>
-</ol>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby">    <span class="sx">% LANG=&quot;en_US.UTF-8&quot; </span><span class="no">LC_ALL</span><span class="o">=</span><span class="s2">&quot;en_US.UTF-8&quot;</span> <span class="n">be</span> <span class="n">jekyll</span> <span class="n">build</span> <span class="o">--</span><span class="n">trace</span>
-    <span class="no">Configuration</span> <span class="ss">file</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_config</span><span class="o">.</span><span class="n">yml</span>
-                <span class="ss">Source</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span>
-           <span class="ss">Destination</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_site</span>
-          <span class="no">Generating</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-    <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">121</span><span class="ss">:in</span> <span class="sb">`gsub!&#39;: invalid byte sequence in US-ASCII (ArgumentError)</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `</span><span class="n">sanitized_path</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`block in new_files&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `</span><span class="n">block</span> <span class="p">(</span><span class="mi">2</span> <span class="n">levels</span><span class="p">)</span> <span class="k">in</span> <span class="n">each_site_file</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">419</span><span class="ss">:in</span> <span class="sb">`block in each_site_file&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `</span><span class="n">each</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`new_files&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `</span><span class="n">obsolete_files</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">255</span><span class="ss">:in</span> <span class="sb">`cleanup&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `</span><span class="n">process</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">46</span><span class="ss">:in</span> <span class="sb">`build&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `</span><span class="n">process</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`call&#39;</span>
-<span class="sb">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `</span><span class="n">block</span> <span class="k">in</span> <span class="n">execute</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`execute&#39;</span>
-<span class="sb">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `</span><span class="n">go</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">jekyll</span><span class="p">:</span><span class="mi">18</span><span class="ss">:in</span> <span class="sb">`&lt;top (required)&gt;&#39;</span>
-<span class="sb">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `</span><span class="nb">load</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `&lt;main&gt;&#39;</span>
-    <span class="sb">```</span>
-<span class="sb">  * 详见这个&lt;https://github.com/jekyll/jekyll/issues/2379&gt; 修改了报错那行为</span>
-<span class="sb">  ```</span><span class="n">ruby</span>
-    <span class="n">clean_path</span><span class="o">.</span><span class="n">force_encoding</span><span class="p">(</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub!</span><span class="p">(</span><span class="sr">/\A\w\:\//</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<li><p>中文路径在github上跑起来没问题，但是本地调试时会报错</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="sx">% LANG=&quot;en_US.UTF-8&quot; </span><span class="no">LC_ALL</span><span class="o">=</span><span class="s2">&quot;en_US.UTF-8&quot;</span> <span class="n">be</span> <span class="n">jekyll</span> <span class="n">build</span> <span class="o">--</span><span class="n">trace</span>
+<span class="no">Configuration</span> <span class="ss">file</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_config</span><span class="o">.</span><span class="n">yml</span>
+            <span class="ss">Source</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span>
+       <span class="ss">Destination</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_site</span>
+      <span class="no">Generating</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">121</span><span class="ss">:in</span> <span class="sb">`gsub!&#39;: invalid byte sequence in US-ASCII (ArgumentError)</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `</span><span class="n">sanitized_path</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`block in new_files&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `</span><span class="n">block</span> <span class="p">(</span><span class="mi">2</span> <span class="n">levels</span><span class="p">)</span> <span class="k">in</span> <span class="n">each_site_file</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">419</span><span class="ss">:in</span> <span class="sb">`block in each_site_file&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `</span><span class="n">each</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`new_files&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `</span><span class="n">obsolete_files</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">255</span><span class="ss">:in</span> <span class="sb">`cleanup&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `</span><span class="n">process</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">46</span><span class="ss">:in</span> <span class="sb">`build&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `</span><span class="n">process</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`call&#39;</span>
+<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `</span><span class="n">block</span> <span class="k">in</span> <span class="n">execute</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`execute&#39;</span>
+<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `</span><span class="n">go</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">jekyll</span><span class="p">:</span><span class="mi">18</span><span class="ss">:in</span> <span class="sb">`&lt;top (required)&gt;&#39;</span>
+<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `</span><span class="nb">load</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `&lt;main&gt;&#39;</span>
 </code></pre></div>
-<ol>
-<li>使用里面的代码高亮很不爽可以参见gfm使用他的语法并在config中调整配置
+<ul>
+<li>详见这个<a href="https://github.com/jekyll/jekyll/issues/2379">https://github.com/jekyll/jekyll/issues/2379</a> 修改了报错那行为
+<code>ruby
+clean_path.force_encoding(&#39;UTF-8&#39;).gsub!(/\A\w\:\//, &#39;/&#39;)
+</code></li>
+</ul></li>
+<li><p>使用里面的代码高亮很不爽可以参见gfm使用他的语法并在config中调整配置
 <code>
 markdown: redcarpet
 redcarpet:
   extensions: [&quot;no_intra_emphasis&quot;, &quot;fenced_code_blocks&quot;, &quot;autolink&quot;, &quot;strikethrough&quot;, &quot;superscript&quot;]
-</code></li>
-<li>代码高亮开启了pygments后的css也需要自己配置来写
+</code></p></li>
+<li><p>代码高亮开启了pygments后的css也需要自己配置来写</p>
 
 <ul>
 <li>可以参加<a href="https://github.com/richleland/pygments-css">https://github.com/richleland/pygments-css</a></li>
@@ -830,7 +986,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -864,7 +1020,7 @@ redcarpet:
 
 
 <div class="page-header">
-  <h3><a href="/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation%20bar%E7%9A%84%E9%81%AE%E7%BD%A9">tableview上滑动时的navigation bar的遮罩 </a></h3>
+  <h3><a href="/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation+bar%E7%9A%84%E9%81%AE%E7%BD%A9">tableview上滑动时的navigation bar的遮罩 </a></h3>
   <div class="date">
     <span>06 March 2014</span>
   </div>
@@ -876,7 +1032,7 @@ redcarpet:
       <p>这个需求本来并不复杂、烦人的几乎这端遮罩代码要复用到每个tablview所在的场景、非常的不合适、直到看到了前辈写的一段hack到暴的代码才深知道所在的差距……
 他大致的思路就是给scrollview拓展了一个category、利用ios的运行时的特性、在他load的时候直接把他的setContenOffset给替换掉成了自己的函数、用他来控制公共的navigationbar
 代码如下</p>
-<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="k">@interface</span> <span class="nc">UIScrollView</span> <span class="nl">(ContentOffset)</span>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">@interface</span> <span class="nc">UIScrollView</span> <span class="nl">(ContentOffset)</span>
 
 <span class="k">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">load</span><span class="p">;</span> <span class="c1">//复写掉load方法</span>
 
@@ -911,7 +1067,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -951,7 +1107,7 @@ redcarpet:
   <div class="span12">
     <div class="content">
       <p>同理可以用来处理些别的资源文件</p>
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<div class="highlight"><pre><code class="bash language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
 <span class="nv">PROJ</span><span class="o">=</span><span class="sb">`</span>find . -name <span class="s1">&#39;*.xib&#39;</span> -o -name <span class="s1">&#39;*.[mh]&#39;</span><span class="sb">`</span>
 
 <span class="k">for </span>png in <span class="sb">`</span>find . -name <span class="s1">&#39;*.png&#39;</span> <span class="p">|</span> grep -v @2x<span class="sb">`</span> <span class="c">#所要处理的资源文件类型</span>
@@ -982,7 +1138,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -1025,7 +1181,7 @@ redcarpet:
 -------------------------------------------万恶的分割线-----------------------------------------------<br />
 然后就说下解决办法吧……其实想想是会吐血的，仔细看看他的.h里面终于发现了还有这个一个东西……至少他是不会变的……<br />
 所以我们既然找到了有不变的东西那么就终于可以有解决办法了……直接把要传的东西转成json靠这个东西传简直轻松又愉快……</p>
-<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="cm">/*</span>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="cm">/*</span>
 <span class="cm"> * The taskDescription property is available for the developer to</span>
 <span class="cm"> * provide a descriptive label for the task.</span>
 <span class="cm"> */</span>
@@ -1043,7 +1199,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -1085,7 +1241,7 @@ redcarpet:
       <p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg" alt="" title="700BAD52-7C3F-4500-8B52-69C13291528D" width="314" height="470" class="alignnone size-full wp-image-397" /></a>
 大致效果就是3个元素根据不同时间间隔开始沿着圆进行无限追逐，每次一圈后进行一个小停顿然后继续、比较类似wp7的那种小的loading、主要用到的还是CAKeyframeAnimation其中为了让无限循环中加上停顿用了个小trick
 </p>
-<div class="highlight"><pre><code class="language-objective-c" data-lang="objective-c"><span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
 <span class="cp">#define PI 3.14159265358979323846</span>
 <span class="k">@interface</span> <span class="nc">canvas</span> <span class="p">()</span>
 <span class="p">{</span>
@@ -1207,89 +1363,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2013/07/29/ios%E6%9B%BF%E6%8D%A2%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%B3%95">ios替换系统方法 </a></h3>
-  <div class="date">
-    <span>29 July 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><p>作为动态语言的oc我以前一直忽视了他的动态特性最近一个分享会才突然就有种飘逸的感觉<br />
-主要使用的就是oc的runtime特性<br /></p>
-
-<h1>import &quot;objc/runtime.h&quot;<br /></h1>
-
-<p>引入这个头文件之后才发现动态远远不止我以前想的那么简单引入这个头文件后可以发现者真是海量的api能让代码写的真是自己都不认识都不过分<br />
-然后就写一个例子来试验了<br />
-比如 NSArray 里面的objetAtIndex 方法我想这个方法真是被无数人深恶痛绝……多少crash都是从这里搞出来的啊那么其实通过runtime完全可以重写这个方法、当然绝对不仅仅是简单的给他封一层那么简单<br />
-首先你先需要找到这个方法是在哪儿的、最简单的方法就是故意越界让他报次错看看嘛Terminating app due to uncaught exception &#39;NSRangeException&#39;, reason: &#39;*** -[__NSArrayI objectAtIndex:]<br />
-看到了吧就是 _NSArrayI里<br />
-然后需要做的就是很简单了</p>
-
-<p>Method method_ObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;_<em>NSArrayI&quot;),@selector(objectAtIndex:));
-Method method_SafeObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;NSArray&quot;),@selector(safeObjectAtIndex:));//这个方法就是一会自己写的拓展进nsarray中的
-method_exchangeImplementations(method</em>ObjectAtIndex, method_SafeObjectAtIndex);//然后交换就是这么简单 不过这个危险性也是极大的比如整个系统所有的调用这个原生api的调用就全都走到你这来了、必须必须要确保正确性……</p>
-
-<p>//然后就简单的加个category的实现就好了
-@implementation NSArray(SafeExtenstion)
-- (id)safeObjectAtIndex:(NSUInteger)index
-{
-    NSLog(@&quot;wake %@--%@&quot;,NSStringFromSelector(_cmd),self);
-    if (self.count
-    return [self safeObjectAtIndex:index];
-}
-@end</p>
-
-<p>这样就可以自己去复写掉一些认为系统实现的很傻逼的方法了吧、runtime的适用场景我想还远远不止这些呢</p>
-
-<blockquote>
-</blockquote>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -1355,7 +1429,7 @@ method_exchangeImplementations(method</em>ObjectAtIndex, method_SafeObjectAtInde
   
     <a class="next" href="/page2">后页</a>
   
-  (共56篇)
+  (共57篇)
 </div>
 
         </div>

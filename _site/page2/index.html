@@ -107,6 +107,88 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2013/07/29/ios%E6%9B%BF%E6%8D%A2%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%B3%95">ios替换系统方法 </a></h3>
+  <div class="date">
+    <span>29 July 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>作为动态语言的oc我以前一直忽视了他的动态特性最近一个分享会才突然就有种飘逸的感觉<br />
+主要使用的就是oc的runtime特性<br /></p>
+
+<h1>import &quot;objc/runtime.h&quot;<br /></h1>
+
+<p>引入这个头文件之后才发现动态远远不止我以前想的那么简单引入这个头文件后可以发现者真是海量的api能让代码写的真是自己都不认识都不过分<br />
+然后就写一个例子来试验了<br />
+比如 NSArray 里面的objetAtIndex 方法我想这个方法真是被无数人深恶痛绝……多少crash都是从这里搞出来的啊那么其实通过runtime完全可以重写这个方法、当然绝对不仅仅是简单的给他封一层那么简单<br />
+首先你先需要找到这个方法是在哪儿的、最简单的方法就是故意越界让他报次错看看嘛Terminating app due to uncaught exception &#39;NSRangeException&#39;, reason: &#39;*** -[__NSArrayI objectAtIndex:]<br />
+看到了吧就是 _NSArrayI里<br />
+然后需要做的就是很简单了</p>
+
+<p>Method method_ObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;__NSArrayI&quot;),@selector(objectAtIndex:));
+Method method_SafeObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;NSArray&quot;),@selector(safeObjectAtIndex:));//这个方法就是一会自己写的拓展进nsarray中的
+method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);//然后交换就是这么简单 不过这个危险性也是极大的比如整个系统所有的调用这个原生api的调用就全都走到你这来了、必须必须要确保正确性……</p>
+
+<p>//然后就简单的加个category的实现就好了
+@implementation NSArray(SafeExtenstion)
+- (id)safeObjectAtIndex:(NSUInteger)index
+{
+    NSLog(@&quot;wake %@--%@&quot;,NSStringFromSelector(_cmd),self);
+    if (self.count
+    return [self safeObjectAtIndex:index];
+}
+@end</p>
+
+<p>这样就可以自己去复写掉一些认为系统实现的很傻逼的方法了吧、runtime的适用场景我想还远远不止这些呢</p>
+
+<blockquote>
+</blockquote>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>45</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2013/06/24/%E5%AE%9A%E5%88%B6-uipagecontrol">定制 UIPageControl </a></h3>
   <div class="date">
     <span>24 June 2013</span>
@@ -119,7 +201,7 @@
       <p><p>pagecontrol 就是iphone上面比如scrollview翻图片时候下面那个小点点<br />
 其实我个人觉得还是挺美观的……可是需求就是要自己的图片替掉……然后死人苹果又不给api、所以也就只能自己复写实现了<br />
 先说下ios7之前 那些点点的实现非常简单 就是UIPageControl.subviews 就是一个个点的UIImageView 所以只需简单的替换掉就好了代码如下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">@property(nonatomic,strong)UIImage *_activeImage;
+<div class="highlight"><pre><code class="text language-text" data-lang="text">@property(nonatomic,strong)UIImage *_activeImage;
 @property(nonatomic,strong)UIImage *_inactiveImage;
 //在init的时候把你自己定义的两张图片搞进去
 - (void)updateDots
@@ -275,7 +357,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -318,7 +400,7 @@
 http://v.163.com/movie/2010/12/L/4/M6UTT5U0I_M6V2U1HL4.html</p>
 
 <p>实现了求出所有的lcs</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">import copy
+<div class="highlight"><pre><code class="text language-text" data-lang="text">import copy
 import sys
 #stringa=&quot;abcbdab&quot;
 #stringb=&quot;bdcaba&quot;
@@ -383,7 +465,7 @@ else:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -423,7 +505,7 @@ else:
   <div class="span12">
     <div class="content">
       <p><p>看了<a href="http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html?utm_source=feedly">字符串匹配的Boyer-Moore算法</a>后觉得很有用就写一个实现了一下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">def badcharrule(ori,sear):
+<div class="highlight"><pre><code class="text language-text" data-lang="text">def badcharrule(ori,sear):
     if len(ori)!=len(sear):
         print &quot;error&quot;
     else:
@@ -505,7 +587,7 @@ print &quot;search over&quot;
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -549,7 +631,7 @@ print &quot;search over&quot;
 http://v.163.com/special/opencourse/algorithms.html</p>
 
 <p><p>然后把代码贴上</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">import sys
+<div class="highlight"><pre><code class="text language-text" data-lang="text">import sys
 import random
 mineast=-sys.maxint
 class Node(object):
@@ -706,7 +788,7 @@ del(sk)
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -762,7 +844,7 @@ del(sk)
 <li><a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages">绑定域名</a></li>
 </ol>
 
-<h4><a href="http://jekyllbootstrap.com/">安装<del>jb</del></a></h4>
+<h4><a href="http://jekyllbootstrap.com/">安装~~jb~~</a></h4>
 
 <ol>
 <li>安装jekyll</li>
@@ -801,7 +883,7 @@ del(sk)
 <code>ruby
 ruby -r &quot;./wordpressdotcom.rb&quot; -e &quot;Jekyll::WordpressDotCom.process&quot;
 </code></li>
-<li>如果在wordpress中没有使用什么插件类似<strong>codebox</strong>这样的到这一步就导入成功了</li>
+<li>如果在wordpress中没有使用什么插件类似**codebox**这样的到这一步就导入成功了</li>
 <li>如果使用了一些奇怪的语法在html用插件解出来的格式就一塌糊涂了，比如我的所有的代码都是用codebox的……
 写了一段简单的脚本来处理html，基本思路都是文本解析到codebox的开始标签pre然后替换掉
 <code>python
@@ -847,7 +929,7 @@ fd.close()
 os.remove(filename)</p></li>
 </ul>
 
-<p>if <strong>name</strong> == &quot;<strong>main</strong>&quot;:
+<p>if <strong>name</strong> == &quot;__main__&quot;:
     for i in sys.argv:
         f(i)
   ```</p>
@@ -903,7 +985,7 @@ os.remove(filename)</p></li>
 --------------------------------------------------------------------------<br />
 把这个感觉带回给我的恰恰就是这么一道题、这道题真的非常非常简单、可是给我带来了不小的顿悟。原题大致是先图里求个最短路径然后判断路径中是否有可以组成三角形的存在<br />
 也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n<sup>3)的暴力</sup></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">for(int a=0; a
+<div class="highlight"><pre><code class="text language-text" data-lang="text">for(int a=0; a
 拿脚趾头想三次方肯定要TL、接着就是开始改进、首先想到了还是先对这些有意义的数组进行排序。然后使用自然而然的递增数组自己的优势那就是最小的两边之差一定是存在与相邻的数字里、注意这里就利用到了数字这个自身拥有美丽的属性的东西的属性。然后差不多代码是这样的
 
 for (int a = 0; a  (pval[j+1]-pval[j]))
@@ -943,7 +1025,7 @@ for(int i=0;i
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -989,11 +1071,11 @@ for(int i=0;i
 
 <p><div class="coding-problem">     <br />
     <p>时间限制: 1000ms    内存限制: 1024MB</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;p /&gt;&lt;h3&gt;描述&lt;/h3&gt;&lt;p&gt;有一个方格矩阵，矩阵边界在无穷远处。我们做如下假设：&lt;br /&gt;a.    每走一步时，只能从当前方格移动一格，走到某个相邻的方格上；&lt;br /&gt;b.    走过的格子立即塌陷无法再走第二次；&lt;br /&gt;c.    只能向北、东、西三个方向走；&lt;br /&gt;请问：如果允许在方格矩阵上走n步，共有多少种不同的方案。2种走法只要有一步不一样，即被认为是不同的方案。&lt;/p&gt;&lt;h3&gt;输入&lt;/h3&gt;&lt;p&gt;允许在方格上行走的步数n&lt;/p&gt;&lt;h3&gt;输出&lt;/h3&gt;&lt;p&gt;计算出的方案数量&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;对于小数据1 &amp;lt;= n &amp;lt;= 20; 对于大数据1 &amp;lt;= n &amp;lt;= 100.&lt;p&gt;&lt;br /&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;p /&gt;&lt;h3&gt;描述&lt;/h3&gt;&lt;p&gt;有一个方格矩阵，矩阵边界在无穷远处。我们做如下假设：&lt;br /&gt;a.    每走一步时，只能从当前方格移动一格，走到某个相邻的方格上；&lt;br /&gt;b.    走过的格子立即塌陷无法再走第二次；&lt;br /&gt;c.    只能向北、东、西三个方向走；&lt;br /&gt;请问：如果允许在方格矩阵上走n步，共有多少种不同的方案。2种走法只要有一步不一样，即被认为是不同的方案。&lt;/p&gt;&lt;h3&gt;输入&lt;/h3&gt;&lt;p&gt;允许在方格上行走的步数n&lt;/p&gt;&lt;h3&gt;输出&lt;/h3&gt;&lt;p&gt;计算出的方案数量&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;对于小数据1 &amp;lt;= n &amp;lt;= 20; 对于大数据1 &amp;lt;= n &amp;lt;= 100.&lt;p&gt;&lt;br /&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;
 &lt;dl class=&quot;content&quot;&gt;
     &lt;dt&gt;样例输入&lt;/dt&gt;
     &lt;dd&gt;
-</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">2
+</code></pre></div><div class="highlight"><pre><code class="text language-text" data-lang="text">2
         样例输出
         7
 
@@ -1027,7 +1109,7 @@ int main(){
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -1068,7 +1150,7 @@ int main(){
     <div class="content">
       <p><p>又是无意看到群里在讨论东西看到个睡眠排序……觉得好玩的就分享分享<br />
 代码如下（简单的过分 想说的话都写注释里了)</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#!/bin/bash
 function f() {
     sleep &quot;$1&quot;
     echo &quot;$1&quot;  
@@ -1096,7 +1178,7 @@ wait  #主进程等到全部子进程结束后返回结束
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -1137,7 +1219,7 @@ wait  #主进程等到全部子进程结束后返回结束
     <div class="content">
       <p><p>今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz<br />
 代码如下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">#include
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#include
 using namespace std;
 class Student {
 
@@ -1214,61 +1296,7 @@ g++ -o test -fno-elide-constructors test.cpp
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/life/2013/03/26/%E6%B3%A8%E5%86%8C%E4%BA%86-ask-fm">注册了 ask.fm </a></h3>
-  <div class="date">
-    <span>26 March 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><a href="http://ask.fm/ZhangXinZheng" target="_blank">http://ask.fm/ZhangXinZheng</a>
-一个人自问自答好无聊、求骚扰</p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#life-ref">
-    		life <span>5</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -1336,7 +1364,7 @@ g++ -o test -fno-elide-constructors test.cpp
   
     <a class="next" href="/page3">后页</a>
   
-  (共56篇)
+  (共57篇)
 </div>
 
         </div>

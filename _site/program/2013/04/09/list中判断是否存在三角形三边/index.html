@@ -119,7 +119,7 @@
 --------------------------------------------------------------------------<br />
 把这个感觉带回给我的恰恰就是这么一道题、这道题真的非常非常简单、可是给我带来了不小的顿悟。原题大致是先图里求个最短路径然后判断路径中是否有可以组成三角形的存在<br />
 也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n<sup>3)的暴力</sup></p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">for(int a=0; a
+<div class="highlight"><pre><code class="text language-text" data-lang="text">for(int a=0; a
 拿脚趾头想三次方肯定要TL、接着就是开始改进、首先想到了还是先对这些有意义的数组进行排序。然后使用自然而然的递增数组自己的优势那就是最小的两边之差一定是存在与相邻的数字里、注意这里就利用到了数字这个自身拥有美丽的属性的东西的属性。然后差不多代码是这样的
 
 for (int a = 0; a  (pval[j+1]-pval[j]))
@@ -159,7 +159,7 @@ for(int i=0;i
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   

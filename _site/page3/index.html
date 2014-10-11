@@ -107,6 +107,60 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/life/2013/03/26/%E6%B3%A8%E5%86%8C%E4%BA%86-ask-fm">注册了 ask.fm </a></h3>
+  <div class="date">
+    <span>26 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><a href="http://ask.fm/ZhangXinZheng" target="_blank">http://ask.fm/ZhangXinZheng</a>
+一个人自问自答好无聊、求骚扰</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#life-ref">
+    		life <span>5</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2013/03/20/arp%E6%AC%BA%E9%AA%97%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB%E7%9A%84%E5%AE%9E%E7%8E%B0%E3%80%81arp%E5%8C%85%E8%A7%A3%E6%9E%90">arp欺骗中间人攻击的实现、arp包解析 </a></h3>
   <div class="date">
     <span>20 March 2013</span>
@@ -151,7 +205,7 @@ http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html</p>
     char error[PCAP_ERRBUF_SIZE];
     u_char packet[60];
     int i;</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">/* Check the validity of the command line */
+<div class="highlight"><pre><code class="text language-text" data-lang="text">/* Check the validity of the command line */
 if (argc != 2)
 {
     printf(&quot;usage: %s inerface&quot;, argv[0]);
@@ -253,7 +307,7 @@ return 0;
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -339,7 +393,7 @@ print l</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -413,7 +467,7 @@ url_short,$account['content']);
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -471,7 +525,7 @@ ios下的goagent各种教程到处都是、可是只可惜共军太狡猾、gfw�
 5.配置goagent中的appid、以及更改为google_hk(若用google_cn请把hosts中的域名更改为响应的ip地址、isp不提供解析)配置当前网络下的pac 地址在<a href="file://localhost/stash/Applications/MobileSafari.app/8087.pac">file://localhost/stash/Applications/MobileSafari.app/8087.pac</a> 在当前wifi里的http proxy中填写<br />
 以上你已经在http情况下翻过去了<br />
 6.现在要安装ca、这个正常看起来简单暴的事情、由于你现在根本在没翻的前提下变的异常困难不过你可以发现goagent-local里其实已经有了很多ca了、把</var/mobile/goagent-local/certs/apis.google.com.crt> 拷贝出来（如果本机可以翻墙可以直接把<a href="https://goagent.googlecode.com/files/CA.crt">https://goagent.googlecode.com/files/CA.crt</a>下载下来用并跳到8） 然后如果自己有python环境就用传说中两行的web服务器把ca给共享出去</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">import SimpleHTTPServer
+<div class="highlight"><pre><code class="text language-text" data-lang="text">import SimpleHTTPServer
 SimpleHTTPServer.test()
 
 7.在safari访问这个然后下一步安装、到这就可以轻易的safari访问 &lt;https://goagent.googlecode.com/files/CA.crt&gt; 装他的ca了
@@ -492,7 +546,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -563,7 +617,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -606,7 +660,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
 然后下面讲下怎么除掉掉这些异常其实很简单<br />
 再构建的时候对urllib2.HTTPCookieProcessor进行复写、把里面的异常的地方给复写掉<br />
 代码如下</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">class NoExceptionCookieProcesser(urllib2.HTTPCookieProcessor):
+<div class="highlight"><pre><code class="text language-text" data-lang="text">class NoExceptionCookieProcesser(urllib2.HTTPCookieProcessor):
     def http_error_500(self, req, fp, code, msg, hdrs):
         return fp
 
@@ -631,7 +685,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -672,7 +726,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
     <div class="content">
       <p><p>周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的<br />
 首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">- (void)viewDidLoad
+<div class="highlight"><pre><code class="text language-text" data-lang="text">- (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -729,7 +783,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -834,7 +888,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 <p>然后解释下里面分别怎么写</p>
 
 <p><p>首先是 StartupParameters.plist这个xml里面的内容大致是</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
 &amp;lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&amp;gt;
 &amp;lt;plist version=&quot;1.0&quot;&amp;gt;
 &amp;lt;dict&amp;gt;
@@ -907,92 +961,7 @@ ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/12/07/%E7%9B%B8%E4%BC%BC%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2python%E5%AE%9E%E7%8E%B0">相似图片搜索python实现 </a></h3>
-  <div class="date">
-    <span>07 December 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><p>先贴原文<a href="http://blog.csdn.net/luohong722/article/details/7100058">http://blog.csdn.net/luohong722/article/details/7100058</a><br />
-其实这篇文章已经写的非常详细了、不过也作为巩固自己再梳理一遍<br />
-首先这个算法的流程简直简单的令人发指、导致我做的时候完全不觉得这真的可能搜索出什么东西来……<br />
-几步流程分别如下<br />
-1.压缩成8*8的小图<br />
-2.灰化<br />
-3.算均值二值化<br />
-4.生成64位标示码<br />
-5.比较标示码 越接近越相似<br />
-貌似好像应该是sift算法的简便吧（也不能简便成这样啊……<br />
----------------------------下面是程序主要逻辑一共就十几行--------------------------<br />
-主要用到了python的PIL库</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">from PIL import Image
-def picHash(im):
-    if not isinstance(im, Image.Image):
-        im = Image.open(im)
-    #平滑的压成8*8 并灰化
-    im = im.resize((8, 8), Image.ANTIALIAS).convert(&#39;L&#39;)
-    avg = reduce(lambda x, y: x + y, im.getdata()) / 64.0
-    return map(lambda i: 0 if i &amp;lt; avg else 1, im.getdata())
-
-def diffCount(h1,h2):
-    h=0
-    for i in range(64):
-       if h1[i]!=h2[i]:
-           h+=1
-    return h
-然后呢……然后没了……就是那么简单……最后发一下效果图
-图片样本20张
-最后搜出的近似度前5的左上为搜索原图
-
-效果还是非常不错的、样本里只有一张未被选出
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -1060,7 +1029,7 @@ def diffCount(h1,h2):
   
     <a class="next" href="/page4">后页</a>
   
-  (共56篇)
+  (共57篇)
 </div>
 
         </div>

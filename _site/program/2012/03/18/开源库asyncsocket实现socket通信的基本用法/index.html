@@ -138,7 +138,7 @@ NSData *data = [hel dataUsingEncoding:NSISOLatin1StringEncoding];
 [client connectToHost:@&quot;127.0.0.1&quot; onPort:51423 error:&amp;err];
 [client writeData:data withTimeout:-1 tag:0];
 - (void)onSocket:(AsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag{  </p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
+<div class="highlight"><pre><code class="text language-text" data-lang="text">NSString* aStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];  
 NSLog(@&quot;Hava received datas is :%@&quot;,aStr);  
 [aStr release];  
 [client readDataWithTimeout:-1 tag:0];  
@@ -197,7 +197,7 @@ while 1:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   

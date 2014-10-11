@@ -10,12 +10,13 @@ http://snorlaxzxz.com/page4/index.html
 http://snorlaxzxz.com/page5/index.html
 http://snorlaxzxz.com/page6/index.html
 
-http://snorlaxzxz.com/program/2014/06/26/software-list
+http://snorlaxzxz.com/program/2014/10/11/design-pattern-0
+http://snorlaxzxz.com/program/2014/10/09/clean-git-history
 http://snorlaxzxz.com/gossip/2014/06/14/four-years-in-dut
 http://snorlaxzxz.com/program/2014/06/05/begin-with-swift
 http://snorlaxzxz.com/gossip/2014/05/30/clearance
 http://snorlaxzxz.com/program/2014/05/27/migrate-blog-from-wp-to-gp
-http://snorlaxzxz.com/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation%20bar%E7%9A%84%E9%81%AE%E7%BD%A9
+http://snorlaxzxz.com/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation+bar%E7%9A%84%E9%81%AE%E7%BD%A9
 http://snorlaxzxz.com/program/2014/03/05/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4
 http://snorlaxzxz.com/program/2014/02/03/%E5%85%B3%E4%BA%8Ensurlsessiondownloadtask%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92
 http://snorlaxzxz.com/program/2013/07/30/%E5%9C%86%E5%BD%A2%E5%B8%83%E5%B1%80%E7%9A%84icon%E9%A1%B5%E9%9D%A2-loading%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C

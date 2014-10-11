@@ -127,9 +127,9 @@
 看到了吧就是 _NSArrayI里<br />
 然后需要做的就是很简单了</p>
 
-<p>Method method_ObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;_<em>NSArrayI&quot;),@selector(objectAtIndex:));
+<p>Method method_ObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;__NSArrayI&quot;),@selector(objectAtIndex:));
 Method method_SafeObjectAtIndex = class_getInstanceMethod(NSClassFromString(@&quot;NSArray&quot;),@selector(safeObjectAtIndex:));//这个方法就是一会自己写的拓展进nsarray中的
-method_exchangeImplementations(method</em>ObjectAtIndex, method_SafeObjectAtIndex);//然后交换就是这么简单 不过这个危险性也是极大的比如整个系统所有的调用这个原生api的调用就全都走到你这来了、必须必须要确保正确性……</p>
+method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);//然后交换就是这么简单 不过这个危险性也是极大的比如整个系统所有的调用这个原生api的调用就全都走到你这来了、必须必须要确保正确性……</p>
 
 <p>//然后就简单的加个category的实现就好了
 @implementation NSArray(SafeExtenstion)
@@ -158,7 +158,7 @@ method_exchangeImplementations(method</em>ObjectAtIndex, method_SafeObjectAtInde
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   

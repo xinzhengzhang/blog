@@ -164,7 +164,7 @@
 <h4>转换内容</h4>
 
 <ul>
-<li>导出mark down
+<li><p>导出mark down</p>
 
 <ul>
 <li><del>jekyll 有一个jekyll-import 的工具、不过中文支持的巨差无比</del></li>
@@ -173,105 +173,106 @@
 <code>ruby
 ruby -r &quot;./wordpressdotcom.rb&quot; -e &quot;Jekyll::WordpressDotCom.process&quot;
 </code></li>
-<li>如果在wordpress中没有使用什么插件类似<strong>codebox</strong>这样的到这一步就导入成功了</li>
+<li>如果在wordpress中没有使用什么插件类似**codebox**这样的到这一步就导入成功了</li>
 <li>如果使用了一些奇怪的语法在html用插件解出来的格式就一塌糊涂了，比如我的所有的代码都是用codebox的……
 写了一段简单的脚本来处理html，基本思路都是文本解析到codebox的开始标签pre然后替换掉</li>
-</ul></li>
 </ul>
-<div class="highlight"><pre><code class="language-python" data-lang="python">    <span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;zhangxinzheng&#39;</span>
-    <span class="c"># -*- coding: utf-8 -*-</span>
-    <span class="kn">import</span> <span class="nn">sys</span>
-    <span class="kn">import</span> <span class="nn">re</span>
-    <span class="kn">import</span> <span class="nn">os</span>
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="n">targetName</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">,</span><span class="s">&quot;md&quot;</span><span class="p">)</span>
-        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r+&quot;</span><span class="p">)</span>
-        <span class="nb">str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
-        <span class="k">while</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">tempString</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
-            <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">startIndex</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span>
-            <span class="n">endIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-            <span class="n">realEnd</span> <span class="o">=</span> <span class="n">startIndex</span>
-            <span class="n">leftCount</span> <span class="o">=</span> <span class="mi">1</span>
-            <span class="n">rightCount</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">startIndex</span><span class="p">,</span> <span class="n">endIndex</span><span class="p">):</span>
-                <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
-                    <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
-                    <span class="n">leftCount</span> <span class="o">+=</span><span class="mi">1</span>
-                <span class="k">if</span> <span class="n">isContent</span><span class="p">:</span>
-                    <span class="n">tempString</span><span class="o">+=</span><span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-                <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
-                    <span class="n">isContent</span> <span class="o">=</span> <span class="bp">True</span>
-                    <span class="n">rightCount</span> <span class="o">+=</span><span class="mi">1</span>
-                    <span class="n">realEnd</span> <span class="o">=</span> <span class="n">j</span>
-                <span class="k">if</span> <span class="n">leftCount</span> <span class="o">==</span> <span class="n">rightCount</span><span class="p">:</span>
-                    <span class="k">break</span>
-            <span class="nb">str</span><span class="o">+=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
-            <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">[</span><span class="n">startIndex</span><span class="p">:</span><span class="n">realEnd</span><span class="p">],</span> <span class="n">tempString</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;zhangxinzheng&#39;</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">targetName</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">,</span><span class="s">&quot;md&quot;</span><span class="p">)</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r+&quot;</span><span class="p">)</span>
+    <span class="nb">str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
+    <span class="k">while</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="n">tempString</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">startIndex</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span>
+        <span class="n">endIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">realEnd</span> <span class="o">=</span> <span class="n">startIndex</span>
+        <span class="n">leftCount</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">rightCount</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">startIndex</span><span class="p">,</span> <span class="n">endIndex</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
+                <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">leftCount</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="k">if</span> <span class="n">isContent</span><span class="p">:</span>
+                <span class="n">tempString</span><span class="o">+=</span><span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+                <span class="n">isContent</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">rightCount</span> <span class="o">+=</span><span class="mi">1</span>
+                <span class="n">realEnd</span> <span class="o">=</span> <span class="n">j</span>
+            <span class="k">if</span> <span class="n">leftCount</span> <span class="o">==</span> <span class="n">rightCount</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="nb">str</span><span class="o">+=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">[</span><span class="n">startIndex</span><span class="p">:</span><span class="n">realEnd</span><span class="p">],</span> <span class="n">tempString</span><span class="p">)</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-        <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetName</span><span class="p">,</span> <span class="s">&quot;w+&quot;</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetName</span><span class="p">,</span> <span class="s">&quot;w+&quot;</span><span class="p">)</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
-            <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</code></pre></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+        <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
 <h4>注意事项</h4>
 
 <ol>
-<li>中文路径在github上跑起来没问题，但是本地调试时会报错</li>
-</ol>
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby">    <span class="sx">% LANG=&quot;en_US.UTF-8&quot; </span><span class="no">LC_ALL</span><span class="o">=</span><span class="s2">&quot;en_US.UTF-8&quot;</span> <span class="n">be</span> <span class="n">jekyll</span> <span class="n">build</span> <span class="o">--</span><span class="n">trace</span>
-    <span class="no">Configuration</span> <span class="ss">file</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_config</span><span class="o">.</span><span class="n">yml</span>
-                <span class="ss">Source</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span>
-           <span class="ss">Destination</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_site</span>
-          <span class="no">Generating</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-    <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">121</span><span class="ss">:in</span> <span class="sb">`gsub!&#39;: invalid byte sequence in US-ASCII (ArgumentError)</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `</span><span class="n">sanitized_path</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`block in new_files&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `</span><span class="n">block</span> <span class="p">(</span><span class="mi">2</span> <span class="n">levels</span><span class="p">)</span> <span class="k">in</span> <span class="n">each_site_file</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">419</span><span class="ss">:in</span> <span class="sb">`block in each_site_file&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `</span><span class="n">each</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`new_files&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `</span><span class="n">obsolete_files</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">255</span><span class="ss">:in</span> <span class="sb">`cleanup&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `</span><span class="n">process</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">46</span><span class="ss">:in</span> <span class="sb">`build&#39;</span>
-<span class="sb">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `</span><span class="n">process</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`call&#39;</span>
-<span class="sb">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `</span><span class="n">block</span> <span class="k">in</span> <span class="n">execute</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`execute&#39;</span>
-<span class="sb">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `</span><span class="n">go</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program&#39;</span>
-        <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">jekyll</span><span class="p">:</span><span class="mi">18</span><span class="ss">:in</span> <span class="sb">`&lt;top (required)&gt;&#39;</span>
-<span class="sb">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `</span><span class="nb">load</span><span class="s1">&#39;</span>
-<span class="s1">        from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `&lt;main&gt;&#39;</span>
-    <span class="sb">```</span>
-<span class="sb">  * 详见这个&lt;https://github.com/jekyll/jekyll/issues/2379&gt; 修改了报错那行为</span>
-<span class="sb">  ```</span><span class="n">ruby</span>
-    <span class="n">clean_path</span><span class="o">.</span><span class="n">force_encoding</span><span class="p">(</span><span class="s1">&#39;UTF-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">gsub!</span><span class="p">(</span><span class="sr">/\A\w\:\//</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<li><p>中文路径在github上跑起来没问题，但是本地调试时会报错</p>
+<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="sx">% LANG=&quot;en_US.UTF-8&quot; </span><span class="no">LC_ALL</span><span class="o">=</span><span class="s2">&quot;en_US.UTF-8&quot;</span> <span class="n">be</span> <span class="n">jekyll</span> <span class="n">build</span> <span class="o">--</span><span class="n">trace</span>
+<span class="no">Configuration</span> <span class="ss">file</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_config</span><span class="o">.</span><span class="n">yml</span>
+            <span class="ss">Source</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span>
+       <span class="ss">Destination</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_site</span>
+      <span class="no">Generating</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+<span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">121</span><span class="ss">:in</span> <span class="sb">`gsub!&#39;: invalid byte sequence in US-ASCII (ArgumentError)</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `</span><span class="n">sanitized_path</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`block in new_files&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `</span><span class="n">block</span> <span class="p">(</span><span class="mi">2</span> <span class="n">levels</span><span class="p">)</span> <span class="k">in</span> <span class="n">each_site_file</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">419</span><span class="ss">:in</span> <span class="sb">`block in each_site_file&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `</span><span class="n">each</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`new_files&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `</span><span class="n">obsolete_files</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">255</span><span class="ss">:in</span> <span class="sb">`cleanup&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `</span><span class="n">process</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">46</span><span class="ss">:in</span> <span class="sb">`build&#39;</span>
+<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `</span><span class="n">process</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`call&#39;</span>
+<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `</span><span class="n">block</span> <span class="k">in</span> <span class="n">execute</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`execute&#39;</span>
+<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `</span><span class="n">go</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program&#39;</span>
+    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">jekyll</span><span class="p">:</span><span class="mi">18</span><span class="ss">:in</span> <span class="sb">`&lt;top (required)&gt;&#39;</span>
+<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `</span><span class="nb">load</span><span class="s1">&#39;</span>
+<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `&lt;main&gt;&#39;</span>
 </code></pre></div>
-<ol>
-<li>使用里面的代码高亮很不爽可以参见gfm使用他的语法并在config中调整配置
+<ul>
+<li>详见这个<a href="https://github.com/jekyll/jekyll/issues/2379">https://github.com/jekyll/jekyll/issues/2379</a> 修改了报错那行为
+<code>ruby
+clean_path.force_encoding(&#39;UTF-8&#39;).gsub!(/\A\w\:\//, &#39;/&#39;)
+</code></li>
+</ul></li>
+<li><p>使用里面的代码高亮很不爽可以参见gfm使用他的语法并在config中调整配置
 <code>
 markdown: redcarpet
 redcarpet:
   extensions: [&quot;no_intra_emphasis&quot;, &quot;fenced_code_blocks&quot;, &quot;autolink&quot;, &quot;strikethrough&quot;, &quot;superscript&quot;]
-</code></li>
-<li>代码高亮开启了pygments后的css也需要自己配置来写
+</code></p></li>
+<li><p>代码高亮开启了pygments后的css也需要自己配置来写</p>
 
 <ul>
 <li>可以参加<a href="https://github.com/richleland/pygments-css">https://github.com/richleland/pygments-css</a></li>
@@ -290,7 +291,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>44</span>
+    		program <span>45</span>
     	</a></li>
     
   
@@ -324,7 +325,7 @@ redcarpet:
     <div class="pagination">
       <ul>
       
-        <li class="prev"><a href="/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation%20bar%E7%9A%84%E9%81%AE%E7%BD%A9" title="tableview上滑动时的navigation bar的遮罩">&larr; Previous</a></li>
+        <li class="prev"><a href="/program/2014/03/06/tableview%E4%B8%8A%E6%BB%91%E5%8A%A8%E6%97%B6%E7%9A%84navigation+bar%E7%9A%84%E9%81%AE%E7%BD%A9" title="tableview上滑动时的navigation bar的遮罩">&larr; Previous</a></li>
       
         <li><a href="/archive.html">Archive</a></li>
       

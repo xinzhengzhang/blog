@@ -107,6 +107,178 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2014/10/12/design-pattern-1">Design Pattern (2) </a></h3>
+  <div class="date">
+    <span>12 October 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h3>大话设计模式的读书笔记（二）</h3>
+
+<ul>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/">读书笔记（一）</a>
+### Facade, Builder, Observer, Abstract Factory</li>
+</ul>
+
+<h4>外观模式</h4>
+
+<ul>
+<li>外观模式大概不就是个封装……说好听点他的定义是「为系统中一组接口提供一个一致的界面」核心就是把业务层的复杂逻辑全部抽出来给另外一个替死鬼来干ˊ_&gt;ˋ</li>
+<li>代码也不想写了、举个例子比如老师管理收作业要去不会去盯每个学生、会选个班长把脏活都丢给他来做……自己只要简单的去和班长交流就好了</li>
+</ul>
+
+<h4>建造者模式</h4>
+
+<ul>
+<li>建造者模式我理解核心有一点是强制把一些必须实现的东西抽象到上层通过虚方法强制必须实现。这样可以极大的有效的防止使用的时候漏掉了某一个步骤</li>
+<li><p>另外一个是他有一个叫导演的概念、整个建造的方法整段逻辑托管给了这个导演而不会暴露给最上层去担忧这个事情</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">:</span>
+          <span class="k">print</span> <span class="n">i</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">build_part_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">build_part_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">ConcreteBuilder1</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">build_part_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;partA&quot;</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">build_part_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;partB&quot;</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span>
+
+<span class="k">class</span> <span class="nc">Director</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span> <span class="nf">construct</span><span class="p">(</span><span class="n">builder</span><span class="p">):</span>
+      <span class="n">builder</span><span class="o">.</span><span class="n">build_part_a</span><span class="p">()</span>
+      <span class="n">builder</span><span class="o">.</span><span class="n">build_part_b</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="n">ConcreteBuilder1</span><span class="p">()</span>
+  <span class="n">Director</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
+  <span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></li>
+</ul>
+
+<h4>观察者模式</h4>
+
+<ul>
+<li>我想这个东西熟悉ios的人一定不会陌生、ios中kvo的使用简直是不能再棒、那为什么客户端超级适用这个模式我想大家也应该想到了是因为客户端因为是个超级重交互的东西、例如UI层的重新render每次都需要前段手动进行这么一下简直是不能忍的</li>
+<li>观察者模式核心的话我认为是一种定义了一个一对N的关系、并且一去和N中的一个进行交互、一旦触发同时去触发剩下另外的N－1个。例如ios的UIVIew会去observe他的rect、一旦这一个rect进行变化、他会自己去触发绑定的一坨逻辑例如render等等</li>
+<li><p>写了一个很简单的UI的模拟 rect就简单变成kvo一个int了</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="k">class</span> <span class="nc">ISth</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">View</span><span class="p">(</span><span class="n">ISth</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">handler</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">]</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span> <span class="o">=</span> <span class="mi">0</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span>
+
+  <span class="nd">@rect.setter</span>
+  <span class="k">def</span> <span class="nf">rect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span> <span class="o">=</span> <span class="n">value</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="p">:</span>
+          <span class="n">i</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;i am render&quot;</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">v</span> <span class="o">=</span> <span class="n">View</span><span class="p">()</span>
+  <span class="n">v</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="mi">5</span>
+</code></pre></div>
+<h4>抽象工厂模式</h4></li>
+<li><p>好吧……抽象工厂模式其实就是工厂的再一步进化……核心就是本来子类到底是什么是交给具体适用场景去决定的、而抽象工厂把这部分也给抽走了</p></li>
+<li><p>说具体点两者的差别的话就是类似多个route的东西、由他来决定到底把工厂route到哪儿个子类去，然后表示用一坨switch case太丑陋了，然后用了反射来处理、我就大致写下python的反射好了= =具体的工厂大同小异了</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">class_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s">&quot;xxx&quot;</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>46</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#design pattern-ref">design pattern <span>2</span></a></li>
+    
+    	<li><a href="#python-ref">python <span>2</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2014/10/11/design-pattern-0">Design Pattern (1) </a></h3>
   <div class="date">
     <span>11 October 2014</span>
@@ -116,22 +288,22 @@
 <div class="row-fluid post-full">
   <div class="span12">
     <div class="content">
-      <h3>这系列文章为大话设计模式的读书笔记（一）</h3>
+      <h3>大话设计模式的读书笔记（一）</h3>
 
-<ul>
-<li><p>简单工厂模式</p>
+<h3>Simple Factory, Strategy, Decorator, Factory, Proxy, Prototype, Template</h3>
+
+<h4>简单工厂模式</h4>
 
 <ul>
 <li>其实工厂平常也用的非常多了、核心就是抽出公共外部接口、然后按照需求子类、然后由统一工厂返回。好处也很明显就是解耦、隔绝上层知道自己不需要知道的东西。</li>
-<li>用<code>python</code>实现了一端最简单的例子</li>
-</ul>
+<li><p>用<code>python</code>实现了一端最简单的例子</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Operation</span><span class="p">:</span>
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="n">a</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="n">b</span>
   <span class="c"># 抽象出公共的计算</span>
   <span class="k">def</span> <span class="nf">getresult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-      <span class="k">assert</span> <span class="s">&quot;base method must be implement&quot;</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;base method must be implement&quot;</span>
 
 <span class="k">class</span> <span class="nc">Add</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">getresult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -154,17 +326,14 @@
   <span class="n">op</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="mi">1</span>
   <span class="n">op</span><span class="o">.</span><span class="n">number_b</span> <span class="o">=</span> <span class="mi">5</span>
   <span class="k">print</span> <span class="n">op</span><span class="o">.</span><span class="n">getresult</span><span class="p">()</span>
-</code></pre></div></li>
-<li><p>策略模式</p>
-
-<ul>
-<li>我理解的策略模式其实就是给操作对象多wrap了一层context的东西、由他来抽象一堆方法进行管理。核心也是解耦把这部分脏东西控制在自己手上避免影响到上层</li>
-<li>其实类似<code>NSManagedObjectContext</code>这就是封装了真实数据底层的一些方法、让用户避免开这样噁心的东西、具体不同的数据媒介的相关操作让他自己处理即可。</li>
-<li>同样一个简单的例子、抽象出cash这个类、他的具体打折策略去由context去维护、整个这个打折这个事件全托管给context、类似一个中间人的角色</li>
-</ul>
+</code></pre></div>
+<h4>策略模式</h4></li>
+<li><p>我理解的策略模式其实就是给操作对象多wrap了一层context的东西、由他来抽象一堆方法进行管理。核心也是解耦把这部分脏东西控制在自己手上避免影响到上层</p></li>
+<li><p>其实类似<code>NSManagedObjectContext</code>这就是封装了真实数据底层的一些方法、让用户避免开这样噁心的东西、具体不同的数据媒介的相关操作让他自己处理即可。</p></li>
+<li><p>同样一个简单的例子、抽象出cash这个类、他的具体打折策略去由context去维护、整个这个打折这个事件全托管给context、类似一个中间人的角色</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">CashSuper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-      <span class="k">assert</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
 
 <span class="k">class</span> <span class="nc">CashNormal</span><span class="p">(</span><span class="n">CashSuper</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -190,13 +359,10 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
   <span class="n">cc</span> <span class="o">=</span> <span class="n">CashContext</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">900</span><span class="p">)</span>
   <span class="k">print</span> <span class="n">cc</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span> 
-</code></pre></div></li>
-<li><p>装饰模式</p>
-
-<ul>
-<li>装饰模式核心就是装饰不要去污染原来的东西、遵循开放封闭原则。例如一个人穿衣服、隔离出穿衣服这个事情。</li>
-<li>先写一端照书上的装饰模式的结构图写的代码</li>
-</ul>
+</code></pre></div>
+<h4>装饰模式</h4></li>
+<li><p>装饰模式核心就是装饰不要去污染原来的东西、遵循开放封闭原则。例如一个人穿衣服、隔离出穿衣服这个事情。</p></li>
+<li><p>先写一端照书上的装饰模式的结构图写的代码</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -231,10 +397,8 @@
   <span class="n">ts</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
   <span class="n">sh</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
   <span class="n">sh</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-<ul>
-<li>感觉这样装饰模式虽然结构清楚、但是写起来感觉很难受、继承来继承去也麻烦、用了另外种装饰方法感觉明了简介更多</li>
-</ul>
+</code></pre></div></li>
+<li><p>感觉这样装饰模式虽然结构清楚、但是写起来感觉很难受、继承来继承去也麻烦、用了另外种装饰方法感觉明了简介更多</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">def</span> <span class="nf">wear_shoe</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
       <span class="k">print</span> <span class="s">&quot;wear shoe&quot;</span>
@@ -258,6 +422,88 @@
   <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;zx&quot;</span><span class="p">)</span>
   <span class="n">f</span> <span class="o">=</span> <span class="n">wear_tshirt</span><span class="p">(</span><span class="n">wear_shoe</span><span class="p">(</span><span class="n">Person</span><span class="o">.</span><span class="n">show</span><span class="p">))</span>
   <span class="n">f</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div>
+<h4>工厂模式</h4></li>
+<li><p>工厂其实主要就是工厂的抽象以及实体的抽象2部分、把实体的选择都抽象在工厂里、然后统一由工厂返回</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="nc">AbstractFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">createFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+
+<span class="k">class</span> <span class="nc">Instance1</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;instance1 alloc&quot;</span>
+
+<span class="k">class</span> <span class="nc">Factory1</span><span class="p">(</span><span class="n">AbstractFactory</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">createFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">Instance1</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Instance2</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;instance2 alloc&quot;</span>
+
+<span class="k">class</span> <span class="nc">Factory2</span><span class="p">(</span><span class="n">AbstractFactory</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">createFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">Instance2</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">instance</span> <span class="o">=</span> <span class="n">Factory1</span><span class="p">()</span><span class="o">.</span><span class="n">createFactory</span><span class="p">()</span>
+</code></pre></div>
+<h4>代理模式</h4></li>
+<li><p>其实代理模式平常用的非常多、我所认为的核心是有两点</p>
+
+<ul>
+<li>隔离开他所需要操作的对象、使用户使用这个对象的方法大大减少保证正确</li>
+<li>类似一个callback的感觉在调真实对象时有个地方给你写需要做的别的事情</li>
+</ul></li>
+<li><p>比如html加载图片时碰到真的图片时都是弄个假的框框再去真的download图片大致套用了写模式</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">ImageNetwork</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+
+<span class="k">class</span> <span class="nc">ImageRequestProxy</span><span class="p">(</span><span class="n">ImageNetwork</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">ImageRequestProxy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">image_request</span> <span class="o">=</span> <span class="n">ImageRequestNetwork</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;render ui&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">image_request</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ImageRequestNetwork</span><span class="p">(</span><span class="n">ImageNetwork</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;download image&quot;</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="n">ImageRequestProxy</span><span class="p">()</span>
+  <span class="n">p</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
+</code></pre></div>
+<h4>原型模式</h4></li>
+<li><p>一个词核心就是拷贝实现一个深拷贝就可以了</p></li>
+<li><p>比如js就是个非常经典的原型</p></li>
+<li><p>例子就不写了 Orz</p></li>
+</ul>
+
+<h4>模版模式</h4>
+
+<ul>
+<li><p>模版的话核心也是提出公共部分、在可变的部分抽象出公共接口给具体的实现去实现……各种web框架模版也是用烂了的……</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">dosth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;dosth&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">needsth</span><span class="p">()</span>
+  <span class="k">def</span> <span class="nf">needsth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+
+<span class="k">class</span> <span class="nc">Detail</span><span class="p">(</span><span class="n">Template</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">needsth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;food&quot;</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">Detail</span><span class="p">()</span><span class="o">.</span><span class="n">dosth</span><span class="p">()</span>
 </code></pre></div></li>
 </ul>
 
@@ -273,7 +519,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -292,9 +538,9 @@
 
   
     
-    	<li><a href="#design pattern-ref">design pattern <span>1</span></a></li>
+    	<li><a href="#design pattern-ref">design pattern <span>2</span></a></li>
     
-    	<li><a href="#python-ref">python <span>1</span></a></li>
+    	<li><a href="#python-ref">python <span>2</span></a></li>
     
   
 
@@ -385,7 +631,7 @@ done;
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -681,7 +927,7 @@ sort(l, &gt;)
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -986,7 +1232,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -1067,7 +1313,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -1138,7 +1384,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -1199,171 +1445,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2013/07/30/%E5%9C%86%E5%BD%A2%E5%B8%83%E5%B1%80%E7%9A%84icon%E9%A1%B5%E9%9D%A2-loading%E5%8A%A8%E7%94%BB%E6%95%88%E6%9E%9C">圆形布局的icon页面 loading动画效果 </a></h3>
-  <div class="date">
-    <span>30 July 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/07/700BAD52-7C3F-4500-8B52-69C13291528D.jpg" alt="" title="700BAD52-7C3F-4500-8B52-69C13291528D" width="314" height="470" class="alignnone size-full wp-image-397" /></a>
-大致效果就是3个元素根据不同时间间隔开始沿着圆进行无限追逐，每次一圈后进行一个小停顿然后继续、比较类似wp7的那种小的loading、主要用到的还是CAKeyframeAnimation其中为了让无限循环中加上停顿用了个小trick
-</p>
-<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="cp">#import &lt;QuartzCore/QuartzCore.h&gt;</span>
-<span class="cp">#define PI 3.14159265358979323846</span>
-<span class="k">@interface</span> <span class="nc">canvas</span> <span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">UIButton</span> <span class="o">*</span><span class="n">red</span><span class="p">;</span>
-    <span class="n">UIButton</span> <span class="o">*</span><span class="n">green</span><span class="p">;</span>
-    <span class="n">UIButton</span> <span class="o">*</span><span class="n">yellow</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">@end</span>
-
-<span class="k">@implementation</span> <span class="nc">canvas</span>
-
-<span class="k">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">initWithFrame:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">frame</span>
-<span class="p">{</span>
-    <span class="n">self</span> <span class="o">=</span> <span class="p">[</span><span class="n">super</span> <span class="n">initWithFrame</span><span class="o">:</span><span class="n">frame</span><span class="p">];</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">self</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// Initialization code</span>
-        <span class="n">red</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">117.55</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">38.1</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
-        <span class="n">green</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">141.42</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mf">58.57</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
-        <span class="n">yellow</span><span class="o">=</span><span class="p">[[</span><span class="n">UIButton</span> <span class="n">alloc</span><span class="p">]</span><span class="n">initWithFrame</span><span class="o">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mf">173.2</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">)];</span>
-        <span class="p">[</span><span class="n">red</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">redColor</span><span class="p">]];</span>
-        <span class="p">[</span><span class="n">green</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">greenColor</span><span class="p">]];</span>
-        <span class="p">[</span><span class="n">yellow</span> <span class="n">setBackgroundColor</span><span class="o">:</span><span class="p">[</span><span class="n">UIColor</span> <span class="n">yellowColor</span><span class="p">]];</span>
-        <span class="p">[</span><span class="n">red</span> <span class="n">addTarget</span><span class="o">:</span><span class="n">self</span> <span class="n">action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">end</span><span class="p">)</span> <span class="n">forControlEvents</span><span class="o">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
-        <span class="p">[</span><span class="n">yellow</span> <span class="n">addTarget</span><span class="o">:</span><span class="n">self</span> <span class="n">action</span><span class="o">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">start</span><span class="p">)</span> <span class="n">forControlEvents</span><span class="o">:</span><span class="n">UIControlEventTouchUpInside</span><span class="p">];</span>
-
-        <span class="p">[</span><span class="n">self</span> <span class="n">start</span><span class="p">];</span>
-        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">red</span><span class="p">];</span>
-        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">green</span><span class="p">];</span>
-        <span class="p">[</span><span class="n">self</span> <span class="n">addSubview</span><span class="o">:</span><span class="n">yellow</span><span class="p">];</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">self</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">end</span><span class="p">{</span>
-    <span class="p">[</span><span class="n">red</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">green</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">yellow</span><span class="p">.</span><span class="n">layer</span> <span class="n">removeAllAnimations</span><span class="p">];</span>
-<span class="p">}</span>
-<span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">start</span><span class="p">{</span>
-    <span class="n">CGMutablePathRef</span> <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span>
-    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span><span class="c1">//用cgpath画出运动轨迹</span>
-    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.8424</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.9424</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
-    <span class="n">CAKeyframeAnimation</span> <span class="o">*</span><span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
-<span class="c1">//    [animation setBeginTime:CACurrentMediaTime()+0.7];</span>
-<span class="c1">//    [animation setRepeatCount:HUGE_VALF];</span>
-    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
-    <span class="n">CAAnimationGroup</span> <span class="o">*</span><span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span><span class="c1">//利用动画组的间隔做到小动画的无限间隔之间的停顿</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animationGroup</span> <span class="n">setBeginTime</span><span class="o">:</span><span class="n">CACurrentMediaTime</span><span class="p">()</span><span class="o">+</span><span class="mf">0.5</span><span class="p">];</span><span class="c1">//让三个元素起始时间区分开</span>
-    <span class="p">[</span><span class="n">red</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span>
-    <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span>
-    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span>
-    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.683</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.783</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
-    <span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
-<span class="c1">//    [animation setBeginTime:CACurrentMediaTime()+0.5];</span>
-<span class="c1">//    [animation setRepeatCount:HUGE_VALF];</span>
-
-    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
-    <span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="p">[</span><span class="n">animationGroup</span> <span class="n">setBeginTime</span><span class="o">:</span><span class="n">CACurrentMediaTime</span><span class="p">()</span><span class="o">+</span><span class="mf">0.2</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="p">[</span><span class="n">green</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="n">path</span><span class="o">=</span><span class="n">CGPathCreateMutable</span><span class="p">();</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">NO</span><span class="p">);</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="n">CGPathAddArc</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mf">0.0f</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.425</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.525</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="n">animation</span><span class="o">=</span><span class="p">[</span><span class="n">CAKeyframeAnimation</span> <span class="n">animationWithKeyPath</span><span class="o">:</span><span class="s">@&quot;position&quot;</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setCalculationMode</span><span class="o">:</span><span class="n">kCAAnimationPaced</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setDuration</span><span class="o">:</span><span class="mf">2.0f</span><span class="p">];</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
-<span class="c1">//    [animation setRepeatCount:HUGE_VALF];&lt;/p&gt;</span>
-
-    <span class="p">[</span><span class="n">animation</span> <span class="n">setTimingFunction</span><span class="o">:</span><span class="p">[</span><span class="n">CAMediaTimingFunction</span> <span class="n">functionWithName</span><span class="o">:</span><span class="n">kCAMediaTimingFunctionEaseInEaseOut</span><span class="p">]];</span>
-
-    <span class="n">CFRelease</span><span class="p">(</span><span class="n">path</span><span class="p">);</span>
-    <span class="n">animationGroup</span> <span class="o">=</span> <span class="p">[</span><span class="n">CAAnimationGroup</span> <span class="n">animation</span><span class="p">];</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">duration</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">repeatCount</span> <span class="o">=</span> <span class="n">INFINITY</span><span class="p">;</span>
-    <span class="n">animationGroup</span><span class="p">.</span><span class="n">animations</span><span class="o">=</span><span class="p">@[</span><span class="n">animation</span><span class="p">];</span>
-    <span class="p">[</span><span class="n">yellow</span><span class="p">.</span><span class="n">layer</span> <span class="n">addAnimation</span><span class="o">:</span><span class="n">animationGroup</span> <span class="n">forKey</span><span class="o">:</span><span class="nb">NULL</span><span class="p">];</span>
-<span class="p">}</span>
-
-<span class="c1">// Only override drawRect: if you perform custom drawing.</span>
-<span class="c1">// An empty implementation adversely affects performance during animation.</span>
-<span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">drawRect:</span><span class="p">(</span><span class="n">CGRect</span><span class="p">)</span><span class="nv">rect</span>
-<span class="p">{</span>
-    <span class="n">CGContextRef</span> <span class="n">context</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
-    <span class="n">CGContextSetStrokeColor</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="p">[</span><span class="n">UIColor</span> <span class="n">blueColor</span><span class="p">].</span><span class="n">CGColor</span><span class="p">);</span>
-    <span class="n">CGContextAddArc</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">200.0f</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">PI</span><span class="p">,</span> <span class="nb">YES</span><span class="p">);</span>
-
-    <span class="p">[[</span><span class="n">UIColor</span> <span class="n">orangeColor</span><span class="p">]</span> <span class="n">setFill</span><span class="p">];</span>
-    <span class="p">[[</span><span class="n">UIColor</span> <span class="n">blueColor</span><span class="p">]</span> <span class="n">setStroke</span><span class="p">];</span>
-    <span class="n">CGContextDrawPath</span> <span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">kCGPathStroke</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="k">@end</span>
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -1429,7 +1511,7 @@ redcarpet:
   
     <a class="next" href="/page2">后页</a>
   
-  (共57篇)
+  (共58篇)
 </div>
 
         </div>

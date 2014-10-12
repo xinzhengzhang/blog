@@ -107,6 +107,127 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2012/12/23/os-x-%E7%9A%84%E5%90%AF%E5%8A%A8%E9%A1%B9">os x 的启动项 </a></h3>
+  <div class="date">
+    <span>23 December 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>每次开机总要开几个脚本开烦了、然后研究了下自己机器的几个开机自启的程序的写法总结了下</p>
+
+<p>首先是这个目录 然后我分别展开了/Library/StartupItems 以及集中的mysql可以看到里面就是主要一个是StartupParameters.plist 以及一个sh</p>
+
+<p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/8460C8BA-D46E-4C02-B3B6-01AF84D6F28E.jpg"><img class="alignnone size-full wp-image-167" title="8460C8BA-D46E-4C02-B3B6-01AF84D6F28E" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/8460C8BA-D46E-4C02-B3B6-01AF84D6F28E.jpg" alt="" width="501" height="69" /></a></p>
+
+<p>然后解释下里面分别怎么写</p>
+
+<p><p>首先是 StartupParameters.plist这个xml里面的内容大致是</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
+&amp;lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&amp;gt;
+&amp;lt;plist version=&quot;1.0&quot;&amp;gt;
+&amp;lt;dict&amp;gt;
+    &amp;lt;key&amp;gt;Description&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;MySQL 5.5.20-community&amp;lt;/string&amp;gt;
+    &amp;lt;key&amp;gt;OrderPreference&amp;lt;/key&amp;gt;
+    &amp;lt;string&amp;gt;None&amp;lt;/string&amp;gt;
+    &amp;lt;key&amp;gt;Provides&amp;lt;/key&amp;gt;
+    &amp;lt;array&amp;gt;
+        &amp;lt;string&amp;gt;MySQL&amp;lt;/string&amp;gt;
+    &amp;lt;/array&amp;gt;
+    &amp;lt;key&amp;gt;Uses&amp;lt;/key&amp;gt;
+    &amp;lt;array&amp;gt;
+        &amp;lt;string&amp;gt;Network&amp;lt;/string&amp;gt;
+        &amp;lt;string&amp;gt;Resolver&amp;lt;/string&amp;gt;
+    &amp;lt;/array&amp;gt;
+    &amp;lt;/dict&amp;gt;
+&amp;lt;/plist&amp;gt;
+主要有几个key description OrderPreference Provides Uses
+具体是什么如下
+&quot;Description&quot; is a simple description of the service, which is only used to describe the file and not during the startup process.
+
+&quot;Provides&quot; specifies the services that this StartupItems provides. Provides can contain multiple services, but it is not recommended. Here Apache provides a &quot;Web Server&quot; service.
+
+&quot;Requires&quot; specifies the services that have to be started before this StartupItem is loaded. The values in this field are those of other StartupItems&#39; &quot;Provides&quot; fields. Apache requires &quot;DirectoryServices&quot; to be loaded before it can be run; if DirectoryServices are not specified to run or fail to run properly Apache won&#39;t run.
+
+&quot;Uses&quot; specifics the services that should be started before this StartupItem is loaded. This is similar to the &quot;Requires&quot; attribute except this service will always be loaded, but only after it has tried to execute all the services in &quot;Uses&quot;. Apache uses the &quot;Disks&quot;, &quot;NFS&quot;, and &quot;Network Time&quot; services. OS X will try to load these services, if it can&#39;t it will still load Apache, but only after trying these services first.
+
+&quot;OrderPreference&quot; specifies the general time period in which a StartupItem will be executed. This order is less significant than both &quot;Requires&quot; and &quot;Uses&quot; but is used to determine order after evaluating those attributes. The possible values for this attribute are: First, Early, None (default), Late, Last. Apache specifies no OrderPreference as to when it should be loaded.
+
+然后就是写的脚本了
+
+简单点的写法就这样
+#!/bin/sh
+. /etc/rc.common
+
+StartService ()
+{
+    ConsoleMessage &quot;Running script.&quot;
+    python /Users/zxz/work/xxxx.py
+}
+
+StopService ()
+{
+    return 0
+}
+
+RestartService ()
+{
+    return 0
+}
+
+RunService &quot;$1&quot;
+里面的shell就随意怎么写了
+
+然后正常的 start stop restart也都可以正常用了
+
+ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>46</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2012/12/07/%E7%9B%B8%E4%BC%BC%E5%9B%BE%E7%89%87%E6%90%9C%E7%B4%A2python%E5%AE%9E%E7%8E%B0">相似图片搜索python实现 </a></h3>
   <div class="date">
     <span>07 December 2012</span>
@@ -162,7 +283,7 @@ def diffCount(h1,h2):
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -263,7 +384,7 @@ http://www.pythonware.com/library/pil/handbook/index.htm</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -343,7 +464,7 @@ var edit = document.getElementById(\"editable\");edit.addEventListener(\"click\"
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -458,7 +579,7 @@ UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIMo
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -639,7 +760,7 @@ CRC(循环冗余检测) 4字节  存储用来检测是否有错误的循环冗�
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -1046,7 +1167,7 @@ See also: Regular Expression Options
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -1289,86 +1410,7 @@ See also: Regular Expression Options
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/11/11/%E5%85%89%E6%A3%8D%E7%A8%8B%E5%BA%8F%E5%91%98%E9%97%AF%E5%85%B3%E6%94%BB%E7%95%A51_9%E6%90%AD%E6%A2%AF4_6_8">光棍程序员闯关攻略1_9(搭梯4_6_8) </a></h3>
-  <div class="date">
-    <span>11 November 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>码农命就敲代码、如此好日子我就玩了那个闯关、说实话这个真的不错、好吧其中三关是想破头都没想出来的</p>
-
-<p>门如下http://segmentfault.com/game/</p>
-
-<p>第一关 看下源代码看到有个下一关（就是颜色个背景遮掉了……轻松过</p>
-
-<p>第二关 看源码里面直接把密码给你了……（easy</p>
-
-<p>第三关 这里源码就已经没有任何提示了……想想一个网页还是什么地方能提供给你信息？body没了那么就看http response吧、一看http报头 密码就在那了（也算easy</p>
-
-<p>第四关 坑爹的来了、他给你的提示是让你解密、根据上面的经验所有的信息也就只有cookie了……然后我开始了坑爹的解析cookie……尼玛浪费了老子将近一个小时那四五个值屁都得不出……我终于开始找我大google了、然后我终于发现前人栽的路了、仔细注意每次的url都是一个md5、所有这里就应该是 printf 5|md5 算一个5的md5就是下一关了……（坑爹、再坑一点</p>
-
-<p>第五关 第六关是一个二维码、凭着上面那个题的尿性也知道不可能直接扫一下就出答案的、虽然我还是试了下（还被嘲讽了……你可以解一下他上面是什么字）正确是怎么做呢、鉴于之前解了次那个东大的东西我有经验了、什么东西都用纯文本开开看看、好了轻松愉快的key就写在图片里呢（这关还好吧</p>
-
-<p>第六关 这tm才是大坑！！！！算了我告诉你答案吧、把他给你的那个md5贴到google上去、找某一个人的回复……他说的是建议google把这个md5给收入了……然后他的key值就是了……（这个我真的无语……</p>
-
-<p>第七关 他直接给了你个md5、和上关一样、你还傻逼的再去查么？你还太年轻……直接把这个md5贴到网址上就好了（做了这么多题还摸不透出题的德行么……</p>
-
-<p>第八题 刚才那个是大坑吧、这个是大大大大大大大大大大坑！！被上面几个都是解密什么的已经弄昏双眼了……我又开始无穷无尽的解md5、这次还是随机的出来数组、和第七关那个的是有联系的、于是我生成了10多组数据开始研究……一个小时过去了……我放弃了、我找梯子吧……公布答案（这回不用再去研究md5了、回过头来看源码、仔细看下一个表单他的方法是<strong>GET</strong>！见过表单是get的？开玩笑吧……果断firebug改成post……提交上去了……到第九关了……</p>
-
-<p>第九题 还是因为做过东大的那个解密、看到那串10逼着眼睛就开始准备转了、等等他出了1 0还有_ 这是什么东西、我仔细观察了下所有的_都是4个一组的、这以为着什么、应该就是填空吧、那填什么空？今天是光棍节啊不填1111可能么？好吧就是这样、填上1111  记得做个处理去空格去回车 sed 's/ //g' a.strings | tr -d '\n'</p>
-
-<p>再用我前篇blog写的程序大端转转完一看你就懂了（试试看1111填别的转转看就知道不对了、都是data）然后看到熟悉的＝了吧……base64啊亲、base64解码然后file一下是gzip……然后还要我教你干嘛么？其实gzip解压后还要用tar再解一次然后就出现了。最后就是一张仓老师的图片了……上面写着下一关的地址</p>
-
-<p>好了以上、这个光棍节还是蛮好玩的……</p>
-
-<p>&nbsp;</p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -1436,7 +1478,7 @@ See also: Regular Expression Options
   
     <a class="next" href="/page5">后页</a>
   
-  (共57篇)
+  (共58篇)
 </div>
 
         </div>

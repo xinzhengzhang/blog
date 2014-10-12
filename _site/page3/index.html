@@ -107,6 +107,124 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2013/03/28/%E5%85%B3%E4%BA%8Egcc%E4%BC%98%E5%8C%96%E6%8B%B7%E8%B4%9D%E6%9E%84%E9%80%A0-5">关于gcc优化拷贝构造 </a></h3>
+  <div class="date">
+    <span>28 March 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>今天碰到一个很奇怪的问题……(我大一的时候怎么没有发觉呢Orz<br />
+代码如下</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#include
+using namespace std;
+class Student {
+
+public:
+    Student(){cout
+
+        cout
+    }
+    ~Student(){
+
+        cout
+    Student  operator + (const Student &amp;) const
+    {
+        Student temp;
+        return temp;
+    }
+};
+int main(int argc, const char * argv[])
+{
+
+    Student s1;
+    Student s2(s1+s1);
+    return 0;
+}
+
+输出应该很简单
+------------------
+structure
+structure
+copy structure
+free
+copy structure
+free
+free
+free
+-----------------
+return 返回临时变量时应该拷贝构造一次
+可是问题来了 死活出的结果就是
+----------------
+structure
+structure
+free
+free
+----------------
+折腾了大半天后我终于还是发现原来还是编译器搞的鬼……(人家只是太智能不要黑他
+具体就是在return temp;那里应该隐式调用拷贝构造的地方编译器做了延长temp的生命周期、延长到外部s2来让s2的生命周期结束后对这块内存进行析构
+这样就可以少了第一次拷贝构造
+此时第二次需要把新对象拷贝到s2中时的拷贝也就在这里被一起优化掉了直接让s2对应到了temp这块内存上(以上是我对编译器优化过程的的猜测
+然后我就试着
+g++ -o test -O0 test.cpp
+这么编译还是不行
+于是我就放弃了(只好理解成gcc的最白痴的不进行优化编译也会处理掉这种隐式的拷贝构造
+但是我错了！！！
+我严重鄙视下大多数网上放gcc参数的文档的那些人不负责任的就是-O0就是不优化（混蛋不优化不等于最低级优化好么！
+-----------------
+然后终于在帮忙下找到了http://blog.csdn.net/daidodo/article/details/2185217这篇文章
+-fno-elide-constructors 强制g++总是调用copy构造函数，即使在用临时对象初始化另一个同类型对象的时候。
+就是这个参数
+好了一切其实也就搞定了
+g++ -o test -fno-elide-constructors test.cpp
+
+结束语:怪也只能怪gcc太尼玛智能了……我大概知道为什么开始教学中要用vc环境了
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>46</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/life/2013/03/26/%E6%B3%A8%E5%86%8C%E4%BA%86-ask-fm">注册了 ask.fm </a></h3>
   <div class="date">
     <span>26 March 2013</span>
@@ -307,7 +425,7 @@ return 0;
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -393,7 +511,7 @@ print l</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -467,7 +585,7 @@ url_short,$account['content']);
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -546,7 +664,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -617,7 +735,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -685,7 +803,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -783,7 +901,7 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -869,127 +987,6 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
 </div>
 
 
-<div class="page-header">
-  <h3><a href="/program/2012/12/23/os-x-%E7%9A%84%E5%90%AF%E5%8A%A8%E9%A1%B9">os x 的启动项 </a></h3>
-  <div class="date">
-    <span>23 December 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>每次开机总要开几个脚本开烦了、然后研究了下自己机器的几个开机自启的程序的写法总结了下</p>
-
-<p>首先是这个目录 然后我分别展开了/Library/StartupItems 以及集中的mysql可以看到里面就是主要一个是StartupParameters.plist 以及一个sh</p>
-
-<p><a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/8460C8BA-D46E-4C02-B3B6-01AF84D6F28E.jpg"><img class="alignnone size-full wp-image-167" title="8460C8BA-D46E-4C02-B3B6-01AF84D6F28E" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/12/8460C8BA-D46E-4C02-B3B6-01AF84D6F28E.jpg" alt="" width="501" height="69" /></a></p>
-
-<p>然后解释下里面分别怎么写</p>
-
-<p><p>首先是 StartupParameters.plist这个xml里面的内容大致是</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&amp;gt;
-&amp;lt;!DOCTYPE plist PUBLIC &quot;-//Apple Computer//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&amp;gt;
-&amp;lt;plist version=&quot;1.0&quot;&amp;gt;
-&amp;lt;dict&amp;gt;
-    &amp;lt;key&amp;gt;Description&amp;lt;/key&amp;gt;
-    &amp;lt;string&amp;gt;MySQL 5.5.20-community&amp;lt;/string&amp;gt;
-    &amp;lt;key&amp;gt;OrderPreference&amp;lt;/key&amp;gt;
-    &amp;lt;string&amp;gt;None&amp;lt;/string&amp;gt;
-    &amp;lt;key&amp;gt;Provides&amp;lt;/key&amp;gt;
-    &amp;lt;array&amp;gt;
-        &amp;lt;string&amp;gt;MySQL&amp;lt;/string&amp;gt;
-    &amp;lt;/array&amp;gt;
-    &amp;lt;key&amp;gt;Uses&amp;lt;/key&amp;gt;
-    &amp;lt;array&amp;gt;
-        &amp;lt;string&amp;gt;Network&amp;lt;/string&amp;gt;
-        &amp;lt;string&amp;gt;Resolver&amp;lt;/string&amp;gt;
-    &amp;lt;/array&amp;gt;
-    &amp;lt;/dict&amp;gt;
-&amp;lt;/plist&amp;gt;
-主要有几个key description OrderPreference Provides Uses
-具体是什么如下
-&quot;Description&quot; is a simple description of the service, which is only used to describe the file and not during the startup process.
-
-&quot;Provides&quot; specifies the services that this StartupItems provides. Provides can contain multiple services, but it is not recommended. Here Apache provides a &quot;Web Server&quot; service.
-
-&quot;Requires&quot; specifies the services that have to be started before this StartupItem is loaded. The values in this field are those of other StartupItems&#39; &quot;Provides&quot; fields. Apache requires &quot;DirectoryServices&quot; to be loaded before it can be run; if DirectoryServices are not specified to run or fail to run properly Apache won&#39;t run.
-
-&quot;Uses&quot; specifics the services that should be started before this StartupItem is loaded. This is similar to the &quot;Requires&quot; attribute except this service will always be loaded, but only after it has tried to execute all the services in &quot;Uses&quot;. Apache uses the &quot;Disks&quot;, &quot;NFS&quot;, and &quot;Network Time&quot; services. OS X will try to load these services, if it can&#39;t it will still load Apache, but only after trying these services first.
-
-&quot;OrderPreference&quot; specifies the general time period in which a StartupItem will be executed. This order is less significant than both &quot;Requires&quot; and &quot;Uses&quot; but is used to determine order after evaluating those attributes. The possible values for this attribute are: First, Early, None (default), Late, Last. Apache specifies no OrderPreference as to when it should be loaded.
-
-然后就是写的脚本了
-
-简单点的写法就这样
-#!/bin/sh
-. /etc/rc.common
-
-StartService ()
-{
-    ConsoleMessage &quot;Running script.&quot;
-    python /Users/zxz/work/xxxx.py
-}
-
-StopService ()
-{
-    return 0
-}
-
-RestartService ()
-{
-    return 0
-}
-
-RunService &quot;$1&quot;
-里面的shell就随意怎么写了
-
-然后正常的 start stop restart也都可以正常用了
-
-ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>45</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
 <!-- </ul> -->
 
 <div id="post-pagination" class="paginator">
@@ -1029,7 +1026,7 @@ ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
   
     <a class="next" href="/page4">后页</a>
   
-  (共57篇)
+  (共58篇)
 </div>
 
         </div>

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <title>Design Pattern (1)</title>
-    <meta name="description" content="simple factory, strategy, decorator">
+    <meta name="description" content="simple factory, strategy, decorator, factory, proxy, prototype, template">
     <meta name="author" content="Xinzheng Zhang">
 
     <!-- Enable responsive viewport -->
@@ -115,22 +115,22 @@
       <span>11 October 2014</span>
     </div>
     <div class="content">
-      <h3>这系列文章为大话设计模式的读书笔记（一）</h3>
+      <h3>大话设计模式的读书笔记（一）</h3>
 
-<ul>
-<li><p>简单工厂模式</p>
+<h3>Simple Factory, Strategy, Decorator, Factory, Proxy, Prototype, Template</h3>
+
+<h4>简单工厂模式</h4>
 
 <ul>
 <li>其实工厂平常也用的非常多了、核心就是抽出公共外部接口、然后按照需求子类、然后由统一工厂返回。好处也很明显就是解耦、隔绝上层知道自己不需要知道的东西。</li>
-<li>用<code>python</code>实现了一端最简单的例子</li>
-</ul>
+<li><p>用<code>python</code>实现了一端最简单的例子</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Operation</span><span class="p">:</span>
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="n">a</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="n">b</span>
   <span class="c"># 抽象出公共的计算</span>
   <span class="k">def</span> <span class="nf">getresult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-      <span class="k">assert</span> <span class="s">&quot;base method must be implement&quot;</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;base method must be implement&quot;</span>
 
 <span class="k">class</span> <span class="nc">Add</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">getresult</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -153,17 +153,14 @@
   <span class="n">op</span><span class="o">.</span><span class="n">number_a</span> <span class="o">=</span> <span class="mi">1</span>
   <span class="n">op</span><span class="o">.</span><span class="n">number_b</span> <span class="o">=</span> <span class="mi">5</span>
   <span class="k">print</span> <span class="n">op</span><span class="o">.</span><span class="n">getresult</span><span class="p">()</span>
-</code></pre></div></li>
-<li><p>策略模式</p>
-
-<ul>
-<li>我理解的策略模式其实就是给操作对象多wrap了一层context的东西、由他来抽象一堆方法进行管理。核心也是解耦把这部分脏东西控制在自己手上避免影响到上层</li>
-<li>其实类似<code>NSManagedObjectContext</code>这就是封装了真实数据底层的一些方法、让用户避免开这样噁心的东西、具体不同的数据媒介的相关操作让他自己处理即可。</li>
-<li>同样一个简单的例子、抽象出cash这个类、他的具体打折策略去由context去维护、整个这个打折这个事件全托管给context、类似一个中间人的角色</li>
-</ul>
+</code></pre></div>
+<h4>策略模式</h4></li>
+<li><p>我理解的策略模式其实就是给操作对象多wrap了一层context的东西、由他来抽象一堆方法进行管理。核心也是解耦把这部分脏东西控制在自己手上避免影响到上层</p></li>
+<li><p>其实类似<code>NSManagedObjectContext</code>这就是封装了真实数据底层的一些方法、让用户避免开这样噁心的东西、具体不同的数据媒介的相关操作让他自己处理即可。</p></li>
+<li><p>同样一个简单的例子、抽象出cash这个类、他的具体打折策略去由context去维护、整个这个打折这个事件全托管给context、类似一个中间人的角色</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">CashSuper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-      <span class="k">assert</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
 
 <span class="k">class</span> <span class="nc">CashNormal</span><span class="p">(</span><span class="n">CashSuper</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -189,13 +186,10 @@
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
   <span class="n">cc</span> <span class="o">=</span> <span class="n">CashContext</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">900</span><span class="p">)</span>
   <span class="k">print</span> <span class="n">cc</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span> 
-</code></pre></div></li>
-<li><p>装饰模式</p>
-
-<ul>
-<li>装饰模式核心就是装饰不要去污染原来的东西、遵循开放封闭原则。例如一个人穿衣服、隔离出穿衣服这个事情。</li>
-<li>先写一端照书上的装饰模式的结构图写的代码</li>
-</ul>
+</code></pre></div>
+<h4>装饰模式</h4></li>
+<li><p>装饰模式核心就是装饰不要去污染原来的东西、遵循开放封闭原则。例如一个人穿衣服、隔离出穿衣服这个事情。</p></li>
+<li><p>先写一端照书上的装饰模式的结构图写的代码</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -230,10 +224,8 @@
   <span class="n">ts</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
   <span class="n">sh</span><span class="o">.</span><span class="n">decorate</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
   <span class="n">sh</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</code></pre></div>
-<ul>
-<li>感觉这样装饰模式虽然结构清楚、但是写起来感觉很难受、继承来继承去也麻烦、用了另外种装饰方法感觉明了简介更多</li>
-</ul>
+</code></pre></div></li>
+<li><p>感觉这样装饰模式虽然结构清楚、但是写起来感觉很难受、继承来继承去也麻烦、用了另外种装饰方法感觉明了简介更多</p>
 <div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">def</span> <span class="nf">wear_shoe</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
   <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
       <span class="k">print</span> <span class="s">&quot;wear shoe&quot;</span>
@@ -257,6 +249,88 @@
   <span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s">&quot;zx&quot;</span><span class="p">)</span>
   <span class="n">f</span> <span class="o">=</span> <span class="n">wear_tshirt</span><span class="p">(</span><span class="n">wear_shoe</span><span class="p">(</span><span class="n">Person</span><span class="o">.</span><span class="n">show</span><span class="p">))</span>
   <span class="n">f</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div>
+<h4>工厂模式</h4></li>
+<li><p>工厂其实主要就是工厂的抽象以及实体的抽象2部分、把实体的选择都抽象在工厂里、然后统一由工厂返回</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="nc">AbstractFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">createFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+
+<span class="k">class</span> <span class="nc">Instance1</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;instance1 alloc&quot;</span>
+
+<span class="k">class</span> <span class="nc">Factory1</span><span class="p">(</span><span class="n">AbstractFactory</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">createFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">Instance1</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Instance2</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;instance2 alloc&quot;</span>
+
+<span class="k">class</span> <span class="nc">Factory2</span><span class="p">(</span><span class="n">AbstractFactory</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">createFactory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">Instance2</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">instance</span> <span class="o">=</span> <span class="n">Factory1</span><span class="p">()</span><span class="o">.</span><span class="n">createFactory</span><span class="p">()</span>
+</code></pre></div>
+<h4>代理模式</h4></li>
+<li><p>其实代理模式平常用的非常多、我所认为的核心是有两点</p>
+
+<ul>
+<li>隔离开他所需要操作的对象、使用户使用这个对象的方法大大减少保证正确</li>
+<li>类似一个callback的感觉在调真实对象时有个地方给你写需要做的别的事情</li>
+</ul></li>
+<li><p>比如html加载图片时碰到真的图片时都是弄个假的框框再去真的download图片大致套用了写模式</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">ImageNetwork</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+
+<span class="k">class</span> <span class="nc">ImageRequestProxy</span><span class="p">(</span><span class="n">ImageNetwork</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="nb">super</span><span class="p">(</span><span class="n">ImageRequestProxy</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">image_request</span> <span class="o">=</span> <span class="n">ImageRequestNetwork</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;render ui&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">image_request</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ImageRequestNetwork</span><span class="p">(</span><span class="n">ImageNetwork</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;download image&quot;</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="n">ImageRequestProxy</span><span class="p">()</span>
+  <span class="n">p</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
+</code></pre></div>
+<h4>原型模式</h4></li>
+<li><p>一个词核心就是拷贝实现一个深拷贝就可以了</p></li>
+<li><p>比如js就是个非常经典的原型</p></li>
+<li><p>例子就不写了 Orz</p></li>
+</ul>
+
+<h4>模版模式</h4>
+
+<ul>
+<li><p>模版的话核心也是提出公共部分、在可变的部分抽象出公共接口给具体的实现去实现……各种web框架模版也是用烂了的……</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Template</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">dosth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;dosth&quot;</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">needsth</span><span class="p">()</span>
+  <span class="k">def</span> <span class="nf">needsth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;abstract method must be implement&quot;</span>
+
+<span class="k">class</span> <span class="nc">Detail</span><span class="p">(</span><span class="n">Template</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">needsth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;food&quot;</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">Detail</span><span class="p">()</span><span class="o">.</span><span class="n">dosth</span><span class="p">()</span>
 </code></pre></div></li>
 </ul>
 
@@ -272,7 +346,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>45</span>
+    		program <span>46</span>
     	</a></li>
     
   
@@ -291,9 +365,9 @@
 
   
     
-    	<li><a href="#design pattern-ref">design pattern <span>1</span></a></li>
+    	<li><a href="#design pattern-ref">design pattern <span>2</span></a></li>
     
-    	<li><a href="#python-ref">python <span>1</span></a></li>
+    	<li><a href="#python-ref">python <span>2</span></a></li>
     
   
 
@@ -310,7 +384,7 @@
       
         <li><a href="/archive.html">Archive</a></li>
       
-        <li class="next disabled"><a>Next &rarr;</a>
+        <li class="next"><a href="/program/2014/10/12/design-pattern-1" title="Design Pattern (2)">Next &rarr;</a></li>
       
       </ul>
     </div>

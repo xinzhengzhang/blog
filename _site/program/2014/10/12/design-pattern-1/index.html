@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Design Pattern (2)</title>
+    <meta name="description" content="facade, builder, observer, abstract factory">
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">About me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archives</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>Design Pattern (2) </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>12 October 2014</span>
+    </div>
+    <div class="content">
+      <h3>大话设计模式的读书笔记（二）</h3>
+
+<ul>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/">读书笔记（一）</a>
+### Facade, Builder, Observer, Abstract Factory</li>
+</ul>
+
+<h4>外观模式</h4>
+
+<ul>
+<li>外观模式大概不就是个封装……说好听点他的定义是「为系统中一组接口提供一个一致的界面」核心就是把业务层的复杂逻辑全部抽出来给另外一个替死鬼来干ˊ_&gt;ˋ</li>
+<li>代码也不想写了、举个例子比如老师管理收作业要去不会去盯每个学生、会选个班长把脏活都丢给他来做……自己只要简单的去和班长交流就好了</li>
+</ul>
+
+<h4>建造者模式</h4>
+
+<ul>
+<li>建造者模式我理解核心有一点是强制把一些必须实现的东西抽象到上层通过虚方法强制必须实现。这样可以极大的有效的防止使用的时候漏掉了某一个步骤</li>
+<li><p>另外一个是他有一个叫导演的概念、整个建造的方法整段逻辑托管给了这个导演而不会暴露给最上层去担忧这个事情</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="p">:</span>
+          <span class="k">print</span> <span class="n">i</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">build_part_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">build_part_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">ConcreteBuilder1</span><span class="p">(</span><span class="n">Builder</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">build_part_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;partA&quot;</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">build_part_b</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;partB&quot;</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">get_result</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span>
+
+<span class="k">class</span> <span class="nc">Director</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="nd">@staticmethod</span>
+  <span class="k">def</span> <span class="nf">construct</span><span class="p">(</span><span class="n">builder</span><span class="p">):</span>
+      <span class="n">builder</span><span class="o">.</span><span class="n">build_part_a</span><span class="p">()</span>
+      <span class="n">builder</span><span class="o">.</span><span class="n">build_part_b</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="n">ConcreteBuilder1</span><span class="p">()</span>
+  <span class="n">Director</span><span class="o">.</span><span class="n">construct</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
+  <span class="n">p</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></li>
+</ul>
+
+<h4>观察者模式</h4>
+
+<ul>
+<li>我想这个东西熟悉ios的人一定不会陌生、ios中kvo的使用简直是不能再棒、那为什么客户端超级适用这个模式我想大家也应该想到了是因为客户端因为是个超级重交互的东西、例如UI层的重新render每次都需要前段手动进行这么一下简直是不能忍的</li>
+<li>观察者模式核心的话我认为是一种定义了一个一对N的关系、并且一去和N中的一个进行交互、一旦触发同时去触发剩下另外的N－1个。例如ios的UIVIew会去observe他的rect、一旦这一个rect进行变化、他会自己去触发绑定的一坨逻辑例如render等等</li>
+<li><p>写了一个很简单的UI的模拟 rect就简单变成kvo一个int了</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="k">class</span> <span class="nc">ISth</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">View</span><span class="p">(</span><span class="n">ISth</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">handler</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">render</span><span class="p">]</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span> <span class="o">=</span> <span class="mi">0</span>
+
+  <span class="nd">@property</span>
+  <span class="k">def</span> <span class="nf">rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span>
+
+  <span class="nd">@rect.setter</span>
+  <span class="k">def</span> <span class="nf">rect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">_rect</span> <span class="o">=</span> <span class="n">value</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="p">:</span>
+          <span class="n">i</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;i am render&quot;</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">v</span> <span class="o">=</span> <span class="n">View</span><span class="p">()</span>
+  <span class="n">v</span><span class="o">.</span><span class="n">rect</span> <span class="o">=</span> <span class="mi">5</span>
+</code></pre></div>
+<h4>抽象工厂模式</h4></li>
+<li><p>好吧……抽象工厂模式其实就是工厂的再一步进化……核心就是本来子类到底是什么是交给具体适用场景去决定的、而抽象工厂把这部分也给抽走了</p></li>
+<li><p>说具体点两者的差别的话就是类似多个route的东西、由他来决定到底把工厂route到哪儿个子类去，然后表示用一坨switch case太丑陋了，然后用了反射来处理、我就大致写下python的反射好了= =具体的工厂大同小异了</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">class_</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="s">&quot;xxx&quot;</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>46</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#design pattern-ref">design pattern <span>2</span></a></li>
+    
+    	<li><a href="#python-ref">python <span>2</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/program/2014/10/11/design-pattern-0" title="Design Pattern (1)">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next disabled"><a>Next &rarr;</a>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'snorlaxzxz'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
+    
+  </body>
+</html>
+

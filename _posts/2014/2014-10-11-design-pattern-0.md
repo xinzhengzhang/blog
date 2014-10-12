@@ -7,7 +7,7 @@ tags: ["design pattern", "python"]
 ---
 {% include JB/setup %}
 
-### 这系列文章为大话设计模式的读书笔记（一）
+### 大话设计模式的读书笔记（一）
 * 简单工厂模式
   * 其实工厂平常也用的非常多了、核心就是抽出公共外部接口、然后按照需求子类、然后由统一工厂返回。好处也很明显就是解耦、隔绝上层知道自己不需要知道的东西。
   * 用`python`实现了一端最简单的例子
@@ -19,7 +19,7 @@ tags: ["design pattern", "python"]
           self.number_a = b
       # 抽象出公共的计算
       def getresult(self):
-          assert "base method must be implement"
+          assert False, "base method must be implement"
 
 
   class Add(Operation):
@@ -55,7 +55,7 @@ tags: ["design pattern", "python"]
   ```python
   class CashSuper(object):
       def get_result(self):
-          assert "abstract method must be implement"
+          assert False, "abstract method must be implement"
 
 
   class CashNormal(CashSuper):

@@ -9,6 +9,7 @@ tags: ["design pattern", "python"]
 
 ### 大话设计模式的读书笔记（二）
   * [读书笔记（一）](http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/)
+  * [读书笔记（三）](http://snorlaxzxz.com/program/2014/10/11/design-pattern-2/)
   
 ### Facade, Builder, Observer, Abstract Factory
 

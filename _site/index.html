@@ -107,6 +107,190 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2014/10/13/design-pattern-2">Design Pattern (3) </a></h3>
+  <div class="date">
+    <span>13 October 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h3>大话设计模式的读书笔记（三）</h3>
+
+<ul>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/">读书笔记（一）</a></li>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-1/">读书笔记（二）</a></li>
+</ul>
+
+<h3>State,</h3>
+
+<h4>状态模式</h4>
+
+<ul>
+<li>理解状态核心就是让一个封闭的东西自己决定自己该干嘛、而如何让他自己决定就是给他自己一个状态</li>
+<li><p>例如button一个按钮他就有多种状态、而他的行为都是被按上去、由他自己来决定自己要做什么</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+  <span class="nd">@abstractmethod</span>
+  <span class="k">def</span> <span class="nf">dosth</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Pressed</span><span class="p">(</span><span class="n">State</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">dosth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;do sth 1&quot;</span>
+      <span class="n">button</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Normal</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Normal</span><span class="p">(</span><span class="n">State</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">dosth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">button</span><span class="p">):</span>
+      <span class="k">print</span> <span class="s">&quot;do sth 2&quot;</span>
+      <span class="n">button</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Pressed</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Button</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">Normal</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">press</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">dosth</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">b</span> <span class="o">=</span> <span class="n">Button</span><span class="p">()</span>
+  <span class="n">b</span><span class="o">.</span><span class="n">press</span><span class="p">()</span>
+  <span class="n">b</span><span class="o">.</span><span class="n">press</span><span class="p">()</span>
+</code></pre></div></li>
+</ul>
+
+<h4>适配器模式</h4>
+
+<ul>
+<li>adapter的核心是把一些接口不兼容的一些类可以被统一的一起工作</li>
+<li>例如在客户端一个page需要展示的格式不止一种、比如他有两个tab通过切换实现两套数据、而具体他们的实现其实并不可以保证接口一定统一这个时候就可以使用adapter</li>
+<li>最好的例子就是android的adapter、adapter就起了桥接AdapterView与里面具体data的作用，可以一个Adapter这样的类兼容很多展示工作</li>
+<li>同理ios中对一个比较复杂的viewController可以参考android中的adapter模式把里面的多种情况抽离开来在最上层再统一的塞进去、例如拆开tableView等的delegate dataSource进去</li>
+</ul>
+
+<h4>备忘录模式</h4>
+
+<ul>
+<li>具体定义为不破坏封装性的前提下，不活一个对象的内部状态并可以随时恢复</li>
+<li>这个也是用烂了的东西……比如在各种canvas绘图时对各种变量设置的save restore</li>
+<li>例如<code>CGContextSaveGState</code>和<code>CGContextRestoreGState</code>这一对api</li>
+<li><p>书上的正经的写法是这样的反正我个人认为是极大的不喜欢……感觉纯粹是为了OO而OO的产物</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">class</span> <span class="nc">Memento</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span> 
+
+<span class="k">class</span> <span class="nc">Originator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="mi">1</span>
+
+  <span class="k">def</span> <span class="nf">create_memento</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="k">return</span> <span class="n">Memento</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">restoreMemento</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memento</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">memento</span><span class="o">.</span><span class="n">state</span>
+
+<span class="k">class</span> <span class="nc">Caretaker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">memento</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">o</span> <span class="o">=</span> <span class="n">Originator</span><span class="p">()</span>
+  <span class="n">c</span> <span class="o">=</span> <span class="n">Caretaker</span><span class="p">()</span>
+  <span class="n">c</span><span class="o">.</span><span class="n">memento</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">create_memento</span><span class="p">()</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="n">o</span><span class="o">.</span><span class="n">restoreMemento</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">memento</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+<h4>组合模式</h4>
+
+<ul>
+<li>理解的核心就是这就是颗树、然后对上层调用者来说他只关心他、并不关心他下面的节点、比如他不关心他控制的是一个节点还是一棵树</li>
+<li>又拿ios做例子了……比如<code>UIView</code>你你根本不用去关系到底这个view只有一层还是有一坨subview……</li>
+<li>有一点需要比较注意的就是非常有可能因为这棵树的结构是一样的导致很多相应的节点实现起来会很难受因为很多别的节点的方法自己并没有的。在这里书上其实主要选择两种方法、具体用哪儿种其实我还是倾向透明的好、毕竟调空也没什么问题啦……
+
+<ul>
+<li>透明方式 暴露出这些节点方法、具有一致的行为接口、空着去实现</li>
+<li>安全方式 不去实现这些方法、在上层调用的时候需要做相应的判断</li>
+</ul></li>
+</ul>
+
+<h4>迭代器模式</h4>
+
+<ul>
+<li>迭代器模式提供了一种方法顺序访问一个聚合对象的各个元素、且不暴露内部</li>
+<li>就像python一个list根本其实不需要在意list中每一个到底是什么东西只需要知道我可以一个个的取就够了</li>
+<li>这个模式已经甚至进化成语言特性了</li>
+</ul>
+
+<h4>单例模式</h4>
+
+<ul>
+<li>也是比较用烂的、我其实理解单例就是那些需要类似写面向过程的代码、没办法的通路= =</li>
+<li>单例的定义就是保证一个类仅只能又一个实例</li>
+<li><p>写一个python的单例</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="k">def</span> <span class="nf">singleton</span><span class="p">(</span><span class="n">class_</span><span class="p">):</span>
+<span class="n">instances</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">def</span> <span class="nf">getinstance</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+  <span class="k">if</span> <span class="n">class_</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
+      <span class="n">instances</span><span class="p">[</span><span class="n">class_</span><span class="p">]</span> <span class="o">=</span> <span class="n">class_</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">instances</span><span class="p">[</span><span class="n">class_</span><span class="p">]</span>
+<span class="k">return</span> <span class="n">getinstance</span>
+
+<span class="nd">@singleton</span>
+<span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="n">BaseClass</span><span class="p">):</span>
+<span class="k">pass</span>
+</code></pre></div></li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>47</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#design pattern-ref">design pattern <span>3</span></a></li>
+    
+    	<li><a href="#python-ref">python <span>3</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2014/10/12/design-pattern-1">Design Pattern (2) </a></h3>
   <div class="date">
     <span>12 October 2014</span>
@@ -119,9 +303,11 @@
       <h3>大话设计模式的读书笔记（二）</h3>
 
 <ul>
-<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/">读书笔记（一）</a>
-### Facade, Builder, Observer, Abstract Factory</li>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/">读书笔记（一）</a></li>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-2/">读书笔记（三）</a></li>
 </ul>
+
+<h3>Facade, Builder, Observer, Abstract Factory</h3>
 
 <h4>外观模式</h4>
 
@@ -245,7 +431,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>46</span>
+    		program <span>47</span>
     	</a></li>
     
   
@@ -264,9 +450,9 @@
 
   
     
-    	<li><a href="#design pattern-ref">design pattern <span>2</span></a></li>
+    	<li><a href="#design pattern-ref">design pattern <span>3</span></a></li>
     
-    	<li><a href="#python-ref">python <span>2</span></a></li>
+    	<li><a href="#python-ref">python <span>3</span></a></li>
     
   
 
@@ -289,6 +475,11 @@
   <div class="span12">
     <div class="content">
       <h3>大话设计模式的读书笔记（一）</h3>
+
+<ul>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-1/">读书笔记（二）</a></li>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-2/">读书笔记（三）</a></li>
+</ul>
 
 <h3>Simple Factory, Strategy, Decorator, Factory, Proxy, Prototype, Template</h3>
 
@@ -519,7 +710,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>46</span>
+    		program <span>47</span>
     	</a></li>
     
   
@@ -538,9 +729,9 @@
 
   
     
-    	<li><a href="#design pattern-ref">design pattern <span>2</span></a></li>
+    	<li><a href="#design pattern-ref">design pattern <span>3</span></a></li>
     
-    	<li><a href="#python-ref">python <span>2</span></a></li>
+    	<li><a href="#python-ref">python <span>3</span></a></li>
     
   
 
@@ -631,7 +822,7 @@ done;
   
     
     	<li><a href="#program-ref">
-    		program <span>46</span>
+    		program <span>47</span>
     	</a></li>
     
   
@@ -927,7 +1118,7 @@ sort(l, &gt;)
   
     
     	<li><a href="#program-ref">
-    		program <span>46</span>
+    		program <span>47</span>
     	</a></li>
     
   
@@ -1232,7 +1423,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>46</span>
+    		program <span>47</span>
     	</a></li>
     
   
@@ -1313,7 +1504,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>46</span>
+    		program <span>47</span>
     	</a></li>
     
   
@@ -1384,68 +1575,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>46</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2014/02/03/%E5%85%B3%E4%BA%8Ensurlsessiondownloadtask%E7%9A%84%E5%8F%82%E6%95%B0%E4%BC%A0%E9%80%92">关于NSURLSessionDownloadTask的参数传递 </a></h3>
-  <div class="date">
-    <span>03 February 2014</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>ios7开放了一组新的api其中一个最吸引人的也应该就是开放了后台下载的接口。当然凭ios一贯的作风肯定是把接口封的简单的要死然后用着噁心的要死……反正我是绝对被噁心到了、最近要解决的一个问题就是把downloadtask和实体关联上的问题。当然最简单的就是传参数了，然后我可以很负责的告诉你……尼玛你assign task的时候和从call back拿的时候不是一个实体！！！wtf……所以什么用runtime给他加点奇怪的东西什么都别想了……<br />
--------------------------------------------万恶的分割线-----------------------------------------------<br />
-然后就说下解决办法吧……其实想想是会吐血的，仔细看看他的.h里面终于发现了还有这个一个东西……至少他是不会变的……<br />
-所以我们既然找到了有不变的东西那么就终于可以有解决办法了……直接把要传的东西转成json靠这个东西传简直轻松又愉快……</p>
-<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="cm">/*</span>
-<span class="cm"> * The taskDescription property is available for the developer to</span>
-<span class="cm"> * provide a descriptive label for the task.</span>
-<span class="cm"> */</span>
-<span class="k">@property</span> <span class="p">(</span><span class="n">copy</span><span class="p">)</span> <span class="n">NSString</span> <span class="o">*</span><span class="n">taskDescription</span><span class="p">;</span>
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>46</span>
+    		program <span>47</span>
     	</a></li>
     
   
@@ -1511,7 +1641,7 @@ redcarpet:
   
     <a class="next" href="/page2">后页</a>
   
-  (共58篇)
+  (共59篇)
 </div>
 
         </div>

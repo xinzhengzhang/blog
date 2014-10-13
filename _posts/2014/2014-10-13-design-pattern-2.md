@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Design Pattern (3)"
-description: "state"
+description: "state, adapter, memento, composite, singleton"
 category: program
 tags: ["design pattern", "python"]
 ---
@@ -11,7 +11,7 @@ tags: ["design pattern", "python"]
   * [读书笔记（一）](http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/)
   * [读书笔记（二）](http://snorlaxzxz.com/program/2014/10/11/design-pattern-1/)
 
-### State, 
+### State, Adapter, Memento, Composite, Singleton
 
 #### 状态模式
   * 理解状态核心就是让一个封闭的东西自己决定自己该干嘛、而如何让他自己决定就是给他自己一个状态

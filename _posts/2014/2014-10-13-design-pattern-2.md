@@ -10,6 +10,8 @@ tags: ["design pattern", "python"]
 ### 大话设计模式的读书笔记（三）
   * [读书笔记（一）](http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/)
   * [读书笔记（二）](http://snorlaxzxz.com/program/2014/10/11/design-pattern-1/)
+  * [读书笔记（四）](http://snorlaxzxz.com/program/2014/10/11/design-pattern-3/)
+
 
 ### State, Adapter, Memento, Composite, Singleton
 

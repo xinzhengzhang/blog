@@ -1,0 +1,534 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Design Pattern (4)</title>
+    <meta name="description" content="bridge, command, chain of responsibility, mediator, flyweight, interpreter, visitor">
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">About me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archives</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>Design Pattern (4) </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>14 October 2014</span>
+    </div>
+    <div class="content">
+      <h3>大话设计模式的读书笔记（四）</h3>
+
+<ul>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-0/">读书笔记（一）</a></li>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-1/">读书笔记（二）</a></li>
+<li><a href="http://snorlaxzxz.com/program/2014/10/11/design-pattern-2/">读书笔记（三）</a></li>
+</ul>
+
+<h3>Bridge, Command, Chain Of Responsibility, Mediator, Flyweight, Interpreter, Visitor</h3>
+
+<h4>桥接模式</h4>
+
+<ul>
+<li>桥接模式的定义为「将抽象不分与实现部分分离，使之可以独立变化」</li>
+<li><p>简单来说就比如python 把语言核心逻辑抽象出PVM具体实现根据是当前什么平台再分别处理、使用也使用的是抽象接口
+由实现者abstraction获得抽象的implementor并具体实现</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="k">class</span> <span class="nc">Implementor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Abstraction</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">implementor</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">implementor</span><span class="o">.</span><span class="n">operation</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ConcreteImplementorA</span><span class="p">(</span><span class="n">Implementor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;implementor A&quot;</span>
+
+<span class="k">class</span> <span class="nc">ConcreteAbstraction</span><span class="p">(</span><span class="n">Abstraction</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Abstraction</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">operation</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">ab</span> <span class="o">=</span> <span class="n">ConcreteAbstraction</span><span class="p">()</span>
+    <span class="n">ab</span><span class="o">.</span><span class="n">implementor</span> <span class="o">=</span> <span class="n">ConcreteImplementorA</span><span class="p">()</span>
+    <span class="n">ab</span><span class="o">.</span><span class="n">operation</span><span class="p">()</span>
+</code></pre></div></li>
+</ul>
+
+<h4>命令模式</h4>
+
+<ul>
+<li>命令模式是把一个请求进行多一道转移、通过一个统一的invoker进行一起的操作</li>
+<li><p>例如ios中dispatch_async等操作或者任意的线程池都是这个思路、任何request只管我来托管、具体怎么操作由我自己来决定这个模式也是非常常见的</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="nc">Command</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">receiver</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="n">receiver</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">ConcreteCommand</span><span class="p">(</span><span class="n">Command</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">action</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Receiver</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;do sth&quot;</span>
+
+<span class="k">class</span> <span class="nc">Invoker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
+
+    <span class="k">def</span> <span class="nf">execute_command</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">command</span><span class="o">.</span><span class="n">execute</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">Receiver</span><span class="p">()</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">ConcreteCommand</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">Invoker</span><span class="p">()</span>
+    <span class="n">i</span><span class="o">.</span><span class="n">set_command</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">i</span><span class="o">.</span><span class="n">execute_command</span><span class="p">()</span>
+</code></pre></div></li>
+</ul>
+
+<h4>职责链模式</h4>
+
+<ul>
+<li>职责链模式的核心我理解的是把担负责任的对象抽象出公共、并对每个节点不关心其周边节点、只关心与他需要传递的节点核心好处就是避免了客户端上需要对整个职责具体模块的掌握、就像上班只需要关注上级领导即可</li>
+<li><p>具体来说还是拿ios来说、比如触碰下屏幕、他并不知道你点击的到底是哪儿个button、他一层层先给他的直接交互UIWindow然后再由他传递他的第一层view等等直到找到该负责的那个button为止。或者说就像一个request进服务器他并不知道他是给具体的业务是谁、他先去找nginx、然后nginx再去分发给相关的、再进到具体的某个业务层逻辑一样道理</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="nc">Handler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+    <span class="k">def</span> <span class="nf">set_successor</span><span class="p">(</span><span class="n">successor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">successor</span> <span class="o">=</span> <span class="n">successor</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">ConcreateHandler</span><span class="p">(</span><span class="n">Handler</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">request</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;deal it&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">successor</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">successor</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">ConcreateHandler</span><span class="p">()</span>
+    <span class="n">h</span><span class="o">.</span><span class="n">set_successor</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">h</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+<h4>中介者模式</h4>
+
+<ul>
+<li>其实这东西感觉是不是办法的办法。。虽然说初衷的确能够理解。举个例子就是有10个人、每个人和另外9个人都有一种接触方式、那么一共就有45种规则。并且每个人里都需要记录9种规则。于是就抽象出一个规则列表、里面记录了45种规则、所有的具体问题全去找中介者。也就是多对多的关系。</li>
+<li><p>不过我理解这种脏活也是在所难免的、比如一个UI层的渲染再怎么拆分开总有需要合并起来的地方、而上层拆的越开越清晰、倒霉的肯定是下层的强大逻辑。</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="k">class</span> <span class="nc">Mediator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">colleague</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">Colleague</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mediator</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mediator</span> <span class="o">=</span> <span class="n">mediator</span>
+
+<span class="k">class</span> <span class="nc">ConcreteMediator</span><span class="p">(</span><span class="n">Mediator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_colleague1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colleague</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colleague1</span> <span class="o">=</span> <span class="n">colleague</span>
+
+    <span class="k">def</span> <span class="nf">set_colleague2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colleague</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colleague2</span> <span class="o">=</span> <span class="n">colleague</span>
+
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">colleague</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">colleague</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">colleague1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">colleague2</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">colleague1</span><span class="o">.</span><span class="n">notify</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">ConcreteColleague1</span><span class="p">(</span><span class="n">Colleague</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mediator</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;c1 dosth&quot;</span>
+
+<span class="k">class</span> <span class="nc">ConcreteColleague2</span><span class="p">(</span><span class="n">Colleague</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mediator</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">notify</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;c2 dosth&quot;</span> 
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">ConcreteMediator</span><span class="p">()</span>
+    <span class="n">c1</span> <span class="o">=</span> <span class="n">ConcreteColleague1</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">c2</span><span class="o">=</span> <span class="n">ConcreteColleague2</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">set_colleague1</span><span class="p">(</span><span class="n">c1</span><span class="p">)</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">set_colleague2</span><span class="p">(</span><span class="n">c2</span><span class="p">)</span>
+    <span class="n">c1</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;hi1&quot;</span><span class="p">)</span>
+    <span class="n">c2</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s">&quot;hi2&quot;</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+<h4>享元模式</h4>
+
+<ul>
+<li><p>定义为「运用共享技术有效地支持大量细粒度的对象」核心的话就是抽出公共、独立出私有的。我太菜大概只能理解到除了省内存这一点而已。。</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="nc">Flyweight</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extrinsicstate</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">ConcreteFlyweight</span><span class="p">(</span><span class="n">Flyweight</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extrinsicstate</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;do{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extrinsicstate</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">UnSharedCOncreteFlyweight</span><span class="p">(</span><span class="n">Flyweight</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">operation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extrinsicstate</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;unshared{0}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extrinsicstate</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">FlyweightFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flyweights</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">get_flyweight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">flyweights</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flyweights</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ConcreteFlyweight</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flyweights</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">FlyweightFactory</span><span class="p">()</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get_flyweight</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">)</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get_flyweight</span><span class="p">(</span><span class="s">&quot;y&quot;</span><span class="p">)</span>
+    <span class="n">ux3</span> <span class="o">=</span> <span class="n">UnSharedCOncreteFlyweight</span><span class="p">()</span>
+
+    <span class="n">x1</span><span class="o">.</span><span class="n">operation</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">x2</span><span class="o">.</span><span class="n">operation</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ux3</span><span class="o">.</span><span class="n">operation</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+<h3>解释器模式</h3>
+
+<ul>
+<li>大概我觉得我最喜欢这个了Orz……自己定义一套语法去解释一套东西而不去用各种复杂的OO的东西大概是我最喜欢的了……</li>
+<li><p>我又来qb vfl(Visual Format Language)了……同样是在ios里面把复杂的constraints抽象成一套自己定义的语言真是舒服级了。。。</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="nc">AbstractExpression</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">context</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">interpret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">TerminalExpression</span><span class="p">(</span><span class="n">AbstractExpression</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">interpret</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;interpret {0} in {1}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Context</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Context</span><span class="p">()</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">TerminalExpression</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">interpret</span><span class="p">(</span><span class="s">&quot;dosth&quot;</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+<h4>访问者模式</h4>
+
+<ul>
+<li>我理解的访问者模式是把不同人在不同状态做的事情、2个数据model给解耦了。把状态全都丢进了一个公共处理的objectStructure、然后针对每个不同的访问者然后做出相应的处理</li>
+<li><p>访问者的有点是因为抽象出公共的处理部分了、所以再他的基础上添加新的行为非常方便，就多一种element而已、但是如果在数据结构层次的修改的话就蛋疼了。</p>
+<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span> <span class="nc">Visitor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">visit_concrete_element_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concrete_element_a</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">visit_concrete_element_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concrete_element_b</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">ConcreteVisitor1</span><span class="p">(</span><span class="n">Visitor</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">visit_concrete_element_a</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concrete_element_a</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;{0} was visited by {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">concrete_element_a</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">visit_concrete_element_b</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">concrete_element_b</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&#39;{0} was visited by {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">concrete_element_b</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Element</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visitor</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">ConcreteElementA</span><span class="p">(</span><span class="n">Element</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visitor</span><span class="p">):</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit_concrete_element_a</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">operation_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;do sth a&quot;</span>
+
+<span class="k">class</span> <span class="nc">ConcreteElementB</span><span class="p">(</span><span class="n">Element</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visitor</span><span class="p">):</span>
+        <span class="n">visitor</span><span class="o">.</span><span class="n">visit_concrete_element_b</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">operation_a</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">&quot;do sth b&quot;</span>
+
+<span class="k">class</span> <span class="nc">ObjectStructure</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">attach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">detach</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">accept</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visitor</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">visitor</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">ObjectStructure</span><span class="p">()</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">ConcreteElementA</span><span class="p">())</span>
+    <span class="n">o</span><span class="o">.</span><span class="n">attach</span><span class="p">(</span><span class="n">ConcreteElementB</span><span class="p">())</span>
+
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">ConcreteVisitor1</span><span class="p">()</span>
+
+    <span class="n">o</span><span class="o">.</span><span class="n">accept</span><span class="p">(</span><span class="n">v1</span><span class="p">)</span>
+</code></pre></div></li>
+</ul>
+
+<h3>后记</h3>
+
+<ul>
+<li>用了4天读完了这本书、虽然说感觉书里面有些例子还是举的太过生硬、但总体来说还是帮助结构化的梳理了之前编程中碰到过的大量例子、两者结合起来才能理解的比较深刻。</li>
+<li>我理解学设计模式是学的解耦思想、核心透过几个原则来自己写代码、而不是为了OO而OO的生搬硬套。闭上眼睛想想之前自己的代码到底什么地方设计不合理等等也是可以回味不少的。</li>
+<li>这次里面所有的例子我都是用python实现的、其实用python这种活的脚本语言本来就不大适合严谨的设计模式、嘛不过总体来说也是一样的。</li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>49</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#design pattern-ref">design pattern <span>4</span></a></li>
+    
+    	<li><a href="#python-ref">python <span>4</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/program/2014/10/13/design-pattern-2" title="Design Pattern (3)">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/program/2014/10/14/regular-expression" title="Regular Expression">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'snorlaxzxz'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
+    
+  </body>
+</html>
+

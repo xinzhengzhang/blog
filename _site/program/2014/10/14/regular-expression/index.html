@@ -1,0 +1,462 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Regular Expression</title>
+    <meta name="description" content="">
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">About me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archives</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>Regular Expression </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>14 October 2014</span>
+    </div>
+    <div class="content">
+      <h3>本文主要说明了正则的两个标准 BRE 以及 ERE的具体用法</h3>
+
+<ul>
+<li>BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。</li>
+<li><p>但是两种语法也都必须要记因为很多Unix程序用的并没有统一。</p>
+
+<table><thead>
+<tr>
+<th></th>
+<th>BRE</th>
+<th>ERE</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>grep</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>sed</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>ed</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>vi</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>more</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>egrep</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>awk</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>lex</td>
+<td></td>
+<td>√</td>
+</tr>
+</tbody></table></li>
+</ul>
+
+<h3>公共meta部分</h3>
+
+<ul>
+<li><code>\</code> 
+
+<ul>
+<li>用来关闭后续字符意义例如 <code>\&#39;  \&quot;</code> </li>
+<li>在BRE中特别有打开字符意义的意思例如 <code>\(...\)</code> <code>\{...\}</code></li>
+</ul></li>
+<li><code>.</code>
+
+<ul>
+<li>用来匹配单个字符</li>
+</ul></li>
+<li><code>*</code>
+
+<ul>
+<li>匹配0-n个字符</li>
+</ul></li>
+<li><code>^</code>
+
+<ul>
+<li>锚点、行首起始处</li>
+<li>在BRE中必须需要在表达式开头才有效
+
+<ul>
+<li><code>echo abc | grep &quot;.*^a&quot;</code> ×</li>
+<li><code>echo abc | egrep &quot;.*^a&quot;</code> √</li>
+</ul></li>
+</ul></li>
+<li><code>$</code>
+
+<ul>
+<li>锚点、行尾结尾处</li>
+<li>同上在BRE中必须要在结尾处才有效</li>
+</ul></li>
+<li><p><code>[...]</code></p>
+
+<ul>
+<li><code>[^...]</code> 取...的反</li>
+<li><code>[x-y]</code> 匹配 x-y 之间的  例如 x=1 y=9 or x=a y=z</li>
+<li><p><code>[express]</code> 匹配express的字符集  例如 express=[:alnum:] [[:alnum:]] 匹配数字字符</p>
+
+<table><thead>
+<tr>
+<th>类别</th>
+<th>意义</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>[:alnum:]</td>
+<td>数字</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>字母</td>
+</tr>
+<tr>
+<td>[:blank:]</td>
+<td>space or tab</td>
+</tr>
+<tr>
+<td>[:cntrl:]</td>
+<td>控制字符</td>
+</tr>
+<tr>
+<td>[:digit:]</td>
+<td>数字</td>
+</tr>
+<tr>
+<td>[:graph:]</td>
+<td>除了空格字符</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>小写字母</td>
+</tr>
+<tr>
+<td>[:print:]</td>
+<td>可显示的字符</td>
+</tr>
+<tr>
+<td>[:puncat:]</td>
+<td>标点</td>
+</tr>
+<tr>
+<td>[:space:]</td>
+<td>空白</td>
+</tr>
+<tr>
+<td>[:upper:]</td>
+<td>大写字母</td>
+</tr>
+<tr>
+<td>[:xdigit:]</td>
+<td>16进制数字</td>
+</tr>
+</tbody></table></li>
+</ul></li>
+<li><p><code>\n</code></p>
+
+<ul>
+<li>在BRE中为重复(...)的第n个表达式且当时位置匹配的结果于他所代表的那个结果相同
+
+<ul>
+<li><code>echo axa | grep &quot;\([ab]\)x\1&quot;</code> √</li>
+<li><code>echo axb | grep &quot;\([ab]\)x\1&quot;</code> ×</li>
+</ul></li>
+<li>在ERE中为重复()的第n个表达式
+
+<ul>
+<li><code>echo axa | egrep &quot;([ab])x\1&quot;</code> √</li>
+<li><code>echo axb | egrep &quot;([ab])x\1&quot;</code> ×</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3>BRE meta部分</h3>
+
+<ul>
+<li><code>\{n,m\}</code>
+
+<ul>
+<li>匹配前面单个字符的次数区间为n-m次 
+
+<ul>
+<li><code>\{n\}</code> 重现n次</li>
+<li><code>\{n,\}</code> 至少出现n次</li>
+</ul></li>
+</ul></li>
+<li><code>\(...\)</code>
+
+<ul>
+<li>匹配...子模式的 可以通过上述的<code>\n</code>来引用</li>
+</ul></li>
+</ul>
+
+<h3>ERE meta部分</h3>
+
+<ul>
+<li><code>{n,m}</code>
+
+<ul>
+<li>同BRE匹配单个字符n-m次</li>
+</ul></li>
+<li><code>+</code>
+
+<ul>
+<li>匹配一个或n个</li>
+</ul></li>
+<li><code>?</code>
+
+<ul>
+<li>匹配0个或1个</li>
+</ul></li>
+<li><code>|</code>
+
+<ul>
+<li>匹配 | 前后的表达式</li>
+</ul></li>
+<li><code>(...)</code>
+
+<ul>
+<li>同BRE中的<code>\(...\)</code></li>
+</ul></li>
+</ul>
+
+<h3>BRE 优先级 &gt;</h3>
+
+<ul>
+<li><code>[...]</code> 方括号中的具体转义</li>
+<li><code>\metacharacter</code> 转义的meta字符</li>
+<li><code>[]</code> 方括号表达式</li>
+<li><code>\(...\)...\n</code> 子表达式后向引用</li>
+<li><code>\{...\}</code> * 单置字符重现</li>
+<li><code>...</code> 连续字符</li>
+<li><code>^ $</code> 锚点</li>
+</ul>
+
+<h3>ERE 优先级 &gt;</h3>
+
+<ul>
+<li><code>[...]</code> 方括号中的具体转义</li>
+<li><code>\metacharacter</code> 转义的meta字符</li>
+<li><code>[]</code> 方括号表达式</li>
+<li><code>(...)...\n</code> 子表达式后向引用</li>
+<li><code>+ ? * {}</code> 单置字符重现</li>
+<li><code>...</code> 连续字符</li>
+<li><code>^ $</code> 锚点</li>
+<li><code>|</code> 选择</li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>49</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#re-ref">re <span>1</span></a></li>
+    
+    	<li><a href="#shell-ref">shell <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/program/2014/10/14/design-pattern-3" title="Design Pattern (4)">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next disabled"><a>Next &rarr;</a>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'snorlaxzxz'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
+    
+  </body>
+</html>
+

@@ -93,6 +93,10 @@
       
     
   
+    
+      
+    
+  
 
 
 
@@ -105,6 +109,148 @@
       <div class="container-narrow">
         <div class="content">
           <!-- <ul class="listing"> -->
+
+<div class="page-header">
+  <h3><a href="/gossip/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F">被windows艹了一天的小感 </a></h3>
+  <div class="date">
+    <span>16 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>作为一个ms黑、都三年了也没正经的写过一点windows、今天算是头天吧……然后就被打击透顶了</p>
+
+<p>需求就是让台电脑崩了、这么个需求我就出了2个方案、</p>
+
+<p>1.想办法拿到个内核态的指针然后喀了然后蓝掉</p>
+
+<p>2.蔽了键盘和鼠标也同样效果实现了</p>
+
+<p>反正就是这两条路子坑了我走了一天……</p>
+
+<p>先是一、想尽办法奈何不了大windows封装的太深、册那每个函数那么多参数看来不是没道理的、怪不得野指针那么容易指死机、想从驱动入手、没办法完全没有驱动编程的基础、没办法第一条路就死了</p>
+
+<p>然后是二、这个还是挺容易下手的、网上也到处都是类似的代码但是我还是失败了……首先我想到的是全局钩子（就是把所有的按键事件捕获住然后直接吃掉</p>
+
+<p>零基础痛苦的开始看api的阶段就不说了……（虽然说搞懂了后还是非常简单的</p>
+
+<p>然后就全局吃掉键盘和鼠标嘛看着很愉快的、然后丢到同学机子上一测、傻逼了、大360直接监测出来了我拿了键鼠去提醒用户了（伪装性差透了、失败</p>
+
+<p>接着无限的搜索我又发现了系统API竟然可以直接蔽掉INPUT、好吧我真的激动了半天、你360总不能杀系统API吧、好了就3行代码……效果实现了、360也没杀出来、又高兴了一阵然后我又发现傻逼了……任务管理器还是能调出来的、而且这个系统API是在当前进程下的、也就是任务管理器一出一杀我就悲剧了……又失败了……失败了怎么就能倒下、我又开始做局部的钩子杀掉ctrl 杀掉alt 都没问题……可是单独的杀是没问题的组合起来又悲剧了……好吧既然杀不掉你的启动方式我就杀你这个服务、又找了在注册表禁了、可是这大概是几年前的文章吧、混蛋还是好好的跑起来……那我再想、直接拿文件流去写你的文件吧、两跟进程跑着看你怎么开、当然愿望肯定是美好的……没权限……崩溃了……然后我又只能放弃二了</p>
+
+<p>然后上面这点试试下来整整一天就没了Orz……</p>
+
+<p>没办法放弃了、看来报着的心态是坏的、也是做不大出来东西的……想去论坛问问都不晓得怎么开口……</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#gossip-ref">
+    		gossip <span>5</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/life/2012/11/14/%E4%B8%80%E4%BA%BA%E6%9A%AE%E3%82%89%E3%81%97">一人暮らし </a></h3>
+  <div class="date">
+    <span>14 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>最近心情很差、很多很多方面</p>
+
+<p>今天也是如此、不知道为什么看到那些在比赛html5的心情很差、主要原因应该就是觉得我也应该是其中一员吧</p>
+
+<p>当然放弃也是我自己当时的抉择、也没有任何人好怪的、当时开始报名的时候我就怀着的心态就非常矛盾、大概也应该是心疼那三百块钱吧……再其实也不是因为那一点报名费、而是就只有我一个人的无助感吧、我总是就这么一个人、一个人……我也觉得我不是冷无缺也不是什么很难相处的人为什么我的朋友很少呢、不管任何方面</p>
+
+<p>有时候就是想这么去找个可以和自己一起去打的人都好难、算了纠结原因也就是我那个奇怪的性格吧、做项目也是如此、当我一个人打的时候我并没有感觉什么、当我有队友时当我们没法合拍时我也不知道怎么办、我也知道他们可以一起帮忙、可是为什么我有这份心却怎么样都合不起来、合不起来合不起来我只能一次次放弃、讽刺的到现在我应该一个像样的东西都没有做出来过吧、我很佩服那个做猛犸browser的孩子、或许他的心态就跟我一样、但是他却可以作出一件件像样的东西、而我这个渣也就这么只会去惆怅下去吧、其实这麻痹就还是归结于一个缩字</p>
+
+<p>其实我真的不想永远一个人从早上挖开眼睛就对着我的电脑老婆、不想永远一个人的走在校园的路上、不想一个人出去看电影、不想一个人出去吃饭、真的不想</p>
+
+<p>想想一个人在学校住了十二年、想想一个人了二十年、想想才有几个交心的朋友、或者这才是我上次哭的原因、或许这才是我的悲哀吧</p>
+
+<p>牢骚发完了、尽快从最近这状态出来吧、傻逼你二十年的人生不是早已经习惯了么？</p>
+
+<p></p></p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#life-ref">
+    		life <span>5</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
 
 <div class="page-header">
   <h3><a href="/program/2012/11/13/aria2c-%E8%BF%85%E9%9B%B7%E7%A6%BB%E7%BA%BF%E7%9A%84%E4%B8%8B%E8%BD%BD%E6%B3%95">aria2c 迅雷离线的下载法 </a></h3>
@@ -178,7 +324,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -257,7 +403,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -428,7 +574,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -599,7 +745,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -804,7 +950,7 @@ void WriteBit (int bit,FILE *f)
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -896,7 +1042,7 @@ function FindProxyForURL(url, host)
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -990,243 +1136,7 @@ jaieowajkncnxmbfhawija
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/10/16/%E4%B8%80%E4%B8%AA%E9%9D%9E%E5%B8%B8%E7%AE%80%E6%98%93%E7%9A%84%E9%9A%8F%E6%9C%BA%E9%80%89%E7%9A%84%E5%B0%8F%E7%A8%8B%E5%BA%8F">一个非常简易的随机选的小程序 </a></h3>
-  <div class="date">
-    <span>16 October 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>写了一段小程序，随机产生一个列表中的名字，可用于摇奖，或者什么的。</p>
-
-<p>需要安装python 的Tkinter图形库</p>
-
-<p>&nbsp;</p>
-
-<p><p>&lt;pre lang=&quot;python&quot; file=&quot;rp.py&quot; colla=&quot;+&quot;&gt;</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text"># -*- coding: utf-8 -*-
-from Tkinter import *
-import sys
-import time
-import codecs
-from time import sleep
-llist=[&#39;xxx&#39;,&#39;xxy&#39;,&#39;xyy&#39;,&#39;yyy&#39;,&#39;yxx&#39;,&#39;zzz&#39;,&#39;zxx&#39;]
-flag=0
-
-# position of buttons
-row_button = 8
-col_button = 5
-
-# font size
-size_title = 20
-size_button = 12
-size_text = 14
-
-# the length of name_list
-Len_List = 5
-
-# delay time
-Delay_Time = 10
-delay_stop = 0
-stop_times = 10
-
-# Label width
-label_width = 20
-class rp( Frame ):
-    def __init__(self):
-        Frame.__init__(self)
-        self.pack( expand = YES, fill = BOTH)
-        self.master.title(&quot;RP&quot;)
-        self.god = PhotoImage(file = &quot;01.gif&quot;)
-        self.label_1 = Label(self, image = self.god, font = (&quot;新宋体&quot;, size_title))
-        self.label_2 = Label(self, text = &quot;&quot;, font = (&quot;新宋体&quot;, size_title-4))
-        self.label_1.grid(row = 0, column = 0)
-        self.label_2.grid(row = 1, column = 0)
-
-        self.button_start = Button(self, text = &quot;Start&quot;, font = (&quot;Comic Sans MS&quot;, size_button), command = self.start)
-        self.button_stop = Button(self, text = &quot;Stop&quot;, font = (&quot;Comic Sans MS&quot;, size_button), command = self.stop)
-        self.button_quit = Button(self, text = &quot;Exit&quot;, font = (&quot;Comic Sans MS&quot;, size_button), command = self.quit)
-
-        self.button_start.grid(row = row_button, column = col_button)
-        self.button_stop.grid(row = row_button, column = col_button+1)
-        self.button_quit.grid(row = row_button,column = col_button+2)
-
-        self.name_list = [None] * Len_List
-        self.label_list = [None] * Len_List
-
-        for i in range(Len_List):
-            global flag
-            self.name_list[i] = llist[i]
-            flag=(flag+1)%llist.__len__()
-        for i in range(Len_List):
-            if i == 2:
-                self.label_list[i] = Label(self, text = self.name_list[i], font = (&quot;新宋体&quot;, 30), background = (&quot;white&quot;), foreground = (&quot;blue&quot;), width = label_width)
-                self.label_list[i].grid(row = 2+i, column = 2)
-            else:
-                self.label_list[i] = Label(self, text = self.name_list[i], font = (&quot;新宋体&quot;, 30), width = label_width)
-                self.label_list[i].grid(row = 2+i, column = 2)
-    def _scroll_text(self):
-
-        global Delay_Time
-        global delay_stop
-        global stop_times
-        global flag
-        global llist
-
-        if stop_times == 0:
-            if self.after_id:
-                self.master.after_cancel(self.after_id)
-                self.after_id = None
-                return 0
-        flag=(flag+1)%llist.__len__()
-        self.line = llist[flag]
-
-        self.name_list.pop(0)
-        self.name_list.append(self.line)
-        #sleep(0.2)
-        for i in range(Len_List):
-            #self.label_list[i].destroy()
-            #print self.name_list[i]
-            if i == 2:
-                self.label_list[i][&quot;text&quot;]=self.name_list[i]
-            else:
-                self.label_list[i][&quot;text&quot;]=self.name_list[i]
-
-        if delay_stop:
-            Delay_Time += 10
-            stop_times -= 1
-            self.after_id = self.master.after(Delay_Time, self._scroll_text)
-            if stop_times==0:
-#                print self.label_list[2][&quot;text&quot;]
-#                for i in llist:
-#                    print i.decode(&#39;UTF-8&#39;)
-                llist.remove(self.label_list[2][&quot;text&quot;].encode(&#39;utf-8&#39;))
-        else:
-            self.after_id = self.master.after(Delay_Time, self._scroll_text)
-
-    def start(self):
-        global delay_stop
-        global stop_times
-        global Delay_Time
-        delay_stop = 0
-        stop_times = 10
-        Delay_Time = 10
-        self.after_id = self.master.after(Delay_Time, self._scroll_text)
-
-    def stop(self):
-        global delay_stop
-        delay_stop = 1
-
-    def quit(self):
-        sys.exit(0)
-
-app = rp()
-app.mainloop()
-&amp;lt;/pre&amp;gt;
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>47</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/08/21/%E5%85%B3%E4%BA%8Eos%E7%9A%84%E4%B8%80%E7%82%B9%E5%B0%8F%E8%A7%81">关于os的一点小见 </a></h3>
-  <div class="date">
-    <span>21 August 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>最近同学有买了mac，一段试用后突然问我和windows的差别在哪儿，有一点不知道怎么回答，也不禁对自己所认识的操作系统一通反思，最后我回答了mac好就好在他算是unix＋无敌的ui，虽然片面但我觉得这就是mac最好的地方了，看过一篇文章，感觉比喻的非常好，windows就像是表面光鲜整齐的大树，而实质上他的根须错乱(n个dll往系统里丢注册表什么给改的一塌糊涂等)而unix就感觉是一块块的存在需要什么就拿什么如积木一般，或许这就是他令人喜欢的理由吧。突然想写这点什么的契机也是因为发现ml把以前一些的如gcc  make svn 什么的也放进了xcode的沙盒中了，这个改动或许就是更为了他的积木这个思想的吧。</p>
-
-<p>&nbsp;</p>
-
-<p>ps.升到ml后发现好多常用东西没了的朋友把 /Applications/Xcode.app/Contents/Developer/usr/bin 加到PATH里就ok了</p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -1290,11 +1200,15 @@ app.mainloop()
       <a href="/page6">6</a>
       
     
+      
+      <a href="/page7">7</a>
+      
+    
 
   
     <a class="next" href="/page6">后页</a>
   
-  (共59篇)
+  (共61篇)
 </div>
 
         </div>

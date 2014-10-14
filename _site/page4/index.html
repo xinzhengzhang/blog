@@ -93,6 +93,10 @@
       
     
   
+    
+      
+    
+  
 
 
 
@@ -105,6 +109,172 @@
       <div class="container-narrow">
         <div class="content">
           <!-- <ul class="listing"> -->
+
+<div class="page-header">
+  <h3><a href="/program/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8">关于处理掉urllib2中的错误提示异常 </a></h3>
+  <div class="date">
+    <span>21 January 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>在很多情况下如果server帮着redirect一下什么的、如果还使用urllib2的urlopen非常容易抛出异常、而且既然人家给你跳转了你照着搬不就完了么混蛋……<br />
+然后下面讲下怎么除掉掉这些异常其实很简单<br />
+再构建的时候对urllib2.HTTPCookieProcessor进行复写、把里面的异常的地方给复写掉<br />
+代码如下</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">class NoExceptionCookieProcesser(urllib2.HTTPCookieProcessor):
+    def http_error_500(self, req, fp, code, msg, hdrs):
+        return fp
+
+以此类推想弄掉哪儿些复写掉即可
+然后构造的时候
+
+cookie = cookielib.CookieJar()
+opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
+
+行了、这样讨厌的异常就搞定了
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>49</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/01/07/%E5%85%B3%E4%BA%8E%E5%B5%8C%E5%A5%97%E4%B8%8Euiscrollview%E4%B8%AD%E7%9A%84uitableview%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3">关于嵌套与UIScrollView中的UITableVIew的冲突解决 </a></h3>
+  <div class="date">
+    <span>07 January 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的<br />
+首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    scr=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
+    scr.delegate=self;
+    [scr setContentSize:CGSizeMake(320, 800)];
+    [scr setDelaysContentTouches:YES];//记得这里要把延迟触摸设成yes
+    UIView *pand=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 800)];
+    [pand setBackgroundColor:[UIColor redColor]];
+    tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
+    tableView.dataSource=self;
+    tableView.delegate=self;
+    UILongPressGestureRecognizer *ge=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(cancelScroll:)];
+    [ge setDelegate:self];
+    [ge setMinimumPressDuration:0.1];//这里为了让他在tableview还是能够进行整个scroll的拖动所以用了0.1给用户一个快速拖动
+    [tableView addGestureRecognizer:ge];
+    [self.view addSubview:scr];
+    [scr addSubview:pand];
+    [scr addSubview:tableView];
+}
+
+然后是回调
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    //切记这个代理必须要设置、因为scroll的拖动说白了也是一个gesture、为了流畅性必须要两个触碰事件同时触发
+    return YES;
+}
+-(void)cancelScroll:(UIGestureRecognizer*)gesture
+{
+    //这里就是让背景的拖动定死这样就不冲突了
+    if ([gesture state]==UIGestureRecognizerStateBegan) {
+        [scr setScrollEnabled:NO];
+    }
+
+}
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    //拖动完再恢复
+    [scr setScrollEnabled:YES];
+}
+
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>49</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
 
 <div class="page-header">
   <h3><a href="/gossip/2013/01/01/rc4-python%E5%AE%9E%E7%8E%B0">rc4 python实现 </a></h3>
@@ -255,7 +425,7 @@ ps.最后记得注意要修改脚本的权限……chown root:wheel chmod 755
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -340,7 +510,7 @@ def diffCount(h1,h2):
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -441,7 +611,7 @@ http://www.pythonware.com/library/pil/handbook/index.htm</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -521,7 +691,7 @@ var edit = document.getElementById(\"editable\");edit.addEventListener(\"click\"
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -636,7 +806,7 @@ UIModalTransitionStyleCoverVertical = 0,//垂直上下（默认那种）    UIMo
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -817,7 +987,7 @@ CRC(循环冗余检测) 4字节  存储用来检测是否有错误的循环冗�
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -1224,149 +1394,7 @@ See also: Regular Expression Options
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/gossip/2012/11/16/%E8%A2%ABwindows%E8%89%B9%E4%BA%86%E4%B8%80%E5%A4%A9%E7%9A%84%E5%B0%8F%E6%84%9F">被windows艹了一天的小感 </a></h3>
-  <div class="date">
-    <span>16 November 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p>作为一个ms黑、都三年了也没正经的写过一点windows、今天算是头天吧……然后就被打击透顶了</p>
-
-<p>需求就是让台电脑崩了、这么个需求我就出了2个方案、</p>
-
-<p>1.想办法拿到个内核态的指针然后喀了然后蓝掉</p>
-
-<p>2.蔽了键盘和鼠标也同样效果实现了</p>
-
-<p>反正就是这两条路子坑了我走了一天……</p>
-
-<p>先是一、想尽办法奈何不了大windows封装的太深、册那每个函数那么多参数看来不是没道理的、怪不得野指针那么容易指死机、想从驱动入手、没办法完全没有驱动编程的基础、没办法第一条路就死了</p>
-
-<p>然后是二、这个还是挺容易下手的、网上也到处都是类似的代码但是我还是失败了……首先我想到的是全局钩子（就是把所有的按键事件捕获住然后直接吃掉</p>
-
-<p>零基础痛苦的开始看api的阶段就不说了……（虽然说搞懂了后还是非常简单的</p>
-
-<p>然后就全局吃掉键盘和鼠标嘛看着很愉快的、然后丢到同学机子上一测、傻逼了、大360直接监测出来了我拿了键鼠去提醒用户了（伪装性差透了、失败</p>
-
-<p>接着无限的搜索我又发现了系统API竟然可以直接蔽掉INPUT、好吧我真的激动了半天、你360总不能杀系统API吧、好了就3行代码……效果实现了、360也没杀出来、又高兴了一阵然后我又发现傻逼了……任务管理器还是能调出来的、而且这个系统API是在当前进程下的、也就是任务管理器一出一杀我就悲剧了……又失败了……失败了怎么就能倒下、我又开始做局部的钩子杀掉ctrl 杀掉alt 都没问题……可是单独的杀是没问题的组合起来又悲剧了……好吧既然杀不掉你的启动方式我就杀你这个服务、又找了在注册表禁了、可是这大概是几年前的文章吧、混蛋还是好好的跑起来……那我再想、直接拿文件流去写你的文件吧、两跟进程跑着看你怎么开、当然愿望肯定是美好的……没权限……崩溃了……然后我又只能放弃二了</p>
-
-<p>然后上面这点试试下来整整一天就没了Orz……</p>
-
-<p>没办法放弃了、看来报着的心态是坏的、也是做不大出来东西的……想去论坛问问都不晓得怎么开口……</p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#gossip-ref">
-    		gossip <span>5</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/life/2012/11/14/%E4%B8%80%E4%BA%BA%E6%9A%AE%E3%82%89%E3%81%97">一人暮らし </a></h3>
-  <div class="date">
-    <span>14 November 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><p>最近心情很差、很多很多方面</p>
-
-<p>今天也是如此、不知道为什么看到那些在比赛html5的心情很差、主要原因应该就是觉得我也应该是其中一员吧</p>
-
-<p>当然放弃也是我自己当时的抉择、也没有任何人好怪的、当时开始报名的时候我就怀着的心态就非常矛盾、大概也应该是心疼那三百块钱吧……再其实也不是因为那一点报名费、而是就只有我一个人的无助感吧、我总是就这么一个人、一个人……我也觉得我不是冷无缺也不是什么很难相处的人为什么我的朋友很少呢、不管任何方面</p>
-
-<p>有时候就是想这么去找个可以和自己一起去打的人都好难、算了纠结原因也就是我那个奇怪的性格吧、做项目也是如此、当我一个人打的时候我并没有感觉什么、当我有队友时当我们没法合拍时我也不知道怎么办、我也知道他们可以一起帮忙、可是为什么我有这份心却怎么样都合不起来、合不起来合不起来我只能一次次放弃、讽刺的到现在我应该一个像样的东西都没有做出来过吧、我很佩服那个做猛犸browser的孩子、或许他的心态就跟我一样、但是他却可以作出一件件像样的东西、而我这个渣也就这么只会去惆怅下去吧、其实这麻痹就还是归结于一个缩字</p>
-
-<p>其实我真的不想永远一个人从早上挖开眼睛就对着我的电脑老婆、不想永远一个人的走在校园的路上、不想一个人出去看电影、不想一个人出去吃饭、真的不想</p>
-
-<p>想想一个人在学校住了十二年、想想一个人了二十年、想想才有几个交心的朋友、或者这才是我上次哭的原因、或许这才是我的悲哀吧</p>
-
-<p>牢骚发完了、尽快从最近这状态出来吧、傻逼你二十年的人生不是早已经习惯了么？</p>
-
-<p></p></p>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#life-ref">
-    		life <span>5</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -1430,11 +1458,15 @@ See also: Regular Expression Options
       <a href="/page6">6</a>
       
     
+      
+      <a href="/page7">7</a>
+      
+    
 
   
     <a class="next" href="/page5">后页</a>
   
-  (共59篇)
+  (共61篇)
 </div>
 
         </div>

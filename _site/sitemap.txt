@@ -9,7 +9,10 @@ http://snorlaxzxz.com/page3/index.html
 http://snorlaxzxz.com/page4/index.html
 http://snorlaxzxz.com/page5/index.html
 http://snorlaxzxz.com/page6/index.html
+http://snorlaxzxz.com/page7/index.html
 
+http://snorlaxzxz.com/program/2014/10/14/regular-expression
+http://snorlaxzxz.com/program/2014/10/14/design-pattern-3
 http://snorlaxzxz.com/program/2014/10/13/design-pattern-2
 http://snorlaxzxz.com/program/2014/10/12/design-pattern-1
 http://snorlaxzxz.com/program/2014/10/11/design-pattern-0

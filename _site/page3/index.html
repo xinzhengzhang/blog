@@ -93,6 +93,10 @@
       
     
   
+    
+      
+    
+  
 
 
 
@@ -105,6 +109,173 @@
       <div class="container-narrow">
         <div class="content">
           <!-- <ul class="listing"> -->
+
+<div class="page-header">
+  <h3><a href="/program/2013/04/09/list%E4%B8%AD%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8%E4%B8%89%E8%A7%92%E5%BD%A2%E4%B8%89%E8%BE%B9">list中判断是否存在三角形三边 </a></h3>
+  <div class="date">
+    <span>09 April 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><p>小时候数学好、因为能够有感觉知道每个条件他存在的意义、到了大学这种感觉渐渐消失了、直到今天突然那种感觉就回来了、因为那些条件恰恰是隐藏在数学自己的本身……<br />
+--------------------------------------------------------------------------<br />
+把这个感觉带回给我的恰恰就是这么一道题、这道题真的非常非常简单、可是给我带来了不小的顿悟。原题大致是先图里求个最短路径然后判断路径中是否有可以组成三角形的存在<br />
+也就是拆出了这么一个子问题、不知道是计算机编程写多了还是怎么样、已经逐渐开始依赖计算机强大的计算脑子都没半动一下就开始O(n<sup>3)的暴力</sup></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">for(int a=0; a
+拿脚趾头想三次方肯定要TL、接着就是开始改进、首先想到了还是先对这些有意义的数组进行排序。然后使用自然而然的递增数组自己的优势那就是最小的两边之差一定是存在与相邻的数字里、注意这里就利用到了数字这个自身拥有美丽的属性的东西的属性。然后差不多代码是这样的
+
+for (int a = 0; a  (pval[j+1]-pval[j]))
+        {
+            flag=true;
+        }
+    }
+}
+
+复杂度是O(n^2)当我们使用了数字他自身的属性后、也就是相当于他自身的一个条件、我们把一个复杂度进行了指数级别的下降、这是多么美妙的事情？当然还没有完、因为我们还有一个隐藏条件
+首先想想我们如何判定一个三角形
+1.所有任意两边之和大于第三边
+2.存在任意两边之差小于第三边
+条件1其实就等于是3个条件、为什么对判断同一个东西却判断的条件不同？原因就是存在于他们的符号、因为减法这个运算他本身就更为苛刻破坏了数字之间那种稳定的感觉（对不起我实在没有专业知识来说明这个感觉是什么）而看起来要判断三次的加法就非常好的维护了这个感觉、也就是我们小时候做数学的那种条件是正正好好的感觉、只是现在他们隐藏于了数字本身
+所以最终的代码其实非常简单
+
+
+
+for(int i=0;i
+{
+    if(pval[i]+pval[i+1] &gt; pv[i+2])
+        break;
+}
+
+通过数字他自身我们其实只需要O(n)足已
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>49</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2013/04/04/beauty-of-programming-%E7%BB%83%E4%B9%A0%E8%B5%9B%E7%AC%AC%E4%B8%89%E9%A2%98">beauty of programming 练习赛第三题 </a></h3>
+  <div class="date">
+    <span>04 April 2013</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>先看题</p>
+
+<p><h4>题目列表 > 踩方格</h4>
+</p>
+
+<p><div class="coding-problem">     <br />
+    <p>时间限制: 1000ms    内存限制: 1024MB</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">&lt;p /&gt;&lt;h3&gt;描述&lt;/h3&gt;&lt;p&gt;有一个方格矩阵，矩阵边界在无穷远处。我们做如下假设：&lt;br /&gt;a.    每走一步时，只能从当前方格移动一格，走到某个相邻的方格上；&lt;br /&gt;b.    走过的格子立即塌陷无法再走第二次；&lt;br /&gt;c.    只能向北、东、西三个方向走；&lt;br /&gt;请问：如果允许在方格矩阵上走n步，共有多少种不同的方案。2种走法只要有一步不一样，即被认为是不同的方案。&lt;/p&gt;&lt;h3&gt;输入&lt;/h3&gt;&lt;p&gt;允许在方格上行走的步数n&lt;/p&gt;&lt;h3&gt;输出&lt;/h3&gt;&lt;p&gt;计算出的方案数量&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;/p&gt;对于小数据1 &amp;lt;= n &amp;lt;= 20; 对于大数据1 &amp;lt;= n &amp;lt;= 100.&lt;p&gt;&lt;br /&gt;&lt;/p&gt;&lt;/div&gt;&lt;/p&gt;
+&lt;dl class=&quot;content&quot;&gt;
+    &lt;dt&gt;样例输入&lt;/dt&gt;
+    &lt;dd&gt;
+</code></pre></div><div class="highlight"><pre><code class="text language-text" data-lang="text">2
+        样例输出
+        7
+
+
+这个题目我觉得最大的阴谋就是对于小数据1
+我了个fuck了给了个那么小规模的数据还给那么高的分值正常人理所当然的就肯定认为这是个指数级的运算了啊！然后我就想到了三叉树去暴力啊、可是再怎么暴力这个指数摆在那就算是100也很恐怖了、各种挂……纠结了好久好久写了好几种都挂
+最后静下心来把他当数学做……然后草稿纸写写……尼玛5分钟就算出来了……
+其实思想非常非常简单 往北的节点就是能叉出3条路、其中分别是继续叉2的2条以及继续叉3的一条、往两侧的每次只能叉出两条路、分别是2 和3 具体路径的结构问你了么？去暴力做等于就是浪费这些路径的信息啊小时候怎么做数学题的……要那么多条件吃屎啊……数学规律就是这么简单……然后还不会写么？……！你妹的别说100了来个平方这复杂度都闭着眼睛来的啊……
+
+#include
+int main(){
+    int a=0;
+    int b=1;
+    int count＝0;
+    int i=0;
+    int temp;
+    scanf(&quot;%d&quot;,&amp;count);
+    for (i=0; i
+没了！没了！写完了！……………………突然有种回归最质朴的感觉真好……
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>49</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
 
 <div class="page-header">
   <h3><a href="/program/2013/03/29/%E7%9D%A1%E7%9C%A0%E6%8E%92%E5%BA%8Fshell%E5%AE%9E%E7%8E%B0">睡眠排序shell实现 </a></h3>
@@ -146,7 +317,7 @@ wait  #主进程等到全部子进程结束后返回结束
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -264,7 +435,7 @@ g++ -o test -fno-elide-constructors test.cpp
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -494,7 +665,7 @@ return 0;
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -580,7 +751,7 @@ print l</p>
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -654,7 +825,7 @@ url_short,$account['content']);
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -733,7 +904,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -804,173 +975,7 @@ ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包ser
   
     
     	<li><a href="#program-ref">
-    		program <span>47</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2013/01/21/%E5%85%B3%E4%BA%8E%E5%A4%84%E7%90%86%E6%8E%89urllib2%E4%B8%AD%E7%9A%84%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA%E5%BC%82%E5%B8%B8">关于处理掉urllib2中的错误提示异常 </a></h3>
-  <div class="date">
-    <span>21 January 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><p>在很多情况下如果server帮着redirect一下什么的、如果还使用urllib2的urlopen非常容易抛出异常、而且既然人家给你跳转了你照着搬不就完了么混蛋……<br />
-然后下面讲下怎么除掉掉这些异常其实很简单<br />
-再构建的时候对urllib2.HTTPCookieProcessor进行复写、把里面的异常的地方给复写掉<br />
-代码如下</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">class NoExceptionCookieProcesser(urllib2.HTTPCookieProcessor):
-    def http_error_500(self, req, fp, code, msg, hdrs):
-        return fp
-
-以此类推想弄掉哪儿些复写掉即可
-然后构造的时候
-
-cookie = cookielib.CookieJar()
-opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
-
-行了、这样讨厌的异常就搞定了
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>47</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2013/01/07/%E5%85%B3%E4%BA%8E%E5%B5%8C%E5%A5%97%E4%B8%8Euiscrollview%E4%B8%AD%E7%9A%84uitableview%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3">关于嵌套与UIScrollView中的UITableVIew的冲突解决 </a></h3>
-  <div class="date">
-    <span>07 January 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><p>周知tableview是继承自scrollview的、一旦如果在scrollview上add上子的table那么双方的滚动就冲突了、只能选择其一、apple的文档里也讲了两者是冲突的不要加子table到scroll上、但是发现其实还是有解决方法的<br />
-首先的关键点就是禁掉两方的任意一个ScrollEnabled另一方就可以滚动了、所以就从这下手其实思路也非常简单、就是给table加一个gesture、捕捉提前捕捉事件然后禁掉背的scroll的滚动话不多讲上代码</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-    scr=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
-    scr.delegate=self;
-    [scr setContentSize:CGSizeMake(320, 800)];
-    [scr setDelaysContentTouches:YES];//记得这里要把延迟触摸设成yes
-    UIView *pand=[[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 800)];
-    [pand setBackgroundColor:[UIColor redColor]];
-    tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, 320, 440)];
-    tableView.dataSource=self;
-    tableView.delegate=self;
-    UILongPressGestureRecognizer *ge=[[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(cancelScroll:)];
-    [ge setDelegate:self];
-    [ge setMinimumPressDuration:0.1];//这里为了让他在tableview还是能够进行整个scroll的拖动所以用了0.1给用户一个快速拖动
-    [tableView addGestureRecognizer:ge];
-    [self.view addSubview:scr];
-    [scr addSubview:pand];
-    [scr addSubview:tableView];
-}
-
-然后是回调
-
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    //切记这个代理必须要设置、因为scroll的拖动说白了也是一个gesture、为了流畅性必须要两个触碰事件同时触发
-    return YES;
-}
--(void)cancelScroll:(UIGestureRecognizer*)gesture
-{
-    //这里就是让背景的拖动定死这样就不冲突了
-    if ([gesture state]==UIGestureRecognizerStateBegan) {
-        [scr setScrollEnabled:NO];
-    }
-
-}
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    //拖动完再恢复
-    [scr setScrollEnabled:YES];
-}
-
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>47</span>
+    		program <span>49</span>
     	</a></li>
     
   
@@ -1034,11 +1039,15 @@ opener = urllib2.build_opener(NoExceptionCookieProcesser(cookie))
       <a href="/page6">6</a>
       
     
+      
+      <a href="/page7">7</a>
+      
+    
 
   
     <a class="next" href="/page4">后页</a>
   
-  (共59篇)
+  (共61篇)
 </div>
 
         </div>

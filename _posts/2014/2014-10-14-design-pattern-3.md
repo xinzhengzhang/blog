@@ -58,7 +58,7 @@ tags: ["design pattern", "python"]
 	from abc import ABCMeta, abstractmethod
 
 	class Command(object):
-		__metaClass__ = ABCMeta
+		__metaclass__ = ABCMeta
 
 		def __init__(self, receiver):
 			self.receiver = receiver
@@ -103,7 +103,7 @@ tags: ["design pattern", "python"]
 	from abc import ABCMeta, abstractmethod
 
 	class Handler(object):
-		__metaClass = ABCMeta
+		__metaclass = ABCMeta
 		def set_successor(successor):
 			self.successor = successor
 
@@ -135,7 +135,7 @@ tags: ["design pattern", "python"]
 	```python
 	from abc import ABCMeta, abstractmethod
 	class Mediator(object):
-		__metaClass__ = ABCMeta
+		__metaclass__ = ABCMeta
 
 		@abstractmethod
 		def send(self, message, colleague):
@@ -239,7 +239,7 @@ tags: ["design pattern", "python"]
 	from abc import ABCMeta, abstractmethod
 
 	class AbstractExpression(object):
-		__metaClass__ = ABCMeta
+		__metaclass__ = ABCMeta
 
 		def __init__(self, context):
 			self.context = context
@@ -272,7 +272,7 @@ tags: ["design pattern", "python"]
 	from abc import ABCMeta, abstractmethod
 
 	class Visitor(object):
-		__metaClass__ = ABCMeta
+		__metaclass__ = ABCMeta
 
 		@abstractmethod
 		def visit_concrete_element_a(self, concrete_element_a):
@@ -292,7 +292,7 @@ tags: ["design pattern", "python"]
 
 
 	class Element(object):
-		__metaClass__ = ABCMeta
+		__metaclass__ = ABCMeta
 
 		@abstractmethod
 		def accept(self, visitor):

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Regular Expression"
+title: "正则表达式——BRE与ERE区别"
 description: ""
 category: program
 tags: ["re", "shell"]

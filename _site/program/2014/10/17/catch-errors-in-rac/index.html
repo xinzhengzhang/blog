@@ -1,0 +1,319 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ReactiveCocoa中 RAC绑定时的坑</title>
+    <meta name="description" content="">
+    <meta name="author" content="Xinzheng Zhang">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/themes/twitter/css/pygments.css?body=1" rel="stylesheet" type="text/css" media="all">
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Snorlax's blog</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/about.html">About me</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archives</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container_wrapper">
+      <div class="container-narrow">
+        <div class="content">
+          
+<div class="page-header">
+  <h1>ReactiveCocoa中 RAC绑定时的坑 </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>17 October 2014</span>
+    </div>
+    <div class="content">
+      <h3>背景</h3>
+
+<ul>
+<li>大致情况是bind了一个<code>NSData</code>到一个由<code>NSURLConnection</code>拓展出来的signal中、当网络请求超时时一定发生crash</li>
+</ul>
+
+<h4>关键代码</h4>
+
+<ul>
+<li><p><code>RACSignal+Operations.m</code> line 629-643 </p>
+
+<ul>
+<li>查看RAC宏定义发现入口时下面</li>
+<li><code>- (RACDisposable *)setKeyPath:(NSString *)keyPath onObject:(NSObject *)object nilValue:(id)nilValue;</code></li>
+<li>如下代码中可以发现其实在当error时候直接assert掉了关于这里作者是这么说的
+
+<ul>
+<li>Errors that occur in a property binding are generally not corrupting. You&#39;re more likely to see weird UI glitches than a completely broken document, so crashing may be an unreasonable response.</li>
+<li>But, of course, we really have no way of knowing. Maybe we should just fail fast.</li>
+</ul></li>
+<li>不过个人认为这也只是在可控制状态下这样强硬的要求也的确不错、可是在比如网络请求下就出大坑了……</li>
+</ul>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c">    <span class="n">RACDisposable</span> <span class="o">*</span><span class="n">subscriptionDisposable</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">subscribeNext</span><span class="o">:^</span><span class="p">(</span><span class="kt">id</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">object</span> <span class="n">setValue</span><span class="o">:</span><span class="n">x</span> <span class="o">?:</span> <span class="n">nilValue</span> <span class="n">forKeyPath</span><span class="o">:</span><span class="n">keyPath</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">error</span><span class="o">:^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
+
+    <span class="n">NSCAssert</span><span class="p">(</span><span class="nb">NO</span><span class="p">,</span> <span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+
+    <span class="c1">// Log the error if we&#39;re running with assertions disabled.</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+
+    <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">completed</span><span class="o">:^</span><span class="p">{</span>
+    <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
+<span class="p">}];</span>
+</code></pre></div></li>
+<li><p>继续看<code>NSURLConnection+RACSupport.m</code>中的对NSURLConnection中的拓展</p></li>
+<li><p>其中最致命的问题也就是当在一个request回来时判定了当data为空时直接向signal send error了、这也就导致了为什么仅仅只是在超时的时候发送了error、而没有在别的网络错误时crash、因为那个时候data虽然不是你想要的但至少不是空</p>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">+</span> <span class="p">(</span><span class="n">RACSignal</span> <span class="o">*</span><span class="p">)</span><span class="nf">rac_sendAsynchronousRequest:</span><span class="p">(</span><span class="n">NSURLRequest</span> <span class="o">*</span><span class="p">)</span><span class="nv">request</span> <span class="p">{</span>
+<span class="n">NSCParameterAssert</span><span class="p">(</span><span class="n">request</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
+
+<span class="k">return</span> <span class="p">[[</span><span class="n">RACSignal</span>
+    <span class="nl">createSignal:</span><span class="o">^</span> <span class="n">RACDisposable</span> <span class="o">*</span> <span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">RACSubscriber</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSOperationQueue</span> <span class="o">*</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+        <span class="n">queue</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;com.github.ReactiveCocoa.NSURLConnectionRACSupport&quot;</span><span class="p">;</span>
+
+        <span class="p">[</span><span class="n">NSURLConnection</span> <span class="n">sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span> <span class="n">queue</span><span class="o">:</span><span class="n">queue</span> <span class="n">completionHandler</span><span class="o">:^</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendError</span><span class="o">:</span><span class="n">error</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendNext</span><span class="o">:</span><span class="n">RACTuplePack</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">data</span><span class="p">)];</span>
+                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendCompleted</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}];</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">RACDisposable</span> <span class="n">disposableWithBlock</span><span class="o">:^</span><span class="p">{</span>
+            <span class="c1">// It&#39;s not clear if this will actually cancel the connection,</span>
+            <span class="c1">// but we can at least prevent _some_ unnecessary work --</span>
+            <span class="c1">// without writing all the code for a proper delegate, which</span>
+            <span class="c1">// doesn&#39;t really belong in RAC.</span>
+            <span class="n">queue</span><span class="p">.</span><span class="n">suspended</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+            <span class="p">[</span><span class="n">queue</span> <span class="n">cancelAllOperations</span><span class="p">];</span>
+        <span class="p">}];</span>
+    <span class="p">}]</span>
+    <span class="nl">setNameWithFormat:</span><span class="s">@&quot;+rac_sendAsynchronousRequest: %@&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div></li>
+</ul>
+
+<h4>问题代码</h4>
+
+<ul>
+<li><p><code>RAC(photoModel, fullsizedData) = [self download:photoModel.fullsizedURL];</code> 其中fullsizeData为一个NSData</p>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">+</span><span class="p">(</span><span class="n">RACSignal</span> <span class="o">*</span><span class="p">)</span><span class="nf">download:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">urlString</span> <span class="p">{</span>
+<span class="n">NSAssert</span><span class="p">(</span><span class="n">urlString</span><span class="p">,</span> <span class="s">@&quot;URL must not be nil&quot;</span><span class="p">);</span>
+
+<span class="n">NSURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURLRequest</span> <span class="n">requestWithURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="n">urlString</span><span class="p">]];</span>
+<span class="k">return</span> <span class="p">[[[</span><span class="n">NSURLConnection</span> <span class="n">rac_sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span><span class="p">]</span> <span class="n">reduceEach</span><span class="o">:^</span><span class="kt">id</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">}]</span> <span class="n">deliverOn</span><span class="o">:</span><span class="p">[</span><span class="n">RACScheduler</span> <span class="n">mainThreadScheduler</span><span class="p">]];</span>
+<span class="p">}</span>
+</code></pre></div></li>
+</ul>
+
+<h4>发生原因梳理</h4>
+
+<ul>
+<li>RAC 绑定了一个由 NSURLConnection 的 rac_sendAsynchronousRequest生成出的signal</li>
+<li>在网络超时时候发出了error信号、导致rac绑定crash</li>
+</ul>
+
+<h4>问题解决方法</h4>
+
+<ul>
+<li><p>在subscribe那个网络信号的时候进行catch error操作</p>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="p">[[[[</span><span class="n">NSURLConnection</span> <span class="n">rac_sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span><span class="p">]</span> <span class="n">reduceEach</span><span class="o">:^</span><span class="kt">id</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">}]</span> <span class="n">deliverOn</span><span class="o">:</span><span class="p">[</span><span class="n">RACScheduler</span> <span class="n">mainThreadScheduler</span><span class="p">]]</span> <span class="n">catch</span><span class="o">:^</span><span class="n">RACSignal</span><span class="o">*</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;error =%@&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">RACSignal</span> <span class="n">empty</span><span class="p">];</span>
+<span class="p">}];</span>
+</code></pre></div></li>
+<li><p>在 <a href="https://github.com/ReactiveCocoa/ReactiveCocoa/commit/37bbe0d5340e5180db111694f584f927df474824">传送门</a>这个pull request之中……当然这是个针对swift的branch中加入了<code>errorHandler</code><a href="https://github.com/ReactiveCocoa/ReactiveCocoa/commit/09c3d739579abfc51df5d56ed0c7e09c20a8fac8">传送门</a>解决了这个问题</p></li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>51</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#ReactiveCocoa-ref">ReactiveCocoa <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/program/2014/10/14/regular-expression" title="正则表达式——BRE与ERE区别">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next disabled"><a>Next &rarr;</a>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'snorlaxzxz'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+        </div>
+        <hr>
+        <footer>
+          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          </p>
+        </footer>
+
+      </div>
+    </div>
+    
+  </body>
+</html>
+

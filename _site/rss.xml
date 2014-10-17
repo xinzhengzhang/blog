@@ -5,14 +5,128 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2014-10-14T22:24:03+08:00</lastBuildDate>
-        <pubDate>2014-10-14T22:24:03+08:00</pubDate>
+        <lastBuildDate>2014-10-17T23:08:51+08:00</lastBuildDate>
+        <pubDate>2014-10-17T23:08:51+08:00</pubDate>
         <ttl>1800</ttl>
 
 
         <item>
-                <title>Regular Expression</title>
-                <description>&lt;h3&gt;本文主要说明了正则的两个标准 BRE 以及 ERE的具体用法&lt;/h3&gt;
+                <title>ReactiveCocoa中 RAC绑定时的坑</title>
+                <description>&lt;h3&gt;背景&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;大致情况是bind了一个&lt;code&gt;NSData&lt;/code&gt;到一个由&lt;code&gt;NSURLConnection&lt;/code&gt;拓展出来的signal中、当网络请求超时时一定发生crash&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;关键代码&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;RACSignal+Operations.m&lt;/code&gt; line 629-643 &lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;查看RAC宏定义发现入口时下面&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;- (RACDisposable *)setKeyPath:(NSString *)keyPath onObject:(NSObject *)object nilValue:(id)nilValue;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;如下代码中可以发现其实在当error时候直接assert掉了关于这里作者是这么说的
+
+&lt;ul&gt;
+&lt;li&gt;Errors that occur in a property binding are generally not corrupting. You&amp;#39;re more likely to see weird UI glitches than a completely broken document, so crashing may be an unreasonable response.&lt;/li&gt;
+&lt;li&gt;But, of course, we really have no way of knowing. Maybe we should just fail fast.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;不过个人认为这也只是在可控制状态下这样强硬的要求也的确不错、可是在比如网络请求下就出大坑了……&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;objective-c language-objective-c&quot; data-lang=&quot;objective-c&quot;&gt;    &lt;span class=&quot;n&quot;&gt;RACDisposable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subscriptionDisposable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subscribeNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;id&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;NSObject&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__bridge&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;objectPtr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;setValue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nilValue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;forKeyPath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keyPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;NSObject&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;object&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;__bridge&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;objectPtr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;NSCAssert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;NO&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;@&amp;quot;Received error from %@ in binding for key path &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%@&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; on %@: %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keyPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Log the error if we&amp;#39;re running with assertions disabled.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;Received error from %@ in binding for key path &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%@&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt; on %@: %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;self&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;keyPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;disposable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dispose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;completed&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;disposable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dispose&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}];&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;继续看&lt;code&gt;NSURLConnection+RACSupport.m&lt;/code&gt;中的对NSURLConnection中的拓展&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;其中最致命的问题也就是当在一个request回来时判定了当data为空时直接向signal send error了、这也就导致了为什么仅仅只是在超时的时候发送了error、而没有在别的网络错误时crash、因为那个时候data虽然不是你想要的但至少不是空&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;objective-c language-objective-c&quot; data-lang=&quot;objective-c&quot;&gt;&lt;span class=&quot;k&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACSignal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rac_sendAsynchronousRequest:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;NSCParameterAssert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACSignal&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;createSignal:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;^&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RACDisposable&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACSubscriber&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;subscriber&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;NSOperationQueue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSOperationQueue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;alloc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;@&amp;quot;com.github.ReactiveCocoa.NSURLConnectionRACSupport&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLConnection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sendAsynchronousRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;completionHandler&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NSData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NSError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;nil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subscriber&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sendError&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subscriber&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sendNext&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACTuplePack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)];&lt;/span&gt;
+                &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;subscriber&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sendCompleted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}];&lt;/span&gt;
+
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACDisposable&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;disposableWithBlock&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// It&amp;#39;s not clear if this will actually cancel the connection,&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// but we can at least prevent _some_ unnecessary work --&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// without writing all the code for a proper delegate, which&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// doesn&amp;#39;t really belong in RAC.&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suspended&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;YES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;queue&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;cancelAllOperations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}];&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;setNameWithFormat:&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;+rac_sendAsynchronousRequest: %@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;问题代码&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;RAC(photoModel, fullsizedData) = [self download:photoModel.fullsizedURL];&lt;/code&gt; 其中fullsizeData为一个NSData&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;objective-c language-objective-c&quot; data-lang=&quot;objective-c&quot;&gt;&lt;span class=&quot;k&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACSignal&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;download:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSString&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;urlString&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;NSAssert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;urlString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;@&amp;quot;URL must not be nil&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;NSURLRequest&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLRequest&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;requestWithURL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURL&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;URLWithString&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;urlString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLConnection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rac_sendAsynchronousRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reduceEach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NSData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deliverOn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACScheduler&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainThreadScheduler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;发生原因梳理&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;RAC 绑定了一个由 NSURLConnection 的 rac_sendAsynchronousRequest生成出的signal&lt;/li&gt;
+&lt;li&gt;在网络超时时候发出了error信号、导致rac绑定crash&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;问题解决方法&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;在subscribe那个网络信号的时候进行catch error操作&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;objective-c language-objective-c&quot; data-lang=&quot;objective-c&quot;&gt;&lt;span class=&quot;p&quot;&gt;[[[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLConnection&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rac_sendAsynchronousRequest&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reduceEach&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSURLResponse&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NSData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deliverOn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACScheduler&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainThreadScheduler&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:^&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACSignal&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSError&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;error =%@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;RACSignal&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;empty&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}];&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在 &lt;a href=&quot;https://github.com/ReactiveCocoa/ReactiveCocoa/commit/37bbe0d5340e5180db111694f584f927df474824&quot;&gt;传送门&lt;/a&gt;这个pull request之中……当然这是个针对swift的branch中加入了&lt;code&gt;errorHandler&lt;/code&gt;&lt;a href=&quot;https://github.com/ReactiveCocoa/ReactiveCocoa/commit/09c3d739579abfc51df5d56ed0c7e09c20a8fac8&quot;&gt;传送门&lt;/a&gt;解决了这个问题&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://snorlaxzxz.com/program/2014/10/17/catch-errors-in-rac</link>
+                <guid>http://snorlaxzxz.com/program/2014/10/17/catch-errors-in-rac</guid>
+                <pubDate>2014-10-17T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>正则表达式——BRE与ERE区别</title>
+                <description>&lt;h3&gt;本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。&lt;/li&gt;
@@ -262,6 +376,261 @@
 </description>
                 <link>http://snorlaxzxz.com/program/2014/10/14/regular-expression</link>
                 <guid>http://snorlaxzxz.com/program/2014/10/14/regular-expression</guid>
+                <pubDate>2014-10-14T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>正则表达式——BRE与ERE区别</title>
+                <description>&lt;h3&gt;本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;但是两种语法也都必须要记因为很多Unix程序用的并没有统一。&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;BRE&lt;/th&gt;
+&lt;th&gt;ERE&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;grep&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sed&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ed&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;vi&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;more&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;egrep&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;awk&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lex&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;√&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;公共meta部分&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\&lt;/code&gt; 
+
+&lt;ul&gt;
+&lt;li&gt;用来关闭后续字符意义例如 &lt;code&gt;\&amp;#39;  \&amp;quot;&lt;/code&gt; &lt;/li&gt;
+&lt;li&gt;在BRE中特别有打开字符意义的意思例如 &lt;code&gt;\(...\)&lt;/code&gt; &lt;code&gt;\{...\}&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;用来匹配单个字符&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;*&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;匹配0-n个字符&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;^&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;锚点、行首起始处&lt;/li&gt;
+&lt;li&gt;在BRE中必须需要在表达式开头才有效
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;echo abc | grep &amp;quot;.*^a&amp;quot;&lt;/code&gt; ×&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;echo abc | egrep &amp;quot;.*^a&amp;quot;&lt;/code&gt; √&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;$&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;锚点、行尾结尾处&lt;/li&gt;
+&lt;li&gt;同上在BRE中必须要在结尾处才有效&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;[...]&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[^...]&lt;/code&gt; 取...的反&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[x-y]&lt;/code&gt; 匹配 x-y 之间的  例如 x=1 y=9 or x=a y=z&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;[express]&lt;/code&gt; 匹配express的字符集  例如 express=[:alnum:] [[:alnum:]] 匹配数字字符&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;类别&lt;/th&gt;
+&lt;th&gt;意义&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;[:alnum:]&lt;/td&gt;
+&lt;td&gt;数字&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:alpha:]&lt;/td&gt;
+&lt;td&gt;字母&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:blank:]&lt;/td&gt;
+&lt;td&gt;space or tab&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:cntrl:]&lt;/td&gt;
+&lt;td&gt;控制字符&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:digit:]&lt;/td&gt;
+&lt;td&gt;数字&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:graph:]&lt;/td&gt;
+&lt;td&gt;除了空格字符&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:lower:]&lt;/td&gt;
+&lt;td&gt;小写字母&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:print:]&lt;/td&gt;
+&lt;td&gt;可显示的字符&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:puncat:]&lt;/td&gt;
+&lt;td&gt;标点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:space:]&lt;/td&gt;
+&lt;td&gt;空白&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:upper:]&lt;/td&gt;
+&lt;td&gt;大写字母&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;[:xdigit:]&lt;/td&gt;
+&lt;td&gt;16进制数字&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;\n&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;在BRE中为重复(...)的第n个表达式且当时位置匹配的结果于他所代表的那个结果相同
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;echo axa | grep &amp;quot;\([ab]\)x\1&amp;quot;&lt;/code&gt; √&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;echo axb | grep &amp;quot;\([ab]\)x\1&amp;quot;&lt;/code&gt; ×&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;在ERE中为重复()的第n个表达式
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;echo axa | egrep &amp;quot;([ab])x\1&amp;quot;&lt;/code&gt; √&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;echo axb | egrep &amp;quot;([ab])x\1&amp;quot;&lt;/code&gt; ×&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;BRE meta部分&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\{n,m\}&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;匹配前面单个字符的次数区间为n-m次 
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;\{n\}&lt;/code&gt; 重现n次&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\{n,\}&lt;/code&gt; 至少出现n次&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\(...\)&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;匹配...子模式的 可以通过上述的&lt;code&gt;\n&lt;/code&gt;来引用&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;ERE meta部分&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;{n,m}&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;同BRE匹配单个字符n-m次&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;+&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;匹配一个或n个&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;?&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;匹配0个或1个&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;|&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;匹配 | 前后的表达式&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(...)&lt;/code&gt;
+
+&lt;ul&gt;
+&lt;li&gt;同BRE中的&lt;code&gt;\(...\)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;BRE 优先级 &amp;gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[...]&lt;/code&gt; 方括号中的具体转义&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\metacharacter&lt;/code&gt; 转义的meta字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[]&lt;/code&gt; 方括号表达式&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\(...\)...\n&lt;/code&gt; 子表达式后向引用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\{...\}&lt;/code&gt; * 单置字符重现&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;...&lt;/code&gt; 连续字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;^ $&lt;/code&gt; 锚点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;ERE 优先级 &amp;gt;&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;[...]&lt;/code&gt; 方括号中的具体转义&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;\metacharacter&lt;/code&gt; 转义的meta字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;[]&lt;/code&gt; 方括号表达式&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;(...)...\n&lt;/code&gt; 子表达式后向引用&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;+ ? * {}&lt;/code&gt; 单置字符重现&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;...&lt;/code&gt; 连续字符&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;^ $&lt;/code&gt; 锚点&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;|&lt;/code&gt; 选择&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://snorlaxzxz.com/program/2014/10/14/difference-between-bre-and-ere</link>
+                <guid>http://snorlaxzxz.com/program/2014/10/14/difference-between-bre-and-ere</guid>
                 <pubDate>2014-10-14T00:00:00+08:00</pubDate>
         </item>
 

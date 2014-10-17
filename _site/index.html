@@ -111,7 +111,167 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
-  <h3><a href="/program/2014/10/14/regular-expression">Regular Expression </a></h3>
+  <h3><a href="/program/2014/10/17/catch-errors-in-rac">ReactiveCocoa中 RAC绑定时的坑 </a></h3>
+  <div class="date">
+    <span>17 October 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h3>背景</h3>
+
+<ul>
+<li>大致情况是bind了一个<code>NSData</code>到一个由<code>NSURLConnection</code>拓展出来的signal中、当网络请求超时时一定发生crash</li>
+</ul>
+
+<h4>关键代码</h4>
+
+<ul>
+<li><p><code>RACSignal+Operations.m</code> line 629-643 </p>
+
+<ul>
+<li>查看RAC宏定义发现入口时下面</li>
+<li><code>- (RACDisposable *)setKeyPath:(NSString *)keyPath onObject:(NSObject *)object nilValue:(id)nilValue;</code></li>
+<li>如下代码中可以发现其实在当error时候直接assert掉了关于这里作者是这么说的
+
+<ul>
+<li>Errors that occur in a property binding are generally not corrupting. You&#39;re more likely to see weird UI glitches than a completely broken document, so crashing may be an unreasonable response.</li>
+<li>But, of course, we really have no way of knowing. Maybe we should just fail fast.</li>
+</ul></li>
+<li>不过个人认为这也只是在可控制状态下这样强硬的要求也的确不错、可是在比如网络请求下就出大坑了……</li>
+</ul>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c">    <span class="n">RACDisposable</span> <span class="o">*</span><span class="n">subscriptionDisposable</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">subscribeNext</span><span class="o">:^</span><span class="p">(</span><span class="kt">id</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">object</span> <span class="n">setValue</span><span class="o">:</span><span class="n">x</span> <span class="o">?:</span> <span class="n">nilValue</span> <span class="n">forKeyPath</span><span class="o">:</span><span class="n">keyPath</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">error</span><span class="o">:^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
+
+    <span class="n">NSCAssert</span><span class="p">(</span><span class="nb">NO</span><span class="p">,</span> <span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+
+    <span class="c1">// Log the error if we&#39;re running with assertions disabled.</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+
+    <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">completed</span><span class="o">:^</span><span class="p">{</span>
+    <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
+<span class="p">}];</span>
+</code></pre></div></li>
+<li><p>继续看<code>NSURLConnection+RACSupport.m</code>中的对NSURLConnection中的拓展</p></li>
+<li><p>其中最致命的问题也就是当在一个request回来时判定了当data为空时直接向signal send error了、这也就导致了为什么仅仅只是在超时的时候发送了error、而没有在别的网络错误时crash、因为那个时候data虽然不是你想要的但至少不是空</p>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">+</span> <span class="p">(</span><span class="n">RACSignal</span> <span class="o">*</span><span class="p">)</span><span class="nf">rac_sendAsynchronousRequest:</span><span class="p">(</span><span class="n">NSURLRequest</span> <span class="o">*</span><span class="p">)</span><span class="nv">request</span> <span class="p">{</span>
+<span class="n">NSCParameterAssert</span><span class="p">(</span><span class="n">request</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
+
+<span class="k">return</span> <span class="p">[[</span><span class="n">RACSignal</span>
+    <span class="nl">createSignal:</span><span class="o">^</span> <span class="n">RACDisposable</span> <span class="o">*</span> <span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">RACSubscriber</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSOperationQueue</span> <span class="o">*</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+        <span class="n">queue</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;com.github.ReactiveCocoa.NSURLConnectionRACSupport&quot;</span><span class="p">;</span>
+
+        <span class="p">[</span><span class="n">NSURLConnection</span> <span class="n">sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span> <span class="n">queue</span><span class="o">:</span><span class="n">queue</span> <span class="n">completionHandler</span><span class="o">:^</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendError</span><span class="o">:</span><span class="n">error</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendNext</span><span class="o">:</span><span class="n">RACTuplePack</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">data</span><span class="p">)];</span>
+                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendCompleted</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}];</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">RACDisposable</span> <span class="n">disposableWithBlock</span><span class="o">:^</span><span class="p">{</span>
+            <span class="c1">// It&#39;s not clear if this will actually cancel the connection,</span>
+            <span class="c1">// but we can at least prevent _some_ unnecessary work --</span>
+            <span class="c1">// without writing all the code for a proper delegate, which</span>
+            <span class="c1">// doesn&#39;t really belong in RAC.</span>
+            <span class="n">queue</span><span class="p">.</span><span class="n">suspended</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+            <span class="p">[</span><span class="n">queue</span> <span class="n">cancelAllOperations</span><span class="p">];</span>
+        <span class="p">}];</span>
+    <span class="p">}]</span>
+    <span class="nl">setNameWithFormat:</span><span class="s">@&quot;+rac_sendAsynchronousRequest: %@&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">];</span>
+<span class="p">}</span>
+</code></pre></div></li>
+</ul>
+
+<h4>问题代码</h4>
+
+<ul>
+<li><p><code>RAC(photoModel, fullsizedData) = [self download:photoModel.fullsizedURL];</code> 其中fullsizeData为一个NSData</p>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">+</span><span class="p">(</span><span class="n">RACSignal</span> <span class="o">*</span><span class="p">)</span><span class="nf">download:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">urlString</span> <span class="p">{</span>
+<span class="n">NSAssert</span><span class="p">(</span><span class="n">urlString</span><span class="p">,</span> <span class="s">@&quot;URL must not be nil&quot;</span><span class="p">);</span>
+
+<span class="n">NSURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURLRequest</span> <span class="n">requestWithURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="n">urlString</span><span class="p">]];</span>
+<span class="k">return</span> <span class="p">[[[</span><span class="n">NSURLConnection</span> <span class="n">rac_sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span><span class="p">]</span> <span class="n">reduceEach</span><span class="o">:^</span><span class="kt">id</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">}]</span> <span class="n">deliverOn</span><span class="o">:</span><span class="p">[</span><span class="n">RACScheduler</span> <span class="n">mainThreadScheduler</span><span class="p">]];</span>
+<span class="p">}</span>
+</code></pre></div></li>
+</ul>
+
+<h4>发生原因梳理</h4>
+
+<ul>
+<li>RAC 绑定了一个由 NSURLConnection 的 rac_sendAsynchronousRequest生成出的signal</li>
+<li>在网络超时时候发出了error信号、导致rac绑定crash</li>
+</ul>
+
+<h4>问题解决方法</h4>
+
+<ul>
+<li><p>在subscribe那个网络信号的时候进行catch error操作</p>
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="p">[[[[</span><span class="n">NSURLConnection</span> <span class="n">rac_sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span><span class="p">]</span> <span class="n">reduceEach</span><span class="o">:^</span><span class="kt">id</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">){</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+<span class="p">}]</span> <span class="n">deliverOn</span><span class="o">:</span><span class="p">[</span><span class="n">RACScheduler</span> <span class="n">mainThreadScheduler</span><span class="p">]]</span> <span class="n">catch</span><span class="o">:^</span><span class="n">RACSignal</span><span class="o">*</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">){</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;error =%@&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">RACSignal</span> <span class="n">empty</span><span class="p">];</span>
+<span class="p">}];</span>
+</code></pre></div></li>
+<li><p>在 <a href="https://github.com/ReactiveCocoa/ReactiveCocoa/commit/37bbe0d5340e5180db111694f584f927df474824">传送门</a>这个pull request之中……当然这是个针对swift的branch中加入了<code>errorHandler</code><a href="https://github.com/ReactiveCocoa/ReactiveCocoa/commit/09c3d739579abfc51df5d56ed0c7e09c20a8fac8">传送门</a>解决了这个问题</p></li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>51</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#ReactiveCocoa-ref">ReactiveCocoa <span>1</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2014/10/14/regular-expression">正则表达式——BRE与ERE区别 </a></h3>
   <div class="date">
     <span>14 October 2014</span>
   </div>
@@ -120,7 +280,7 @@
 <div class="row-fluid post-full">
   <div class="span12">
     <div class="content">
-      <h3>本文主要说明了正则的两个标准 BRE 以及 ERE的具体用法</h3>
+      <h3>本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别</h3>
 
 <ul>
 <li>BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。</li>
@@ -380,7 +540,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>49</span>
+    		program <span>51</span>
     	</a></li>
     
   
@@ -399,9 +559,312 @@
 
   
     
-    	<li><a href="#re-ref">re <span>1</span></a></li>
+    	<li><a href="#re-ref">re <span>2</span></a></li>
     
-    	<li><a href="#shell-ref">shell <span>1</span></a></li>
+    	<li><a href="#shell-ref">shell <span>2</span></a></li>
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2014/10/14/difference-between-bre-and-ere">正则表达式——BRE与ERE区别 </a></h3>
+  <div class="date">
+    <span>14 October 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h3>本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别</h3>
+
+<ul>
+<li>BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。</li>
+<li><p>但是两种语法也都必须要记因为很多Unix程序用的并没有统一。</p>
+
+<table><thead>
+<tr>
+<th></th>
+<th>BRE</th>
+<th>ERE</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>grep</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>sed</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>ed</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>vi</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>more</td>
+<td>√</td>
+<td></td>
+</tr>
+<tr>
+<td>egrep</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>awk</td>
+<td></td>
+<td>√</td>
+</tr>
+<tr>
+<td>lex</td>
+<td></td>
+<td>√</td>
+</tr>
+</tbody></table></li>
+</ul>
+
+<h3>公共meta部分</h3>
+
+<ul>
+<li><code>\</code> 
+
+<ul>
+<li>用来关闭后续字符意义例如 <code>\&#39;  \&quot;</code> </li>
+<li>在BRE中特别有打开字符意义的意思例如 <code>\(...\)</code> <code>\{...\}</code></li>
+</ul></li>
+<li><code>.</code>
+
+<ul>
+<li>用来匹配单个字符</li>
+</ul></li>
+<li><code>*</code>
+
+<ul>
+<li>匹配0-n个字符</li>
+</ul></li>
+<li><code>^</code>
+
+<ul>
+<li>锚点、行首起始处</li>
+<li>在BRE中必须需要在表达式开头才有效
+
+<ul>
+<li><code>echo abc | grep &quot;.*^a&quot;</code> ×</li>
+<li><code>echo abc | egrep &quot;.*^a&quot;</code> √</li>
+</ul></li>
+</ul></li>
+<li><code>$</code>
+
+<ul>
+<li>锚点、行尾结尾处</li>
+<li>同上在BRE中必须要在结尾处才有效</li>
+</ul></li>
+<li><p><code>[...]</code></p>
+
+<ul>
+<li><code>[^...]</code> 取...的反</li>
+<li><code>[x-y]</code> 匹配 x-y 之间的  例如 x=1 y=9 or x=a y=z</li>
+<li><p><code>[express]</code> 匹配express的字符集  例如 express=[:alnum:] [[:alnum:]] 匹配数字字符</p>
+
+<table><thead>
+<tr>
+<th>类别</th>
+<th>意义</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>[:alnum:]</td>
+<td>数字</td>
+</tr>
+<tr>
+<td>[:alpha:]</td>
+<td>字母</td>
+</tr>
+<tr>
+<td>[:blank:]</td>
+<td>space or tab</td>
+</tr>
+<tr>
+<td>[:cntrl:]</td>
+<td>控制字符</td>
+</tr>
+<tr>
+<td>[:digit:]</td>
+<td>数字</td>
+</tr>
+<tr>
+<td>[:graph:]</td>
+<td>除了空格字符</td>
+</tr>
+<tr>
+<td>[:lower:]</td>
+<td>小写字母</td>
+</tr>
+<tr>
+<td>[:print:]</td>
+<td>可显示的字符</td>
+</tr>
+<tr>
+<td>[:puncat:]</td>
+<td>标点</td>
+</tr>
+<tr>
+<td>[:space:]</td>
+<td>空白</td>
+</tr>
+<tr>
+<td>[:upper:]</td>
+<td>大写字母</td>
+</tr>
+<tr>
+<td>[:xdigit:]</td>
+<td>16进制数字</td>
+</tr>
+</tbody></table></li>
+</ul></li>
+<li><p><code>\n</code></p>
+
+<ul>
+<li>在BRE中为重复(...)的第n个表达式且当时位置匹配的结果于他所代表的那个结果相同
+
+<ul>
+<li><code>echo axa | grep &quot;\([ab]\)x\1&quot;</code> √</li>
+<li><code>echo axb | grep &quot;\([ab]\)x\1&quot;</code> ×</li>
+</ul></li>
+<li>在ERE中为重复()的第n个表达式
+
+<ul>
+<li><code>echo axa | egrep &quot;([ab])x\1&quot;</code> √</li>
+<li><code>echo axb | egrep &quot;([ab])x\1&quot;</code> ×</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h3>BRE meta部分</h3>
+
+<ul>
+<li><code>\{n,m\}</code>
+
+<ul>
+<li>匹配前面单个字符的次数区间为n-m次 
+
+<ul>
+<li><code>\{n\}</code> 重现n次</li>
+<li><code>\{n,\}</code> 至少出现n次</li>
+</ul></li>
+</ul></li>
+<li><code>\(...\)</code>
+
+<ul>
+<li>匹配...子模式的 可以通过上述的<code>\n</code>来引用</li>
+</ul></li>
+</ul>
+
+<h3>ERE meta部分</h3>
+
+<ul>
+<li><code>{n,m}</code>
+
+<ul>
+<li>同BRE匹配单个字符n-m次</li>
+</ul></li>
+<li><code>+</code>
+
+<ul>
+<li>匹配一个或n个</li>
+</ul></li>
+<li><code>?</code>
+
+<ul>
+<li>匹配0个或1个</li>
+</ul></li>
+<li><code>|</code>
+
+<ul>
+<li>匹配 | 前后的表达式</li>
+</ul></li>
+<li><code>(...)</code>
+
+<ul>
+<li>同BRE中的<code>\(...\)</code></li>
+</ul></li>
+</ul>
+
+<h3>BRE 优先级 &gt;</h3>
+
+<ul>
+<li><code>[...]</code> 方括号中的具体转义</li>
+<li><code>\metacharacter</code> 转义的meta字符</li>
+<li><code>[]</code> 方括号表达式</li>
+<li><code>\(...\)...\n</code> 子表达式后向引用</li>
+<li><code>\{...\}</code> * 单置字符重现</li>
+<li><code>...</code> 连续字符</li>
+<li><code>^ $</code> 锚点</li>
+</ul>
+
+<h3>ERE 优先级 &gt;</h3>
+
+<ul>
+<li><code>[...]</code> 方括号中的具体转义</li>
+<li><code>\metacharacter</code> 转义的meta字符</li>
+<li><code>[]</code> 方括号表达式</li>
+<li><code>(...)...\n</code> 子表达式后向引用</li>
+<li><code>+ ? * {}</code> 单置字符重现</li>
+<li><code>...</code> 连续字符</li>
+<li><code>^ $</code> 锚点</li>
+<li><code>|</code> 选择</li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>51</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#re-ref">re <span>2</span></a></li>
+    
+    	<li><a href="#shell-ref">shell <span>2</span></a></li>
     
   
 
@@ -755,7 +1218,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>49</span>
+    		program <span>51</span>
     	</a></li>
     
   
@@ -940,7 +1403,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>49</span>
+    		program <span>51</span>
     	</a></li>
     
   
@@ -1114,7 +1577,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>49</span>
+    		program <span>51</span>
     	</a></li>
     
   
@@ -1394,7 +1857,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>49</span>
+    		program <span>51</span>
     	</a></li>
     
   
@@ -1506,7 +1969,7 @@ done;
   
     
     	<li><a href="#program-ref">
-    		program <span>49</span>
+    		program <span>51</span>
     	</a></li>
     
   
@@ -1802,7 +2265,7 @@ sort(l, &gt;)
   
     
     	<li><a href="#program-ref">
-    		program <span>49</span>
+    		program <span>51</span>
     	</a></li>
     
   
@@ -1824,311 +2287,6 @@ sort(l, &gt;)
     	<li><a href="#swift-ref">swift <span>1</span></a></li>
     
     	<li><a href="#objective-c-ref">objective-c <span>1</span></a></li>
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/gossip/2014/05/30/clearance">毕业贩卖 </a></h3>
-  <div class="date">
-    <span>30 May 2014</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <h3>毕业甩卖</h3>
-
-<h4>EggPlus</h4>
-
-<ul>
-<li><strong>出售：60</strong></li>
-<li>附赠金龙鱼大豆油 900ml一瓶</li>
-<li>附赠清洗工具</li>
-<li>渠道 <a href="http://www.mygeek.cn/product/Pro1721.Html">http://www.mygeek.cn/product/Pro1721.Html</a></li>
-<li>原价 120</li>
-<li><img src="/assets/static/2014-05-30-2.jpg" alt="eggplus"></li>
-</ul>
-
-<h4>电风扇</h4>
-
-<ul>
-<li><strong>出售：25</strong>
-<img src="/assets/static/2014-05-30-3.jpg" alt="fan"></li>
-</ul>
-
-<h4>显示器</h4>
-
-<ul>
-<li><strong><del>出售：已售</del></strong></li>
-<li>19寸</li>
-<li>分辨率 1440*900</li>
-<li>渠道 <a href="http://item.jd.com/172532.html">http://item.jd.com/172532.html</a></li>
-<li>原价 699</li>
-<li>图为高度和13寸本的对比</li>
-<li><img src="/assets/static/2014-05-30-1.jpg" alt="13寸笔记本的对比">
-*
-<strong>ps. 造福学弟，最好支付宝交易</strong>
-<a href="mailto:zhangxzheng@gmail.com">Email</a></li>
-</ul>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#gossip-ref">
-    		gossip <span>5</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2014/05/27/migrate-blog-from-wp-to-gp">wordpress迁移github page </a></h3>
-  <div class="date">
-    <span>27 May 2014</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <h3>工作</h3>
-
-<ol>
-<li>host在github上</li>
-<li>安装jekyll bootstrap <del>简称jb</del></li>
-<li>导出wordpress评论以及内容</li>
-<li>处理wordpress的内容转化为markdown</li>
-<li>注意事项</li>
-</ol>
-
-<h4>host在github上</h4>
-
-<ol>
-<li><a href="https://pages.github.com/">https://pages.github.com/</a></li>
-<li>新建一个username.github.io的repo</li>
-<li><a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages">绑定域名</a></li>
-</ol>
-
-<h4>安装 jb</h4>
-
-<ol>
-<li><a href="http://jekyllbootstrap.com/">http://jekyllbootstrap.com/</a></li>
-<li>安装jekyll</li>
-<li>clone代码 并看一下sample的样例以及api</li>
-</ol>
-
-<hr>
-
-<h4>导出wordpress评论以及内容</h4>
-
-<ul>
-<li>导出评论
-
-<ul>
-<li>由于github page采用的是纯静态的、评论这种那么麻烦的东西索性还是交给第三方好啦= =在github上我使用的是<a href="http://disqus.com/">disqus</a>，他也同时提供从wordpress导出的功能</li>
-<li>创建 disqus账号 <disqus.com/admin/create></li>
-<li>添加自己的site并安装wp插件 <a href="http://wordpress.org/plugins/disqus-comment-system/">http://wordpress.org/plugins/disqus-comment-system/</a></li>
-<li>等待disques后台进程帮你抓完会通知你的</li>
-</ul></li>
-<li>导出内容
-
-<ul>
-<li>导出content 使用wordpress的导出工具导出xml即可</li>
-</ul></li>
-</ul>
-
-<h4>转换内容</h4>
-
-<ul>
-<li><p>导出mark down</p>
-
-<ul>
-<li><del>jekyll 有一个jekyll-import 的工具、不过中文支持的巨差无比</del></li>
-<li>使用一个改进过对中文支持的版本 <a href="https://gist.github.com/chitsaou/1394128">https://gist.github.com/chitsaou/1394128</a></li>
-<li>导出的xml命名 (wordpress.xml) 如下命令会把为你生成一拖post 以及wordpress中的page
-<code>ruby
-ruby -r &quot;./wordpressdotcom.rb&quot; -e &quot;Jekyll::WordpressDotCom.process&quot;
-</code></li>
-<li>如果在wordpress中没有使用什么插件类似**codebox**这样的到这一步就导入成功了</li>
-<li>如果使用了一些奇怪的语法在html用插件解出来的格式就一塌糊涂了，比如我的所有的代码都是用codebox的……
-写了一段简单的脚本来处理html，基本思路都是文本解析到codebox的开始标签pre然后替换掉</li>
-</ul>
-<div class="highlight"><pre><code class="python language-python" data-lang="python"><span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;zhangxinzheng&#39;</span>
-<span class="c"># -*- coding: utf-8 -*-</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span>
-    <span class="n">targetName</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;html&quot;</span><span class="p">,</span><span class="s">&quot;md&quot;</span><span class="p">)</span>
-    <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r+&quot;</span><span class="p">)</span>
-    <span class="nb">str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">readlines</span><span class="p">())</span>
-    <span class="k">while</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-        <span class="n">tempString</span><span class="o">=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
-        <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="n">startIndex</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;&lt;pre&quot;</span><span class="p">)</span>
-        <span class="n">endIndex</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="n">realEnd</span> <span class="o">=</span> <span class="n">startIndex</span>
-        <span class="n">leftCount</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="n">rightCount</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">startIndex</span><span class="p">,</span> <span class="n">endIndex</span><span class="p">):</span>
-            <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
-                <span class="n">isContent</span> <span class="o">=</span> <span class="bp">False</span>
-                <span class="n">leftCount</span> <span class="o">+=</span><span class="mi">1</span>
-            <span class="k">if</span> <span class="n">isContent</span><span class="p">:</span>
-                <span class="n">tempString</span><span class="o">+=</span><span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">str</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
-                <span class="n">isContent</span> <span class="o">=</span> <span class="bp">True</span>
-                <span class="n">rightCount</span> <span class="o">+=</span><span class="mi">1</span>
-                <span class="n">realEnd</span> <span class="o">=</span> <span class="n">j</span>
-            <span class="k">if</span> <span class="n">leftCount</span> <span class="o">==</span> <span class="n">rightCount</span><span class="p">:</span>
-                <span class="k">break</span>
-        <span class="nb">str</span><span class="o">+=</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">```</span><span class="se">\n</span><span class="s">&quot;</span>
-        <span class="nb">str</span><span class="o">=</span><span class="nb">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="nb">str</span><span class="p">[</span><span class="n">startIndex</span><span class="p">:</span><span class="n">realEnd</span><span class="p">],</span> <span class="n">tempString</span><span class="p">)</span>
-    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-    <span class="n">fd</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetName</span><span class="p">,</span> <span class="s">&quot;w+&quot;</span><span class="p">)</span>
-    <span class="n">fd</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="n">fd</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
-        <span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</code></pre></div></li>
-</ul>
-
-<h4>注意事项</h4>
-
-<ol>
-<li><p>中文路径在github上跑起来没问题，但是本地调试时会报错</p>
-<div class="highlight"><pre><code class="ruby language-ruby" data-lang="ruby"><span class="sx">% LANG=&quot;en_US.UTF-8&quot; </span><span class="no">LC_ALL</span><span class="o">=</span><span class="s2">&quot;en_US.UTF-8&quot;</span> <span class="n">be</span> <span class="n">jekyll</span> <span class="n">build</span> <span class="o">--</span><span class="n">trace</span>
-<span class="no">Configuration</span> <span class="ss">file</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_config</span><span class="o">.</span><span class="n">yml</span>
-            <span class="ss">Source</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span>
-       <span class="ss">Destination</span><span class="p">:</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="n">beyondalbert</span><span class="o">.</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">_site</span>
-      <span class="no">Generating</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
-<span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">121</span><span class="ss">:in</span> <span class="sb">`gsub!&#39;: invalid byte sequence in US-ASCII (ArgumentError)</span>
-<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll.rb:121:in `</span><span class="n">sanitized_path</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/post.rb:276:in `destination&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`block in new_files&#39;</span>
-<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:420:in `</span><span class="n">block</span> <span class="p">(</span><span class="mi">2</span> <span class="n">levels</span><span class="p">)</span> <span class="k">in</span> <span class="n">each_site_file</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:419:in `each&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">419</span><span class="ss">:in</span> <span class="sb">`block in each_site_file&#39;</span>
-<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `</span><span class="n">each</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:418:in `each_site_file&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">cleaner</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">43</span><span class="ss">:in</span> <span class="sb">`new_files&#39;</span>
-<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:24:in `</span><span class="n">obsolete_files</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/cleaner.rb:15:in `cleanup!&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">site</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">255</span><span class="ss">:in</span> <span class="sb">`cleanup&#39;</span>
-<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/site.rb:44:in `</span><span class="n">process</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/command.rb:43:in `process_site&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">build</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">46</span><span class="ss">:in</span> <span class="sb">`build&#39;</span>
-<span class="sb">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:30:in `</span><span class="n">process</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/Documents/Github/jekyll/lib/jekyll/commands/build.rb:17:in `block (2 levels) in init_with_program&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`call&#39;</span>
-<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `</span><span class="n">block</span> <span class="k">in</span> <span class="n">execute</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/command.rb:220:in `each&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/.</span><span class="n">rbenv</span><span class="o">/</span><span class="n">versions</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">2</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ruby</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="mi">2</span><span class="o">.</span><span class="mi">1</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">gems</span><span class="o">/</span><span class="n">mercenary</span><span class="o">-</span><span class="mi">0</span><span class="o">.</span><span class="mi">3</span><span class="o">.</span><span class="mi">3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">mercenary</span><span class="o">/</span><span class="n">command</span><span class="o">.</span><span class="n">rb</span><span class="p">:</span><span class="mi">220</span><span class="ss">:in</span> <span class="sb">`execute&#39;</span>
-<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary/program.rb:35:in `</span><span class="n">go</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/mercenary-0.3.3/lib/mercenary.rb:22:in `program&#39;</span>
-    <span class="n">from</span> <span class="sr">/Users/</span><span class="n">albertogg</span><span class="o">/</span><span class="no">Documents</span><span class="o">/</span><span class="no">Github</span><span class="o">/</span><span class="n">jekyll</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="ss">jekyll</span><span class="p">:</span><span class="mi">18</span><span class="ss">:in</span> <span class="sb">`&lt;top (required)&gt;&#39;</span>
-<span class="sb">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `</span><span class="nb">load</span><span class="s1">&#39;</span>
-<span class="s1">    from /Users/albertogg/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/bin/jekyll:23:in `&lt;main&gt;&#39;</span>
-</code></pre></div>
-<ul>
-<li>详见这个<a href="https://github.com/jekyll/jekyll/issues/2379">https://github.com/jekyll/jekyll/issues/2379</a> 修改了报错那行为
-<code>ruby
-clean_path.force_encoding(&#39;UTF-8&#39;).gsub!(/\A\w\:\//, &#39;/&#39;)
-</code></li>
-</ul></li>
-<li><p>使用里面的代码高亮很不爽可以参见gfm使用他的语法并在config中调整配置
-<code>
-markdown: redcarpet
-redcarpet:
-  extensions: [&quot;no_intra_emphasis&quot;, &quot;fenced_code_blocks&quot;, &quot;autolink&quot;, &quot;strikethrough&quot;, &quot;superscript&quot;]
-</code></p></li>
-<li><p>代码高亮开启了pygments后的css也需要自己配置来写</p>
-
-<ul>
-<li>可以参加<a href="https://github.com/richleland/pygments-css">https://github.com/richleland/pygments-css</a></li>
-</ul></li>
-</ol>
-
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>49</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#wordpress-ref">wordpress <span>1</span></a></li>
-    
-    	<li><a href="#github-ref">github <span>1</span></a></li>
     
   
 
@@ -2181,7 +2339,7 @@ redcarpet:
   
     <a class="next" href="/page2">后页</a>
   
-  (共61篇)
+  (共63篇)
 </div>
 
         </div>

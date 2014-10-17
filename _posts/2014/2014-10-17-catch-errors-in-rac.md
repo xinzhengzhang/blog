@@ -22,52 +22,51 @@ tags: ["ReactiveCocoa", "objective-c"]
 
 	```objective-c
 		RACDisposable *subscriptionDisposable = [self subscribeNext:^(id x) {
-		NSObject *object = (__bridge id)objectPtr;
-		[object setValue:x ?: nilValue forKeyPath:keyPath];
-	} error:^(NSError *error) {
-		NSObject *object = (__bridge id)objectPtr;
+			NSObject *object = (__bridge id)objectPtr;
+			[object setValue:x ?: nilValue forKeyPath:keyPath];
+		} error:^(NSError *error) {
+			NSObject *object = (__bridge id)objectPtr;
 
-		NSCAssert(NO, @"Received error from %@ in binding for key path \"%@\" on %@: %@", self, keyPath, object, error);
+			NSCAssert(NO, @"Received error from %@ in binding for key path \"%@\" on %@: %@", self, keyPath, object, error);
 
-		// Log the error if we're running with assertions disabled.
-		NSLog(@"Received error from %@ in binding for key path \"%@\" on %@: %@", self, keyPath, object, error);
+			// Log the error if we're running with assertions disabled.
+			NSLog(@"Received error from %@ in binding for key path \"%@\" on %@: %@", self, keyPath, object, error);
 
-		[disposable dispose];
-	} completed:^{
-		[disposable dispose];
-	}];
+			[disposable dispose];
+		} completed:^{
+			[disposable dispose];
+		}];
 	```
   * 继续看`NSURLConnection+RACSupport.m`中的对NSURLConnection中的拓展
   * 其中最致命的问题也就是当在一个request回来时判定了当data为空时直接向signal send error了、这也就导致了为什么仅仅只是在超时的时候发送了error、而没有在别的网络错误时crash、因为那个时候data虽然不是你想要的但至少不是空
 
 	```objective-c
 	+ (RACSignal *)rac_sendAsynchronousRequest:(NSURLRequest *)request {
-	NSCParameterAssert(request != nil);
+		NSCParameterAssert(request != nil);
+		return [[RACSignal
+			createSignal:^ RACDisposable * (id<RACSubscriber> subscriber) {
+				NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+				queue.name = @"com.github.ReactiveCocoa.NSURLConnectionRACSupport";
 
-	return [[RACSignal
-		createSignal:^ RACDisposable * (id<RACSubscriber> subscriber) {
-			NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-			queue.name = @"com.github.ReactiveCocoa.NSURLConnectionRACSupport";
+				[NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+					if (data == nil) {
+						[subscriber sendError:error];
+					} else {
+						[subscriber sendNext:RACTuplePack(response, data)];
+						[subscriber sendCompleted];
+					}
+				}];
 
-			[NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-				if (data == nil) {
-					[subscriber sendError:error];
-				} else {
-					[subscriber sendNext:RACTuplePack(response, data)];
-					[subscriber sendCompleted];
-				}
-			}];
-
-			return [RACDisposable disposableWithBlock:^{
-				// It's not clear if this will actually cancel the connection,
-				// but we can at least prevent _some_ unnecessary work --
-				// without writing all the code for a proper delegate, which
-				// doesn't really belong in RAC.
-				queue.suspended = YES;
-				[queue cancelAllOperations];
-			}];
-		}]
-		setNameWithFormat:@"+rac_sendAsynchronousRequest: %@", request];
+				return [RACDisposable disposableWithBlock:^{
+					// It's not clear if this will actually cancel the connection,
+					// but we can at least prevent _some_ unnecessary work --
+					// without writing all the code for a proper delegate, which
+					// doesn't really belong in RAC.
+					queue.suspended = YES;
+					[queue cancelAllOperations];
+				}];
+			}]
+			setNameWithFormat:@"+rac_sendAsynchronousRequest: %@", request];
 	}
 	```
 
@@ -76,12 +75,12 @@ tags: ["ReactiveCocoa", "objective-c"]
 
 	```objective-c
 	+(RACSignal *)download:(NSString *)urlString {
-    NSAssert(urlString, @"URL must not be nil");
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-    return [[[NSURLConnection rac_sendAsynchronousRequest:request] reduceEach:^id(NSURLResponse *response, NSData *data){
-        return data;
-    }] deliverOn:[RACScheduler mainThreadScheduler]];
+	    NSAssert(urlString, @"URL must not be nil");
+	    
+	    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+	    return [[[NSURLConnection rac_sendAsynchronousRequest:request] reduceEach:^id(NSURLResponse *response, NSData *data){
+	        return data;
+	    }] deliverOn:[RACScheduler mainThreadScheduler]];
 	}
 	```
 
@@ -94,10 +93,10 @@ tags: ["ReactiveCocoa", "objective-c"]
 
 	```objective-c
 	[[[[NSURLConnection rac_sendAsynchronousRequest:request] reduceEach:^id(NSURLResponse *response, NSData *data){
-        return data;
-    }] deliverOn:[RACScheduler mainThreadScheduler]] catch:^RACSignal*(NSError *error){
+	    return data;
+	}] deliverOn:[RACScheduler mainThreadScheduler]] catch:^RACSignal*(NSError *error){
         NSLog(@"error =%@", error);
-        return [RACSignal empty];
+   	    return [RACSignal empty];
     }];
     ```
 

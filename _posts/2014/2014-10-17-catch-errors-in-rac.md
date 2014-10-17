@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "ReactiveCocoa中RAC绑定时Error的处理"
+title: "ReactiveCocoa中RAC绑定中错误处理"
 description: ""
 category: program
 tags: ["ReactiveCocoa", "objective-c"]

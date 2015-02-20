@@ -5,10 +5,112 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2015-02-20T11:52:44+08:00</lastBuildDate>
-        <pubDate>2015-02-20T11:52:44+08:00</pubDate>
+        <lastBuildDate>2015-02-20T12:02:52+08:00</lastBuildDate>
+        <pubDate>2015-02-20T12:02:52+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>注入qq</title>
+                <description>&lt;h4&gt;背景&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;像除夕这种好时节……tx什么红包发疯了那么安全性呢= =脑洞一开我就试试我这么个完全没碰过反向的人能玩成什么样子&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;准备&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一台越狱设备&lt;/li&gt;
+&lt;li&gt;安装OpenSSH MobileSubstrate&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;步骤&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先需要进行qq页面的分析、这个时候就该祭出神器&lt;code&gt;reveal&lt;/code&gt;了hhhh&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;把&lt;code&gt;/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework&lt;/code&gt;放到&lt;code&gt;/System/Library/Frameworks&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;把&lt;code&gt;/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib&lt;/code&gt;放到&lt;code&gt;/Library/MobileSubstrate/DynamicLibraries&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;在&lt;code&gt;/Library/MobileSubstrate/DynamicLibraries/&lt;/code&gt;写一个&lt;code&gt;libReveal.plist&lt;/code&gt;文件内容为&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;{   
+    Filter = {  
+         Bundles = (&amp;quot;com.tencent.mqq&amp;quot;);   
+    };   
+}  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;ps. 关于qq的bundle name可以直接去看mediaplist或者注入后自己dump &lt;code&gt;[[NSBundle mainBundle] infoDictionary][@&amp;quot;CFBundleIdentifier&amp;quot;]&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;img src=&quot;/assets/static/2015-02-20-1.png&quot; alt=&quot;结构嘛= =就是这个样子地!&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;接下去开始要真正的搞反向了、我选择了注入了最广泛也是最安全的一个函数&lt;code&gt;viewDidAppear:&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;嗯感谢oc的runtime提供强大的方法ˊ_&amp;gt;ˋ&lt;/li&gt;
+&lt;li&gt; &lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;static void __attribute__((constructor)) initialize(void)  
+{
+NSLog(@&amp;quot;---------------inject----------------&amp;quot;);
+NSLog(@&amp;quot;%@&amp;quot;,[[NSBundle mainBundle] infoDictionary][@&amp;quot;CFBundleIdentifier&amp;quot;]);
+
+Class class = objc_getClass(&amp;quot;UIViewController&amp;quot;);
+Method ori_Method =  class_getInstanceMethod(class, @selector(viewDidAppear:));
+Method my_Method = class_getInstanceMethod(class, @selector(injectedViewDidAppear:));
+method_exchangeImplementations(ori_Method, my_Method);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;然后我们要找到&lt;code&gt;QQGroupChatViewController&lt;/code&gt;然后钩进去=-=记得还要再调一遍原声方法否则要出bug的哟&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;-(void)injectedViewDidAppear:(BOOL)an
+{  
+NSLog(@&amp;quot;-------viewDidAppear entered-------&amp;quot;);
+if ([self isKindOfClass:NSClassFromString(@&amp;quot;QQGroupChatViewController&amp;quot;)]) {
+    [self injectEntranceccc];
+}
+// 现在你已经有viewController 的句柄了哟～～～～！
+[self injectedViewDidAppear:an];
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;然后找到那个cell了那么以下你有几种选择试验咯具体是哪儿个我也不告诉你=-=
+
+&lt;ul&gt;
+&lt;li&gt;找到他的delegate去钩他的didselect方法&lt;/li&gt;
+&lt;li&gt;找到他下面的UIControl事件模拟touch&lt;/li&gt;
+&lt;li&gt;看他上面绑定的UIGestureRecognizer然后模拟&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;好了我们的注入代码搞定了那么最后该注入进去了咯？&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;首先理论上应该直接用clang进行编译……可是我太菜实在拼不出那坨正确的编译参数所以还是借靠了xcode、随便把注入写进一个&lt;code&gt;x.m&lt;/code&gt;然后build起来(记得build要build你机型的那个哦、比如虚拟机上直接跑肯定是x86的我是ipod5所以编译的是armv7)&lt;/li&gt;
+&lt;li&gt;我们可以在show the report nagivator -&amp;gt; build -&amp;gt; x.m 进行展开看到那一坨又臭又长的编译参数了吧= =我们的目的是要看 -o 然后就找到.o 的目标位置啦&lt;/li&gt;
+&lt;li&gt;接下去就是链接啦&lt;code&gt;ld -dylib -lsystem -lobjc -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -o libij.dylib test.o&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;最后最后！把libij.dylib 塞去&lt;code&gt;/Library/MobileSubstrate/DynamicLibraries/libij.dylib&lt;/code&gt; 把 &lt;code&gt;libij.plist&lt;/code&gt;塞去哪儿？自己想!&lt;/li&gt;
+&lt;li&gt;重启-----大功告成&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;嗯我就是没有给你们&lt;code&gt;injectEntranceccc&lt;/code&gt;的实现、总需要有自己的试错嘛=-=&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;img src=&quot;/assets/static/2015-02-20-2.jpg&quot; alt=&quot;结构嘛= =就是这个样子地!&quot;&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4&gt;最后&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;最后最后我再也不会越狱了。。妈蛋我这种菜鸡都可以想搞什么搞什么不用说别人了……&lt;/li&gt;
+&lt;li&gt;runtime真可怕系列&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+                <link>http://snorlaxzxz.com/program/2015/02/20/inject-qq</link>
+                <guid>http://snorlaxzxz.com/program/2015/02/20/inject-qq</guid>
+                <pubDate>2015-02-20T00:00:00+08:00</pubDate>
+        </item>
 
         <item>
                 <title>ReactiveCocoa中RAC绑定中错误处理</title>
@@ -1992,108 +2094,6 @@ redcarpet:
                 <link>http://snorlaxzxz.com/program/2014/03/05/%E6%9C%AA%E5%BC%95%E7%94%A8%E5%9B%BE%E7%89%87%E5%88%A0%E9%99%A4</link>
                 <guid>http://snorlaxzxz.com/program/2014/03/05/未引用图片删除</guid>
                 <pubDate>2014-03-05T00:00:00+08:00</pubDate>
-        </item>
-
-        <item>
-                <title>注入qq</title>
-                <description>&lt;h4&gt;背景&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;像除夕这种好时节……tx什么红包发疯了那么安全性呢= =脑洞一开我就试试我这么个完全没碰过反向的人能玩成什么样子&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4&gt;准备&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;一台越狱设备&lt;/li&gt;
-&lt;li&gt;安装OpenSSH MobileSubstrate&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4&gt;步骤&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;首先需要进行qq页面的分析、这个时候就该祭出神器&lt;code&gt;reveal&lt;/code&gt;了hhhh&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;把&lt;code&gt;/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework&lt;/code&gt;放到&lt;code&gt;/System/Library/Frameworks&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;把&lt;code&gt;/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib&lt;/code&gt;放到&lt;code&gt;/Library/MobileSubstrate/DynamicLibraries&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;在&lt;code&gt;/Library/MobileSubstrate/DynamicLibraries/&lt;/code&gt;写一个&lt;code&gt;libReveal.plist&lt;/code&gt;文件内容为&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;{   
-    Filter = {  
-         Bundles = (&amp;quot;com.tencent.mqq&amp;quot;);   
-    };   
-}  
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;ps. 关于qq的bundle name可以直接去看mediaplist或者注入后自己dump &lt;code&gt;[[NSBundle mainBundle] infoDictionary][@&amp;quot;CFBundleIdentifier&amp;quot;]&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;img src=&quot;/assets/static/2015-02-20-1.png&quot; alt=&quot;结构嘛= =就是这个样子地!&quot;&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;接下去开始要真正的搞反向了、我选择了注入了最广泛也是最安全的一个函数&lt;code&gt;viewDidAppear:&lt;/code&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;嗯感谢oc的runtime提供强大的方法ˊ_&amp;gt;ˋ&lt;/li&gt;
-&lt;li&gt; &lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;static void __attribute__((constructor)) initialize(void)  
-{
-NSLog(@&amp;quot;---------------inject----------------&amp;quot;);
-NSLog(@&amp;quot;%@&amp;quot;,[[NSBundle mainBundle] infoDictionary][@&amp;quot;CFBundleIdentifier&amp;quot;]);
-
-Class class = objc_getClass(&amp;quot;UIViewController&amp;quot;);
-Method ori_Method =  class_getInstanceMethod(class, @selector(viewDidAppear:));
-Method my_Method = class_getInstanceMethod(class, @selector(injectedViewDidAppear:));
-method_exchangeImplementations(ori_Method, my_Method);
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;然后我们要找到&lt;code&gt;QQGroupChatViewController&lt;/code&gt;然后钩进去=-=记得还要再调一遍原声方法否则要出bug的哟&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;-(void)injectedViewDidAppear:(BOOL)an
-{  
-NSLog(@&amp;quot;-------viewDidAppear entered-------&amp;quot;);
-if ([self isKindOfClass:NSClassFromString(@&amp;quot;QQGroupChatViewController&amp;quot;)]) {
-    [self injectEntranceccc];
-}
-// 现在你已经有viewController 的句柄了哟～～～～！
-[self injectedViewDidAppear:an];
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;然后找到那个cell了那么以下你有几种选择试验咯具体是哪儿个我也不告诉你=-=
-
-&lt;ul&gt;
-&lt;li&gt;找到他的delegate去钩他的didselect方法&lt;/li&gt;
-&lt;li&gt;找到他下面的UIControl事件模拟touch&lt;/li&gt;
-&lt;li&gt;看他上面绑定的UIGestureRecognizer然后模拟&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;好了我们的注入代码搞定了那么最后该注入进去了咯？&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;首先理论上应该直接用clang进行编译……可是我太菜实在拼不出那坨正确的编译参数所以还是借靠了xcode、随便把注入写进一个&lt;code&gt;x.m&lt;/code&gt;然后build起来(记得build要build你机型的那个哦、比如虚拟机上直接跑肯定是x86的我是ipod5所以编译的是armv7)&lt;/li&gt;
-&lt;li&gt;我们可以在show the report nagivator -&amp;gt; build -&amp;gt; x.m 进行展开看到那一坨又臭又长的编译参数了吧= =我们的目的是要看 -o 然后就找到.o 的目标位置啦&lt;/li&gt;
-&lt;li&gt;接下去就是链接啦&lt;code&gt;ld -dylib -lsystem -lobjc -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -o libij.dylib test.o&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;最后最后！把libij.dylib 塞去&lt;code&gt;/Library/MobileSubstrate/DynamicLibraries/libij.dylib&lt;/code&gt; 把 &lt;code&gt;libij.plist&lt;/code&gt;塞去哪儿？自己想!&lt;/li&gt;
-&lt;li&gt;重启-----大功告成&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;嗯我就是没有给你们&lt;code&gt;injectEntranceccc&lt;/code&gt;的实现、总需要有自己的试错嘛=-=&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;img src=&quot;/assets/static/2015-02-20-2.jpg&quot; alt=&quot;结构嘛= =就是这个样子地!&quot;&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4&gt;最后&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;最后最后我再也不会越狱了。。妈蛋我这种菜鸡都可以想搞什么搞什么不用说别人了……&lt;/li&gt;
-&lt;li&gt;runtime真可怕系列&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-                <link>http://snorlaxzxz.com/program/2014/02/20/inject-qq</link>
-                <guid>http://snorlaxzxz.com/program/2014/02/20/inject-qq</guid>
-                <pubDate>2014-02-20T00:00:00+08:00</pubDate>
         </item>
 
         <item>

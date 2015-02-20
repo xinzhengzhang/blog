@@ -111,6 +111,107 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2012/03/14/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AAwebview%E5%92%8Cjs%E4%BA%A4%E4%BA%92%E7%9A%84%E5%B0%81%E8%A3%85">分享一个webview和js交互的封装 </a></h3>
+  <div class="date">
+    <span>14 March 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p><a href="https://github.com/marcuswestin/WebViewJavascriptBridge">marcuswestin / WebViewJavascriptBridge</a>
+<strong>1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project</strong></p>
+
+<p><p><strong>2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&#39;s delegate</strong></p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">   #import
+#import &quot;WebViewJavascriptBridge.h&quot;
+
+@interface ExampleAppDelegate : UIResponder
+
+@end
+
+@implementation ExampleAppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    self.webView = [[UIWebView alloc] initWithFrame:self.window.bounds];
+    [self.window addSubview:webView];
+    self.javascriptBridge = [WebViewJavascriptBridge javascriptBridgeWithDelegate:self];
+    self.webView.delegate = javascriptBridge;
+
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView
+{
+    NSLog(@&quot;MyJavascriptBridgeDelegate received message: %@&quot;, message);
+}
+
+@end
+
+3) Go ahead and send some messages from Objc to javascript
+
+
+[self.javascriptBridge sendMessage:@&quot;Well hello there&quot; toWebView:self.webView];
+
+
+4) Finally, set up the javascript side of things
+
+document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBridgeReady() {
+    WebViewJavascriptBridge.setMessageHandler(function(message) {
+        alert(&#39;Received message: &#39; + message)
+    })
+    WebViewJavascriptBridge.sendMessage(&#39;Hello from the javascript&#39;)
+}, false)
+
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>52</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/life/2012/03/13/%E8%90%BD%E8%84%9A%E7%82%B9">落脚点 </a></h3>
   <div class="date">
     <span>13 March 2012</span>
@@ -191,7 +292,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -316,13 +417,13 @@
   
     <span class="next disabled" >后页&gt;</span>
   
-  (共63篇)
+  (共64篇)
 </div>
 
         </div>
         <hr>
         <footer>
-          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          <p>&copy; 2015 Xinzheng ZhangPowered by Jekyll @ GitHub
           </p>
         </footer>
 

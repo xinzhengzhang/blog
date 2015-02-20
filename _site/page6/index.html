@@ -111,6 +111,140 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
+  <h3><a href="/program/2012/11/04/%E5%85%B3%E4%BA%8E%E4%B8%9C%E5%A4%A7%E6%83%85%E6%8A%A5%E7%A0%94%E7%A9%B6%E7%94%9F%E6%B5%B7%E6%8A%A5%E7%9A%84%E5%BD%A9%E8%9B%8B">关于东大情报研究生海报的彩蛋 </a></h3>
+  <div class="date">
+    <span>04 November 2012</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <p>今天在weibo上看到有人转发的关于东京大学情报科研究生海报里的彩蛋，务真精神我就来落实了一下<br />
+其中各种把1 0 串如何想到正确的转发的才是难点……我这彩笔是还得再战10年估计的……所以在这就把正确方法一步步落实下来<br />
+首先先看海报<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg"><img class="alignnone size-full wp-image-88" title="tokyo_daigaku_information_notice" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg" alt="" width="580" height="820" /></a></p>
+
+<p><strong>关键不在妹子！</strong></p>
+
+<p>好吧，我们先用orc软件把那个少女身前所有的一零串全部扫出来扫出来的东西如下</p>
+
+<p>00011111100010110000100000000000000000000000000000000000000000000000001000000011011011010101000011001011010011<br />
+10110000100100000000010100001111010101001100011110100001010101101010110101100000001110000000000011010100001101<br />
+10000101000100010011011010001110001000010110001100010011000110101100010011000011010010011010011000001101100010<br />
+11100000011010011010101001010111100001110100010011011001110101100000001011000011110111010010111101110010111000<br />
+11010110000001010010011000101110111111000000000011111111110000111000111101110000111000011110001100010110010011<br />
+01000011001000100110010011110011001001110010111001111101111001111010010011011110111110111001111101111111010111<br />
+11000111111000000001101100001000011110110010000001100001010100101011010010011010110011000010010010000010000010<br />
+10010100100001100011011000110010000110001101010110010001010101111001000101010010101100001100111100010011110111<br />
+10000101001010111110010000000001010000111010010001100010101101100001100110100010010011011110111111010010001000<br />
+01000110000111001011100001001100101110010000101010000101111100011100111101001111101110011011010110100000001011<br />
+10111101011101010110010010110000011011000010101111011010111010000111101101001110010110010110111001000111011011<br />
+11111110000100111110111110011110111100001100110111000001110100001001001001000001010100101100011010000101100011<br />
+00010011010110110000110011100110101001001100101001000111110000010110000000100010011011010101011100111000000100<br />
+11101011110110011001010101011001011010110111011111111010110000111010100100100110001111101011000010011100110110<br />
+10101001111011010101000111110000011110100011110110100001010101110111010101001110010001110101000101000101000001<br />
+01010010110001101011010110001100000111001001010000011000100110000110001000110010111111100101101010011110011101<br />
+10011110011000111100101110000101010101000110101101111010001000111001110100100001111110011111010101000110010101<br />
+00110010001111111011111000000100111001111001110101010001101110011000100100010110010111010011111000101100001011<br />
+11100010100010011000110110111010011001001001111011010010111000001111000011100100100100010011101011010001110010<br />
+01100101001101100001101100110000111111010010101000011010011000000111110100011000100001101010010110100110110110<br />
+01010001010000101001110011010110000101110001111010000101001011100100110100001001000001101000110101111110001010<br />
+01010000100100011000011000110110110111110100000010011110111001100000010011100100100101100010000010111111100101<br />
+10110110111000100000100010100000100001100001001110011101001000101000000110001110011000011101111100101000111101<br />
+01000011010010100100011000001000010001111011110001101010100110001111110100001101110100100001101101100010101101<br />
+11000010111011101011111111011110010000100010100101101101100100110101111000001101110010100000011100110101011000<br />
+01111011110010100000000010110111111110101010100011000010011100000110111110000000010000000000000000<br />
+记得去掉每行的\n啊</p>
+
+<p><p>昏头了吧……这玩意怎么搞……我看到反正也是蒙了，要不是有大哥来解释我还真就昏倒了，首先他先分析了这些数字一共的数量
+<strong>2848</strong>
+这个数字有什么特别的？<br />
+他是8的倍数啊！他会不会就是字节流啊……<br />
+那么他是大端的还是小端的呢……好吧大哥说他是大端，那就是大端吧那么就用大端的方式解析<br />
+首先我自己的电脑是小端机，就稍微做一点处理写了一个小程序代码如下(所有判错的部分全部都省略了</p>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">#include
+#include
+int current_bit = 0;
+unsigned char bit_buffer;
+//bit转byte
+void WriteBit (int bit,FILE *f)
+{
+    if (bit)
+        bit_buffer |= (1=0; j--) {
+                tt[j]-=48;
+                WriteBit(tt[j], f);
+            }
+            //大端机用这个
+//            for (j=0; j
+
+    fclose(f);  
+    fclose(a);
+    return 0;
+}
+
+代码很快就写好了，输出的文件是什么呢……
+
+
+我擦，坑爹啊，这是什么shit啊……没关系，可以看他是什么的嘛……
+
+
+是个gzip的压缩包啊，看来已经走进真相了！好把用tar给他解压了是个什么shit……
+
+奔溃了，有是这种非人类所读的东西……但是注意一下，就算是乱啊也有一个很关键的可依稀识别的java/lang/String!尼玛搞了半天原来你是个java啊，好的，那就把你后缀改成class 然后用java再跑一下！
+
+有java的出错信息了，那么久了终于碰到一个程序员能看的东西了……泪流满面，那就把他反编译一下看看到底是什么问题，检查出最后是因为名字的问题，那么好吧，把class 改成 i.class
+然后最后等待奇迹的时刻吧……= =
+
+
+他终于出了个网址了啊……泪流满面……
+
+少年你以为这样就拿到东大的offer了么？你还太年轻……做到这步你就有直接去面试的资格了，要直接拿到offer需要继续解码一段音频，好吧，我觉得那已经超出我能力范围了，这个彩蛋揭秘过程就到这吧
+
+最后：外国的牛逼大学真心大陆能比？就说这样的在一张小小的海报策划的功夫、呵呵呵
+&gt;
+</code></pre></div>
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>52</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
   <h3><a href="/program/2012/11/02/os-x-safari%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE">os x safari代理配置 </a></h3>
   <div class="date">
     <span>02 November 2012</span>
@@ -173,7 +307,7 @@ function FindProxyForURL(url, host)
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -267,7 +401,7 @@ jaieowajkncnxmbfhawija
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -446,7 +580,7 @@ app.mainloop()
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -503,7 +637,7 @@ app.mainloop()
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -615,7 +749,7 @@ app.mainloop()
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -681,7 +815,7 @@ akari源码地址：<a href="http://www.ioccc.org/2011/akari/akari.c">http://www
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -855,108 +989,7 @@ while 1:
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2012/03/14/%E5%88%86%E4%BA%AB%E4%B8%80%E4%B8%AAwebview%E5%92%8Cjs%E4%BA%A4%E4%BA%92%E7%9A%84%E5%B0%81%E8%A3%85">分享一个webview和js交互的封装 </a></h3>
-  <div class="date">
-    <span>14 March 2012</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><a href="https://github.com/marcuswestin/WebViewJavascriptBridge">marcuswestin / WebViewJavascriptBridge</a>
-<strong>1) Copy Classes/WebViewJavascriptBridge.h and Classes/WebViewJavascriptBridge.m into your Xcode project</strong></p>
-
-<p><p><strong>2) Instantiate a UIWebView, a WebViewJavascriptBridge, and set yourself as the bridge&#39;s delegate</strong></p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">   #import
-#import &quot;WebViewJavascriptBridge.h&quot;
-
-@interface ExampleAppDelegate : UIResponder
-
-@end
-
-@implementation ExampleAppDelegate
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-
-    self.webView = [[UIWebView alloc] initWithFrame:self.window.bounds];
-    [self.window addSubview:webView];
-    self.javascriptBridge = [WebViewJavascriptBridge javascriptBridgeWithDelegate:self];
-    self.webView.delegate = javascriptBridge;
-
-    [self.window makeKeyAndVisible];
-    return YES;
-}
-
-- (void)javascriptBridge:(WebViewJavascriptBridge *)bridge receivedMessage:(NSString *)message fromWebView:(UIWebView *)webView
-{
-    NSLog(@&quot;MyJavascriptBridgeDelegate received message: %@&quot;, message);
-}
-
-@end
-
-3) Go ahead and send some messages from Objc to javascript
-
-
-[self.javascriptBridge sendMessage:@&quot;Well hello there&quot; toWebView:self.webView];
-
-
-4) Finally, set up the javascript side of things
-
-document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBridgeReady() {
-    WebViewJavascriptBridge.setMessageHandler(function(message) {
-        alert(&#39;Received message: &#39; + message)
-    })
-    WebViewJavascriptBridge.sendMessage(&#39;Hello from the javascript&#39;)
-}, false)
-
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1028,13 +1061,13 @@ document.addEventListener(&#39;WebViewJavascriptBridgeReady&#39;, function onBri
   
     <a class="next" href="/page7">后页</a>
   
-  (共63篇)
+  (共64篇)
 </div>
 
         </div>
         <hr>
         <footer>
-          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          <p>&copy; 2015 Xinzheng ZhangPowered by Jekyll @ GitHub
           </p>
         </footer>
 

@@ -111,7 +111,7 @@
           <!-- <ul class="listing"> -->
 
 <div class="page-header">
-  <h3><a href="/program/2014/10/17/catch-errors-in-rac">ReactiveCocoa中 RAC绑定时的坑 </a></h3>
+  <h3><a href="/program/2014/10/17/catch-errors-in-rac">ReactiveCocoa中RAC绑定中错误处理 </a></h3>
   <div class="date">
     <span>17 October 2014</span>
   </div>
@@ -143,50 +143,49 @@
 <li>不过个人认为这也只是在可控制状态下这样强硬的要求也的确不错、可是在比如网络请求下就出大坑了……</li>
 </ul>
 <div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c">    <span class="n">RACDisposable</span> <span class="o">*</span><span class="n">subscriptionDisposable</span> <span class="o">=</span> <span class="p">[</span><span class="n">self</span> <span class="n">subscribeNext</span><span class="o">:^</span><span class="p">(</span><span class="kt">id</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
-    <span class="p">[</span><span class="n">object</span> <span class="n">setValue</span><span class="o">:</span><span class="n">x</span> <span class="o">?:</span> <span class="n">nilValue</span> <span class="n">forKeyPath</span><span class="o">:</span><span class="n">keyPath</span><span class="p">];</span>
-<span class="p">}</span> <span class="n">error</span><span class="o">:^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
+        <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
+        <span class="p">[</span><span class="n">object</span> <span class="n">setValue</span><span class="o">:</span><span class="n">x</span> <span class="o">?:</span> <span class="n">nilValue</span> <span class="n">forKeyPath</span><span class="o">:</span><span class="n">keyPath</span><span class="p">];</span>
+    <span class="p">}</span> <span class="n">error</span><span class="o">:^</span><span class="p">(</span><span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSObject</span> <span class="o">*</span><span class="n">object</span> <span class="o">=</span> <span class="p">(</span><span class="n">__bridge</span> <span class="kt">id</span><span class="p">)</span><span class="n">objectPtr</span><span class="p">;</span>
 
-    <span class="n">NSCAssert</span><span class="p">(</span><span class="nb">NO</span><span class="p">,</span> <span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+        <span class="n">NSCAssert</span><span class="p">(</span><span class="nb">NO</span><span class="p">,</span> <span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
 
-    <span class="c1">// Log the error if we&#39;re running with assertions disabled.</span>
-    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+        <span class="c1">// Log the error if we&#39;re running with assertions disabled.</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Received error from %@ in binding for key path </span><span class="se">\&quot;</span><span class="s">%@</span><span class="se">\&quot;</span><span class="s"> on %@: %@&quot;</span><span class="p">,</span> <span class="n">self</span><span class="p">,</span> <span class="n">keyPath</span><span class="p">,</span> <span class="n">object</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
 
-    <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
-<span class="p">}</span> <span class="n">completed</span><span class="o">:^</span><span class="p">{</span>
-    <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
-<span class="p">}];</span>
+        <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
+    <span class="p">}</span> <span class="n">completed</span><span class="o">:^</span><span class="p">{</span>
+        <span class="p">[</span><span class="n">disposable</span> <span class="n">dispose</span><span class="p">];</span>
+    <span class="p">}];</span>
 </code></pre></div></li>
 <li><p>继续看<code>NSURLConnection+RACSupport.m</code>中的对NSURLConnection中的拓展</p></li>
 <li><p>其中最致命的问题也就是当在一个request回来时判定了当data为空时直接向signal send error了、这也就导致了为什么仅仅只是在超时的时候发送了error、而没有在别的网络错误时crash、因为那个时候data虽然不是你想要的但至少不是空</p>
 <div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">+</span> <span class="p">(</span><span class="n">RACSignal</span> <span class="o">*</span><span class="p">)</span><span class="nf">rac_sendAsynchronousRequest:</span><span class="p">(</span><span class="n">NSURLRequest</span> <span class="o">*</span><span class="p">)</span><span class="nv">request</span> <span class="p">{</span>
-<span class="n">NSCParameterAssert</span><span class="p">(</span><span class="n">request</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
+    <span class="n">NSCParameterAssert</span><span class="p">(</span><span class="n">request</span> <span class="o">!=</span> <span class="nb">nil</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">[[</span><span class="n">RACSignal</span>
+        <span class="nl">createSignal:</span><span class="o">^</span> <span class="n">RACDisposable</span> <span class="o">*</span> <span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">RACSubscriber</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">NSOperationQueue</span> <span class="o">*</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+            <span class="n">queue</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;com.github.ReactiveCocoa.NSURLConnectionRACSupport&quot;</span><span class="p">;</span>
 
-<span class="k">return</span> <span class="p">[[</span><span class="n">RACSignal</span>
-    <span class="nl">createSignal:</span><span class="o">^</span> <span class="n">RACDisposable</span> <span class="o">*</span> <span class="p">(</span><span class="kt">id</span><span class="o">&lt;</span><span class="n">RACSubscriber</span><span class="o">&gt;</span> <span class="n">subscriber</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">NSOperationQueue</span> <span class="o">*</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NSOperationQueue</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-        <span class="n">queue</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">@&quot;com.github.ReactiveCocoa.NSURLConnectionRACSupport&quot;</span><span class="p">;</span>
+            <span class="p">[</span><span class="n">NSURLConnection</span> <span class="n">sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span> <span class="n">queue</span><span class="o">:</span><span class="n">queue</span> <span class="n">completionHandler</span><span class="o">:^</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendError</span><span class="o">:</span><span class="n">error</span><span class="p">];</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendNext</span><span class="o">:</span><span class="n">RACTuplePack</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">data</span><span class="p">)];</span>
+                    <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendCompleted</span><span class="p">];</span>
+                <span class="p">}</span>
+            <span class="p">}];</span>
 
-        <span class="p">[</span><span class="n">NSURLConnection</span> <span class="n">sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span> <span class="n">queue</span><span class="o">:</span><span class="n">queue</span> <span class="n">completionHandler</span><span class="o">:^</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">,</span> <span class="n">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
-                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendError</span><span class="o">:</span><span class="n">error</span><span class="p">];</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendNext</span><span class="o">:</span><span class="n">RACTuplePack</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">data</span><span class="p">)];</span>
-                <span class="p">[</span><span class="n">subscriber</span> <span class="n">sendCompleted</span><span class="p">];</span>
-            <span class="p">}</span>
-        <span class="p">}];</span>
-
-        <span class="k">return</span> <span class="p">[</span><span class="n">RACDisposable</span> <span class="n">disposableWithBlock</span><span class="o">:^</span><span class="p">{</span>
-            <span class="c1">// It&#39;s not clear if this will actually cancel the connection,</span>
-            <span class="c1">// but we can at least prevent _some_ unnecessary work --</span>
-            <span class="c1">// without writing all the code for a proper delegate, which</span>
-            <span class="c1">// doesn&#39;t really belong in RAC.</span>
-            <span class="n">queue</span><span class="p">.</span><span class="n">suspended</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
-            <span class="p">[</span><span class="n">queue</span> <span class="n">cancelAllOperations</span><span class="p">];</span>
-        <span class="p">}];</span>
-    <span class="p">}]</span>
-    <span class="nl">setNameWithFormat:</span><span class="s">@&quot;+rac_sendAsynchronousRequest: %@&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">];</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">RACDisposable</span> <span class="n">disposableWithBlock</span><span class="o">:^</span><span class="p">{</span>
+                <span class="c1">// It&#39;s not clear if this will actually cancel the connection,</span>
+                <span class="c1">// but we can at least prevent _some_ unnecessary work --</span>
+                <span class="c1">// without writing all the code for a proper delegate, which</span>
+                <span class="c1">// doesn&#39;t really belong in RAC.</span>
+                <span class="n">queue</span><span class="p">.</span><span class="n">suspended</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+                <span class="p">[</span><span class="n">queue</span> <span class="n">cancelAllOperations</span><span class="p">];</span>
+            <span class="p">}];</span>
+        <span class="p">}]</span>
+        <span class="nl">setNameWithFormat:</span><span class="s">@&quot;+rac_sendAsynchronousRequest: %@&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">];</span>
 <span class="p">}</span>
 </code></pre></div></li>
 </ul>
@@ -196,12 +195,12 @@
 <ul>
 <li><p><code>RAC(photoModel, fullsizedData) = [self download:photoModel.fullsizedURL];</code> 其中fullsizeData为一个NSData</p>
 <div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">+</span><span class="p">(</span><span class="n">RACSignal</span> <span class="o">*</span><span class="p">)</span><span class="nf">download:</span><span class="p">(</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">urlString</span> <span class="p">{</span>
-<span class="n">NSAssert</span><span class="p">(</span><span class="n">urlString</span><span class="p">,</span> <span class="s">@&quot;URL must not be nil&quot;</span><span class="p">);</span>
+    <span class="n">NSAssert</span><span class="p">(</span><span class="n">urlString</span><span class="p">,</span> <span class="s">@&quot;URL must not be nil&quot;</span><span class="p">);</span>
 
-<span class="n">NSURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURLRequest</span> <span class="n">requestWithURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="n">urlString</span><span class="p">]];</span>
-<span class="k">return</span> <span class="p">[[[</span><span class="n">NSURLConnection</span> <span class="n">rac_sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span><span class="p">]</span> <span class="n">reduceEach</span><span class="o">:^</span><span class="kt">id</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">){</span>
-    <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
-<span class="p">}]</span> <span class="n">deliverOn</span><span class="o">:</span><span class="p">[</span><span class="n">RACScheduler</span> <span class="n">mainThreadScheduler</span><span class="p">]];</span>
+    <span class="n">NSURLRequest</span> <span class="o">*</span><span class="n">request</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSURLRequest</span> <span class="n">requestWithURL</span><span class="o">:</span><span class="p">[</span><span class="n">NSURL</span> <span class="n">URLWithString</span><span class="o">:</span><span class="n">urlString</span><span class="p">]];</span>
+    <span class="k">return</span> <span class="p">[[[</span><span class="n">NSURLConnection</span> <span class="n">rac_sendAsynchronousRequest</span><span class="o">:</span><span class="n">request</span><span class="p">]</span> <span class="n">reduceEach</span><span class="o">:^</span><span class="kt">id</span><span class="p">(</span><span class="n">NSURLResponse</span> <span class="o">*</span><span class="n">response</span><span class="p">,</span> <span class="n">NSData</span> <span class="o">*</span><span class="n">data</span><span class="p">){</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+    <span class="p">}]</span> <span class="n">deliverOn</span><span class="o">:</span><span class="p">[</span><span class="n">RACScheduler</span> <span class="n">mainThreadScheduler</span><span class="p">]];</span>
 <span class="p">}</span>
 </code></pre></div></li>
 </ul>
@@ -239,7 +238,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -259,6 +258,8 @@
   
     
     	<li><a href="#ReactiveCocoa-ref">ReactiveCocoa <span>1</span></a></li>
+    
+    	<li><a href="#objective-c-ref">objective-c <span>3</span></a></li>
     
   
 
@@ -540,7 +541,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -843,7 +844,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1218,7 +1219,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1403,7 +1404,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1577,7 +1578,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1857,7 +1858,7 @@
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1969,7 +1970,7 @@ done;
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -2265,7 +2266,7 @@ sort(l, &gt;)
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -2286,7 +2287,7 @@ sort(l, &gt;)
     
     	<li><a href="#swift-ref">swift <span>1</span></a></li>
     
-    	<li><a href="#objective-c-ref">objective-c <span>1</span></a></li>
+    	<li><a href="#objective-c-ref">objective-c <span>3</span></a></li>
     
   
 
@@ -2339,13 +2340,13 @@ sort(l, &gt;)
   
     <a class="next" href="/page2">后页</a>
   
-  (共63篇)
+  (共64篇)
 </div>
 
         </div>
         <hr>
         <footer>
-          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          <p>&copy; 2015 Xinzheng ZhangPowered by Jekyll @ GitHub
           </p>
         </footer>
 

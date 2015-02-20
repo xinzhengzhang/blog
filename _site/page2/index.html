@@ -382,7 +382,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -463,7 +463,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -534,7 +534,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -552,6 +552,156 @@ redcarpet:
 
 
   
+    
+  
+
+
+
+    </ul>
+  
+  </div>
+</div>
+
+
+<div class="page-header">
+  <h3><a href="/program/2014/02/20/inject-qq">注入qq </a></h3>
+  <div class="date">
+    <span>20 February 2014</span>
+  </div>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="content">
+      <h4>背景</h4>
+
+<ul>
+<li>像除夕这种好时节……tx什么红包发疯了那么安全性呢= =脑洞一开我就试试我这么个完全没碰过反向的人能玩成什么样子</li>
+</ul>
+
+<h4>准备</h4>
+
+<ul>
+<li>一台越狱设备</li>
+<li>安装OpenSSH MobileSubstrate</li>
+</ul>
+
+<h4>步骤</h4>
+
+<ul>
+<li><p>首先需要进行qq页面的分析、这个时候就该祭出神器<code>reveal</code>了hhhh</p>
+
+<ul>
+<li>把<code>/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework</code>放到<code>/System/Library/Frameworks</code></li>
+<li>把<code>/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/libReveal.dylib</code>放到<code>/Library/MobileSubstrate/DynamicLibraries</code></li>
+<li>在<code>/Library/MobileSubstrate/DynamicLibraries/</code>写一个<code>libReveal.plist</code>文件内容为</li>
+</ul>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">{   
+    Filter = {  
+         Bundles = (&quot;com.tencent.mqq&quot;);   
+    };   
+}  
+</code></pre></div>
+<ul>
+<li>ps. 关于qq的bundle name可以直接去看mediaplist或者注入后自己dump <code>[[NSBundle mainBundle] infoDictionary][@&quot;CFBundleIdentifier&quot;]</code></li>
+<li><img src="/assets/static/2015-02-20-1.png" alt="结构嘛= =就是这个样子地!"></li>
+</ul></li>
+<li><p>接下去开始要真正的搞反向了、我选择了注入了最广泛也是最安全的一个函数<code>viewDidAppear:</code></p>
+
+<ul>
+<li>嗯感谢oc的runtime提供强大的方法ˊ_&gt;ˋ</li>
+<li> </li>
+</ul>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">static void __attribute__((constructor)) initialize(void)  
+{
+NSLog(@&quot;---------------inject----------------&quot;);
+NSLog(@&quot;%@&quot;,[[NSBundle mainBundle] infoDictionary][@&quot;CFBundleIdentifier&quot;]);
+
+Class class = objc_getClass(&quot;UIViewController&quot;);
+Method ori_Method =  class_getInstanceMethod(class, @selector(viewDidAppear:));
+Method my_Method = class_getInstanceMethod(class, @selector(injectedViewDidAppear:));
+method_exchangeImplementations(ori_Method, my_Method);
+}
+</code></pre></div>
+<ul>
+<li>然后我们要找到<code>QQGroupChatViewController</code>然后钩进去=-=记得还要再调一遍原声方法否则要出bug的哟</li>
+</ul>
+<div class="highlight"><pre><code class="text language-text" data-lang="text">-(void)injectedViewDidAppear:(BOOL)an
+{  
+NSLog(@&quot;-------viewDidAppear entered-------&quot;);
+if ([self isKindOfClass:NSClassFromString(@&quot;QQGroupChatViewController&quot;)]) {
+    [self injectEntranceccc];
+}
+// 现在你已经有viewController 的句柄了哟～～～～！
+[self injectedViewDidAppear:an];
+}
+</code></pre></div>
+<ul>
+<li>然后找到那个cell了那么以下你有几种选择试验咯具体是哪儿个我也不告诉你=-=
+
+<ul>
+<li>找到他的delegate去钩他的didselect方法</li>
+<li>找到他下面的UIControl事件模拟touch</li>
+<li>看他上面绑定的UIGestureRecognizer然后模拟</li>
+</ul></li>
+</ul></li>
+<li><p>好了我们的注入代码搞定了那么最后该注入进去了咯？</p>
+
+<ul>
+<li>首先理论上应该直接用clang进行编译……可是我太菜实在拼不出那坨正确的编译参数所以还是借靠了xcode、随便把注入写进一个<code>x.m</code>然后build起来(记得build要build你机型的那个哦、比如虚拟机上直接跑肯定是x86的我是ipod5所以编译的是armv7)</li>
+<li>我们可以在show the report nagivator -&gt; build -&gt; x.m 进行展开看到那一坨又臭又长的编译参数了吧= =我们的目的是要看 -o 然后就找到.o 的目标位置啦</li>
+<li>接下去就是链接啦<code>ld -dylib -lsystem -lobjc -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS.sdk -o libij.dylib test.o</code></li>
+<li>最后最后！把libij.dylib 塞去<code>/Library/MobileSubstrate/DynamicLibraries/libij.dylib</code> 把 <code>libij.plist</code>塞去哪儿？自己想!</li>
+<li>重启-----大功告成</li>
+</ul></li>
+<li><p>嗯我就是没有给你们<code>injectEntranceccc</code>的实现、总需要有自己的试错嘛=-=</p>
+
+<ul>
+<li><img src="/assets/static/2015-02-20-2.jpg" alt="结构嘛= =就是这个样子地!"></li>
+</ul></li>
+</ul>
+
+<h4>最后</h4>
+
+<ul>
+<li>最后最后我再也不会越狱了。。妈蛋我这种菜鸡都可以想搞什么搞什么不用说别人了……</li>
+<li>runtime真可怕系列</li>
+</ul>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#program-ref">
+    		program <span>52</span>
+    	</a></li>
+    
+  
+
+
+
+    </ul>
+  
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-tags"></i></li>
+      
+      
+
+
+  
+    
+    	<li><a href="#reverse-ref">reverse <span>1</span></a></li>
+    
+    	<li><a href="#objective-c-ref">objective-c <span>3</span></a></li>
     
   
 
@@ -595,7 +745,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -759,7 +909,7 @@ redcarpet:
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -841,7 +991,7 @@ method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);/
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1039,7 +1189,7 @@ method_exchangeImplementations(method_ObjectAtIndex, method_SafeObjectAtIndex);/
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1147,129 +1297,7 @@ else:
   
     
     	<li><a href="#program-ref">
-    		program <span>51</span>
-    	</a></li>
-    
-  
-
-
-
-    </ul>
-  
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-tags"></i></li>
-      
-      
-
-
-  
-    
-  
-
-
-
-    </ul>
-  
-  </div>
-</div>
-
-
-<div class="page-header">
-  <h3><a href="/program/2013/05/06/boyer-moore%E7%AE%97%E6%B3%95-python%E5%AE%9E%E7%8E%B0">Boyer-Moore算法 python实现 </a></h3>
-  <div class="date">
-    <span>06 May 2013</span>
-  </div>
-</div>
-
-<div class="row-fluid post-full">
-  <div class="span12">
-    <div class="content">
-      <p><p>看了<a href="http://www.ruanyifeng.com/blog/2013/05/boyer-moore_string_search_algorithm.html?utm_source=feedly">字符串匹配的Boyer-Moore算法</a>后觉得很有用就写一个实现了一下</p>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">def badcharrule(ori,sear):
-    if len(ori)!=len(sear):
-        print &quot;error&quot;
-    else:
-        le=len(ori)
-        badindex=-1
-        lastindex=-1
-        for i in xrange(le-1,0,-1):
-            if ori[i]==sear[i]:
-                pass
-            else:
-                badindex=i
-                break
-        if badindex==-1:
-            pass
-        else:
-            for i in xrange(0,le):
-                if sear[i]==ori[badindex]:
-                    lastindex=i
-                    break
-                else:
-                    pass
-        return badindex-lastindex
-def goodpostfixrule(ori,sear):
-    if len(ori)!=len(sear):
-        print &quot;error&quot;
-    else:
-        le=len(ori)
-        postfix=0
-        for i in xrange(le-1,0,-1):
-            if ori[i]==sear[i]:
-                postfix+=1
-            else:
-                break
-        if postfix==0:
-            return -1
-        else:
-            postfixstring=sear[-postfix:]
-            restori=sear[:-postfix]
-            if restori.find(postfixstring)==-1:
-                restori=postfixstring[:-1]+restori
-                if restori.find(postfixstring)==-1:
-                    return -1
-                else:
-                    return len(sear)-restori.find(postfixstring)-1
-            else:
-                return len(sear)-restori.find(postfixstring)-len(postfixstring)
-
-def movestep(ori,sear):
-    gu=badcharrule(ori,sear)
-    if gu==0:
-        return 0
-    else:
-        return max(gu,goodpostfixrule(ori,sear))
-
-oristring=&quot;here is a simple example&quot;
-searchstring=&quot;example&quot;
-
-index=0
-while index+len(searchstring)
-    move=movestep(oristring[index:index+len(searchstring)],searchstring)
-    if move==0:
-        print &quot;find it index=%s&quot; %index
-        index+=len(searchstring)
-    else:
-        index+=move
-print &quot;search over&quot;
-
-&gt;
-</code></pre></div>
-    </div>
-
-  
-    <ul class="tag_box inline">
-      <li><i class="icon-folder-open"></i></li>
-      
-      
-
-
-  
-    
-    	<li><a href="#program-ref">
-    		program <span>51</span>
+    		program <span>52</span>
     	</a></li>
     
   
@@ -1341,13 +1369,13 @@ print &quot;search over&quot;
   
     <a class="next" href="/page3">后页</a>
   
-  (共63篇)
+  (共64篇)
 </div>
 
         </div>
         <hr>
         <footer>
-          <p>&copy; 2014 Xinzheng ZhangPowered by Jekyll @ GitHub
+          <p>&copy; 2015 Xinzheng ZhangPowered by Jekyll @ GitHub
           </p>
         </footer>
 

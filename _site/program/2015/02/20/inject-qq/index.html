@@ -158,29 +158,29 @@
 <li>嗯感谢oc的runtime提供强大的方法ˊ_&gt;ˋ</li>
 <li> </li>
 </ul>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">static void __attribute__((constructor)) initialize(void)  
-{
-NSLog(@&quot;---------------inject----------------&quot;);
-NSLog(@&quot;%@&quot;,[[NSBundle mainBundle] infoDictionary][@&quot;CFBundleIdentifier&quot;]);
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">static</span> <span class="kt">void</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="n">constructor</span><span class="p">))</span> <span class="n">initialize</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>  
+<span class="p">{</span>
+<span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;---------------inject----------------&quot;</span><span class="p">);</span>
+<span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,[[</span><span class="n">NSBundle</span> <span class="n">mainBundle</span><span class="p">]</span> <span class="n">infoDictionary</span><span class="p">][</span><span class="s">@&quot;CFBundleIdentifier&quot;</span><span class="p">]);</span>
 
-Class class = objc_getClass(&quot;UIViewController&quot;);
-Method ori_Method =  class_getInstanceMethod(class, @selector(viewDidAppear:));
-Method my_Method = class_getInstanceMethod(class, @selector(injectedViewDidAppear:));
-method_exchangeImplementations(ori_Method, my_Method);
-}
+<span class="kt">Class</span> <span class="n">class</span> <span class="o">=</span> <span class="n">objc_getClass</span><span class="p">(</span><span class="s">&quot;UIViewController&quot;</span><span class="p">);</span>
+<span class="n">Method</span> <span class="n">ori_Method</span> <span class="o">=</span>  <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">class</span><span class="p">,</span> <span class="k">@selector</span><span class="p">(</span><span class="n">viewDidAppear</span><span class="o">:</span><span class="p">));</span>
+<span class="n">Method</span> <span class="n">my_Method</span> <span class="o">=</span> <span class="n">class_getInstanceMethod</span><span class="p">(</span><span class="n">class</span><span class="p">,</span> <span class="k">@selector</span><span class="p">(</span><span class="n">injectedViewDidAppear</span><span class="o">:</span><span class="p">));</span>
+<span class="n">method_exchangeImplementations</span><span class="p">(</span><span class="n">ori_Method</span><span class="p">,</span> <span class="n">my_Method</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>然后我们要找到<code>QQGroupChatViewController</code>然后钩进去=-=记得还要再调一遍原声方法否则要出bug的哟</li>
 </ul>
-<div class="highlight"><pre><code class="text language-text" data-lang="text">-(void)injectedViewDidAppear:(BOOL)an
-{  
-NSLog(@&quot;-------viewDidAppear entered-------&quot;);
-if ([self isKindOfClass:NSClassFromString(@&quot;QQGroupChatViewController&quot;)]) {
-    [self injectEntranceccc];
-}
-// 现在你已经有viewController 的句柄了哟～～～～！
-[self injectedViewDidAppear:an];
-}
+<div class="highlight"><pre><code class="objective-c language-objective-c" data-lang="objective-c"><span class="k">-</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">injectedViewDidAppear:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">an</span>
+<span class="p">{</span>  
+<span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;-------viewDidAppear entered-------&quot;</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">([</span><span class="n">self</span> <span class="n">isKindOfClass</span><span class="o">:</span><span class="n">NSClassFromString</span><span class="p">(</span><span class="s">@&quot;QQGroupChatViewController&quot;</span><span class="p">)])</span> <span class="p">{</span>
+    <span class="p">[</span><span class="n">self</span> <span class="n">injectEntranceccc</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="c1">// 现在你已经有viewController 的句柄了哟～～～～！</span>
+<span class="p">[</span><span class="n">self</span> <span class="n">injectedViewDidAppear</span><span class="o">:</span><span class="n">an</span><span class="p">];</span>
+<span class="p">}</span>
 </code></pre></div>
 <ul>
 <li>然后找到那个cell了那么以下你有几种选择试验咯具体是哪儿个我也不告诉你=-=

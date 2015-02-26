@@ -5,8 +5,8 @@
         <description>Snorlax's blog - Xinzheng Zhang</description>
         <link>http://snorlaxzxz.com</link>
         <link>http://snorlaxzxz.com</link>
-        <lastBuildDate>2015-02-20T12:02:52+08:00</lastBuildDate>
-        <pubDate>2015-02-20T12:02:52+08:00</pubDate>
+        <lastBuildDate>2015-02-26T22:33:56+08:00</lastBuildDate>
+        <pubDate>2015-02-26T22:33:56+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -51,29 +51,29 @@
 &lt;li&gt;嗯感谢oc的runtime提供强大的方法ˊ_&amp;gt;ˋ&lt;/li&gt;
 &lt;li&gt; &lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;static void __attribute__((constructor)) initialize(void)  
-{
-NSLog(@&amp;quot;---------------inject----------------&amp;quot;);
-NSLog(@&amp;quot;%@&amp;quot;,[[NSBundle mainBundle] infoDictionary][@&amp;quot;CFBundleIdentifier&amp;quot;]);
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;objective-c language-objective-c&quot; data-lang=&quot;objective-c&quot;&gt;&lt;span class=&quot;k&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;__attribute__&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;initialize&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;---------------inject----------------&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;%@&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSBundle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;mainBundle&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;infoDictionary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;CFBundleIdentifier&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
 
-Class class = objc_getClass(&amp;quot;UIViewController&amp;quot;);
-Method ori_Method =  class_getInstanceMethod(class, @selector(viewDidAppear:));
-Method my_Method = class_getInstanceMethod(class, @selector(injectedViewDidAppear:));
-method_exchangeImplementations(ori_Method, my_Method);
-}
+&lt;span class=&quot;kt&quot;&gt;Class&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;objc_getClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;UIViewController&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Method&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ori_Method&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;class_getInstanceMethod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;@selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;viewDidAppear&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Method&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;my_Method&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;class_getInstanceMethod&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;@selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;injectedViewDidAppear&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;method_exchangeImplementations&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ori_Method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;my_Method&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
 &lt;li&gt;然后我们要找到&lt;code&gt;QQGroupChatViewController&lt;/code&gt;然后钩进去=-=记得还要再调一遍原声方法否则要出bug的哟&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;text language-text&quot; data-lang=&quot;text&quot;&gt;-(void)injectedViewDidAppear:(BOOL)an
-{  
-NSLog(@&amp;quot;-------viewDidAppear entered-------&amp;quot;);
-if ([self isKindOfClass:NSClassFromString(@&amp;quot;QQGroupChatViewController&amp;quot;)]) {
-    [self injectEntranceccc];
-}
-// 现在你已经有viewController 的句柄了哟～～～～！
-[self injectedViewDidAppear:an];
-}
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;objective-c language-objective-c&quot; data-lang=&quot;objective-c&quot;&gt;&lt;span class=&quot;k&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;injectedViewDidAppear:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;BOOL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;an&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;NSLog&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;-------viewDidAppear entered-------&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isKindOfClass&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;NSClassFromString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;@&amp;quot;QQGroupChatViewController&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;injectEntranceccc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// 现在你已经有viewController 的句柄了哟～～～～！&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;self&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;injectedViewDidAppear&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;an&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;ul&gt;
 &lt;li&gt;然后找到那个cell了那么以下你有几种选择试验咯具体是哪儿个我也不告诉你=-=

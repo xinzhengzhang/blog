@@ -116,15 +116,7 @@ RACSignal+Operations.m line 629-643
 查看RAC宏定义发现入口时下面
 - (RACDisposable *)setKeyPath:(NSString *)keyPath onObject:(NSObject *)object nilValue:(id)nilValue;
 如下代码中可以发现其实在当error时候直接assert掉了关于这里作者是这么说的
-Errors that occur in a prop ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="objective-c"> objective-c</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="ReactiveCocoa"> ReactiveCocoa</a></div><div class="read-more"><a class="more" href="/2014/10/17/2014-2014-10-17-catch-errors-in-rac/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-design-pattern-3/">Design Pattern (4)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">大话设计模式的读书笔记（四）
-读书笔记（一）
-读书笔记（二）
-读书笔记（三）
-
-Bridge, Command, Chain Of Responsibility, Mediator, Flyweight, Interpreter, Visitor桥接模式
-桥接模式的定义为「将抽象不分与实现部分分离，使之可以独立变化」
-简单来说就比如python 把语言核心逻辑抽象出PVM具体实现根据是当前什么平台再分别处理、使用也使用的是抽象接口由实现者abstraction获得抽象的implementor并具体实现
-1234567891011121314151617181920212223242526272 ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="design pattern"> design pattern</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="python"> python</a></div><div class="read-more"><a class="more" href="/2014/10/14/2014-2014-10-14-design-pattern-3/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/">正则表达式——BRE与ERE区别</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别
+Errors that occur in a prop ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="objective-c"> objective-c</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="ReactiveCocoa"> ReactiveCocoa</a></div><div class="read-more"><a class="more" href="/2014/10/17/2014-2014-10-17-catch-errors-in-rac/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/">正则表达式——BRE与ERE区别</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别
 BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。
 但是两种语法也都必须要记因为很多Unix程序用的并没有统一。
 | BRE | ERE
@@ -132,7 +124,15 @@ BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是�
 
 
 公共meta部分
-\  ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="re"> re</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="shell"> shell</a></div><div class="read-more"><a class="more" href="/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-regular-expression/">正则表达式——BRE与ERE区别</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别
+\  ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="re"> re</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="shell"> shell</a></div><div class="read-more"><a class="more" href="/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-design-pattern-3/">Design Pattern (4)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">大话设计模式的读书笔记（四）
+读书笔记（一）
+读书笔记（二）
+读书笔记（三）
+
+Bridge, Command, Chain Of Responsibility, Mediator, Flyweight, Interpreter, Visitor桥接模式
+桥接模式的定义为「将抽象不分与实现部分分离，使之可以独立变化」
+简单来说就比如python 把语言核心逻辑抽象出PVM具体实现根据是当前什么平台再分别处理、使用也使用的是抽象接口由实现者abstraction获得抽象的implementor并具体实现
+1234567891011121314151617181920212223242526272 ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="design pattern"> design pattern</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="python"> python</a></div><div class="read-more"><a class="more" href="/2014/10/14/2014-2014-10-14-design-pattern-3/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-regular-expression/">正则表达式——BRE与ERE区别</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别
 BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。
 但是两种语法也都必须要记因为很多Unix程序用的并没有统一。
 | BRE | ERE

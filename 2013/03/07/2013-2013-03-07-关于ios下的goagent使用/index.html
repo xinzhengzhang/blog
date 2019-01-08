@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>关于ios下的goagent使用 · Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">关于ios下的goagent使用</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2013-03-07</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><p></p><p>国际惯例先问候下方滨兴你这狗娘养的<br><br>———————————————————————————–<br><br>首先说下我的server的版本是2.1.3<br><br>ios下的goagent各种教程到处都是、可是只可惜共军太狡猾、gfw现在是越来越牛逼<br><br>反正我搜着的各种帖子要么是那种二到家的就装装装下去就成功了、要么就是中间某个步骤被干掉了<br></p>
+<p>正常人都肯定会看官方的文档、可惜没那么简单……<del datetime="2013-03-07T06:08:41+00:00"><a href="https://code.google.com/p/goagent/wiki/GoAgent_IOS" target="_blank" rel="noopener">https://code.google.com/p/goagent/wiki/GoAgent_IOS</a></del><br>这上面的版本由于过于古老让我吃尽苦头<br><br>好了废话到此位置<br><br>———————————————————————————–<br><br>由于官方那个是把python包直接内嵌在里面的所以第一步装python<br><br>为了一下操作方便点可以安装下open ssh以及aptbackup(用了这个就可以直接用apt-get了<br><br>1.这个可以直接在178的源里搜索安装python2.7<br><br>2.在big boss源中安装adv-cmds（是下一步的依赖<br><br>3.接下去就是goagent了 <a href="https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&amp;can=2&amp;q=" target="_blank" rel="noopener">https://code.google.com/p/goagent/downloads/detail?name=goagent-local-1.7.deb&amp;can=2&amp;q=</a>(debian包安装可以采取dpkg -i 或者就索性丢到&lt;/var/root/Media/Cydia/AutoInstall&gt; 重启下<br><br>4.安装方便的工具栏 有两种选择 第一是先装sbsetting依赖（有一串东西）然后装178源里的goagent-toggle 第二就是用之前的goagent-ios 在里面的/Applications/goagent-ios.app/goagent-local/proxy.py做一个映射到/var/mobile/goagent-local/proxy.py（前者是在sbsetting中进行开关、后者是在通知栏最下放有个按键进行开关）<br><br>5.配置goagent中的appid、以及更改为google_hk(若用google_cn请把hosts中的域名更改为响应的ip地址、isp不提供解析)配置当前网络下的pac 地址在<a href="file://localhost/stash/Applications/MobileSafari.app/8087.pac" target="_blank" rel="noopener">file://localhost/stash/Applications/MobileSafari.app/8087.pac</a> 在当前wifi里的http proxy中填写<br><br>以上你已经在http情况下翻过去了<br><br>6.现在要安装ca、这个正常看起来简单暴的事情、由于你现在根本在没翻的前提下变的异常困难不过你可以发现goagent-local里其实已经有了很多ca了、把&lt;/var/mobile/goagent-local/certs/apis.google.com.crt&gt; 拷贝出来（如果本机可以翻墙可以直接把<a href="https://goagent.googlecode.com/files/CA.crt" target="_blank" rel="noopener">https://goagent.googlecode.com/files/CA.crt</a>下载下来用并跳到8） 然后如果自己有python环境就用传说中两行的web服务器把ca给共享出去</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">import SimpleHTTPServer</span><br><span class="line">SimpleHTTPServer.test()</span><br><span class="line"></span><br><span class="line">7.在safari访问这个然后下一步安装、到这就可以轻易的safari访问 &lt;https://goagent.googlecode.com/files/CA.crt&gt; 装他的ca了</span><br><span class="line"></span><br><span class="line">8.你自由了:-)</span><br><span class="line"></span><br><span class="line">ps.以上的server的环境是在2.1.3的基础上server我放了个压缩包server</span><br></pre></td></tr></table></figure>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://zxz.moe">Xinzheng Zhang</a></p><p> <span>Link:  </span><a href="http://zxz.moe/2013/03/07/2013-2013-03-07-关于ios下的goagent使用/">http://zxz.moe/2013/03/07/2013-2013-03-07-关于ios下的goagent使用/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2013/03/09/2013-2013-03-09-关于wordpress-同步twitter加短地址服务/" title="关于wordpress 同步twitter加短地址服务"><span>< PreviousPost</span><br><span class="prevTitle">关于wordpress 同步twitter加短地址服务</span></a><a class="nextSlogan" href="/2013/01/29/2013-2013-01-29-关于windows里的python环境配置/" title="关于windows里的python环境配置"><span>NextPost ></span><br><span class="nextTitle">关于windows里的python环境配置</span></a><div class="clear"></div></div><div id="comment"><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://zxz.moe/2013/03/07/2013-2013-03-07-关于ios下的goagent使用/';
+  this.page.identifier = '2013/03/07/2013-2013-03-07-关于ios下的goagent使用/';
+  this.page.title = '关于ios下的goagent使用';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'snorlaxzxz' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

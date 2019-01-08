@@ -1,0 +1,190 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Begin With Swift · Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">Begin With Swift</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2014-06-05</span></span><span class="post-intro-tags"><a class="intro-tag fa fa-tag" href="javascript:void(0)" date-tags="swift"> swift</a><a class="intro-tag fa fa-tag" href="javascript:void(0)" date-tags="objective-c"> objective-c</a></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><h3 id="OC-Swift混编"><a href="#OC-Swift混编" class="headerlink" title="OC Swift混编"></a>OC Swift混编</h3><ul>
+<li><a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/index.html" target="_blank" rel="noopener">大家好我是传送门= =</a></li>
+<li><p>其实官方文档里写的各种东西也非常清楚的、我就用简单的描述下</p>
+</li>
+<li><p>swift</p>
+<pre><code>* 如果需要引入同样的swift代码、只需要直接用就可以了！！！ (总之我也不知道工程索引文件什么的ide悄悄藏在什么地方了……
+* 如果需要引入oc代码、首先需要生成一个`ProductName-Bridging-Header.h`的头文件(倒入随便一个oc文件就自动生成了)
+</code></pre><p>  然后只需要把所有需要用到的oc头文件在这个header import进去，你的swift代码就可以随意这些类了！！(黑科技就是auto complete的时候怎么把oc的头文件自动转成swift的头文件的！！完全不知道ide偷偷的去哪儿生成了这些中间代码Orz……</p>
+</li>
+<li>objective-c<pre><code>* 如果需要引入oc代码= =原来怎么搞现在怎么搞= =怎么说都感觉是废话= =
+</code></pre><ul>
+<li>如果需要引入swift代码、首先在setting中打开<code>Defines Module</code>为YES、然后在需要使用的那个oc的 .m文件中引入 <code>#import &quot;ProductModuleName-Swift.h&quot;</code> 文档里的用<code>&lt;&gt;</code>引的应该是别的framework的依次类推、其中ProductModuleName可以在setting中设置<br><strong>这个文件不需要自己新建</strong>ide在一个很奇怪的角落里建好了……</li>
+</ul>
+</li>
+<li>混编完全无痛吧<em>(:з”∠)</em></li>
+</ul>
+<h3 id="swift-语法特点-粗略"><a href="#swift-语法特点-粗略" class="headerlink" title="swift 语法特点 (粗略)"></a>swift 语法特点 (粗略)</h3><ul>
+<li><a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4" target="_blank" rel="noopener">The Swift Programming Language (以下略为书)</a></li>
+<li><p>类型推断、参数约束描述等等 见如下</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">func anyCommonElements &lt;T, U where T: Sequence, U: Sequence, T.GeneratorType.Element: Equatable, T.GeneratorType.Element == U.GeneratorType.Element&gt; (lhs: T, rhs: U) -&gt; Bool &#123;</span><br><span class="line">  for lhsItem in lhs &#123;</span><br><span class="line">      for rhsItem in rhs &#123;</span><br><span class="line">          if lhsItem == rhsItem &#123;</span><br><span class="line">              return true</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return false</span><br><span class="line">&#125;</span><br><span class="line">anyCommonElements([1, 2, 3], [3])</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>optional</p>
+<ul>
+<li>在swift加入了两个语法糖一样性质的! 和 ? 分别是拆包 装包</li>
+<li><p>可以用在一些判空的地方例如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//任意一个为空就中止不会走下去了、类似oc中的对nil perferselector不会crash一样</span><br><span class="line">john.residence?.address?.buildingIdentifier() &#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>包的感觉类似这样的感觉 例如函数中定义的是String 而你的 var a: String? 传入String要保证非空就必须一次解包操作如果这个时候值为空就crash</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">enum Optional&lt;T&gt; &#123;</span><br><span class="line">  Some(T)</span><br><span class="line">  None</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>闭包、oc的block折腾够了么……好吧这回终于有简单明了爽快的闭包了Orz</p>
+<ul>
+<li><p>一般定义</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  (arg1: Type, arg2: Type) -&gt; returnType in</span><br><span class="line">  closure content</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>sort Array</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var l: Array = [3, 4, 6, 1, 2]</span><br><span class="line">sort(l, &#123;</span><br><span class="line">  (i1: Int, i2: Int) -&gt; Bool in</span><br><span class="line">  return i1 &gt; i2</span><br><span class="line">  &#125;)</span><br><span class="line">//嫌烦里面的type可以被推断出来所以可以省略</span><br><span class="line">sort(l, &#123;i1, i2 in return i1 &gt; i2&#125;)</span><br><span class="line">//还可以更短= =</span><br><span class="line">sort(l, &#123; $0 &gt; $1&#125;)</span><br><span class="line">//还他妈可以更短！= =</span><br><span class="line">sort(l, &gt;)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注意一些循环引用的这些东西</p>
+<ul>
+<li>unowned 弱引用非空对象(不init 编译器还报错</li>
+<li>weak 弱引用可空的wrap过的对象就是那些加?的</li>
+</ul>
+</li>
+<li>详情可见书245页</li>
+</ul>
+</li>
+<li><p>setter getter willSet didSet</p>
+<ul>
+<li>类似c#的大大简化工作量……java那种seter getter去死吧混蛋！</li>
+</ul>
+</li>
+<li><p>碉堡的switch case……妈妈再也不用担心我一排if了= = 见书179页</p>
+</li>
+<li><p>还有各种符号重载、特别是<code>[]</code>也是非常的方便！(不过有一大堆关键字Orz 见书619页</p>
+</li>
+<li><p>更多</p>
+<ul>
+<li>还有各种各样的特性从脚本语言过来的话应该都是非常熟悉的比如返回个<code>tuple</code>什么的啦字典<code>keyvalue遍历</code>啦<code>for _ in 1..5</code>这种写法啦、oc的一些类似category那样的写法同样也由extension保留了下来</li>
+<li>一言以蔽之、swift的语法特性简直就是叼炸天、完全不觉得这个是Apple出的toy language、嗯就是这样啦！</li>
+<li>redcarpet快支持swift吧……没语法高亮好不爽！</li>
+</ul>
+</li>
+</ul>
+<h3 id="感想"><a href="#感想" class="headerlink" title="感想"></a>感想</h3><ul>
+<li>2014wwdc苹果新发表的语言嘛、不知道为什么就是特别的热= =难道跟名字有关么(听说swift贴吧都被占领了23333</li>
+<li>实际体验了下完全不知道苹果用什么黑科技bridge oc 和 swift的，除了代码提示几乎没有之外几乎两个语言完全自然连接的</li>
+<li>粗粗把<a href="https://itunes.apple.com/book/swift-programming-language/id881256329?mt=11&amp;ign-mpt=uo%3D4" target="_blank" rel="noopener">The Swift Programming Language</a>、有种特别熟悉的感觉……互联网上讨论也特别多、有厨有黑、包括各种媒体什么的也插一脚很多人都说像python，我倒是不怎么觉得，倒是各种语言的影子都可以看到一些而且东西特别多……不过脑补都知道完全用起来的话肯定很爽</li>
+<li>xcode6的bug特别多……<ul>
+<li>background 他是边写代码就一边在跑的所以比如 <code>system(rm -rf ~/)</code>这种命令&gt; &lt;</li>
+<li>群里看到的一句话干崩xcode…… <code>var b = 1; println(&quot;a&quot;, b)</code></li>
+<li>小tips<ul>
+<li>开始纯粹练语法的话比较那个background比较核心……还不如用cli模式进去打了试东西目录在&lt;/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/&gt;<br>可以 <code>PATH=$PATH:/Applications/Xcode6-Beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/</code> 然后命令行swift进cli试验(这样就算挂了也不会xcode无限重启&gt; &lt;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://zxz.moe">Xinzheng Zhang</a></p><p> <span>Link:  </span><a href="http://zxz.moe/2014/06/05/2014-2014-06-05-begin-with-swift/">http://zxz.moe/2014/06/05/2014-2014-06-05-begin-with-swift/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2014/06/14/2014-2014-06-14-four-years-in-dut/" title="Four Years In DUT"><span>< PreviousPost</span><br><span class="prevTitle">Four Years In DUT</span></a><a class="nextSlogan" href="/2014/05/30/2014-2014-05-30-clearance/" title="毕业贩卖"><span>NextPost ></span><br><span class="nextTitle">毕业贩卖</span></a><div class="clear"></div></div><div id="comment"><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://zxz.moe/2014/06/05/2014-2014-06-05-begin-with-swift/';
+  this.page.identifier = '2014/06/05/2014-2014-06-05-begin-with-swift/';
+  this.page.title = 'Begin With Swift';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'snorlaxzxz' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#OC-Swift混编"><span class="toc-number">1.</span> <span class="toc-text">OC Swift混编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#swift-语法特点-粗略"><span class="toc-number">2.</span> <span class="toc-text">swift 语法特点 (粗略)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#感想"><span class="toc-number">3.</span> <span class="toc-text">感想</span></a></li></ol></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>复习网络时的一个很不成熟的想法 · Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">复习网络时的一个很不成熟的想法</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2012-11-06</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><p>这两天校园网实在渣、搞的很不爽、正好又在复习网络时看到了web缓存。突然迸出了一个很不靠谱也很不成熟的一个想法。尼玛中国有那么多防火墙、都已经能有五层协议栈了、如果除了搞掉和谐物之外什么的之外都、加上一个类似web缓存的功能。<br><br>大致想法是这样的<br><br>首先所有的资源都先有个统一的校验、比如hash什么的<br><br>然后得改协议、在报文段先识别出是否有过缓存<br><br>然后中间服务器和自己的资源列表比对一遍、再发往目的地<br><br>然后目的地再通过协议里的字段处理</p>
+
+<p>好吧……我再来分析下这样的不可行性……<br><br>1.世界上所有资源的绝对统一的校验（我觉得这个还是可行的-_-#<br><br>2.要改tcp协议、尼玛你是啊说改就能改！？（光这个我就洗洗睡吧……<br><br>3.中间服务器这样需要多大的开销、每台机子相当于个小的镜像服务器了这样还是全世界的资源……<br><br>4.所有的网站要支持这个还需要自己去修改自己的代码……（还是可行……但我还是洗洗睡吧……<br><br>5.这样相当于一个小的局域网共享同一份资源、我大gfw真是笑哈哈了、直接部署在中间节点上管你违和物视频图片一网打尽啊（我一定是给方滨兴电过了……</p>
+
+<p>最后说说如果真能这样会有什么好处呢<br><br>1.首先用户体验提升无数倍、比如A站B站共享一个渣浪源、不同的人去请求同个源、那就不需要重复请求了、网络整体的负担我相信也能减一个指数级的感觉……（但每台服务器都用刀片么？要部署多少中间服务器啊？谁来出钱啊混蛋……<br><br>2.因为缓存对目的服务器的负担小很多了、把整体的负荷减小了很大一个量级而且从原来的最终端分布到各个节点上了</p>
+
+<p>综上也就是脑补而已Orz</p>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://zxz.moe">Xinzheng Zhang</a></p><p> <span>Link:  </span><a href="http://zxz.moe/2012/11/06/2012-2012-11-06-复习网络时的一个很不成熟的想法/">http://zxz.moe/2012/11/06/2012-2012-11-06-复习网络时的一个很不成熟的想法/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2012/11/08/2012-2012-11-08-第三范式bc范式-2/" title="第三范式&amp;BC范式"><span>< PreviousPost</span><br><span class="prevTitle">第三范式&amp;BC范式</span></a><a class="nextSlogan" href="/2012/11/04/2012-2012-11-04-关于东大情报研究生海报的彩蛋/" title="关于东大情报研究生海报的彩蛋"><span>NextPost ></span><br><span class="nextTitle">关于东大情报研究生海报的彩蛋</span></a><div class="clear"></div></div><div id="comment"><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://zxz.moe/2012/11/06/2012-2012-11-06-复习网络时的一个很不成熟的想法/';
+  this.page.identifier = '2012/11/06/2012-2012-11-06-复习网络时的一个很不成熟的想法/';
+  this.page.title = '复习网络时的一个很不成熟的想法';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'snorlaxzxz' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

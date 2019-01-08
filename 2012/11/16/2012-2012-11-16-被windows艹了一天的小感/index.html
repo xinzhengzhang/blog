@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>被windows艹了一天的小感 · Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">被windows艹了一天的小感</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2012-11-16</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><p>作为一个ms黑、都三年了也没正经的写过一点windows、今天算是头天吧……然后就被打击透顶了</p>
+
+<p>需求就是让台电脑崩了、这么个需求我就出了2个方案、</p>
+
+<p>1.想办法拿到个内核态的指针然后喀了然后蓝掉</p>
+
+<p>2.蔽了键盘和鼠标也同样效果实现了</p>
+
+<p>反正就是这两条路子坑了我走了一天……</p>
+
+<p>先是一、想尽办法奈何不了大windows封装的太深、册那每个函数那么多参数看来不是没道理的、怪不得野指针那么容易指死机、想从驱动入手、没办法完全没有驱动编程的基础、没办法第一条路就死了</p>
+
+<p>然后是二、这个还是挺容易下手的、网上也到处都是类似的代码但是我还是失败了……首先我想到的是全局钩子（就是把所有的按键事件捕获住然后直接吃掉</p>
+
+<p>零基础痛苦的开始看api的阶段就不说了……（虽然说搞懂了后还是非常简单的</p>
+
+<p>然后就全局吃掉键盘和鼠标嘛看着很愉快的、然后丢到同学机子上一测、傻逼了、大360直接监测出来了我拿了键鼠去提醒用户了（伪装性差透了、失败</p>
+
+<p>接着无限的搜索我又发现了系统API竟然可以直接蔽掉INPUT、好吧我真的激动了半天、你360总不能杀系统API吧、好了就3行代码……效果实现了、360也没杀出来、又高兴了一阵然后我又发现傻逼了……任务管理器还是能调出来的、而且这个系统API是在当前进程下的、也就是任务管理器一出一杀我就悲剧了……又失败了……失败了怎么就能倒下、我又开始做局部的钩子杀掉ctrl 杀掉alt 都没问题……可是单独的杀是没问题的组合起来又悲剧了……好吧既然杀不掉你的启动方式我就杀你这个服务、又找了在注册表禁了、可是这大概是几年前的文章吧、混蛋还是好好的跑起来……那我再想、直接拿文件流去写你的文件吧、两跟进程跑着看你怎么开、当然愿望肯定是美好的……没权限……崩溃了……然后我又只能放弃二了</p>
+
+<p>然后上面这点试试下来整整一天就没了Orz……</p>
+
+<p>没办法放弃了、看来报着的心态是坏的、也是做不大出来东西的……想去论坛问问都不晓得怎么开口……</p>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://zxz.moe">Xinzheng Zhang</a></p><p> <span>Link:  </span><a href="http://zxz.moe/2012/11/16/2012-2012-11-16-被windows艹了一天的小感/">http://zxz.moe/2012/11/16/2012-2012-11-16-被windows艹了一天的小感/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2012/11/24/2012-2012-11-24-regexkit笔记/" title="RegexKit笔记"><span>< PreviousPost</span><br><span class="prevTitle">RegexKit笔记</span></a><a class="nextSlogan" href="/2012/11/14/2012-2012-11-14-一人暮らし/" title="一人暮らし"><span>NextPost ></span><br><span class="nextTitle">一人暮らし</span></a><div class="clear"></div></div><div id="comment"><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://zxz.moe/2012/11/16/2012-2012-11-16-被windows艹了一天的小感/';
+  this.page.identifier = '2012/11/16/2012-2012-11-16-被windows艹了一天的小感/';
+  this.page.title = '被windows艹了一天的小感';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'snorlaxzxz' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

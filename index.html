@@ -1,0 +1,186 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1>Snorlax's Blog</h1><h5>アッカリ～ン</h5><div class="intro-social"><a class="fa fa-envelope" href="mailto:zhangxzheng@gmail.com" title="email"></a><a class="fa fa-github" href="//github.com/xinzhengzhang" target="_blank" title="github"></a></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><section id="recent-posts"><div class="recent-post-item"><div class="post-title"><a href="/2015/02/20/2015-2015-02-20-inject-qq/">注入qq</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2015-02-19T16:00:00.000Z">2015-02-20</time></div><div class="recent-post-content">背景
+像除夕这种好时节……tx什么红包发疯了那么安全性呢= =脑洞一开我就试试我这么个完全没碰过反向的人能玩成什么样子
+
+准备
+一台越狱设备
+安装OpenSSH MobileSubstrate
+
+步骤
+首先需要进行qq页面的分析、这个时候就该祭出神器reveal了hhhh
+
+把/Applications/Reveal.app/Contents/SharedSupport/iOS-Libraries/Reveal.framework放到/System/Library/Frameworks
+把/Applications/Reveal.app/Contents/SharedSupport/iOS-L ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="objective-c"> objective-c</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="reverse"> reverse</a></div><div class="read-more"><a class="more" href="/2015/02/20/2015-2015-02-20-inject-qq/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/17/2014-2014-10-17-catch-errors-in-rac/">ReactiveCocoa中RAC绑定中错误处理</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-16T16:00:00.000Z">2014-10-17</time></div><div class="recent-post-content">背景
+大致情况是bind了一个NSData到一个由NSURLConnection拓展出来的signal中、当网络请求超时时一定发生crash
+
+关键代码
+RACSignal+Operations.m line 629-643 
+查看RAC宏定义发现入口时下面
+- (RACDisposable *)setKeyPath:(NSString *)keyPath onObject:(NSObject *)object nilValue:(id)nilValue;
+如下代码中可以发现其实在当error时候直接assert掉了关于这里作者是这么说的
+Errors that occur in a prop ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="objective-c"> objective-c</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="ReactiveCocoa"> ReactiveCocoa</a></div><div class="read-more"><a class="more" href="/2014/10/17/2014-2014-10-17-catch-errors-in-rac/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-regular-expression/">正则表达式——BRE与ERE区别</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别
+BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。
+但是两种语法也都必须要记因为很多Unix程序用的并没有统一。
+| BRE | ERE
+——–| —-| —grep    | √   |sed     | √   |ed      | √   |vi      | √   |more    | √   |egrep   |     | √awk     |     | √lex     |     | √
+
+
+公共meta部分
+\  ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="re"> re</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="shell"> shell</a></div><div class="read-more"><a class="more" href="/2014/10/14/2014-2014-10-14-regular-expression/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/">正则表达式——BRE与ERE区别</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别
+BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。
+但是两种语法也都必须要记因为很多Unix程序用的并没有统一。
+| BRE | ERE
+——–| —-| —grep    | √   |sed     | √   |ed      | √   |vi      | √   |more    | √   |egrep   |     | √awk     |     | √lex     |     | √
+
+
+公共meta部分
+\  ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="re"> re</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="shell"> shell</a></div><div class="read-more"><a class="more" href="/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/14/2014-2014-10-14-design-pattern-3/">Design Pattern (4)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-13T16:00:00.000Z">2014-10-14</time></div><div class="recent-post-content">大话设计模式的读书笔记（四）
+读书笔记（一）
+读书笔记（二）
+读书笔记（三）
+
+Bridge, Command, Chain Of Responsibility, Mediator, Flyweight, Interpreter, Visitor桥接模式
+桥接模式的定义为「将抽象不分与实现部分分离，使之可以独立变化」
+简单来说就比如python 把语言核心逻辑抽象出PVM具体实现根据是当前什么平台再分别处理、使用也使用的是抽象接口由实现者abstraction获得抽象的implementor并具体实现
+1234567891011121314151617181920212223242526272 ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="design pattern"> design pattern</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="python"> python</a></div><div class="read-more"><a class="more" href="/2014/10/14/2014-2014-10-14-design-pattern-3/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/13/2014-2014-10-13-design-pattern-2/">Design Pattern (3)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-12T16:00:00.000Z">2014-10-13</time></div><div class="recent-post-content">大话设计模式的读书笔记（三）
+读书笔记（一）
+读书笔记（二）
+读书笔记（四）
+
+State, Adapter, Memento, Composite, Singleton状态模式
+理解状态核心就是让一个封闭的东西自己决定自己该干嘛、而如何让他自己决定就是给他自己一个状态
+例如button一个按钮他就有多种状态、而他的行为都是被按上去、由他自己来决定自己要做什么
+1234567891011121314151617181920212223242526272829303132from abc import ABCMeta, abstractmethodclass State(object):     ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="design pattern"> design pattern</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="python"> python</a></div><div class="read-more"><a class="more" href="/2014/10/13/2014-2014-10-13-design-pattern-2/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/12/2014-2014-10-12-design-pattern-1/">Design Pattern (2)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-11T16:00:00.000Z">2014-10-12</time></div><div class="recent-post-content">大话设计模式的读书笔记（二）
+读书笔记（一）
+读书笔记（三）
+
+Facade, Builder, Observer, Abstract Factory外观模式
+外观模式大概不就是个封装……说好听点他的定义是「为系统中一组接口提供一个一致的界面」核心就是把业务层的复杂逻辑全部抽出来给另外一个替死鬼来干ˊ_&gt;ˋ
+代码也不想写了、举个例子比如老师管理收作业要去不会去盯每个学生、会选个班长把脏活都丢给他来做……自己只要简单的去和班长交流就好了
+
+建造者模式
+建造者模式我理解核心有一点是强制把一些必须实现的东西抽象到上层通过虚方法强制必须实现。这样可以极大的有效的防止使用的时候漏掉了某一个步骤
+另 ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="design pattern"> design pattern</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="python"> python</a></div><div class="read-more"><a class="more" href="/2014/10/12/2014-2014-10-12-design-pattern-1/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/11/2014-2014-10-11-design-pattern-0/">Design Pattern (1)</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-10T16:00:00.000Z">2014-10-11</time></div><div class="recent-post-content">大话设计模式的读书笔记（一）
+读书笔记（二）
+读书笔记（三）
+读书笔记（四）
+
+Simple Factory, Strategy, Decorator, Factory, Proxy, Prototype, Template简单工厂模式
+其实工厂平常也用的非常多了、核心就是抽出公共外部接口、然后按照需求子类、然后由统一工厂返回。好处也很明显就是解耦、隔绝上层知道自己不需要知道的东西。
+用python实现了一端最简单的例子
+123456789101112131415161718192021222324252627282930313233class Operation:    def __init ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="design pattern"> design pattern</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="python"> python</a></div><div class="read-more"><a class="more" href="/2014/10/11/2014-2014-10-11-design-pattern-0/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/10/09/2014-2014-10-09-clean-git-history/">Clean Git History</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-10-08T16:00:00.000Z">2014-10-09</time></div><div class="recent-post-content">背景
+不当心在git里塞进了几个大的静态文件……导致整个git repo大的无法忍于是开始清理
+核心的东西是使用filter-branch (好像这玩意是用来的原始意图不是这个= = 我是传送门 
+查找大文件部分主要参照这篇blog
+
+
+
+具体的操作三步
+从git历史里找出大文件
+
+对所有文件的sha进行输出 git rev-list --objects --all | sort -k 2 | uniq &gt; allsha.txt
+排序得到所有打文件列表 
+
+123git gc &amp;&amp; git verify-pack -v .git/objects/pack/pack-*.i ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="git"> git</a></div><div class="read-more"><a class="more" href="/2014/10/09/2014-2014-10-09-clean-git-history/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2014/06/14/2014-2014-06-14-four-years-in-dut/">Four Years In DUT</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2014-06-13T16:00:00.000Z">2014-06-14</time></div><div class="recent-post-content">大一
+当初考到dut的初衷或许就其实是一个错误、不过错中对的那一点就是我选择了一个我喜欢的专业、选择到了我的爱好。说实话这是一个学术氛围浓厚却相对轻技术的地方、但我至少值得庆幸了的是我知道了cippus、加入了软件组、从做的acm开始强化自己的编程能力、从周边了解技术是什么样、至少知道了这条路该怎么走。这里要感谢lw学长、带我入了门、让我知道这个程序的世界长的是什么样子。这一年我还跟高中一样、打游戏、写作业、其中一点比较影响的或许应该就是包括所有的作业我都强迫自己不在windows上而用*nix上去实现、也是这点为我打下会努力的去看各种开源的东西的基础吧。
+
+大二
+到了大二已经放弃了对大学的一 ...</div><div class="recent-post-tags"><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="dut"> dut</a><a class="post-tag fa fa-tag" href="javascript:void(0)" date-tags="cippus"> cippus</a></div><div class="read-more"><a class="more" href="/2014/06/14/2014-2014-06-14-four-years-in-dut/#more">ReadMore</a></div><hr></div></section><nav class="cxo-page-nav"><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">NEXT &#62;</a></nav></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

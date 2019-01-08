@@ -1,0 +1,225 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>正则表达式——BRE与ERE区别 · Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">正则表达式——BRE与ERE区别</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2014-10-14</span></span><span class="post-intro-tags"><a class="intro-tag fa fa-tag" href="javascript:void(0)" date-tags="re"> re</a><a class="intro-tag fa fa-tag" href="javascript:void(0)" date-tags="shell"> shell</a></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><h3 id="本文主要说明了正则的两个标准-BRE-以及-ERE的具体区别"><a href="#本文主要说明了正则的两个标准-BRE-以及-ERE的具体区别" class="headerlink" title="本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别"></a>本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别</h3><ul>
+<li>BRE - Basic Regular Syntax ， ERE - Extended Regular Syntax 顾名思义ere是对bre的拓展。</li>
+<li><p>但是两种语法也都必须要记因为很多Unix程序用的并没有统一。</p>
+<pre><code>| BRE | ERE
+</code></pre><p>——–| —-| —<br>grep    | √   |<br>sed     | √   |<br>ed      | √   |<br>vi      | √   |<br>more    | √   |<br>egrep   |     | √<br>awk     |     | √<br>lex     |     | √</p>
+</li>
+</ul>
+<h3 id="公共meta部分"><a href="#公共meta部分" class="headerlink" title="公共meta部分"></a>公共meta部分</h3><ul>
+<li><code>\</code> <ul>
+<li>用来关闭后续字符意义例如 <code>\&#39;  \&quot;</code> </li>
+<li>在BRE中特别有打开字符意义的意思例如 <code>\(...\)</code> <code>\{...\}</code></li>
+</ul>
+</li>
+<li><code>.</code><ul>
+<li>用来匹配单个字符</li>
+</ul>
+</li>
+<li><code>*</code><ul>
+<li>匹配0-n个字符</li>
+</ul>
+</li>
+<li><code>^</code><ul>
+<li>锚点、行首起始处</li>
+<li>在BRE中必须需要在表达式开头才有效<ul>
+<li><code>echo abc | grep &quot;.*^a&quot;</code> ×</li>
+<li><code>echo abc | egrep &quot;.*^a&quot;</code> √</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>$</code><ul>
+<li>锚点、行尾结尾处</li>
+<li>同上在BRE中必须要在结尾处才有效</li>
+</ul>
+</li>
+<li><p><code>[...]</code></p>
+<ul>
+<li><code>[^...]</code> 取…的反</li>
+<li><code>[x-y]</code> 匹配 x-y 之间的  例如 x=1 y=9 or x=a y=z</li>
+<li><p><code>[express]</code> 匹配express的字符集  例如 express=[:alnum:] [[:alnum:]] 匹配数字字符</p>
+<p>  类别 | 意义<br>  —-| —<br>  [:alnum:]|数字<br>  [:alpha:]|字母<br>  [:blank:]|space or tab<br>  [:cntrl:]|控制字符<br>  [:digit:]|数字<br>  [:graph:]|除了空格字符<br>  [:lower:]|小写字母<br>  [:print:]|可显示的字符<br>  [:puncat:]|标点<br>  [:space:]|空白<br>  [:upper:]|大写字母<br>  [:xdigit:]|16进制数字</p>
+</li>
+</ul>
+</li>
+<li><p><code>\n</code></p>
+<ul>
+<li><p>在BRE中为重复(…)的第n个表达式且当时位置匹配的结果于他所代表的那个结果相同</p>
+<ul>
+<li><code>echo axa | grep &quot;\([ab]\)x\1&quot;</code> √</li>
+<li><code>echo axb | grep &quot;\([ab]\)x\1&quot;</code> ×</li>
+</ul>
+</li>
+<li><p>在ERE中为重复()的第n个表达式</p>
+<ul>
+<li><code>echo axa | egrep &quot;([ab])x\1&quot;</code> √</li>
+<li><code>echo axb | egrep &quot;([ab])x\1&quot;</code> ×</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="BRE-meta部分"><a href="#BRE-meta部分" class="headerlink" title="BRE meta部分"></a>BRE meta部分</h3><ul>
+<li><code>\{n,m\}</code><ul>
+<li>匹配前面单个字符的次数区间为n-m次 <ul>
+<li><code>\{n\}</code> 重现n次</li>
+<li><code>\{n,\}</code> 至少出现n次</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>\(...\)</code><ul>
+<li>匹配…子模式的 可以通过上述的<code>\n</code>来引用</li>
+</ul>
+</li>
+</ul>
+<h3 id="ERE-meta部分"><a href="#ERE-meta部分" class="headerlink" title="ERE meta部分"></a>ERE meta部分</h3><ul>
+<li><code>{n,m}</code><ul>
+<li>同BRE匹配单个字符n-m次</li>
+</ul>
+</li>
+<li><code>+</code><ul>
+<li>匹配一个或n个</li>
+</ul>
+</li>
+<li><code>?</code><ul>
+<li>匹配0个或1个</li>
+</ul>
+</li>
+<li><code>|</code><ul>
+<li>匹配 | 前后的表达式</li>
+</ul>
+</li>
+<li><code>(...)</code><ul>
+<li>同BRE中的<code>\(...\)</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="BRE-优先级-gt"><a href="#BRE-优先级-gt" class="headerlink" title="BRE 优先级 &gt;"></a>BRE 优先级 &gt;</h3><ul>
+<li><code>[...]</code> 方括号中的具体转义</li>
+<li><code>\metacharacter</code> 转义的meta字符</li>
+<li><code>[]</code> 方括号表达式</li>
+<li><code>\(...\)...\n</code> 子表达式后向引用</li>
+<li><code>\{...\}</code> * 单置字符重现</li>
+<li><code>...</code> 连续字符</li>
+<li><code>^ $</code> 锚点</li>
+</ul>
+<h3 id="ERE-优先级-gt"><a href="#ERE-优先级-gt" class="headerlink" title="ERE 优先级 &gt;"></a>ERE 优先级 &gt;</h3><ul>
+<li><code>[...]</code> 方括号中的具体转义</li>
+<li><code>\metacharacter</code> 转义的meta字符</li>
+<li><code>[]</code> 方括号表达式</li>
+<li><code>(...)...\n</code> 子表达式后向引用</li>
+<li><code>+ ? * {}</code> 单置字符重现</li>
+<li><code>...</code> 连续字符</li>
+<li><code>^ $</code> 锚点</li>
+<li><code>|</code> 选择</li>
+</ul>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://zxz.moe">Xinzheng Zhang</a></p><p> <span>Link:  </span><a href="http://zxz.moe/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/">http://zxz.moe/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2014/10/14/2014-2014-10-14-regular-expression/" title="正则表达式——BRE与ERE区别"><span>< PreviousPost</span><br><span class="prevTitle">正则表达式——BRE与ERE区别</span></a><a class="nextSlogan" href="/2014/10/14/2014-2014-10-14-design-pattern-3/" title="Design Pattern (4)"><span>NextPost ></span><br><span class="nextTitle">Design Pattern (4)</span></a><div class="clear"></div></div><div id="comment"><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://zxz.moe/2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/';
+  this.page.identifier = '2014/10/14/2014-2014-10-14-difference-between-bre-and-ere/';
+  this.page.title = '正则表达式——BRE与ERE区别';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'snorlaxzxz' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#本文主要说明了正则的两个标准-BRE-以及-ERE的具体区别"><span class="toc-number">1.</span> <span class="toc-text">本文主要说明了正则的两个标准 BRE 以及 ERE的具体区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#公共meta部分"><span class="toc-number">2.</span> <span class="toc-text">公共meta部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BRE-meta部分"><span class="toc-number">3.</span> <span class="toc-text">BRE meta部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ERE-meta部分"><span class="toc-number">4.</span> <span class="toc-text">ERE meta部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BRE-优先级-gt"><span class="toc-number">5.</span> <span class="toc-text">BRE 优先级 &gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ERE-优先级-gt"><span class="toc-number">6.</span> <span class="toc-text">ERE 优先级 &gt;</span></a></li></ol></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

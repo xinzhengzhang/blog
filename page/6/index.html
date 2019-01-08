@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1>Snorlax's Blog</h1><h5>アッカリ～ン</h5><div class="intro-social"><a class="fa fa-envelope" href="mailto:zhangxzheng@gmail.com" title="email"></a><a class="fa fa-github" href="//github.com/xinzhengzhang" target="_blank" title="github"></a></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><section id="recent-posts"><div class="recent-post-item"><div class="post-title"><a href="/2012/11/04/2012-2012-11-04-关于东大情报研究生海报的彩蛋/">关于东大情报研究生海报的彩蛋</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-11-03T16:00:00.000Z">2012-11-04</time></div><div class="recent-post-content">今天在weibo上看到有人转发的关于东京大学情报科研究生海报里的彩蛋，务真精神我就来落实了一下其中各种把1 0 串如何想到正确的转发的才是难点……我这彩笔是还得再战10年估计的……所以在这就把正确方法一步步落实下来首先先看海报
+
+关键不在妹子！
+
+好吧，我们先用orc软件把那个少女身前所有的一零串全部扫出来扫出来的东西如下
+
+0001111110001011000010000000000000000000000000000000000000000000000000100000001101101101010100001100101101001110110000100100000000010100 ...</div><div class="read-more"><a class="more" href="/2012/11/04/2012-2012-11-04-关于东大情报研究生海报的彩蛋/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/11/02/2012-2012-11-02-os-x-safari代理配置/">os x safari代理配置</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-11-01T16:00:00.000Z">2012-11-02</time></div><div class="recent-post-content">首先先问候一下方校长，自从google被封了一批ip后墙翻的我简直痛不欲生一会么证书伪造一会么500……大chrome崩溃的频率也tm越来越高，想来想去既然是os x那就索性用safari装x到到底-_-#
+
+个么safari上默认的设代理就是全局翻（上weibo什么的怎么办啊不卡死啊……那就也写个简单点的代理就好了么（其实如果用chrome的switchysharp直接导出他的配置文件就好了
+
+那么没有的怎么搞呢，自己写一个也很简单的浏览器是会通过这个FindProxyForURL来选择具体是否选择实用代理那么最简单的一个代理就是
+
+12345678910111213141516171819 ...</div><div class="read-more"><a class="more" href="/2012/11/02/2012-2012-11-02-os-x-safari代理配置/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/10/22/2012-2012-10-22-分享md5新特性-contenteditable/">分享html5新特性 contenteditable</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-10-21T16:00:00.000Z">2012-10-22</time></div><div class="recent-post-content">最近做个项目碰到一个很纠结的问题，富文本编辑。什么脑筋都动了，抓js句柄，手动解析标签属性，然后转成ios的font等等，想都不用想这种愚蠢又耗时的行为是不可能解决问题的。直到大stackoverflow救了我原帖如下http://stackoverflow.com/questions/8012245/using-ios-5-rich-text-editor用到的最重要的新特性 就是 contenteditable具体demo 如下http://html5demos.com/contenteditable
+
+简单来说就是加个section 设置个 contenteditable，就那么简单！比 ...</div><div class="read-more"><a class="more" href="/2012/10/22/2012-2012-10-22-分享md5新特性-contenteditable/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/10/16/2012-2012-10-16-一个非常简易的随机选的小程序/">一个非常简易的随机选的小程序</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-10-15T16:00:00.000Z">2012-10-16</time></div><div class="recent-post-content">写了一段小程序，随机产生一个列表中的名字，可用于摇奖，或者什么的。
+
+需要安装python 的Tkinter图形库
+
+&nbsp;
+
+&lt;pre lang=”python” file=”rp.py” colla=”+”&gt;
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192939495969 ...</div><div class="read-more"><a class="more" href="/2012/10/16/2012-2012-10-16-一个非常简易的随机选的小程序/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/08/21/2012-2012-08-21-关于os的一点小见/">关于os的一点小见</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-08-20T16:00:00.000Z">2012-08-21</time></div><div class="recent-post-content">最近同学有买了mac，一段试用后突然问我和windows的差别在哪儿，有一点不知道怎么回答，也不禁对自己所认识的操作系统一通反思，最后我回答了mac好就好在他算是unix＋无敌的ui，虽然片面但我觉得这就是mac最好的地方了，看过一篇文章，感觉比喻的非常好，windows就像是表面光鲜整齐的大树，而实质上他的根须错乱(n个dll往系统里丢注册表什么给改的一塌糊涂等)而unix就感觉是一块块的存在需要什么就拿什么如积木一般，或许这就是他令人喜欢的理由吧。突然想写这点什么的契机也是因为发现ml把以前一些的如gcc  make svn 什么的也放进了xcode的沙盒中了，这个改动或许就是更为了他的积 ...</div><div class="read-more"><a class="more" href="/2012/08/21/2012-2012-08-21-关于os的一点小见/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/07/22/2012-2012-07-22-锡箔/">锡箔</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-07-21T16:00:00.000Z">2012-07-22</time></div><div class="recent-post-content">小时候爷爷教我折锡箔，长大了我折给他用
+</div><div class="read-more"><a class="more" href="/2012/07/22/2012-2012-07-22-锡箔/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/07/05/2012-2012-07-05-分享一个很好用的python的web框架/">分享一个很好用的python的web框架</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-07-04T16:00:00.000Z">2012-07-05</time></div><div class="recent-post-content">tornado使用的是非阻塞io epoll和kqueue性能上就不会差，并且感觉非常好用，完暴django感觉，主要封装了有oauth websocket 和一些其他常用框架
+
+项目地址 https://github.com/facebook/tornado
+
+中文官方文档 http://sebug.net/paper/books/tornado/#tornado-walkthrough
+
+注：并不完全兼容python3 需要手动改源码
+</div><div class="read-more"><a class="more" href="/2012/07/05/2012-2012-07-05-分享一个很好用的python的web框架/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/04/24/2012-2012-04-24-有趣的混乱代码/">有趣的混乱代码</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-04-23T16:00:00.000Z">2012-04-24</time></div><div class="recent-post-content">12345678910111213无意间看到一个第20届国际C语言混乱代码大赛（IOCCC）的最佳作品，同样作为死宅对他的作品也更加是喜欢了，于是乎我就来分享下这段代码。这是一段典型的自功自受啊，把自己当成输入，成为输出后再继续当输入= =源文件再迭代下去就阿卡林就变型的完全看不出了。。akari源码地址：http://www.ioccc.org/2011/akari/akari.c作者其它作品地址：http://uguu.org/sources.html&gt;
+</div><div class="read-more"><a class="more" href="/2012/04/24/2012-2012-04-24-有趣的混乱代码/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/03/31/2012-2012-03-31-38/">no_title</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-03-30T16:00:00.000Z">2012-03-31</time></div><div class="recent-post-content">进了大二，一直有种感觉，就是和宿舍的格格不入，我也不能理解他们自己所谓的爽到底指的是什么，也许就是睁开眼到闭起眼做他们相对喜欢的事情，也就是玩游戏了。大概我能做的已经仁至义尽了，我也不知道为什么我又突然那儿里惹着你们了，大学我总想有善点，你么的事我也认真的放在过心上，不过既然你们也这样了，我又何必热脸贴你冷屁股，和我有何关系呢，是吧，走自己的路，让别人去讲好了。
+</div><div class="read-more"><a class="more" href="/2012/03/31/2012-2012-03-31-38/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2012/03/18/2012-2012-03-18-开源库asyncsocket实现socket通信的基本用法/">开源库AsyncSocket实现socket通信的基本用法</a></div><div class="post-time"><i class="fa fa-table"></i><time datetime="2012-03-17T16:00:00.000Z">2012-03-18</time></div><div class="recent-post-content">AsyncSocket.hAsyncSocket.m
+
+12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667- (BOOL)connectToHost:(NSString*)hostname onPort:(UInt16)port error:(NSError **)errPtr //connect to the server- (void)writeData:(NSData *)data with ...</div><div class="read-more"><a class="more" href="/2012/03/18/2012-2012-03-18-开源库asyncsocket实现socket通信的基本用法/#more">ReadMore</a></div><hr></div></section><nav class="cxo-page-nav"><a class="extend prev" rel="prev" href="/page/5/">&#60; PREV</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/">NEXT &#62;</a></nav></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

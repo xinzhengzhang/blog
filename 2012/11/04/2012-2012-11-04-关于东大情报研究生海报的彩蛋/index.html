@@ -1,0 +1,119 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="Xinzheng Zhang"><meta name="renderer" content="webkit"><meta name="copyright" content="Xinzheng Zhang"><meta name="keywords" content="Snorlax's blog"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>关于东大情报研究生海报的彩蛋 · Snorlax's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/akari.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">snorlax</div><div class="profile-signature">アッカリ～ン</div><div class="friends"><div>FRIENDS</div><span><a href="//blog.chenkeyi.com" target="_black">蹦蹬</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Snorlax's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/archives/">Archives</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/archives/">Archives</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">关于东大情报研究生海报的彩蛋</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2012-11-04</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><p>今天在weibo上看到有人转发的关于东京大学情报科研究生海报里的彩蛋，务真精神我就来落实了一下<br><br>其中各种把1 0 串如何想到正确的转发的才是难点……我这彩笔是还得再战10年估计的……所以在这就把正确方法一步步落实下来<br><br>首先先看海报<a href="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg" target="_blank" rel="noopener"><img class="alignnone size-full wp-image-88" title="tokyo_daigaku_information_notice" src="http://snorlax-wordpress.stor.sinaapp.com/uploads/2012/11/b_large_9NkW_0e22000000701261.jpg" alt="" width="580" height="820"></a></p>
+
+<p><strong>关键不在妹子！</strong></p>
+
+<p>好吧，我们先用orc软件把那个少女身前所有的一零串全部扫出来扫出来的东西如下</p>
+
+<p>00011111100010110000100000000000000000000000000000000000000000000000001000000011011011010101000011001011010011<br><br>10110000100100000000010100001111010101001100011110100001010101101010110101100000001110000000000011010100001101<br><br>10000101000100010011011010001110001000010110001100010011000110101100010011000011010010011010011000001101100010<br><br>11100000011010011010101001010111100001110100010011011001110101100000001011000011110111010010111101110010111000<br><br>11010110000001010010011000101110111111000000000011111111110000111000111101110000111000011110001100010110010011<br><br>01000011001000100110010011110011001001110010111001111101111001111010010011011110111110111001111101111111010111<br><br>11000111111000000001101100001000011110110010000001100001010100101011010010011010110011000010010010000010000010<br><br>10010100100001100011011000110010000110001101010110010001010101111001000101010010101100001100111100010011110111<br><br>10000101001010111110010000000001010000111010010001100010101101100001100110100010010011011110111111010010001000<br><br>01000110000111001011100001001100101110010000101010000101111100011100111101001111101110011011010110100000001011<br><br>10111101011101010110010010110000011011000010101111011010111010000111101101001110010110010110111001000111011011<br><br>11111110000100111110111110011110111100001100110111000001110100001001001001000001010100101100011010000101100011<br><br>00010011010110110000110011100110101001001100101001000111110000010110000000100010011011010101011100111000000100<br><br>11101011110110011001010101011001011010110111011111111010110000111010100100100110001111101011000010011100110110<br><br>10101001111011010101000111110000011110100011110110100001010101110111010101001110010001110101000101000101000001<br><br>01010010110001101011010110001100000111001001010000011000100110000110001000110010111111100101101010011110011101<br><br>10011110011000111100101110000101010101000110101101111010001000111001110100100001111110011111010101000110010101<br><br>00110010001111111011111000000100111001111001110101010001101110011000100100010110010111010011111000101100001011<br><br>11100010100010011000110110111010011001001001111011010010111000001111000011100100100100010011101011010001110010<br><br>01100101001101100001101100110000111111010010101000011010011000000111110100011000100001101010010110100110110110<br><br>01010001010000101001110011010110000101110001111010000101001011100100110100001001000001101000110101111110001010<br><br>01010000100100011000011000110110110111110100000010011110111001100000010011100100100101100010000010111111100101<br><br>10110110111000100000100010100000100001100001001110011101001000101000000110001110011000011101111100101000111101<br><br>01000011010010100100011000001000010001111011110001101010100110001111110100001101110100100001101101100010101101<br><br>11000010111011101011111111011110010000100010100101101101100100110101111000001101110010100000011100110101011000<br><br>01111011110010100000000010110111111110101010100011000010011100000110111110000000010000000000000000<br><br>记得去掉每行的\n啊</p>
+
+<p></p><p>昏头了吧……这玩意怎么搞……我看到反正也是蒙了，要不是有大哥来解释我还真就昏倒了，首先他先分析了这些数字一共的数量<br><strong>2848</strong><br>这个数字有什么特别的？<br><br>他是8的倍数啊！他会不会就是字节流啊……<br><br>那么他是大端的还是小端的呢……好吧大哥说他是大端，那就是大端吧那么就用大端的方式解析<br><br>首先我自己的电脑是小端机，就稍微做一点处理写了一个小程序代码如下(所有判错的部分全部都省略了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#include</span><br><span class="line">#include</span><br><span class="line">int current_bit = 0;</span><br><span class="line">unsigned char bit_buffer;</span><br><span class="line">//bit转byte</span><br><span class="line">void WriteBit (int bit,FILE *f)</span><br><span class="line">&#123;</span><br><span class="line">    if (bit)</span><br><span class="line">        bit_buffer |= (1=0; j--) &#123;</span><br><span class="line">                tt[j]-=48;</span><br><span class="line">                WriteBit(tt[j], f);</span><br><span class="line">            &#125;</span><br><span class="line">            //大端机用这个</span><br><span class="line">//            for (j=0; j</span><br><span class="line"></span><br><span class="line">    fclose(f);  </span><br><span class="line">    fclose(a);</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">代码很快就写好了，输出的文件是什么呢……</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">我擦，坑爹啊，这是什么shit啊……没关系，可以看他是什么的嘛……</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">是个gzip的压缩包啊，看来已经走进真相了！好把用tar给他解压了是个什么shit……</span><br><span class="line"></span><br><span class="line">奔溃了，有是这种非人类所读的东西……但是注意一下，就算是乱啊也有一个很关键的可依稀识别的java/lang/String!尼玛搞了半天原来你是个java啊，好的，那就把你后缀改成class 然后用java再跑一下！</span><br><span class="line"></span><br><span class="line">有java的出错信息了，那么久了终于碰到一个程序员能看的东西了……泪流满面，那就把他反编译一下看看到底是什么问题，检查出最后是因为名字的问题，那么好吧，把class 改成 i.class</span><br><span class="line">然后最后等待奇迹的时刻吧……= =</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">他终于出了个网址了啊……泪流满面……</span><br><span class="line"></span><br><span class="line">少年你以为这样就拿到东大的offer了么？你还太年轻……做到这步你就有直接去面试的资格了，要直接拿到offer需要继续解码一段音频，好吧，我觉得那已经超出我能力范围了，这个彩蛋揭秘过程就到这吧</span><br><span class="line"></span><br><span class="line">最后：外国的牛逼大学真心大陆能比？就说这样的在一张小小的海报策划的功夫、呵呵呵</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://zxz.moe">Xinzheng Zhang</a></p><p> <span>Link:  </span><a href="http://zxz.moe/2012/11/04/2012-2012-11-04-关于东大情报研究生海报的彩蛋/">http://zxz.moe/2012/11/04/2012-2012-11-04-关于东大情报研究生海报的彩蛋/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2012/11/06/2012-2012-11-06-复习网络时的一个很不成熟的想法/" title="复习网络时的一个很不成熟的想法"><span>< PreviousPost</span><br><span class="prevTitle">复习网络时的一个很不成熟的想法</span></a><a class="nextSlogan" href="/2012/11/02/2012-2012-11-02-os-x-safari代理配置/" title="os x safari代理配置"><span>NextPost ></span><br><span class="nextTitle">os x safari代理配置</span></a><div class="clear"></div></div><div id="comment"><div id="disqus_thread"></div><script>var unused = null;
+var disqus_config = function () {
+  this.page.url = 'http://zxz.moe/2012/11/04/2012-2012-11-04-关于东大情报研究生海报的彩蛋/';
+  this.page.identifier = '2012/11/04/2012-2012-11-04-关于东大情报研究生海报的彩蛋/';
+  this.page.title = '关于东大情报研究生海报的彩蛋';
+}
+var d = document, s = d.createElement('script');
+s.src = "https://" + 'snorlaxzxz' +".disqus.com/embed.js";
+s.setAttribute('data-timestamp', '' + +new Date());
+(d.head || d.body).appendChild(s);</script></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

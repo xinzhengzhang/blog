@@ -1,4 +1,5 @@
 ---
+date: 2012-11-02
 layout: post
 title: os x safari代理配置
 categories:

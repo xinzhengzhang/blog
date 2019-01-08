@@ -1,4 +1,5 @@
 ---
+date: 2013-07-30
 layout: post
 title: 圆形布局的icon页面 loading动画效果
 categories:

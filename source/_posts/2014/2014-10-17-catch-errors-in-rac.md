@@ -1,4 +1,5 @@
 ---
+date: 2014-10-17
 layout: post
 title: "ReactiveCocoa中RAC绑定中错误处理"
 description: ""

@@ -1,4 +1,5 @@
 ---
+date: 2012-07-05
 layout: post
 title: 分享一个很好用的python的web框架
 categories:

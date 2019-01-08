@@ -1,4 +1,5 @@
 ---
+date: 2014-03-06
 layout: post
 title: "tableview上滑动时的navigation bar的遮罩"
 description: ""

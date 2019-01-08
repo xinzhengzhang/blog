@@ -1,4 +1,5 @@
 ---
+date: 2014-10-09
 layout: post
 title: "Clean Git History"
 description: ""

@@ -1,4 +1,5 @@
 ---
+date: 2014-10-12
 layout: post
 title: "Design Pattern (2)"
 description: "facade, builder, observer, abstract factory"

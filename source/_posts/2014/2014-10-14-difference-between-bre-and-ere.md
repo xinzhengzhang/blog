@@ -1,4 +1,5 @@
 ---
+date: 2014-10-14
 layout: post
 title: "正则表达式——BRE与ERE区别"
 description: ""

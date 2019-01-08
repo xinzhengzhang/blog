@@ -1,4 +1,10 @@
-
+---
+date: 2013-04-26
+layout: post
+title: 关于protocol-buffer-中的base-128-varints编码
+categories:
+- program
+---
 ### 工作
 1. host在github上
 2. 安装jekyll bootstrap~~简称jb~~

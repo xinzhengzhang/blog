@@ -1,4 +1,5 @@
 ---
+date: 2012-03-13
 layout: post
 title: hello wordpress
 categories:

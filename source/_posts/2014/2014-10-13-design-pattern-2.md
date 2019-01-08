@@ -1,4 +1,5 @@
 ---
+date: 2014-10-13
 layout: post
 title: "Design Pattern (3)"
 description: "state, adapter, memento, composite, singleton"

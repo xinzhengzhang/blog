@@ -1,4 +1,5 @@
 ---
+date: 2013-01-07
 layout: post
 title: 关于嵌套与UIScrollView中的UITableVIew的冲突解决
 categories:

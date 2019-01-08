@@ -1,4 +1,5 @@
 ---
+date: 2013-03-07
 layout: post
 title: 关于ios下的goagent使用
 categories:

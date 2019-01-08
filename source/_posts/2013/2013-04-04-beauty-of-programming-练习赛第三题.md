@@ -1,4 +1,5 @@
 ---
+date: 2013-04-04
 layout: post
 title: beauty of programming 练习赛第三题
 categories:

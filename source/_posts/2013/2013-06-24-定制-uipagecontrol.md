@@ -1,4 +1,5 @@
 ---
+date: 2013-06-24
 layout: post
 title: 定制 UIPageControl
 categories:

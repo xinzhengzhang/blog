@@ -1,4 +1,5 @@
 ---
+date: 2014-10-11
 layout: post
 title: "Design Pattern (1)"
 description: "simple factory, strategy, decorator, factory, proxy, prototype, template"

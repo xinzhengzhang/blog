@@ -1,4 +1,5 @@
 ---
+date: 2013-05-08
 layout: post
 title: 最大公共上升子序列(lcs) python实现
 categories:

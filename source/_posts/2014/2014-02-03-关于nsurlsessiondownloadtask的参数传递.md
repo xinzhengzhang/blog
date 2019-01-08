@@ -1,4 +1,5 @@
 ---
+date: 2014-02-03
 layout: post
 title: 关于NSURLSessionDownloadTask的参数传递
 categories:

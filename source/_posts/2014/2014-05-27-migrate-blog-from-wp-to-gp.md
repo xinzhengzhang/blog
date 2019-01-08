@@ -1,4 +1,5 @@
 ---
+date: 2014-05-27
 layout: post
 title: "wordpress迁移github page"
 description: ""

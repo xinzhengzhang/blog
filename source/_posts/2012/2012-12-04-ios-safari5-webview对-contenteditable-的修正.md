@@ -1,4 +1,5 @@
 ---
+date: 2012-12-04
 layout: post
 title: ios safari5 webview对 contenteditable 的修正
 categories:

@@ -1,4 +1,5 @@
 ---
+date: 2012-10-22
 layout: post
 title: 分享html5新特性 contenteditable
 categories:

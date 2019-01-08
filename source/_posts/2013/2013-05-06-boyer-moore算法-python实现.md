@@ -1,4 +1,5 @@
 ---
+date: 2013-05-06
 layout: post
 title: Boyer-Moore算法 python实现
 categories:

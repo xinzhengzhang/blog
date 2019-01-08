@@ -1,4 +1,5 @@
 ---
+date: 2013-01-29
 layout: post
 title: 关于windows里的python环境配置
 categories:

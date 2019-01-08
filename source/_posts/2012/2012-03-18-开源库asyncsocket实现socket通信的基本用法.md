@@ -1,4 +1,5 @@
 ---
+date: 2012-03-18
 layout: post
 title: 开源库AsyncSocket实现socket通信的基本用法
 categories:

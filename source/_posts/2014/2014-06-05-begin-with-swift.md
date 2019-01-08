@@ -1,4 +1,5 @@
 ---
+date: 2014-06-05
 layout: post
 title: "Begin With Swift"
 description: ""

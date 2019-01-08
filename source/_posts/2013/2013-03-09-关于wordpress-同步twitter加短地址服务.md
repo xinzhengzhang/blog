@@ -1,4 +1,5 @@
 ---
+date: 2013-03-09
 layout: post
 title: 关于wordpress 同步twitter加短地址服务
 categories:

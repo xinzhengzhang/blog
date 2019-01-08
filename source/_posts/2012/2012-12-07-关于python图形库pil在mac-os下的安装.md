@@ -1,4 +1,5 @@
 ---
+date: 2012-12-07
 layout: post
 title: 关于python图形库pil在mac os下的安装
 categories:

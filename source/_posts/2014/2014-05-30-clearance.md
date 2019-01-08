@@ -1,4 +1,5 @@
 ---
+date: 2014-05-30
 layout: post
 title: "毕业贩卖"
 description: ""

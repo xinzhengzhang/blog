@@ -1,4 +1,5 @@
 ---
+date: 2014-10-14
 layout: post
 title: "Design Pattern (4)"
 description: "bridge, command, chain of responsibility, mediator, flyweight, interpreter, visitor"
